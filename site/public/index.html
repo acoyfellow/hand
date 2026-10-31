@@ -111,8 +111,8 @@ footer a{color:var(--dim)}
 </div>
 
 <h2 id="use">Use it</h2>
-<p class="dim">Install from GitHub. It is not on npm; the <code>do</code> package there belongs to someone else, so the alias <code>do@github:</code> keeps the imports below working.</p>
-<pre class="code"><span class="f">bun</span> add do@github:acoyfellow/do
+<p class="dim">Install from GitHub.</p>
+<pre class="code"><span class="f">bun</span> add github:acoyfellow/do
 <span class="f">swiftc</span> -O node_modules/do/native/ax.swift -o ax   <span class="c"># macOS helper, once</span></pre>
 <pre class="code"><span class="k">import</span> { gatewayTransport } <span class="k">from</span> <span class="s">'do/clef'</span>;
 <span class="k">import</span> { readConfig, readToken } <span class="k">from</span> <span class="s">'do/credentials'</span>;

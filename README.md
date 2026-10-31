@@ -47,10 +47,8 @@ screen ──► device lists controls ──► Clef: "which one?" + probabilit
 ## Install
 
 ```bash
-bun add do@github:acoyfellow/do
+bun add github:acoyfellow/do
 ```
-
-It is not on npm. The npm package named `do` is someone else's; the `do@` alias keeps `do/...` imports pointing at this repo.
 
 do reads a Cloudflare AI Gateway account, gateway name and token the same way as [odds](https://github.com/acoyfellow/odds). See `src/credentials.ts`.
 
