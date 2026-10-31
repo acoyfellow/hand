@@ -49,6 +49,8 @@ tr.win td{font-weight:600}
 pre{background:var(--raise);border-radius:10px;padding:1rem;overflow-x:auto;font:400 .82rem/1.55 var(--mono);margin:1rem 0}
 code{font-family:var(--mono);font-size:.88em}
 .c{color:var(--faint)}
+.code .k{color:#c2410c}.code .s{color:#15803d}.code .f{color:#1d4ed8}.code .n{color:#a21caf}.code .c{color:#8a8a90;font-style:italic}
+@media (prefers-color-scheme:dark){.code .k{color:#ff9e64}.code .s{color:#9ece6a}.code .f{color:#7aa2f7}.code .n{color:#bb9af7}.code .c{color:#6b6b75}}
 ul{padding-left:1.1rem}li{margin:.35rem 0}
 ol.steps{padding-left:1.2rem}
 .parts{display:grid;gap:.6rem;margin:1rem 0}
@@ -108,20 +110,24 @@ footer a{color:var(--dim)}
 </div>
 
 <h2 id="use">Use it</h2>
-<pre>bun add github:acoyfellow/do
-swiftc -O native/ax.swift -o native/ax   <span class="c"># macOS helper, once</span></pre>
-<pre>import { gatewayTransport } from 'do/clef';
-import { readConfig, readToken } from 'do/credentials';
-import { macosDevice } from 'do/devices/macos';
-import { Hand } from 'do/hand';
+<p class="dim">Install from GitHub. It is not on npm; the <code>do</code> package there belongs to someone else, so the alias <code>do@github:</code> keeps the imports below working.</p>
+<pre class="code"><span class="f">bun</span> add do@github:acoyfellow/do
+<span class="f">swiftc</span> -O node_modules/do/native/ax.swift -o ax   <span class="c"># macOS helper, once</span></pre>
+<pre class="code"><span class="k">import</span> { gatewayTransport } <span class="k">from</span> <span class="s">'do/clef'</span>;
+<span class="k">import</span> { readConfig, readToken } <span class="k">from</span> <span class="s">'do/credentials'</span>;
+<span class="k">import</span> { macosDevice } <span class="k">from</span> <span class="s">'do/devices/macos'</span>;
+<span class="k">import</span> { Hand } <span class="k">from</span> <span class="s">'do/hand'</span>;
 
-const transport = gatewayTransport({ ...readConfig(), token: readToken() });
-const device = macosDevice({ helper: './native/ax', app: 'Google Chrome' });
-const hand = new Hand(transport, device, { model: 'clef', method: 'ax_text', tau: 0.3, riskTau: 0.5, injectionTau: 0.5, verify: true });
+<span class="k">const</span> transport = <span class="f">gatewayTransport</span>({ ...<span class="f">readConfig</span>(), token: <span class="f">readToken</span>() });
+<span class="k">const</span> device = <span class="f">macosDevice</span>({ helper: <span class="s">'./ax'</span>, app: <span class="s">'Google Chrome'</span> });
+<span class="k">const</span> hand = <span class="k">new</span> <span class="f">Hand</span>(transport, device, { model: <span class="s">'clef'</span>, method: <span class="s">'ax_text'</span>, tau: <span class="n">0.3</span>, riskTau: <span class="n">0.5</span>, injectionTau: <span class="n">0.5</span>, verify: <span class="k">true</span> });
 
-await hand.act('switch to the termlab tab');     <span class="c">→ Clicked radio "termlab — web terminal benchmark" (p=0.86).</span>
-await hand.type('coey.dev', 'the address bar');  <span class="c">→ Typed into textbox "Address and search bar" (p=0.97).</span>
-await hand.look('Is coey.dev open?');            <span class="c">→ p(yes)=0.99</span></pre>
+<span class="k">await</span> hand.<span class="f">act</span>(<span class="s">'switch to the termlab tab'</span>);
+<span class="c">→ Clicked radio "termlab — web terminal benchmark" (p=0.86).</span>
+<span class="k">await</span> hand.<span class="f">type</span>(<span class="s">'coey.dev'</span>, <span class="s">'the address bar'</span>);
+<span class="c">→ Typed into textbox "Address and search bar" (p=0.97).</span>
+<span class="k">await</span> hand.<span class="f">look</span>(<span class="s">'Is coey.dev open?'</span>);
+<span class="c">→ p(yes)=0.99</span></pre>
 <p class="dim">Credentials: a Cloudflare AI Gateway account, gateway name and scoped token, read the same way as <a href="https://github.com/acoyfellow/odds">odds</a>. On a Mac, the device presses controls through accessibility so the mouse does not move, and sends keystrokes only to the target app, refusing if it is not frontmost.</p>
 
 <h2>Writers</h2>
@@ -141,10 +147,10 @@ await hand.look('Is coey.dev open?');            <span class="c">→ p(yes)=0.99
 
 <h2 id="bench">Bench</h2>
 <p class="dim">Every change to <code>src/</code> has to pass a fixed bench: 30 tasks in a local test app, success read from the app's own state, and a gate that fails on stale or worse results.</p>
-<pre>bun run check       <span class="c"># typecheck, lint, tests</span>
-bun run gate        <span class="c"># fails if results are stale or worse than baseline</span>
-bun run bench:mock  <span class="c"># offline, reproduces the committed reference exactly</span>
-bun run bench       <span class="c"># real models, writes bench/runs/&lt;id&gt;/</span></pre>
+<pre class="code"><span class="f">bun</span> run check   <span class="c"># typecheck, lint, tests</span>
+<span class="f">bun</span> run gate   <span class="c"># fails if results are stale or worse than baseline</span>
+<span class="f">bun</span> run bench:mock   <span class="c"># offline, reproduces the committed reference exactly</span>
+<span class="f">bun</span> run bench   <span class="c"># real models, writes bench/runs/&lt;id&gt;/</span></pre>
 
 <h2>What this does not show</h2>
 <ul>

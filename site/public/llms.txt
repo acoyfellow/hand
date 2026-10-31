@@ -2,6 +2,8 @@
 
 Computer-use library. A device lists the controls on screen, Clef (a small Cloudflare model) picks one with a probability, the device acts, and Clef checks the result. Clef and Clairic never write text. A writer model fills fields only when the task needs new text.
 
+Install from GitHub, not npm (the npm package named do is unrelated): bun add do@github:acoyfellow/do
+
 Import paths: do/hand, do/devices/macos, do/clef, do/clairic, do/writer, do/steer, do/llm, do/perceive, do/credentials.
 
 Use on a Mac (build the helper once: swiftc -O native/ax.swift -o native/ax; grant Accessibility to your terminal):
