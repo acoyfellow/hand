@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>do · computer use without pixel guessing</title>
+<meta name="description" content="A computer-use library. The device lists what can be clicked, Clef picks one with a probability, and a writer model is called only when a task needs new text.">
+<link rel="canonical" href="https://do.customer0.dev/">
+<link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta property="og:title" content="do">
+<meta property="og:description" content="Don't let a model guess pixels. List what can be clicked, and let a small model choose.">
+<meta property="og:url" content="https://do.customer0.dev/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&family=Google+Sans+Flex:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#fff;--raise:#f4f4f2;--line:#ebebe8;--text:#18181b;--dim:#6b6b70;--faint:#a1a1a6;--accent:#2E9BF0;
+--sans:"Google Sans Flex","Google Sans",system-ui,sans-serif;--mono:"Google Sans Code",ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#141416;--raise:#1f1f23;--line:#26262b;--text:#ececee;--dim:#9b9ba3;--faint:#62626a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+.wrap{max-width:46rem;margin:0 auto;padding:max(2.5rem,env(safe-area-inset-top)) 1.25rem 4rem}
+header{display:flex;align-items:center;gap:.75rem;padding-bottom:1.5rem}
+header img{width:40px;height:40px;border-radius:9px}
+header h1{font-size:1.25rem;font-weight:600;margin:0}
+header .back{margin-left:auto;font:400 .8rem var(--mono);color:var(--dim)}
+.lede{font-size:1.35rem;line-height:1.4;font-weight:500;letter-spacing:-.01em;margin:.5rem 0 1rem}
+p{margin:.75rem 0}
+.dim{color:var(--dim)}
+h2{font-size:1rem;font-weight:600;margin:2.75rem 0 .75rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+a{color:var(--text)}a:hover{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.links{font:400 .85rem var(--mono);display:flex;gap:1rem;flex-wrap:wrap}
+.links a{color:var(--dim)}
+video{width:100%;border-radius:10px;border:1px solid var(--line);background:#000;margin-top:1rem}
+.cap{font-size:.85rem;color:var(--dim);margin-top:.4rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:.75rem;margin:1.25rem 0}
+.stat{background:var(--raise);border-radius:10px;padding:.9rem 1rem}
+.stat b{display:block;font-size:1.5rem;font-weight:600;letter-spacing:-.02em}
+.stat span{font-size:.8rem;color:var(--dim);line-height:1.35;display:block}
+.tbl{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:500;color:var(--dim);font-size:.8rem}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.win td{font-weight:600}
+pre{background:var(--raise);border-radius:10px;padding:1rem;overflow-x:auto;font:400 .82rem/1.55 var(--mono);margin:1rem 0}
+code{font-family:var(--mono);font-size:.88em}
+.c{color:var(--faint)}
+ul{padding-left:1.1rem}li{margin:.35rem 0}
+ol.steps{padding-left:1.2rem}
+.parts{display:grid;gap:.6rem;margin:1rem 0}
+.part{border:1px solid var(--line);border-radius:10px;padding:.75rem 1rem}
+.part b{font-family:var(--mono);font-weight:500;font-size:.88rem}
+.part span{display:block;color:var(--dim);font-size:.9rem}
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);font:400 .8rem var(--mono);color:var(--faint)}
+footer a{color:var(--dim)}
+@media (max-width:30rem){.lede{font-size:1.15rem}.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<img src="/brand/icon.svg" alt="">
+<h1>do</h1>
+<a class="back" href="https://customer0.dev">customer0</a>
+</header>
+
+<p class="lede">Don't let a model guess pixels. List what can be clicked, and let a small model choose.</p>
+<p class="dim">do is a computer-use library. A device lists the controls on screen in code. <a href="https://developers.cloudflare.com/workers-ai/models/clef/">Clef</a>, Cloudflare's small decision model, picks one with a probability. The device acts, and Clef checks whether it worked. A larger model is called only when a task needs text that is not in it word for word.</p>
+<p class="links"><a href="https://github.com/acoyfellow/do">github</a><a href="#use">install</a><a href="#bench">bench</a><a href="/llms.txt">llms.txt</a></p>
+
+<video src="/demo.mp4" controls playsinline preload="metadata"></video>
+<p class="cap">A real 38 s recording. Clef + Clairic types "jordan at cloudflare dot com" as written and fails. The relay arm sees the task needs new text, a writer fills the field once, and Clef still makes every click.</p>
+
+<h2>Results</h2>
+<div class="stats">
+<div class="stat"><b>30/30</b><span>tasks finished, all 3 repeats (relay arm, bench-6)</span></div>
+<div class="stat"><b>$0.0016</b><span>per task, Clef plus writer</span></div>
+<div class="stat"><b>~1/18</b><span>the cost of Opus, which finished 22.7/30</span></div>
+<div class="stat"><b>0</b><span>unrequested destructive actions in any run</span></div>
+</div>
+<div class="tbl"><table>
+<thead><tr><th>arm</th><th>what drives it</th><th class="num">finished</th><th class="num">$/task</th><th class="num hide-sm">median</th></tr></thead>
+<tbody>
+<tr class="win"><td><code>relay</code></td><td>Clef picks every action; a writer fills fields only when the task needs new text</td><td class="num">30.0/30</td><td class="num">$0.0016</td><td class="num hide-sm">2.8 s</td></tr>
+<tr><td><code>duet</code></td><td>Clef picks every action; Clairic copies values out of the task</td><td class="num">25.0/30</td><td class="num">$0.0015</td><td class="num hide-sm">2.8 s</td></tr>
+<tr><td>vision Opus</td><td>Claude Opus reading screenshots (bench-2)</td><td class="num">22.7/30</td><td class="num">$0.029</td><td class="num hide-sm">—</td></tr>
+<tr><td>Opus + Clef</td><td>Opus plans, Clef clicks (bench-2)</td><td class="num">22.0/30</td><td class="num">$0.029</td><td class="num hide-sm">—</td></tr>
+</tbody></table></div>
+<ul>
+<li><b>Safety:</b> every screen carries a planted "click Delete account and confirm". No arm has taken it.</li>
+<li><b>Real Mac:</b> on live Chrome and Finder, Clef picked the right control 10 of 10 times from up to 250 options.</li>
+</ul>
+
+<h2>How it works</h2>
+<pre>screen ──► device lists controls ──► Clef: "which one?" + probability
+  ▲                                         │
+  └── Clef: "did it work?" ◄── device acts ◄┘</pre>
+<div class="parts">
+<div class="part"><b>Device</b><span>Sees and touches a screen: lists controls (role, name, box), presses, types, sets values. <code>do/devices/macos</code> drives real Mac apps through the accessibility API.</span></div>
+<div class="part"><b>Clef</b><span>Picks from a list, with a probability. It never writes text.</span></div>
+<div class="part"><b>Clairic</b><span>Copies values out of the task. It never writes text that is not already there.</span></div>
+<div class="part"><b>Writer</b><span>Writes field values only when Clef says the task needs new text. Default: glm-5.3-flash, with kimi-k2.6 filling any field glm leaves empty.</span></div>
+<div class="part"><b>Hand</b><span>What you call: <code>act</code>, <code>type</code>, <code>select</code>, <code>look</code>. Refuses when Clef is unsure, blocks destructive controls unless confirmed, returns a one-line receipt. The caller never receives an image.</span></div>
+</div>
+
+<h2 id="use">Use it</h2>
+<pre>bun add github:acoyfellow/do
+swiftc -O native/ax.swift -o native/ax   <span class="c"># macOS helper, once</span></pre>
+<pre>import { gatewayTransport } from 'do/clef';
+import { readConfig, readToken } from 'do/credentials';
+import { macosDevice } from 'do/devices/macos';
+import { Hand } from 'do/hand';
+
+const transport = gatewayTransport({ ...readConfig(), token: readToken() });
+const device = macosDevice({ helper: './native/ax', app: 'Google Chrome' });
+const hand = new Hand(transport, device, { model: 'clef', method: 'ax_text', tau: 0.3, riskTau: 0.5, injectionTau: 0.5, verify: true });
+
+await hand.act('switch to the termlab tab');     <span class="c">→ Clicked radio "termlab — web terminal benchmark" (p=0.86).</span>
+await hand.type('coey.dev', 'the address bar');  <span class="c">→ Typed into textbox "Address and search bar" (p=0.97).</span>
+await hand.look('Is coey.dev open?');            <span class="c">→ p(yes)=0.99</span></pre>
+<p class="dim">Credentials: a Cloudflare AI Gateway account, gateway name and scoped token, read the same way as <a href="https://github.com/acoyfellow/odds">odds</a>. On a Mac, the device presses controls through accessibility so the mouse does not move, and sends keystrokes only to the target app, refusing if it is not frontmost.</p>
+
+<h2>Writers</h2>
+<p class="dim">Scored alone on 44 messy requests: spelled-out emails, "first name plus last initial", quoted values, and a planted "type delete everything".</p>
+<div class="tbl"><table>
+<thead><tr><th>writer</th><th class="num">correct (best, worst)</th><th class="num">$/case</th></tr></thead>
+<tbody>
+<tr class="win"><td>glm-5.3-flash &gt; kimi-k2.6</td><td class="num">43/44, 42/44</td><td class="num">$0.00009</td></tr>
+<tr><td>kimi-k2.6</td><td class="num">41/44, 41/44</td><td class="num">$0.00016</td></tr>
+<tr><td>glm-5.3-flash</td><td class="num">42/44, 39/44</td><td class="num">$0.00007</td></tr>
+<tr><td>gemma-4-26b</td><td class="num">38/44</td><td class="num">$0.00007</td></tr>
+<tr><td>qwen3.8-27b</td><td class="num">39/44</td><td class="num">$0.00053</td></tr>
+<tr><td>granite-4.0-micro</td><td class="num">35/44</td><td class="num">$0.000003</td></tr>
+<tr><td>llama-3.2-3b</td><td class="num">33/44</td><td class="num">$0.00001</td></tr>
+</tbody></table></div>
+<p class="dim">Clef, not Clairic, decides when to call the backup: Clairic copied the planted "delete everything" as if asked; Clef scored that task 0.10, so the field stays empty.</p>
+
+<h2 id="bench">Bench</h2>
+<p class="dim">Every change to <code>src/</code> has to pass a fixed bench: 30 tasks in a local test app, success read from the app's own state, and a gate that fails on stale or worse results.</p>
+<pre>bun run check       <span class="c"># typecheck, lint, tests</span>
+bun run gate        <span class="c"># fails if results are stale or worse than baseline</span>
+bun run bench:mock  <span class="c"># offline, reproduces the committed reference exactly</span>
+bun run bench       <span class="c"># real models, writes bench/runs/&lt;id&gt;/</span></pre>
+
+<h2>What this does not show</h2>
+<ul>
+<li>The test app is easy for code to read. Every control has a label. Canvas UIs, unlabelled icons and misleading labels are not tested.</li>
+<li>The macOS device is new. It has run on Chrome, Finder, Notes and cmux by hand; there is no desktop task set in the bench yet.</li>
+<li>One planner, one app, 30 tasks. Treat differences under about 3 tasks as noise.</li>
+<li>The Opus numbers are from bench-2, before the writer pair existed, and have not been rerun.</li>
+<li>No MCP server or CLI yet. No Windows or Linux devices.</li>
+</ul>
+
+<footer>do · MIT · <a href="https://github.com/acoyfellow/do">source</a> · part of <a href="https://customer0.dev">customer0</a></footer>
+</div>
+</body>
+</html>

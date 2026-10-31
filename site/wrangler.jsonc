@@ -1,0 +1,7 @@
+{
+	"name": "do-site",
+	"compatibility_date": "2026-10-01",
+	"assets": { "directory": "./public", "html_handling": "auto-trailing-slash", "not_found_handling": "404-page" },
+	"workers_dev": false,
+	"routes": [{ "pattern": "do.customer0.dev", "custom_domain": true }]
+}
