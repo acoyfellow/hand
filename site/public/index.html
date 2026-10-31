@@ -13,8 +13,8 @@
 <meta property="og:title" content="do">
 <meta property="og:description" content="Don't let a model guess pixels. List what can be clicked, and let a small model choose.">
 <meta property="og:url" content="https://do.customer0.dev/">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&family=Google+Sans+Flex:wght@400;500;600&display=swap">
+<link rel="preload" href="/fonts/google-sans-flex.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 :root{--bg:#fff;--raise:#f4f4f2;--line:#ebebe8;--text:#18181b;--dim:#6b6b70;--faint:#a1a1a6;--accent:#2E9BF0;
 --sans:"Google Sans Flex","Google Sans",system-ui,sans-serif;--mono:"Google Sans Code",ui-monospace,monospace}
@@ -72,7 +72,8 @@ footer a{color:var(--dim)}
 
 <p class="lede">Don't let a model guess pixels. List what can be clicked, and let a small model choose.</p>
 <p class="dim">do is a computer-use library. A device lists the controls on screen in code. <a href="https://developers.cloudflare.com/workers-ai/models/clef/">Clef</a>, Cloudflare's small decision model, picks one with a probability. The device acts, and Clef checks whether it worked. A larger model is called only when a task needs text that is not in it word for word.</p>
-<p class="links"><a href="https://github.com/acoyfellow/do">github</a><a href="#use">install</a><a href="#bench">bench</a><a href="/llms.txt">llms.txt</a></p>
+<p class="dim">The only real device today is macOS, through the accessibility API. The benchmark drives a test app in a browser.</p>
+<p class="links"><a href="https://github.com/acoyfellow/do">github</a><a href="#use">install</a><a href="#bench">bench</a></p>
 
 <video src="/demo.mp4" controls playsinline preload="metadata"></video>
 <p class="cap">A real 38 s recording. Clef + Clairic types "jordan at cloudflare dot com" as written and fails. The relay arm sees the task needs new text, a writer fills the field once, and Clef still makes every click.</p>
@@ -128,7 +129,7 @@ footer a{color:var(--dim)}
 <span class="c">→ Typed into textbox "Address and search bar" (p=0.97).</span>
 <span class="k">await</span> hand.<span class="f">look</span>(<span class="s">'Is coey.dev open?'</span>);
 <span class="c">→ p(yes)=0.99</span></pre>
-<p class="dim">Credentials: a Cloudflare AI Gateway account, gateway name and scoped token, read the same way as <a href="https://github.com/acoyfellow/odds">odds</a>. On a Mac, the device presses controls through accessibility so the mouse does not move, and sends keystrokes only to the target app, refusing if it is not frontmost.</p>
+<p class="dim">Credentials: a Cloudflare AI Gateway account, gateway name and scoped token, read the same way as <a href="https://github.com/acoyfellow/odds#quick-start">odds</a> (see its quick start). On a Mac, the device presses controls through accessibility so the mouse does not move, and sends keystrokes only to the target app, refusing if it is not frontmost.</p>
 
 <h2>Writers</h2>
 <p class="dim">Scored alone on 44 messy requests: spelled-out emails, "first name plus last initial", quoted values, and a planted "type delete everything".</p>
