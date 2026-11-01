@@ -150,16 +150,20 @@ func typeText(_ text: String, to app: NSRunningApplication) -> Outcome {
     }
     let source = CGEventSource(stateID: .hidSystemState)
     let pid = app.processIdentifier
+    let toSession = ProcessInfo.processInfo.environment["DO_KEYS_TO_PID"] == nil
     for scalar in text.utf16 {
+        guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else {
+            return Outcome(ok: false, detail: "refused mid-typing: \(app.localizedName ?? "?") stopped being the frontmost app")
+        }
         var unit = scalar
         for down in [true, false] {
             let event = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: down)
             event?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &unit)
-            event?.postToPid(pid)
+            if toSession { event?.post(tap: .cgSessionEventTap) } else { event?.postToPid(pid) }
             usleep(8000)
         }
     }
-    return Outcome(ok: true, detail: "typed \(text.count) characters to pid \(pid)")
+    return Outcome(ok: true, detail: "typed \(text.count) characters to \(toSession ? "the session, frontmost pid" : "pid") \(pid)")
 }
 
 func focus(_ element: AXUIElement) -> Outcome {
@@ -210,6 +214,10 @@ case "snapshot":
 case "type":
     guard args.count >= 3, let app = application(named: args[1]) else { fail("usage: ax type <app> <text>", code: 64) }
     emit(typeText(args[2], to: app))
+case "value":
+    guard args.count >= 3, let app = application(named: args[1]) else { fail("usage: ax value <app> <path>", code: 64) }
+    guard let element = resolve(app, path: parsePath(args[2])) else { fail("element not found at \(args[2])", code: 4) }
+    emit(Outcome(ok: true, detail: (attribute(element, kAXValueAttribute) as String?) ?? ""))
 case "focus":
     guard args.count >= 3, let app = application(named: args[1]) else { fail("usage: ax focus <app> <path>", code: 64) }
     guard let element = resolve(app, path: parsePath(args[2])) else { fail("element not found at \(args[2])", code: 4) }

@@ -149,9 +149,24 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       lastActions.push(`focus ${target.role} "${target.name}": ${focused.detail}`);
       if (!focused.ok) throw new Error(`could not focus ${target.role} "${target.name}": ${focused.detail}`);
       await new Promise((resolve) => setTimeout(resolve, 150));
+      const readBack = async () => (await helper<AxOutcome>('value', appArg, target.path).catch(() => ({ ok: false, detail: '' }))).detail;
+      const set = await helper<AxOutcome>('set', appArg, target.path, text).catch(() => ({ ok: false, detail: 'set failed' }));
+      lastActions.push(`set value: ${set.detail}`);
+      if (set.ok && (await readBack()).includes(text)) {
+        lastActions.push('read back: field contains the text');
+        return;
+      }
       const typed = await helper<AxOutcome>('type', appArg, text);
       lastActions.push(typed.detail);
       if (!typed.ok) throw new Error(`could not type: ${typed.detail}`);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      await helper<AxOutcome>('key', appArg, 'escape').catch(() => undefined);
+      await new Promise((resolve) => setTimeout(resolve, 150));
+      if (!(await readBack()).includes(text)) {
+        lastActions.push('read back: text missing');
+        throw new Error(`typed into ${target.role} "${target.name}" but the field does not contain the text afterwards (keystrokes did not land)`);
+      }
+      lastActions.push('read back: field contains the typed text');
     },
     setValue: async (c, value) => {
       const target = c as MacosCandidate;
