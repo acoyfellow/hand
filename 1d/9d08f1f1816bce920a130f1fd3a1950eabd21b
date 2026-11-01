@@ -1,0 +1,25 @@
+README.md
+  s_655b8bbf0a58d9::t_7017e1b93842ef 98-103,106-125,203
+llms.txt
+  s_655b8bbf0a58d9::t_0e52b7aa08d428 24-28,48
+site/public/index.html
+  s_655b8bbf0a58d9::t_a31852b30ec7f5 76,132-136,166
+site/public/llms.txt
+  s_655b8bbf0a58d9::t_280d4cb0861a15 24-28,48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "1d9d08f1f1816bce920a130f1fd3a1950eabd21b",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
