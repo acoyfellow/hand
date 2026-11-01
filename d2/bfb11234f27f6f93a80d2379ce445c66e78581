@@ -1,0 +1,21 @@
+native/ax.swift
+  s_7941ce0d83409c::t_aaab48ce5e5e36 153,155-157,162,166,217-220
+src/devices/macos.ts
+  s_7941ce0d83409c::t_a7f7103abe23f4 152-158,162-169
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d2bfb11234f27f6f93a80d2379ce445c66e78581",
+  "prompts": {},
+  "sessions": {
+    "s_7941ce0d83409c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a18c22-7e75-7140-8651-cc23b1a5ae05",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
