@@ -198,6 +198,10 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
         lastActions.push('read back: field contains the text');
         return;
       }
+      if (set.ok)
+        throw new Error(
+          `set ${target.role} "${target.name}" and the helper read it back, but the field changed again before do could confirm it (another agent or the app overwrote it)`,
+        );
       if (!opts.headed)
         throw new Error(
           `could not set ${target.role} "${target.name}" through accessibility (${set.detail}), and keystrokes are off unless the device is headed`,
