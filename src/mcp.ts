@@ -24,7 +24,7 @@ const app = { type: 'string', description: 'Exact app name as shown by the apps 
 const agent = { type: 'string', description: 'Optional id of the agent acting, so parallel agents get their own cursor and take turns.' };
 
 export const TOOLS: readonly McpTool[] = [
-  { name: 'apps', description: 'List the Mac apps that are running and can be controlled.', inputSchema: { type: 'object', properties: {}, required: [] } },
+  { name: 'apps', description: 'List the Mac apps that are running and can be controlled. The first line names the app in front.', inputSchema: { type: 'object', properties: {}, required: [] } },
   {
     name: 'activate',
     description: 'Bring an app to the front. Typing only works in the frontmost app.',
@@ -89,8 +89,8 @@ const str = (args: Record<string, unknown>, key: string): string => {
 
 export async function callTool(session: Session, name: string, args: Record<string, unknown>) {
   if (name === 'apps') {
-    const { stdout } = await run(session.helper, ['apps']);
-    return text((JSON.parse(stdout) as string[]).join('\n'));
+    const [apps, front] = await Promise.all([run(session.helper, ['apps']), run(session.helper, ['front'])]);
+    return text([`In front: ${JSON.parse(front.stdout) as string}`, ...(JSON.parse(apps.stdout) as string[])].join('\n'));
   }
   if (name === 'activate') {
     const { stdout } = await run(session.helper, ['activate', str(args, 'app')]);

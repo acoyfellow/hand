@@ -333,6 +333,8 @@ func app(_ index: Int, usage: String) -> NSRunningApplication {
 switch command {
 case "apps":
     emit(NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }.compactMap(\.localizedName))
+case "front":
+    emit(NSWorkspace.shared.frontmostApplication?.localizedName ?? "")
 case "snapshot":
     guard let found = application(named: args.dropFirst().first) else { fail("app not found", code: 3) }
     emit(snapshot(found, onlyFront: !args.contains("--all-windows")))
