@@ -113,6 +113,14 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
   };
 }
 
+export const describeError = (error: unknown): string => {
+  if (!(error instanceof Error)) return String(error);
+  const extra = error as Error & { stderr?: unknown; cmd?: unknown; status?: unknown; body?: unknown };
+  if (typeof extra.status === 'number') return `${error.name} ${extra.status}: ${String(extra.body ?? '').slice(0, 400)}`;
+  const stderr = typeof extra.stderr === 'string' ? extra.stderr.trim() : '';
+  return [error.message || error.name, stderr, typeof extra.cmd === 'string' ? `(${extra.cmd})` : ''].filter(Boolean).join(' ').slice(0, 600);
+};
+
 type Rpc = { jsonrpc: '2.0'; id?: number | string; method: string; params?: Record<string, unknown> };
 
 export async function handle(session: () => Session, message: Rpc): Promise<unknown | undefined> {
@@ -127,7 +135,7 @@ export async function handle(session: () => Session, message: Rpc): Promise<unkn
     try {
       return reply(await callTool(session(), name, args));
     } catch (error) {
-      return reply(text(`do error: ${error instanceof Error ? error.message : String(error)}`, true));
+      return reply(text(`do error: ${describeError(error)}`, true));
     }
   }
   if (message.method === 'ping') return reply({});

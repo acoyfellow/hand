@@ -62,7 +62,8 @@ func children(_ element: AXUIElement) -> [AXUIElement] {
 
 func application(named name: String?) -> NSRunningApplication? {
     guard let name, name != "-" else { return NSWorkspace.shared.frontmostApplication }
-    return NSWorkspace.shared.runningApplications.first { $0.localizedName == name }
+    let running = NSWorkspace.shared.runningApplications
+    return running.first { $0.localizedName == name } ?? running.first { $0.localizedName?.caseInsensitiveCompare(name) == .orderedSame }
 }
 
 func roots(of app: NSRunningApplication) -> [AXUIElement] {
