@@ -11,3 +11,4 @@ bench/runs/writer-dev*
 .demo
 native/ax
 native/ax-dump
+native/vm
