@@ -9,7 +9,7 @@ const fakeHand = {
   look: async () => 'p(yes)=0.90',
 } as unknown as Hand;
 
-const session = (): Session => ({ helper: '/bin/false', hand: () => fakeHand });
+const session = (): Session => ({ helper: '/bin/false', hand: () => fakeHand, receipts: () => [] });
 const call = (name: string, args: Record<string, unknown>) =>
   handle(session, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
 

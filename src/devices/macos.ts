@@ -17,14 +17,31 @@ interface AxNode {
   w: number;
   h: number;
   path: number[];
+  ref: string;
 }
 interface AxSnapshot {
   app: string;
   candidates: AxNode[];
 }
-interface AxOutcome {
+export type Delivery = 'delivered_verified' | 'delivered_unverified' | 'not_delivered';
+export type Mechanism = 'semantic_api' | 'physical_synthetic' | 'none';
+
+export interface AxOutcome {
   ok: boolean;
   detail: string;
+  code?: string;
+  delivery?: Delivery;
+  mechanism?: Mechanism;
+  retrySafe?: boolean;
+  agent?: string;
+  leaseWaitMs?: number;
+  after?: string;
+}
+
+export interface Receipt {
+  readonly action: string;
+  readonly target?: { role: string; name: string; x: number; y: number; w: number; h: number };
+  readonly outcome: AxOutcome;
 }
 
 const ROLE_NAMES: Record<string, string> = {
@@ -51,10 +68,14 @@ export interface MacosDeviceOptions {
   readonly app?: string;
   readonly display?: { width: number; height: number };
   readonly allowMouse?: boolean;
+  readonly headed?: boolean;
+  readonly agent?: string;
+  readonly onAction?: (event: { phase: 'before' | 'after'; receipt: Receipt }) => void;
 }
 
 export interface MacosCandidate extends Candidate {
   readonly path: string;
+  readonly ref: string;
 }
 
 export function toCandidate(node: AxNode, index: number): MacosCandidate {
@@ -68,6 +89,7 @@ export function toCandidate(node: AxNode, index: number): MacosCandidate {
     h: node.h,
     backendNodeId: index,
     path: node.path.join('.'),
+    ref: node.ref,
   };
 }
 
@@ -88,6 +110,7 @@ export function smallestContaining(cands: MacosCandidate[], p: { x: number; y: n
 
 export interface MacosDevice extends Device {
   readonly lastActions: string[];
+  readonly receipts: Receipt[];
   submit(c: Candidate): Promise<boolean>;
 }
 
@@ -95,7 +118,28 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
   const appArg = opts.app ?? '-';
   let last: MacosCandidate[] = [];
   const lastActions: string[] = [];
-  const helper = async <T>(...args: string[]): Promise<T> => JSON.parse((await run(opts.helper, args, { maxBuffer: 64 * 1024 * 1024 })).stdout) as T;
+  const policy = [...(opts.headed || opts.allowMouse ? ['--headed'] : []), ...(opts.agent ? ['--agent', opts.agent] : [])];
+  const helper = async <T>(...args: string[]): Promise<T> => {
+    try {
+      return JSON.parse((await run(opts.helper, [...args, ...policy], { maxBuffer: 64 * 1024 * 1024 })).stdout) as T;
+    } catch (error) {
+      const stdout = (error as { stdout?: string }).stdout;
+      if (stdout?.trim().startsWith('{')) return JSON.parse(stdout) as T;
+      throw error;
+    }
+  };
+  const receipts: Receipt[] = [];
+  const boxOf = (c: MacosCandidate) => ({ role: c.role, name: c.name, x: c.x, y: c.y, w: c.w, h: c.h });
+  const onTarget = async (action: string, c: MacosCandidate, ...rest: string[]): Promise<AxOutcome> => {
+    opts.onAction?.({ phase: 'before', receipt: { action, target: boxOf(c), outcome: { ok: true, detail: 'pending' } } });
+    const outcome = await helper<AxOutcome>(action, appArg, c.path, ...rest, '--ref', c.ref).catch(
+      (error: Error): AxOutcome => ({ ok: false, detail: error.message, code: 'HELPER_FAILED', delivery: 'not_delivered' }),
+    );
+    const receipt = { action, target: boxOf(c), outcome };
+    receipts.push(receipt);
+    opts.onAction?.({ phase: 'after', receipt });
+    return outcome;
+  };
 
   const capture = async (clip?: Box): Promise<string> => {
     const dir = mkdtempSync(join(tmpdir(), 'do-shot-'));
@@ -111,13 +155,14 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
   };
 
   const press = async (c: MacosCandidate): Promise<boolean> => {
-    const outcome = await helper<AxOutcome>('press', appArg, c.path).catch(() => ({ ok: false, detail: 'press failed' }));
+    const outcome = await onTarget('press', c);
     lastActions.push(`press ${c.role} "${c.name}": ${outcome.detail}`);
     return outcome.ok;
   };
 
   return {
     lastActions,
+    receipts,
     viewport: () => opts.display ?? { width: 1728, height: 1117 },
     screenshot: (clip) => capture(clip),
     marked: () => capture(),
@@ -145,17 +190,21 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     typeInto: async (c, text) => {
       const target = c as MacosCandidate;
       if (appArg === '-') throw new Error('typing needs a named app so keystrokes go only to it');
-      const focused = await helper<AxOutcome>('focus', appArg, target.path);
-      lastActions.push(`focus ${target.role} "${target.name}": ${focused.detail}`);
-      if (!focused.ok) throw new Error(`could not focus ${target.role} "${target.name}": ${focused.detail}`);
-      await new Promise((resolve) => setTimeout(resolve, 150));
       const readBack = async () => (await helper<AxOutcome>('value', appArg, target.path).catch(() => ({ ok: false, detail: '' }))).detail;
-      const set = await helper<AxOutcome>('set', appArg, target.path, text).catch(() => ({ ok: false, detail: 'set failed' }));
+      const set = await onTarget('set', target, text);
+      if (set.code === 'STALE_REF') throw new Error(`${target.role} "${target.name}" changed since the snapshot (STALE_REF); take a new outline`);
       lastActions.push(`set value: ${set.detail}`);
       if (set.ok && (await readBack()).includes(text)) {
         lastActions.push('read back: field contains the text');
         return;
       }
+      if (!opts.headed)
+        throw new Error(
+          `could not set ${target.role} "${target.name}" through accessibility (${set.detail}), and keystrokes are off unless the device is headed`,
+        );
+      const focused = await onTarget('focus', target);
+      lastActions.push(`focus ${target.role} "${target.name}": ${focused.detail}`);
+      await new Promise((resolve) => setTimeout(resolve, 150));
       const typed = await helper<AxOutcome>('type', appArg, text);
       lastActions.push(typed.detail);
       if (!typed.ok) throw new Error(`could not type: ${typed.detail}`);
@@ -170,7 +219,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     },
     setValue: async (c, value) => {
       const target = c as MacosCandidate;
-      const outcome = await helper<AxOutcome>('set', appArg, target.path, value);
+      const outcome = await onTarget('set', target, value);
       lastActions.push(`set ${target.role} "${target.name}": ${outcome.detail}`);
       return outcome.ok;
     },

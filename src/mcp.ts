@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
 import { readConfig, readToken } from './credentials.ts';
-import { macosDevice } from './devices/macos.ts';
+import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
 import { Hand, type HandOptions } from './hand.ts';
 
 const run = promisify(execFile);
@@ -21,6 +21,7 @@ export interface McpTool {
 }
 
 const app = { type: 'string', description: 'Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".' };
+const agent = { type: 'string', description: 'Optional id of the agent acting, so parallel agents get their own cursor and take turns.' };
 
 export const TOOLS: readonly McpTool[] = [
   { name: 'apps', description: 'List the Mac apps that are running and can be controlled.', inputSchema: { type: 'object', properties: {}, required: [] } },
@@ -40,7 +41,7 @@ export const TOOLS: readonly McpTool[] = [
       'Click one control in the app, described in plain words (for example "the New Document button"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.',
     inputSchema: {
       type: 'object',
-      properties: { app, intent: { type: 'string' }, confirm: { type: 'boolean' } },
+      properties: { app, agent, intent: { type: 'string' }, confirm: { type: 'boolean' } },
       required: ['app', 'intent'],
     },
   },
@@ -49,7 +50,7 @@ export const TOOLS: readonly McpTool[] = [
     description: 'Type text into a text field of the app, described in plain words (for example "the document body"). The app must be frontmost.',
     inputSchema: {
       type: 'object',
-      properties: { app, text: { type: 'string' }, into: { type: 'string' } },
+      properties: { app, agent, text: { type: 'string' }, into: { type: 'string' } },
       required: ['app', 'text', 'into'],
     },
   },
@@ -60,9 +61,22 @@ export const TOOLS: readonly McpTool[] = [
   },
 ];
 
+export interface ActionEvent {
+  readonly phase: 'before' | 'after';
+  readonly agent: string;
+  readonly app: string;
+  readonly action: string;
+  readonly target?: { role: string; name: string; x: number; y: number; w: number; h: number };
+  readonly ok: boolean;
+  readonly code?: string;
+  readonly delivery?: string;
+  readonly mechanism?: string;
+}
+
 export interface Session {
-  hand(app: string): Hand;
+  hand(app: string, agent?: string): Hand;
   helper: string;
+  receipts(app: string, agent?: string): readonly Receipt[];
 }
 
 const text = (body: string, isError = false) => ({ content: [{ type: 'text', text: body }], isError });
@@ -84,10 +98,22 @@ export async function callTool(session: Session, name: string, args: Record<stri
     await new Promise((resolve) => setTimeout(resolve, 400));
     return text(outcome.detail, !outcome.ok);
   }
-  const hand = session.hand(str(args, 'app'));
+  const appName = str(args, 'app');
+  const agentId = typeof args.agent === 'string' && args.agent !== '' ? args.agent : undefined;
+  const hand = session.hand(appName, agentId);
+  const before = session.receipts(appName, agentId).length;
+  const withReceipts = (body: string) => {
+    const fresh = session.receipts(appName, agentId).slice(before);
+    if (fresh.length === 0) return text(body);
+    const lines = fresh.map(
+      (r) =>
+        `${r.action} ${r.target ? `${r.target.role} "${r.target.name}"` : ''}: ${r.outcome.delivery ?? '?'} via ${r.outcome.mechanism ?? '?'}${r.outcome.code ? ` (${r.outcome.code})` : ''}`,
+    );
+    return text(`${body}\nReceipts:\n${lines.join('\n')}`);
+  };
   if (name === 'outline') return text(await hand.outline());
-  if (name === 'act') return text(await hand.act(str(args, 'intent'), args.confirm === true));
-  if (name === 'type') return text(await hand.type(str(args, 'text'), str(args, 'into')));
+  if (name === 'act') return withReceipts(await hand.act(str(args, 'intent'), args.confirm === true));
+  if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), str(args, 'into')));
   if (name === 'look') return text(await hand.look(str(args, 'question')));
   return text(`unknown tool ${name}`, true);
 }
@@ -99,17 +125,38 @@ export function defaultHelper(): string {
   return candidate;
 }
 
-export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND): Session {
-  const hands = new Map<string, Hand>();
+export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND, notify: (event: ActionEvent) => void = () => {}): Session {
+  const hands = new Map<string, { hand: Hand; device: MacosDevice }>();
+  const entry = (name: string, agentId = 'agent') => {
+    const key = `${agentId}\u0000${name}`;
+    const existing = hands.get(key);
+    if (existing) return existing;
+    const device = macosDevice({
+      helper,
+      app: name,
+      agent: agentId,
+      headed: process.env.DO_HEADED === '1',
+      onAction: ({ phase, receipt }) =>
+        notify({
+          phase,
+          agent: agentId,
+          app: name,
+          action: receipt.action,
+          target: receipt.target,
+          ok: receipt.outcome.ok,
+          code: receipt.outcome.code,
+          delivery: receipt.outcome.delivery,
+          mechanism: receipt.outcome.mechanism,
+        }),
+    });
+    const created = { hand: new Hand(transport, device, opts), device };
+    hands.set(key, created);
+    return created;
+  };
   return {
     helper,
-    hand: (name) => {
-      const existing = hands.get(name);
-      if (existing) return existing;
-      const created = new Hand(transport, macosDevice({ helper, app: name }), opts);
-      hands.set(name, created);
-      return created;
-    },
+    hand: (name, agentId) => entry(name, agentId).hand,
+    receipts: (name, agentId) => entry(name, agentId).device.receipts,
   };
 }
 
@@ -161,7 +208,11 @@ export function serve(session: () => Session): void {
 if (import.meta.main) {
   let cached: Session | undefined;
   serve(() => {
-    cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper());
+    cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper(), DEFAULT_HAND, (event) =>
+      process.stdout.write(
+        `${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/message', params: { level: 'info', logger: 'do.action', data: event } })}\n`,
+      ),
+    );
     return cached;
   });
 }
