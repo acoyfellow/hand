@@ -1,0 +1,23 @@
+.gitignore
+  s_7941ce0d83409c::t_fa87c6bf3460f4 14
+native/vm.entitlements
+  s_7941ce0d83409c::t_9f153758fa9bda 1-3
+native/vm.swift
+  s_7941ce0d83409c::t_10a47ebbb9a6b1 1-205
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "74744c24148ed05a12db9c600da6f7478839ca3e",
+  "prompts": {},
+  "sessions": {
+    "s_7941ce0d83409c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a18c22-7e75-7140-8651-cc23b1a5ae05",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
