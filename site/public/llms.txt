@@ -21,7 +21,11 @@ await hand.type('coey.dev', 'the address bar'); // focus, select all, real keyst
 await hand.select('Japanese', 'language');
 await hand.look('is coey.dev open?');           // p(yes)
 ```
-Receipts start with "Clicked", "Typed", "UNSURE" (did not act) or "BLOCKED" (looks destructive; pass confirm=true only if the user asked).
+macOS device rules: headless by default, so press and type go through accessibility, and keystroke or mouse fallbacks are refused with POLICY_DENIED unless macosDevice({ headed: true }). type sets the value and reads the field back. STALE_REF means the control changed since the snapshot: call outline() again. Pass agent: 'id' so parallel agents take turns on a shared lock (LEASE_TIMEOUT after 10 s). device.receipts lists every action with delivery (delivered_verified | delivered_unverified | not_delivered), mechanism (semantic_api | physical_synthetic | none), retrySafe and code; onAction gives before/after events.
+
+MCP server (macOS, stdio): bun src/mcp.ts (DO_HEADED=1 to allow keystrokes and mouse). Tools: apps, activate, outline, act {app, intent, confirm?, agent?}, type {app, text, into, agent?}, look {app, question}. Actions are also sent as notifications/message with logger do.action.
+
+Hand receipts start with "Clicked", "Typed", "UNSURE" (did not act) or "BLOCKED" (looks destructive; pass confirm=true only if the user asked).
 
 Writer (swappable): writerFromSpec(transport, 'glm-5.3-flash>kimi-k2.6')({ task, fields: [{ key, label, role }] }) returns { values, costUsd, ms, fellBack }. glm writes first; when it leaves a field empty and Clef says the task needs new text, kimi fills only that field. 42-43/44 on the writer eval at $0.00009/case.
 
@@ -41,4 +45,4 @@ interface Device {
 }
 ```
 
-Bench: bench/, bun run gate (fails if results are stale or worse than bench/baseline.json). Not included: MCP server, CLI, desktop tasks in the bench, Windows/Linux devices.
+Bench: bench/, bun run gate (fails if results are stale or worse than bench/baseline.json). Not included: CLI, desktop tasks in the bench, Windows/Linux devices.

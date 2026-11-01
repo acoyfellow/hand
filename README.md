@@ -95,9 +95,33 @@ macOS asks for Accessibility permission for your terminal the first time.
 
 How the device acts:
 
-- **Press:** it presses the control Clef picked through accessibility, so the mouse does not move. A mouse click is a fallback, off unless `allowMouse: true`.
-- **Type:** it focuses the field, selects its contents, and sends real keystrokes to that app's process only. It refuses if the app is not frontmost, so keystrokes cannot land in another window.
+- **Headless by default.** Press and type go through the accessibility API, so the mouse does not move and nothing is typed into the wrong window. Anything that needs physical input (keystrokes or a mouse click) is refused with `POLICY_DENIED` unless the device is created with `headed: true` (or `allowMouse: true` for the mouse).
+- **Press:** it presses the control Clef picked through accessibility.
+- **Type:** it sets the field's value through accessibility, then reads the field back and fails if the text is missing. If another writer changes the field before the read-back, it says so instead of retrying. Only a headed device falls back to keystrokes, sent to that app's process only and stopped if the app loses focus.
+- **Snapshot refs:** every control in a snapshot carries a ref. If the control at that ref has gone or changed role, name or box, the action is refused with `STALE_REF`; take a new `outline()`.
+- **One agent at a time:** actions take a lock shared across processes, keyed by `agent`. A second agent waits its turn, and gives up with `LEASE_TIMEOUT` after 10 s.
+- **Receipts:** `device.receipts` records every action: `delivery` (`delivered_verified`, `delivered_unverified`, `not_delivered`), `mechanism` (`semantic_api`, `physical_synthetic`, `none`), `retrySafe`, any error `code`, and the control's state after. Pass `onAction` to get a `before` and `after` event for each one.
 - **Snapshot:** only the front window and the menu bar, so one window's controls are not mixed with another's.
+
+## MCP server
+
+`src/mcp.ts` exposes the Mac device to any MCP client over stdio (JSON-RPC, no SDK). Build `native/ax` first.
+
+```bash
+bun src/mcp.ts               # headless
+DO_HEADED=1 bun src/mcp.ts   # allow keystroke and mouse fallbacks
+```
+
+| Tool | What it does |
+|---|---|
+| `apps` | List running Mac apps that can be controlled |
+| `activate` | Bring an app to the front |
+| `outline` | List the controls in the app's front window and menu bar |
+| `act` | Click a control described in plain words; `confirm: true` only when the user asked for a destructive action |
+| `type` | Type text into a field described in plain words |
+| `look` | Ask a yes/no question about the screen; returns p(yes) |
+
+`act` and `type` take an optional `agent` id, so parallel agents keep separate state and take turns. Results end with the action receipts, and each action is also sent as a `notifications/message` with logger `do.action`. `DO_AX_HELPER` overrides the helper path. `bun native/mcp-smoke.ts` runs a live check.
 
 `bun native/demo-desktop.ts` runs a checked end-to-end flow on Chrome: switch tab, type an address, submit, then confirm the real page URL. It stops at the first step that fails. Add `--record` to capture the screen.
 
@@ -176,7 +200,7 @@ bun run bench   # writes bench/runs/<id>/
 
 ## Not included
 
-- No MCP server or CLI yet.
+- No CLI yet. The MCP server covers macOS only.
 - No desktop tasks in the bench yet.
 - Windows and Linux devices.
 

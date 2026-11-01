@@ -73,7 +73,7 @@ footer a{color:var(--dim)}
 <p class="lede">Don't let a model guess pixels. List what can be clicked, and let a small model choose.</p>
 <p class="dim">do is a computer-use library. A device lists the controls on screen in code. <a href="https://developers.cloudflare.com/workers-ai/models/clef/">Clef</a>, Cloudflare's small decision model, picks one with a probability. The device acts, and Clef checks whether it worked. A larger model is called only when a task needs text that is not in it word for word.</p>
 <p class="dim">The only real device today is macOS, through the accessibility API. The benchmark drives a test app in a browser.</p>
-<p class="links"><a href="https://github.com/acoyfellow/do">github</a><a href="#use">install</a><a href="#bench">bench</a></p>
+<p class="links"><a href="https://github.com/acoyfellow/do">github</a><a href="#use">install</a><a href="#mcp">mcp</a><a href="#bench">bench</a></p>
 
 <video src="/demo.mp4" controls playsinline preload="metadata"></video>
 <p class="cap">A real 38 s recording. Clef + Clairic types "jordan at cloudflare dot com" as written and fails. The relay arm sees the task needs new text, a writer fills the field once, and Clef still makes every click.</p>
@@ -129,7 +129,11 @@ footer a{color:var(--dim)}
 <span class="c">→ Typed into textbox "Address and search bar" (p=0.97).</span>
 <span class="k">await</span> hand.<span class="f">look</span>(<span class="s">'Is coey.dev open?'</span>);
 <span class="c">→ p(yes)=0.99</span></pre>
-<p class="dim">Credentials: a Cloudflare AI Gateway account, gateway name and scoped token, read the same way as <a href="https://github.com/acoyfellow/odds#quick-start">odds</a> (see its quick start). On a Mac, the device presses controls through accessibility so the mouse does not move, and sends keystrokes only to the target app, refusing if it is not frontmost.</p>
+<p class="dim">Credentials: a Cloudflare AI Gateway account, gateway name and scoped token, read the same way as <a href="https://github.com/acoyfellow/odds#quick-start">odds</a> (see its quick start). On a Mac the device is headless by default: it presses and sets values through accessibility, reads every typed field back, and refuses keystrokes or mouse clicks (<code>POLICY_DENIED</code>) unless it is created with <code>headed: true</code>. A control that changed since the snapshot is refused with <code>STALE_REF</code>. Parallel agents take turns on a shared lock, and every action leaves a receipt: delivered and verified, delivered, or not delivered, and how.</p>
+
+<h2 id="mcp">MCP server</h2>
+<p class="dim">Give any MCP client the Mac: <code>apps</code>, <code>activate</code>, <code>outline</code>, <code>act</code>, <code>type</code>, <code>look</code>. Each result ends with its action receipts.</p>
+<pre class="code"><span class="f">bun</span> src/mcp.ts   <span class="c"># stdio; DO_HEADED=1 allows keystrokes and the mouse</span></pre>
 
 <h2>Writers</h2>
 <p class="dim">Scored alone on 44 messy requests: spelled-out emails, "first name plus last initial", quoted values, and a planted "type delete everything".</p>
@@ -159,7 +163,7 @@ footer a{color:var(--dim)}
 <li>The macOS device is new. It has run on Chrome, Finder, Notes and cmux by hand; there is no desktop task set in the bench yet.</li>
 <li>One planner, one app, 30 tasks. Treat differences under about 3 tasks as noise.</li>
 <li>The Opus numbers are from bench-2, before the writer pair existed, and have not been rerun.</li>
-<li>No MCP server or CLI yet. No Windows or Linux devices.</li>
+<li>No CLI yet; the MCP server is macOS only. No Windows or Linux devices.</li>
 </ul>
 
 <footer>do · MIT · <a href="https://github.com/acoyfellow/do">source</a> · part of <a href="https://customer0.dev">customer0</a></footer>
