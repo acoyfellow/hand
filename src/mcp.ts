@@ -1,0 +1,159 @@
+import { execFile } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { createInterface } from 'node:readline';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
+import { gatewayTransport, type Transport } from './clef.ts';
+import { readConfig, readToken } from './credentials.ts';
+import { macosDevice } from './devices/macos.ts';
+import { Hand, type HandOptions } from './hand.ts';
+
+const run = promisify(execFile);
+
+export const DEFAULT_HAND: HandOptions = { model: 'clef', method: 'ax_text', tau: 0.3, riskTau: 0.5, injectionTau: 0.5, verify: true };
+
+type JsonSchema = { type: 'object'; properties: Record<string, unknown>; required: string[] };
+export interface McpTool {
+  readonly name: string;
+  readonly description: string;
+  readonly inputSchema: JsonSchema;
+}
+
+const app = { type: 'string', description: 'Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".' };
+
+export const TOOLS: readonly McpTool[] = [
+  { name: 'apps', description: 'List the Mac apps that are running and can be controlled.', inputSchema: { type: 'object', properties: {}, required: [] } },
+  {
+    name: 'activate',
+    description: 'Bring an app to the front. Typing only works in the frontmost app.',
+    inputSchema: { type: 'object', properties: { app }, required: ['app'] },
+  },
+  {
+    name: 'outline',
+    description: "List the controls in the app's front window and menu bar: role, name and box. Use it to see what can be clicked.",
+    inputSchema: { type: 'object', properties: { app }, required: ['app'] },
+  },
+  {
+    name: 'act',
+    description:
+      'Click one control in the app, described in plain words (for example "the New Document button"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.',
+    inputSchema: {
+      type: 'object',
+      properties: { app, intent: { type: 'string' }, confirm: { type: 'boolean' } },
+      required: ['app', 'intent'],
+    },
+  },
+  {
+    name: 'type',
+    description: 'Type text into a text field of the app, described in plain words (for example "the document body"). The app must be frontmost.',
+    inputSchema: {
+      type: 'object',
+      properties: { app, text: { type: 'string' }, into: { type: 'string' } },
+      required: ['app', 'text', 'into'],
+    },
+  },
+  {
+    name: 'look',
+    description: 'Ask a yes/no question about what is on screen now. Returns p(yes).',
+    inputSchema: { type: 'object', properties: { app, question: { type: 'string' } }, required: ['app', 'question'] },
+  },
+];
+
+export interface Session {
+  hand(app: string): Hand;
+  helper: string;
+}
+
+const text = (body: string, isError = false) => ({ content: [{ type: 'text', text: body }], isError });
+
+const str = (args: Record<string, unknown>, key: string): string => {
+  const value = args[key];
+  if (typeof value !== 'string' || value.trim() === '') throw new Error(`${key} is required`);
+  return value;
+};
+
+export async function callTool(session: Session, name: string, args: Record<string, unknown>) {
+  if (name === 'apps') {
+    const { stdout } = await run(session.helper, ['apps']);
+    return text((JSON.parse(stdout) as string[]).join('\n'));
+  }
+  if (name === 'activate') {
+    const { stdout } = await run(session.helper, ['activate', str(args, 'app')]);
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return text(outcome.detail, !outcome.ok);
+  }
+  const hand = session.hand(str(args, 'app'));
+  if (name === 'outline') return text(await hand.outline());
+  if (name === 'act') return text(await hand.act(str(args, 'intent'), args.confirm === true));
+  if (name === 'type') return text(await hand.type(str(args, 'text'), str(args, 'into')));
+  if (name === 'look') return text(await hand.look(str(args, 'question')));
+  return text(`unknown tool ${name}`, true);
+}
+
+export function defaultHelper(): string {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const candidate = process.env.DO_AX_HELPER ?? join(here, '..', 'native', 'ax');
+  if (!existsSync(candidate)) throw new Error(`accessibility helper not found at ${candidate}; build it with swiftc -O native/ax.swift -o native/ax`);
+  return candidate;
+}
+
+export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND): Session {
+  const hands = new Map<string, Hand>();
+  return {
+    helper,
+    hand: (name) => {
+      const existing = hands.get(name);
+      if (existing) return existing;
+      const created = new Hand(transport, macosDevice({ helper, app: name }), opts);
+      hands.set(name, created);
+      return created;
+    },
+  };
+}
+
+type Rpc = { jsonrpc: '2.0'; id?: number | string; method: string; params?: Record<string, unknown> };
+
+export async function handle(session: () => Session, message: Rpc): Promise<unknown | undefined> {
+  const reply = (result: unknown) => ({ jsonrpc: '2.0', id: message.id, result });
+  if (message.method === 'initialize')
+    return reply({ protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'do', version: '0.1.0' } });
+  if (message.method === 'tools/list') return reply({ tools: TOOLS });
+  if (message.method === 'tools/call') {
+    const params = message.params ?? {};
+    const name = String(params.name ?? '');
+    const args = (params.arguments ?? {}) as Record<string, unknown>;
+    try {
+      return reply(await callTool(session(), name, args));
+    } catch (error) {
+      return reply(text(`do error: ${error instanceof Error ? error.message : String(error)}`, true));
+    }
+  }
+  if (message.method === 'ping') return reply({});
+  if (message.id === undefined) return undefined;
+  return { jsonrpc: '2.0', id: message.id, error: { code: -32601, message: `method not found: ${message.method}` } };
+}
+
+export function serve(session: () => Session): void {
+  const lines = createInterface({ input: process.stdin });
+  lines.on('line', async (line) => {
+    if (line.trim() === '') return;
+    let message: Rpc;
+    try {
+      message = JSON.parse(line) as Rpc;
+    } catch {
+      return;
+    }
+    const response = await handle(session, message);
+    if (response !== undefined) process.stdout.write(`${JSON.stringify(response)}\n`);
+  });
+}
+
+if (import.meta.main) {
+  let cached: Session | undefined;
+  serve(() => {
+    cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper());
+    return cached;
+  });
+}

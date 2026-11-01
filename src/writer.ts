@@ -85,7 +85,11 @@ export function clefInvolvement(transport: Transport, model: ClefModel = 'clef',
     );
 }
 
-export function fallbackWriter(primary: Writer, backup: Writer, involved: FieldInvolvement): (request: WriterRequest) => Effect.Effect<WriterResult & { readonly fellBack: readonly string[] }, LlmError | ClefError> {
+export function fallbackWriter(
+  primary: Writer,
+  backup: Writer,
+  involved: FieldInvolvement,
+): (request: WriterRequest) => Effect.Effect<WriterResult & { readonly fellBack: readonly string[] }, LlmError | ClefError> {
   return (request) =>
     Effect.gen(function* () {
       const first = yield* primary(request);
