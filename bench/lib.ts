@@ -26,13 +26,16 @@ export const specUrl = (s: ScreenSpec) =>
 export const SCREENS = ['mail', 'settings', 'files', 'shop', 'dashboard', 'chat', 'people', 'editor'];
 
 /** 3 variants per screen: light/comfortable, dark/compact, light/compact with a different accent. */
-export function specs(): ScreenSpec[] {
+export function specs(extraRounds = Number(process.env.DO_EXTRA_SEEDS ?? 0)): ScreenSpec[] {
   const out: ScreenSpec[] = [];
-  SCREENS.forEach((screen, i) => {
-    out.push({ screen, seed: 11 + i, theme: 'light', density: 'comfortable', accent: 0 });
-    out.push({ screen, seed: 23 + i, theme: 'dark', density: 'compact', accent: 1 });
-    out.push({ screen, seed: 37 + i, theme: 'light', density: 'compact', accent: 2 + (i % 2) });
-  });
+  for (let round = 0; round <= extraRounds; round++) {
+    const offset = round * 100;
+    SCREENS.forEach((screen, i) => {
+      out.push({ screen, seed: 11 + i + offset, theme: 'light', density: 'comfortable', accent: 0 });
+      out.push({ screen, seed: 23 + i + offset, theme: 'dark', density: 'compact', accent: 1 });
+      out.push({ screen, seed: 37 + i + offset, theme: 'light', density: 'compact', accent: 2 + (i % 2) });
+    });
+  }
   return out;
 }
 
