@@ -12,3 +12,4 @@ bench/runs/writer-dev*
 native/ax
 native/ax-dump
 native/vm
+bench/external/
