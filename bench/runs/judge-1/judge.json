@@ -1,0 +1,30 @@
+{
+  "run": "judge-1",
+  "scored": [
+    {
+      "name": "one whole-task question (screenshot)",
+      "samples": 280,
+      "accuracyAbstainAsFail": 0.9428571428571428,
+      "decidedRate": 1,
+      "decidedAccuracy": 0.9428571428571428,
+      "falsePassRate": 0.04,
+      "negatives": 150,
+      "falseClaimsCaught": "2/8"
+    },
+    {
+      "name": "checklist (screenshot + accessibility state)",
+      "samples": 280,
+      "accuracyAbstainAsFail": 0.7785714285714286,
+      "decidedRate": 0.9714285714285714,
+      "decidedAccuracy": 0.7941176470588235,
+      "falsePassRate": 0.013333333333333334,
+      "negatives": 150,
+      "falseClaimsCaught": "6/8"
+    }
+  ],
+  "cost": {
+    "key": "whole",
+    "totalUsdBothJudges": 0.20332151999999987,
+    "perSampleUsd": 0.0007261482857142853
+  }
+}

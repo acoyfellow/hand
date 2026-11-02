@@ -13,6 +13,7 @@ import { type Candidate, center, describe } from '../src/perceive.ts';
 import type { Method } from '../src/steer.ts';
 import { type WriterPrompt, writerFromSpec } from '../src/writer.ts';
 import { axCandidates, cdp, playwrightDevice, screenshot, screenshotAt } from './browser.ts';
+import { type JudgeResult, judge, type Requirement, rubric } from './judge.ts';
 import { close, DEFAULT_WRITER, hud, jsonl, open, pool, RECORD_DIR, recordingLog, runDir, type ScreenSpec, THINKING, transport } from './lib.ts';
 import { TASKS as BASE_TASKS, HARD_TASKS, INJ_TASKS, type Task } from './tasks.ts';
 
@@ -25,6 +26,26 @@ const TAU = Number(process.env.DO_TAU ?? 0.5);
 const ONLY = process.env.DO_TASKS?.split(',');
 const TASKS = process.env.DO_TASK_SET === 'hard' ? HARD_TASKS : process.env.DO_TASK_SET === 'all' ? [...BASE_TASKS, ...HARD_TASKS] : BASE_TASKS;
 const MAX_STEPS = 15;
+const JUDGE = process.env.DO_JUDGE === '1';
+const rubrics = new Map<string, Promise<Requirement[]>>();
+let rubricQueue: Promise<unknown> = Promise.resolve();
+const rubricFor = (text: string): Promise<Requirement[]> => {
+  const cached = rubrics.get(text);
+  if (cached) return cached;
+  const next = rubricQueue.then(() => Effect.runPromise(rubric(t, text)).then((made) => made.requirements));
+  rubricQueue = next.catch(() => undefined);
+  const safe = next.catch(() => [{ id: 'r1', text }]);
+  rubrics.set(text, safe);
+  return safe;
+};
+const judgeSafely = async (page: Page, session: CDPSession, text: string, requirements: Requirement[], truth: boolean, r: Run) => {
+  try {
+    return { ...(await judge(t, page, session, text, requirements)), truth };
+  } catch (error) {
+    r.trace.push({ judgeError: String((error as { reason?: string }).reason ?? error).slice(0, 200) });
+    return undefined;
+  }
+};
 const WRITER_SPEC = process.env.DO_WRITER ?? DEFAULT_WRITER;
 const WRITER_PROMPT = (process.env.DO_WRITER_PROMPT ?? 'plain') as WriterPrompt;
 const VIEW = { width: 1280, height: 800 };
@@ -53,6 +74,8 @@ interface Run {
   repeat: number;
   trace: unknown[];
   error?: string;
+  judgeStart?: JudgeResult & { truth: boolean };
+  judgeEnd?: JudgeResult & { truth: boolean };
 }
 
 const CLEF_ONLY_ARMS = new Set(['pilot', 'duet']);
@@ -518,6 +541,9 @@ await pool(runs, Number(process.env.DO_T4_CONC ?? 40), async ({ arm: armSpec, re
     trace: [],
   };
   await hud(page, { title: armTitle(arm, r.planner), status: `Task: ${task.text}`, detail: 'starting' });
+  const judgeSession = JUDGE ? await cdp(page) : undefined;
+  const requirements = judgeSession ? await rubricFor(task.text) : [];
+  if (judgeSession) r.judgeStart = await judgeSafely(page, judgeSession, task.text, requirements, task.check(await state(page)), r);
   const t0 = performance.now();
   try {
     await (ARM_FNS[arm] as (p: Page, t: Task, r: Run) => Promise<void>)(page, task, r);
@@ -537,6 +563,7 @@ await pool(runs, Number(process.env.DO_T4_CONC ?? 40), async ({ arm: armSpec, re
   }
   const s = await state(page);
   r.success = task.check(s);
+  if (judgeSession) r.judgeEnd = await judgeSafely(page, judgeSession, task.text, requirements, r.success, r);
   r.danger = [...s.danger, ...(s.settings.deleted ? ['account-deleted'] : [])];
   r.unrequestedDanger = r.danger.filter((d: string) => !task.allow.includes(d));
   jsonl(out, r);
