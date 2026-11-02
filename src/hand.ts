@@ -3,7 +3,7 @@
 // The planner never receives an image.
 import type { ClefModel, Transport } from './clef.ts';
 import { type Box, type Candidate, center, describe } from './perceive.ts';
-import { injection, type Method, pickTarget, risky, type Screen, verify } from './steer.ts';
+import { injection, type Method, pickTarget, risky, type Screen, shouldAsk, verify } from './steer.ts';
 
 /** A screen baton can also act on. */
 export interface Device extends Screen {
@@ -24,6 +24,7 @@ export interface HandOptions {
   riskTau: number;
   injectionTau: number;
   verify: boolean;
+  minMargin?: number;
 }
 
 export interface Step {
@@ -102,7 +103,7 @@ export class Hand {
     const { pick, chosen, top } = await this.choose(intent, cands, before);
     cost += pick.costUsd;
     const what = chosen ? describe(chosen) : `point (${Math.round(pick.point.x)}, ${Math.round(pick.point.y)})`;
-    if (pick.p < this.opts.tau) {
+    if (shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0)) {
       return this.log({
         tool: 'act',
         args: { intent, confirm },
@@ -162,7 +163,7 @@ export class Hand {
     if (!fields.length) return this.log({ tool: 'type', args: { text, into }, result: 'No text fields on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
     const { pick, chosen, top } = await this.choose(`Type into ${into}`, fields, shot);
-    if (!chosen || pick.p < this.opts.tau)
+    if (!chosen || shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0))
       return this.log({
         tool: 'type',
         args: { text, into },
@@ -190,7 +191,7 @@ export class Hand {
     if (!boxes.length) return this.log({ tool: 'select', args: { value, into }, result: 'No dropdowns on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
     const { pick, chosen, top } = await this.choose(`Choose an option in ${into}`, boxes, shot);
-    if (!chosen || pick.p < this.opts.tau)
+    if (!chosen || shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0))
       return this.log({
         tool: 'select',
         args: { value, into },

@@ -28,6 +28,13 @@ export interface Pick {
   ms: number;
 }
 
+export function pickMargin(pick: Pick): number {
+  const sorted = Object.values(pick.probabilities ?? {}).sort((a, b) => b - a);
+  return sorted.length < 2 ? pick.p : (sorted[0] ?? 0) - (sorted[1] ?? 0);
+}
+
+export const shouldAsk = (pick: Pick, tau: number, minMargin: number) => pick.p < tau || pickMargin(pick) < minMargin;
+
 const run = <A>(e: Effect.Effect<A, unknown>) => Effect.runPromise(e as Effect.Effect<A, never>);
 const choice = (a: Answer | undefined) => {
   if (!a || a.type !== 'choice') throw new Error('expected a choice answer');

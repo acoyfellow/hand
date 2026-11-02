@@ -11,7 +11,7 @@ import { Hand, type HandOptions } from './hand.ts';
 
 const run = promisify(execFile);
 
-export const DEFAULT_HAND: HandOptions = { model: 'clef', method: 'ax_text', tau: 0.3, riskTau: 0.5, injectionTau: 0.5, verify: true };
+export const DEFAULT_HAND: HandOptions = { model: 'clef', method: 'ax_text', tau: 0.5, minMargin: 0.6, riskTau: 0.5, injectionTau: 0.5, verify: true };
 
 type JsonSchema = { type: 'object'; properties: Record<string, unknown>; required: string[] };
 export interface McpTool {

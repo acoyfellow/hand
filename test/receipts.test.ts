@@ -56,3 +56,11 @@ describe('macOS device receipts', () => {
     await expect(device.typeInto(field!, 'hello')).rejects.toThrow('keystrokes are off unless the device is headed');
   });
 });
+
+test('shouldAsk asks when the pick is unlikely or the top two are close', async () => {
+  const { shouldAsk } = await import('../src/steer.ts');
+  const base = { method: 'ax_text' as const, model: 'clef' as const, point: { x: 0, y: 0 }, calls: 1, inputTokens: 0, costUsd: 0, ms: 0 };
+  expect(shouldAsk({ ...base, p: 0.95, probabilities: { a: 0.95, b: 0.03 } }, 0.5, 0.6)).toBe(false);
+  expect(shouldAsk({ ...base, p: 0.4, probabilities: { a: 0.4, b: 0.3 } }, 0.5, 0.6)).toBe(true);
+  expect(shouldAsk({ ...base, p: 0.68, probabilities: { a: 0.68, b: 0.3 } }, 0.5, 0.6)).toBe(true);
+});
