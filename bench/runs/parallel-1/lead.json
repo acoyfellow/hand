@@ -1,0 +1,15 @@
+{
+  "point": "parallel-agents",
+  "pass": true,
+  "mock": false,
+  "srcCommit": "05e2a9a272f492efceceab77876ca9a50ef973be",
+  "metrics": {
+    "runs": 30,
+    "successes": 30,
+    "lostActions": 0,
+    "crossedActions": 0,
+    "actions": 72,
+    "wallSeconds": 114.6,
+    "usdPerTask": 0.00623
+  }
+}
