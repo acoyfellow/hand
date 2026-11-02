@@ -42,6 +42,8 @@ export interface Step {
 
 const TEXT_ROLES = new Set(['textbox', 'searchbox', 'combobox', 'spinbutton']);
 const fmt = (p: number) => p.toFixed(2);
+const refOf = (text: string) => /^\s*\[?(e\d+)\]?\s*$/.exec(text)?.[1];
+const isRef = (text: string) => refOf(text) !== undefined;
 
 export class Hand {
   readonly steps: Step[] = [];
@@ -64,7 +66,7 @@ export class Hand {
   async outline(): Promise<string> {
     const t0 = performance.now();
     const cands = await this.d.candidates();
-    const lines = cands.map((c) => `- ${describe(c)}`).join('\n');
+    const lines = cands.map((c) => `- [${c.id}] ${describe(c)}`).join('\n');
     return this.log({ tool: 'outline', args: {}, result: `${cands.length} controls on screen:\n${lines}`, costUsd: 0, ms: performance.now() - t0 });
   }
 
@@ -79,6 +81,23 @@ export class Hand {
   }
 
   private async choose(intent: string, cands: Candidate[], shot: string) {
+    const named = refOf(intent);
+    const byRef = named ? cands.find((c) => c.id === named) : undefined;
+    if (byRef) {
+      const pick = {
+        method: this.opts.method,
+        model: this.opts.model,
+        choice: byRef.id,
+        point: center(byRef),
+        p: 1,
+        probabilities: { [byRef.id]: 1 },
+        calls: 0,
+        inputTokens: 0,
+        costUsd: 0,
+        ms: 0,
+      };
+      return { pick, chosen: byRef, top: [describe(byRef)] };
+    }
     const pick = await pickTarget(this.t, this.opts.model, this.opts.method, this.d, intent, cands, shot);
     const chosen = cands.find((c) => c.id === pick.choice);
     const top = pick.probabilities
@@ -162,7 +181,7 @@ export class Hand {
     const fields = (await this.d.candidates()).filter((c) => TEXT_ROLES.has(c.role));
     if (!fields.length) return this.log({ tool: 'type', args: { text, into }, result: 'No text fields on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
-    const { pick, chosen, top } = await this.choose(`Type into ${into}`, fields, shot);
+    const { pick, chosen, top } = await this.choose(isRef(into) ? into : `Type into ${into}`, fields, shot);
     if (!chosen || shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0))
       return this.log({
         tool: 'type',
@@ -190,7 +209,7 @@ export class Hand {
     const boxes = (await this.d.candidates()).filter((c) => c.role === 'combobox' || c.role === 'listbox');
     if (!boxes.length) return this.log({ tool: 'select', args: { value, into }, result: 'No dropdowns on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
-    const { pick, chosen, top } = await this.choose(`Choose an option in ${into}`, boxes, shot);
+    const { pick, chosen, top } = await this.choose(isRef(into) ? into : `Choose an option in ${into}`, boxes, shot);
     if (!chosen || shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0))
       return this.log({
         tool: 'select',

@@ -42,7 +42,7 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'act',
     description:
-      'Click one control in the app, described in plain words (for example "the New Document button"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.',
+      'Click one control in the app: pass its [id] from outline (for example "e3"), or describe it in plain words (for example "the New Document button"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.',
     inputSchema: {
       type: 'object',
       properties: { app, agent, intent: { type: 'string' }, confirm: { type: 'boolean' } },

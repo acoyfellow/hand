@@ -1,5 +1,6 @@
 {
   "browser-device": "lead-browser-1",
   "probabilities": "probs-3",
-  "parallel-agents": "parallel-1"
+  "parallel-agents": "parallel-1",
+  "done-check": "judge-2"
 }

@@ -63,6 +63,8 @@ const MARKS = `(boxes) => {
   document.body.append(root);
 }`;
 
+const CLICK_EVENTS = new Set(['click', 'mousedown', 'mouseup', 'pointerdown']);
+
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 async function callOn(cdp: Cdp, backendNodeId: number, functionDeclaration: string, args: unknown[] = []): Promise<unknown> {
@@ -110,25 +112,119 @@ const insideDialog = (cdp: Cdp, backendNodeId: number) =>
     () => false,
   );
 
+const CLICKABLE_SCAN = `(() => {
+  const native = 'a[href],button,input,select,textarea,[role],[contenteditable=""],[contenteditable=true]';
+  return [...document.querySelectorAll('body *')].filter((el) => {
+    if (el.closest(native)) return false;
+    const style = getComputedStyle(el);
+    if (style.visibility === 'hidden' || style.display === 'none') return false;
+    if (!(typeof el.onclick === 'function' || el.hasAttribute('onclick') || style.cursor === 'pointer')) return false;
+    const r = el.getBoundingClientRect();
+    return r.width >= 4 && r.height >= 4;
+  });
+})()`;
+
+const NEAR_LABEL = `function(){
+  const own = (this.getAttribute('placeholder') || this.getAttribute('title') || '').trim();
+  if (own) return own;
+  if (this.id) { const l = document.querySelector('label[for="' + CSS.escape(this.id) + '"]'); if (l && l.innerText.trim()) return l.innerText.trim(); }
+  let node = this;
+  for (let depth = 0; depth < 4 && node; depth++) {
+    let prev = node.previousElementSibling;
+    while (prev) { const t = (prev.innerText || '').trim(); if (t && t.length <= 60) return t; prev = prev.previousElementSibling; }
+    node = node.parentElement;
+  }
+  return '';
+}`;
+
+const SHAPE_NAME = `function(){
+  const text = (this.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 60);
+  const label = (this.getAttribute('title') || this.getAttribute('aria-label') || this.id || this.getAttribute('class') || '').trim();
+  if (text) return label && label !== text && text.length <= 3 ? label + ' ' + text : text;
+  const fill = this.getAttribute('fill');
+  const shape = ['circle', 'rect', 'polygon', 'path', 'ellipse', 'line'].includes(this.tagName.toLowerCase()) ? this.tagName.toLowerCase() : '';
+  return [label, shape, fill && fill !== 'none' ? fill : ''].filter(Boolean).join(' ') || this.tagName.toLowerCase();
+}`;
+
+async function clickableNodes(cdp: Cdp): Promise<number[]> {
+  const listed = await cdp.send('Runtime.evaluate', { expression: CLICKABLE_SCAN, returnByValue: false });
+  const arrayId = listed.result?.objectId;
+  if (!arrayId) return [];
+  const { result } = await cdp.send('Runtime.getProperties', { objectId: arrayId, ownProperties: true });
+  const ids: number[] = [];
+  for (const property of result as { name: string; value?: { objectId?: string } }[]) {
+    if (!/^\d+$/.test(property.name) || !property.value?.objectId) continue;
+    const { node } = await cdp.send('DOM.describeNode', { objectId: property.value.objectId });
+    if (node?.backendNodeId) ids.push(node.backendNodeId);
+  }
+  return ids;
+}
+
+async function listenerNodes(cdp: Cdp): Promise<number[]> {
+  const queue = await cdp.send('Runtime.evaluate', {
+    expression: `[...document.querySelectorAll('body *')].filter((el) => !el.closest('a[href],button,input,select,textarea,[role]') && el.getBoundingClientRect().width >= 4)`,
+    returnByValue: false,
+  });
+  if (!queue.result?.objectId) return [];
+  const { result: items } = await cdp.send('Runtime.getProperties', { objectId: queue.result.objectId, ownProperties: true });
+  const listened: number[] = [];
+  for (const property of items as { name: string; value?: { objectId?: string } }[]) {
+    if (!/^\d+$/.test(property.name) || !property.value?.objectId) continue;
+    const { listeners } = await cdp.send('DOMDebugger.getEventListeners', { objectId: property.value.objectId, depth: 0 });
+    if (!(listeners as { type: string }[]).some((listener) => CLICK_EVENTS.has(listener.type))) continue;
+    const { node } = await cdp.send('DOM.describeNode', { objectId: property.value.objectId });
+    if (node?.backendNodeId) listened.push(node.backendNodeId);
+  }
+  return listened;
+}
+
+const inView = (box: Box, viewport: { width: number; height: number }) =>
+  box.w >= 2 && box.h >= 2 && box.x + box.w >= 0 && box.y + box.h >= 0 && box.x <= viewport.width && box.y <= viewport.height;
+
 export async function browserCandidates(cdp: Cdp, viewport: { width: number; height: number }): Promise<Candidate[]> {
   await cdp.send('DOM.getDocument', { depth: -1 });
   const { nodes } = await cdp.send('Accessibility.getFullAXTree');
   const modal = (await evaluate(cdp, '!!document.querySelector("[role=dialog]")')) === true;
   const found: Candidate[] = [];
+  const seen = new Set<number>();
   for (const node of nodes) {
     if (node.ignored || !node.backendDOMNodeId) continue;
     const role = node.role?.value as string;
     if (!INTERACTIVE.has(role)) continue;
     const box = await boxOf(cdp, node.backendDOMNodeId);
-    if (!box || box.w < 2 || box.h < 2 || box.x + box.w < 0 || box.y + box.h < 0 || box.x > viewport.width || box.y > viewport.height) continue;
-    const name = String(node.name?.value ?? '')
+    if (!box || !inView(box, viewport)) continue;
+    let name = String(node.name?.value ?? '')
       .trim()
       .slice(0, 80);
+    if (!name && (role === 'textbox' || role === 'searchbox' || role === 'combobox' || role === 'spinbutton'))
+      name = String(await callOn(cdp, node.backendDOMNodeId, NEAR_LABEL).catch(() => '')).slice(0, 80);
+    seen.add(node.backendDOMNodeId);
     found.push({ id: '', role, name, backendNodeId: node.backendDOMNodeId, ...box });
   }
-  const visible = modal
-    ? (await Promise.all(found.map(async (c) => ((await insideDialog(cdp, c.backendNodeId)) ? c : null)))).filter((c) => c !== null)
-    : found;
+  const extra = [...new Set([...(await clickableNodes(cdp).catch(() => [])), ...(await listenerNodes(cdp).catch(() => []))])];
+  for (const backendNodeId of extra) {
+    if (seen.has(backendNodeId)) continue;
+    const box = await boxOf(cdp, backendNodeId);
+    if (!box || !inView(box, viewport)) continue;
+    const name = String(await callOn(cdp, backendNodeId, SHAPE_NAME).catch(() => '')).slice(0, 80);
+    seen.add(backendNodeId);
+    found.push({ id: '', role: 'clickable', name, backendNodeId, ...box });
+  }
+  const clickables = found.filter((c) => c.role === 'clickable');
+  const sameAsChild = (c: Candidate) =>
+    c.role === 'clickable' &&
+    clickables.some(
+      (child) => child !== c && child.name === c.name && c.x <= child.x && c.y <= child.y && c.x + c.w >= child.x + child.w && c.y + c.h >= child.y + child.h,
+    );
+  const insideOther = (c: Candidate) =>
+    sameAsChild(c) ||
+    (c.role === 'clickable' &&
+      found.some(
+        (other) =>
+          other !== c && other.role !== 'clickable' && other.x <= c.x && other.y <= c.y && other.x + other.w >= c.x + c.w && other.y + other.h >= c.y + c.h,
+      ));
+  const kept = found.filter((c) => !insideOther(c));
+  const visible = modal ? (await Promise.all(kept.map(async (c) => ((await insideDialog(cdp, c.backendNodeId)) ? c : null)))).filter((c) => c !== null) : kept;
   visible.sort((a, b) => a.y - b.y || a.x - b.x);
   return visible.map((c, i) => ({ ...c, id: `e${i + 1}` }));
 }
@@ -160,6 +256,8 @@ export async function browserType(cdp: Cdp, c: Candidate, text: string): Promise
   const focused = await callOn(cdp, c.backendNodeId, FOCUS_AND_SELECT);
   if (focused !== true) await browserClick(cdp, center(c));
   await cdp.send('Input.insertText', { text });
+  if (String(await callOn(cdp, c.backendNodeId, READ_VALUE)).includes(text)) return;
+  await browserSetValue(cdp, c, text);
   const value = String(await callOn(cdp, c.backendNodeId, READ_VALUE));
   if (!value.includes(text)) throw new Error(`typed into ${c.role} "${c.name}" but the field reads "${value.slice(0, 80)}"`);
 }

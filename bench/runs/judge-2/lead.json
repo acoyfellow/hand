@@ -1,0 +1,20 @@
+{
+  "point": "done-check",
+  "pass": false,
+  "mock": false,
+  "srcCommit": "05e2a9a272f492efceceab77876ca9a50ef973be",
+  "metrics": {
+    "stage": "judge selection",
+    "best": "checklist",
+    "falseDone": 125,
+    "caught": 94,
+    "catchRate": 0.752,
+    "catchLower95": 0.6695,
+    "falsePassRate": 0.0455,
+    "falseAlarmRate": 0.413,
+    "abstainRate": 0.041,
+    "usdPerCheck": 0.0007,
+    "trueDone": 368,
+    "negatives": 682
+  }
+}

@@ -1,0 +1,229 @@
+
+=== bench/probe.ts
+ok   clef: section=mail (0.997) toolbar=0.982 tokens=1254 786ms
+ok   clef-omni: section=mail (0.991) toolbar=0.858 tokens=1250 837ms
+ok   kimi-k2.6 tools: [{"id":"functions.act:0","type":"function","function":{"name":"act","arguments":"{\"intent\": \"Open the Spam folder\"}"}}] text=
+ok   clef-flash: section=mail (0.972) toolbar=0.758 tokens=1254 2063ms
+ok   kimi-k2.6 vision: {"x": 73, "y": 90} (in=1378 out=13)
+ok   qwen3.8-27b vision:   {"x": 95, "y": 73} (in=1089 out=167)
+probe: all routes answer
+[t1-grounding] t1 settings-s24-dk: 18 intents x 1 arms
+[t1-grounding] t1 files-s25-dk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s23-dk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s37-lk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s38-lk: 18 intents x 1 arms
+[t1-grounding] t1 mail-s11-lr: 20 intents x 1 arms
+[t1-grounding] t1 files-s13-lr: 20 intents x 1 arms
+[t1-grounding] t1 files-s39-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s14-lr: 17 intents x 1 arms
+[t1-grounding] t1 shop-s40-lk: 17 intents x 1 arms
+[t1-grounding] t1 shop-s26-dk: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s41-lk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s15-lr: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s27-dk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s16-lr: 18 intents x 1 arms
+[t1-grounding] t1 editor-s18-lr: 3 intents x 1 arms
+[t1-grounding] t1 chat-s28-dk: 18 intents x 1 arms
+[t1-grounding] t1 people-s17-lr: 20 intents x 1 arms
+[t1-grounding] t1 people-s43-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s42-lk: 18 intents x 1 arms
+[t1-grounding] t1 editor-s30-dk: 3 intents x 1 arms
+[t1-grounding] t1 people-s29-dk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s44-lk: 3 intents x 1 arms
+[t1-grounding] t1 mail-s111-lr: 20 intents x 1 arms
+[t1-grounding] t1 mail-s123-dk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s138-lk: 18 intents x 1 arms
+[t1-grounding] t1 mail-s137-lk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s112-lr: 18 intents x 1 arms
+[t1-grounding] t1 files-s113-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s124-dk: 18 intents x 1 arms
+[t1-grounding] t1 files-s125-dk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s114-lr: 17 intents x 1 arms
+[t1-grounding] t1 shop-s126-dk: 17 intents x 1 arms
+[t1-grounding] t1 files-s139-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s140-lk: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s127-dk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s115-lr: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s141-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s142-lk: 18 intents x 1 arms
+[t1-grounding] t1 chat-s128-dk: 18 intents x 1 arms
+[t1-grounding] t1 people-s117-lr: 20 intents x 1 arms
+[t1-grounding] t1 people-s129-dk: 20 intents x 1 arms
+[t1-grounding] t1 people-s143-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s116-lr: 18 intents x 1 arms
+[t1-grounding] t1 editor-s118-lr: 3 intents x 1 arms
+[t1-grounding] t1 editor-s144-lk: 3 intents x 1 arms
+[t1-grounding] t1 editor-s130-dk: 3 intents x 1 arms
+[t1-grounding] t1 settings-s224-dk: 18 intents x 1 arms
+[t1-grounding] t1 mail-s211-lr: 20 intents x 1 arms
+[t1-grounding] t1 mail-s223-dk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s237-lk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s212-lr: 18 intents x 1 arms
+[t1-grounding] t1 files-s213-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s238-lk: 18 intents x 1 arms
+[t1-grounding] t1 files-s239-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s226-dk: 17 intents x 1 arms
+[t1-grounding] t1 files-s225-dk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s227-dk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s240-lk: 17 intents x 1 arms
+[t1-grounding] t1 shop-s214-lr: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s215-lr: 20 intents x 1 arms
+[t1-grounding] t1 chat-s228-dk: 18 intents x 1 arms
+[t1-grounding] t1 dashboard-s241-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s216-lr: 18 intents x 1 arms
+[t1-grounding] t1 people-s217-lr: 20 intents x 1 arms
+[t1-grounding] t1 editor-s218-lr: 3 intents x 1 arms
+[t1-grounding] t1 people-s243-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s242-lk: 18 intents x 1 arms
+[t1-grounding] t1 editor-s230-dk: 3 intents x 1 arms
+[t1-grounding] t1 people-s229-dk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s244-lk: 3 intents x 1 arms
+[t1-grounding] t1 mail-s323-dk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s12-lr: 18 intents x 1 arms
+[t1-grounding] t1 mail-s337-lk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s311-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s312-lr: 18 intents x 1 arms
+[t1-grounding] t1 settings-s324-dk: 18 intents x 1 arms
+[t1-grounding] t1 files-s313-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s338-lk: 18 intents x 1 arms
+[t1-grounding] t1 shop-s314-lr: 17 intents x 1 arms
+[t1-grounding] t1 files-s339-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s326-dk: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s315-lr: 20 intents x 1 arms
+[t1-grounding] t1 shop-s340-lk: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s341-lk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s327-dk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s316-lr: 18 intents x 1 arms
+[t1-grounding] t1 chat-s328-dk: 18 intents x 1 arms
+[t1-grounding] t1 files-s325-dk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s342-lk: 18 intents x 1 arms
+[t1-grounding] t1 people-s317-lr: 20 intents x 1 arms
+[t1-grounding] t1 editor-s318-lr: 3 intents x 1 arms
+[t1-grounding] t1 people-s329-dk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s330-dk: 3 intents x 1 arms
+[t1-grounding] t1 editor-s344-lk: 3 intents x 1 arms
+[t1-grounding] t1 mail-s411-lr: 20 intents x 1 arms
+[t1-grounding] t1 people-s343-lk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s437-lk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s412-lr: 18 intents x 1 arms
+[t1-grounding] t1 mail-s423-dk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s438-lk: 18 intents x 1 arms
+[t1-grounding] t1 files-s413-lr: 20 intents x 1 arms
+[t1-grounding] t1 files-s425-dk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s414-lr: 17 intents x 1 arms
+[t1-grounding] t1 files-s439-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s440-lk: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s415-lr: 20 intents x 1 arms
+[t1-grounding] t1 shop-s426-dk: 17 intents x 1 arms
+[t1-grounding] t1 settings-s424-dk: 18 intents x 1 arms
+[t1-grounding] t1 dashboard-s427-dk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s441-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s428-dk: 18 intents x 1 arms
+[t1-grounding] t1 chat-s416-lr: 18 intents x 1 arms
+[t1-grounding] t1 people-s417-lr: 20 intents x 1 arms
+[t1-grounding] t1 editor-s430-dk: 3 intents x 1 arms
+[t1-grounding] t1 chat-s442-lk: 18 intents x 1 arms
+[t1-grounding] t1 editor-s418-lr: 3 intents x 1 arms
+[t1-grounding] t1 people-s429-dk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s444-lk: 3 intents x 1 arms
+[t1-grounding] t1 people-s443-lk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s511-lr: 20 intents x 1 arms
+[t1-grounding] t1 mail-s537-lk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s523-dk: 20 intents x 1 arms
+[t1-grounding] t1 files-s513-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s538-lk: 18 intents x 1 arms
+[t1-grounding] t1 settings-s524-dk: 18 intents x 1 arms
+[t1-grounding] t1 files-s525-dk: 20 intents x 1 arms
+[t1-grounding] t1 files-s539-lk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s512-lr: 18 intents x 1 arms
+[t1-grounding] t1 shop-s514-lr: 17 intents x 1 arms
+[t1-grounding] t1 shop-s540-lk: 17 intents x 1 arms
+[t1-grounding] t1 dashboard-s515-lr: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s541-lk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s516-lr: 18 intents x 1 arms
+[t1-grounding] t1 chat-s542-lk: 18 intents x 1 arms
+[t1-grounding] t1 people-s517-lr: 20 intents x 1 arms
+[t1-grounding] t1 people-s529-dk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s527-dk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s526-dk: 17 intents x 1 arms
+[t1-grounding] t1 editor-s544-lk: 3 intents x 1 arms
+[t1-grounding] t1 chat-s528-dk: 18 intents x 1 arms
+[t1-grounding] t1 editor-s530-dk: 3 intents x 1 arms
+[t1-grounding] t1 mail-s623-dk: 20 intents x 1 arms
+[t1-grounding] t1 people-s543-lk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s518-lr: 3 intents x 1 arms
+[t1-grounding] t1 settings-s612-lr: 18 intents x 1 arms
+[t1-grounding] t1 mail-s611-lr: 20 intents x 1 arms
+[t1-grounding] t1 files-s639-lk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s638-lk: 18 intents x 1 arms
+[t1-grounding] t1 files-s613-lr: 20 intents x 1 arms
+[t1-grounding] t1 files-s625-dk: 20 intents x 1 arms
+[t1-grounding] t1 settings-s624-dk: 18 intents x 1 arms
+[t1-grounding] t1 mail-s637-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s640-lk: 17 intents x 1 arms
+[t1-grounding] t1 shop-s614-lr: 17 intents x 1 arms
+[t1-grounding] t1 shop-s626-dk: 17 intents x 1 arms
+[t1-grounding] t1 chat-s616-lr: 18 intents x 1 arms
+[t1-grounding] t1 dashboard-s615-lr: 20 intents x 1 arms
+[t1-grounding] t1 chat-s628-dk: 18 intents x 1 arms
+[t1-grounding] t1 chat-s642-lk: 18 intents x 1 arms
+[t1-grounding] t1 people-s617-lr: 20 intents x 1 arms
+[t1-grounding] t1 editor-s618-lr: 3 intents x 1 arms
+[t1-grounding] t1 dashboard-s627-dk: 20 intents x 1 arms
+[t1-grounding] t1 people-s643-lk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s644-lk: 3 intents x 1 arms
+[t1-grounding] t1 editor-s630-dk: 3 intents x 1 arms
+[t1-grounding] t1 dashboard-s641-lk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s723-dk: 20 intents x 1 arms
+[t1-grounding] t1 mail-s711-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s724-dk: 18 intents x 1 arms
+[t1-grounding] t1 settings-s738-lk: 18 intents x 1 arms
+[t1-grounding] t1 files-s713-lr: 20 intents x 1 arms
+[t1-grounding] t1 settings-s712-lr: 18 intents x 1 arms
+[t1-grounding] t1 shop-s740-lk: 17 intents x 1 arms
+[t1-grounding] t1 mail-s737-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s714-lr: 17 intents x 1 arms
+[t1-grounding] t1 files-s739-lk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s727-dk: 20 intents x 1 arms
+[t1-grounding] t1 dashboard-s741-lk: 20 intents x 1 arms
+[t1-grounding] t1 shop-s726-dk: 17 intents x 1 arms
+[t1-grounding] t1 chat-s728-dk: 18 intents x 1 arms
+[t1-grounding] t1 people-s629-dk: 20 intents x 1 arms
+[t1-grounding] t1 chat-s716-lr: 18 intents x 1 arms
+[t1-grounding] t1 files-s725-dk: 20 intents x 1 arms
+[t1-grounding] t1 people-s717-lr: 20 intents x 1 arms
+[t1-grounding] t1 editor-s718-lr: 3 intents x 1 arms
+[t1-grounding] t1 dashboard-s715-lr: 20 intents x 1 arms
+[t1-grounding] t1 chat-s742-lk: 18 intents x 1 arms
+[t1-grounding] t1 people-s743-lk: 20 intents x 1 arms
+[t1-grounding] t1 editor-s730-dk: 3 intents x 1 arms
+[t1-grounding] t1 editor-s744-lk: 3 intents x 1 arms
+[t1-grounding] t1 people-s729-dk: 20 intents x 1 arms
+[t1-grounding] t1 done -> /Users/jcoeyman/cloudflare/do/bench/runs/probs-3/t1.jsonl
+[t1-grounding] exited 0 after 33.2s
+
+=== bench/report.ts
+# do eval report
+
+Run: `probs-3`
+
+## Test 1: grounding (does the click land on the right control?)
+
+| arm | n | all | icon-only | repeated label | small | field | $/pick | median ms | errors |
+|---|---|---|---|---|---|---|---|---|---|
+| clef/ax_text | 3264 | **96.2%** | 92.8% (1080) | 92.2% (998) | 93.7% (1241) | 100.0% (137) | $0.00019 | 474 | 0 |
+
+Arms are `model/method`. Clef methods: `ax_text` (accessibility list only), `ax_image` (list + screenshot), `marks` (numbered boxes, no labels), `hybrid` (numbered boxes + labels), `grid` (3 hops of a 4x4 grid, no structure). Baselines: `kimi-k2.6/xy` and `qwen3.8-27b/xy` answer pixel coordinates; `kimi-k2.6/marks` picks a numbered box.
+
+## Test 2: calibration (does p predict a correct pick?)
+
+| arm | n | ECE | AUC(p: right vs wrong) | p>=0.5 cover / acc | p>=0.8 cover / acc | p>=0.9 cover / acc | p>=0.95 cover / acc | tau for 98% acc |
+|---|---|---|---|---|---|---|---|---|
+| clef/ax_text | 3264 | 0.076 | 0.980 | 96.8% / 98.1% | 87.3% / 100.0% | 70.3% / 100.0% | 38.7% / 100.0% | 0.48 (covers 97.0%) |
+
+ECE: expected calibration error over 10 bins (0 is perfect). Cover: share of picks at or above the threshold; acc: accuracy of those picks. For grid, p is the product over hops.
+
+Total spend recorded in this run: $0.617.
+
+
+run probs-3 complete: bench/runs/probs-3/REPORT.md (wall 0.6 min)

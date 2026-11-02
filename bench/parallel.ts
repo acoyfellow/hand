@@ -45,8 +45,9 @@ const TOOLS: Tool[] = [
     type: 'function',
     function: {
       name: 'act',
-      description: 'Click one control described in plain words.',
-      parameters: { type: 'object', properties: { intent: { type: 'string' } }, required: ['intent'] },
+      description:
+        'Click one control: pass its [id] from outline (for example "e3"), or describe it in plain words. Blocked if it looks destructive unless confirm is true; set confirm only when the task asks for that action.',
+      parameters: { type: 'object', properties: { intent: { type: 'string' }, confirm: { type: 'boolean' } }, required: ['intent'] },
     },
   },
   {
@@ -88,7 +89,7 @@ function recordingDevice(agent: string, session: Cdp, actions: DeviceAction[]) {
 
 const call = (hand: Hand, name: string, args: Record<string, string>) => {
   if (name === 'outline') return hand.outline();
-  if (name === 'act') return hand.act(args.intent ?? '');
+  if (name === 'act') return hand.act(args.intent ?? '', String(args.confirm) === 'true');
   if (name === 'type') return hand.type(args.text ?? '', args.into ?? '');
   if (name === 'select') return hand.select(args.value ?? '', args.into ?? '');
   return Promise.resolve(`unknown tool ${name}`);

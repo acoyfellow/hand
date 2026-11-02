@@ -1,0 +1,20 @@
+{
+  "t4": {
+    "relay:kimi-k2.6": {
+      "successMean": 0,
+      "successMin": 0,
+      "successMax": 0,
+      "successes": [
+        0,
+        0,
+        0
+      ],
+      "n": 30,
+      "repeats": 3,
+      "unusableStepRate": 0,
+      "medianSecondsPerTask": 3.373075333999994,
+      "usdPerTask": 0.001601527555555555
+    }
+  },
+  "spendUsd": 0.16530800000000007
+}

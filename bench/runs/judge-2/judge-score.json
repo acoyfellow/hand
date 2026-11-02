@@ -1,0 +1,159 @@
+{
+  "runs": [
+    "judge-2",
+    "judge-2-faults"
+  ],
+  "scored": [
+    {
+      "name": "whole",
+      "pass": false,
+      "metrics": {
+        "falseDone": 125,
+        "caught": 50,
+        "catchRate": 0.4,
+        "catchLower95": 0.3183362687111884,
+        "falsePassRate": 0.10997067448680352,
+        "falseAlarmRate": 0.07608695652173914,
+        "abstainRate": 0,
+        "usdPerCheck": 0.0007252255999999989,
+        "trueDone": 368,
+        "negatives": 682
+      }
+    },
+    {
+      "name": "checklist",
+      "pass": false,
+      "metrics": {
+        "falseDone": 125,
+        "caught": 94,
+        "catchRate": 0.752,
+        "catchLower95": 0.6695388958797917,
+        "falsePassRate": 0.045454545454545456,
+        "falseAlarmRate": 0.41304347826086957,
+        "abstainRate": 0.040952380952380955,
+        "usdPerCheck": 0.0007252255999999989,
+        "trueDone": 368,
+        "negatives": 682
+      }
+    },
+    {
+      "name": "hybrid",
+      "pass": false,
+      "metrics": {
+        "falseDone": 125,
+        "caught": 90,
+        "catchRate": 0.72,
+        "catchLower95": 0.6356327557701333,
+        "falsePassRate": 0.051319648093841645,
+        "falseAlarmRate": 0.33967391304347827,
+        "abstainRate": 0,
+        "usdPerCheck": 0.0007252255999999989,
+        "trueDone": 368,
+        "negatives": 682
+      }
+    }
+  ],
+  "separate": {
+    "judge-2": [
+      {
+        "name": "whole",
+        "pass": false,
+        "metrics": {
+          "falseDone": 20,
+          "caught": 8,
+          "catchRate": 0.4,
+          "catchLower95": 0.21880396741419272,
+          "falsePassRate": 0.025423728813559324,
+          "falseAlarmRate": 0.07608695652173914,
+          "abstainRate": 0,
+          "usdPerCheck": 0.0007254554285714277,
+          "trueDone": 368,
+          "negatives": 472
+        }
+      },
+      {
+        "name": "checklist",
+        "pass": false,
+        "metrics": {
+          "falseDone": 20,
+          "caught": 16,
+          "catchRate": 0.8,
+          "catchLower95": 0.5839782779742402,
+          "falsePassRate": 0.00847457627118644,
+          "falseAlarmRate": 0.41304347826086957,
+          "abstainRate": 0.05119047619047619,
+          "usdPerCheck": 0.0007254554285714277,
+          "trueDone": 368,
+          "negatives": 472
+        }
+      },
+      {
+        "name": "hybrid",
+        "pass": false,
+        "metrics": {
+          "falseDone": 20,
+          "caught": 12,
+          "catchRate": 0.6,
+          "catchLower95": 0.38657794231520604,
+          "falsePassRate": 0.01694915254237288,
+          "falseAlarmRate": 0.33967391304347827,
+          "abstainRate": 0,
+          "usdPerCheck": 0.0007254554285714277,
+          "trueDone": 368,
+          "negatives": 472
+        }
+      }
+    ],
+    "judge-2-faults": [
+      {
+        "name": "whole",
+        "pass": false,
+        "metrics": {
+          "falseDone": 105,
+          "caught": 42,
+          "catchRate": 0.4,
+          "catchLower95": 0.31142450373600916,
+          "falsePassRate": 0.3,
+          "falseAlarmRate": 0,
+          "abstainRate": 0,
+          "usdPerCheck": 0.0007243062857142858,
+          "trueDone": 0,
+          "negatives": 210
+        }
+      },
+      {
+        "name": "checklist",
+        "pass": false,
+        "metrics": {
+          "falseDone": 105,
+          "caught": 78,
+          "catchRate": 0.7428571428571429,
+          "catchLower95": 0.651728758297272,
+          "falsePassRate": 0.12857142857142856,
+          "falseAlarmRate": 0,
+          "abstainRate": 0,
+          "usdPerCheck": 0.0007243062857142858,
+          "trueDone": 0,
+          "negatives": 210
+        }
+      },
+      {
+        "name": "hybrid",
+        "pass": false,
+        "metrics": {
+          "falseDone": 105,
+          "caught": 78,
+          "catchRate": 0.7428571428571429,
+          "catchLower95": 0.651728758297272,
+          "falsePassRate": 0.12857142857142856,
+          "falseAlarmRate": 0,
+          "abstainRate": 0,
+          "usdPerCheck": 0.0007243062857142858,
+          "trueDone": 0,
+          "negatives": 210
+        }
+      }
+    ]
+  },
+  "winner": null
+}
