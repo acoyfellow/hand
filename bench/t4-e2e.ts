@@ -28,6 +28,17 @@ const ONLY = process.env.DO_TASKS?.split(',');
 const TASKS = process.env.DO_TASK_SET === 'hard' ? HARD_TASKS : process.env.DO_TASK_SET === 'all' ? [...BASE_TASKS, ...HARD_TASKS] : BASE_TASKS;
 const MAX_STEPS = 15;
 const JUDGE = process.env.DO_JUDGE === '1';
+const FAULT = process.env.DO_FAULT;
+const TRACKED_KEYS = ['screen', 'mail', 'settings', 'files', 'shop', 'dash', 'chat', 'people', 'editor'];
+const snapshotState = (keys: string[]) => {
+  const state = (window as unknown as { __state: Record<string, unknown> }).__state;
+  return JSON.stringify(Object.fromEntries(keys.map((key) => [key, state[key]])));
+};
+const revertTo = (saved: string) => {
+  const state = (window as unknown as { __state: Record<string, unknown>; render: () => void }).__state;
+  Object.assign(state, JSON.parse(saved));
+  (window as unknown as { render: () => void }).render();
+};
 const rubrics = new Map<string, Promise<Requirement[]>>();
 let rubricQueue: Promise<unknown> = Promise.resolve();
 const rubricFor = (text: string): Promise<Requirement[]> => {
@@ -423,6 +434,8 @@ async function pilot(page: Page, task: Task, r: Run) {
 async function clefLoop(page: Page, task: Task, r: Run, fieldValues: FieldValues) {
   const session = await cdp(page);
   const done: string[] = [];
+  let lastChange = '';
+  let lastChangeAction = '';
   for (let step = 1; step <= MAX_STEPS; step++) {
     r.steps = step;
     const cands = await axCandidates(page, session);
@@ -479,9 +492,21 @@ async function clefLoop(page: Page, task: Task, r: Run, fieldValues: FieldValues
     });
     if (a.choice === 'done') {
       r.claimedDone = true;
+      if (FAULT === 'last-write' && lastChange) {
+        await page.evaluate(revertTo, lastChange);
+        r.trace.push({ fault: 'last-write', reverted: lastChangeAction });
+      }
       return;
     }
+    const beforeAction = FAULT ? await page.evaluate(snapshotState, TRACKED_KEYS) : '';
     await acts[a.choice]?.();
+    if (FAULT) {
+      await page.waitForTimeout(150);
+      if ((await page.evaluate(snapshotState, TRACKED_KEYS)) !== beforeAction) {
+        lastChange = beforeAction;
+        lastChangeAction = options[a.choice] as string;
+      }
+    }
     await page.waitForTimeout(150);
     done.push(options[a.choice] as string);
     // stop loops: the same action three times in a row

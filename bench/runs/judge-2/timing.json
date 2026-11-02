@@ -1,0 +1,11 @@
+{
+  "run": "judge-2",
+  "wallMs": 408155,
+  "stepsMs": {
+    "bench/probe.ts": 12330,
+    "bench/t4-e2e.ts": 395562,
+    "bench/report.ts": 188
+  },
+  "totalInFlight": 160,
+  "perTestInFlight": 160
+}

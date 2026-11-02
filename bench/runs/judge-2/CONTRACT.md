@@ -50,3 +50,11 @@ If no judge passes, nothing moves to `src/`. Point 1 is recorded as failed in `l
 ## Feedback A/B (after a judge ships)
 
 Separate contract, `bench/runs/judge-ab-1/CONTRACT.md`, frozen before that run.
+
+## Addendum 1, before planted data (2026-11-02)
+
+Natural runs gave 20 false-done claims on 5 tasks, below the 30 required. As the Data section allows, planted near-miss faults are added as run `judge-2-faults`:
+
+- Arm `relay:kimi-k2.6` on all 30 tasks, 3 repeats, `DO_JUDGE=1`, `DO_FAULT=last-write`.
+- `last-write`: after the agent's last value-changing step (a type, a select, or a click that changes app state), the app quietly reverts that one change before the agent says done. The agent is not told. The screen re-renders honestly, so truth (`task.check`) stays the judge of record.
+- Every other rule, judge and threshold is unchanged. judge-2 and judge-2-faults are scored together; the report also lists them separately.

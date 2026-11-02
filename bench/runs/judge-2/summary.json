@@ -1,0 +1,53 @@
+{
+  "t4": {
+    "duet": {
+      "successMean": 25,
+      "successMin": 25,
+      "successMax": 25,
+      "successes": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "n": 30,
+      "repeats": 4,
+      "unusableStepRate": 0,
+      "medianSecondsPerTask": 2.7206333750000047,
+      "usdPerTask": 0.0014995726666666661
+    },
+    "pilot": {
+      "successMean": 22,
+      "successMin": 22,
+      "successMax": 22,
+      "successes": [
+        22,
+        22,
+        22,
+        22
+      ],
+      "n": 30,
+      "repeats": 4,
+      "unusableStepRate": 0,
+      "medianSecondsPerTask": 2.5276448749999982,
+      "usdPerTask": 0.0016966639999999994
+    },
+    "relay:kimi-k2.6": {
+      "successMean": 30,
+      "successMin": 30,
+      "successMax": 30,
+      "successes": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "n": 30,
+      "repeats": 4,
+      "unusableStepRate": 0,
+      "medianSecondsPerTask": 3.1218547499999985,
+      "usdPerTask": 0.0016061181666666656
+    }
+  },
+  "spendUsd": 0.6575869000000012
+}
