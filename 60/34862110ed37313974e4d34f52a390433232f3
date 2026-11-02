@@ -1,0 +1,23 @@
+bench/runs/lead/points.json
+  s_655b8bbf0a58d9::t_52644166f102d1 3
+bench/runs/probs-3/lead.json
+  s_655b8bbf0a58d9::t_7bb14ec64a4299 1-17
+bench/runs/probs-3/probs.json
+  s_655b8bbf0a58d9::t_c0b7c221c92c85 1-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "6034862110ed37313974e4d34f52a390433232f3",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
