@@ -142,7 +142,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
   };
 
   const capture = async (clip?: Box): Promise<string> => {
-    const dir = mkdtempSync(join(tmpdir(), 'do-shot-'));
+    const dir = mkdtempSync(join(tmpdir(), 'hand-shot-'));
     const file = join(dir, 'shot.jpg');
     try {
       const region = clip ? ['-R', `${Math.round(clip.x)},${Math.round(clip.y)},${Math.round(clip.w)},${Math.round(clip.h)}`] : [];
@@ -200,7 +200,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       }
       if (set.ok)
         throw new Error(
-          `set ${target.role} "${target.name}" and the helper read it back, but the field changed again before do could confirm it (another agent or the app overwrote it)`,
+          `set ${target.role} "${target.name}" and the helper read it back, but the field changed again before hand could confirm it (another agent or the app overwrote it)`,
         );
       if (!opts.headed)
         throw new Error(

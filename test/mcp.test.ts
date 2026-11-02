@@ -13,10 +13,10 @@ const session = (): Session => ({ helper: '/bin/false', hand: () => fakeHand, re
 const call = (name: string, args: Record<string, unknown>) =>
   handle(session, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
 
-describe('do mcp', () => {
+describe('hand mcp', () => {
   test('initialize and list tools', async () => {
     const init = (await handle(session, { jsonrpc: '2.0', id: 0, method: 'initialize' })) as { result: { serverInfo: { name: string } } };
-    expect(init.result.serverInfo.name).toBe('do');
+    expect(init.result.serverInfo.name).toBe('hand');
     const listed = (await handle(session, { jsonrpc: '2.0', id: 1, method: 'tools/list' })) as { result: { tools: { name: string }[] } };
     expect(listed.result.tools.map((tool) => tool.name)).toEqual(TOOLS.map((tool) => tool.name));
   });

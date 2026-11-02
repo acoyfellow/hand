@@ -274,7 +274,7 @@ final class InteractionLease {
     private let descriptor: Int32
     let waitedMs: Int
     init?(agent: String, timeout: TimeInterval = 10) {
-        let directory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".do")
+        let directory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".hand")
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let path = directory.appendingPathComponent("interaction.lock").path
         descriptor = open(path, O_CREAT | O_RDWR, 0o600)

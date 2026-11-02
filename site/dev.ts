@@ -43,4 +43,4 @@ Bun.serve({
   },
 });
 
-console.log(`do site on http://127.0.0.1:${port}`);
+console.log(`hand site on http://127.0.0.1:${port}`);

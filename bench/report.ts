@@ -25,7 +25,7 @@ const load = (n: string): any[] =>
     : [];
 const group = <T>(xs: T[], k: (x: T) => string) => xs.reduce((m, x) => m.set(k(x), [...(m.get(k(x)) ?? []), x]), new Map<string, T[]>());
 const usd = (x: number) => (x < 0.01 ? `$${x.toFixed(5)}` : `$${x.toFixed(3)}`);
-const lines: string[] = [`# do eval report`, '', `Run: \`${dir.split('/').at(-1)}\``, ''];
+const lines: string[] = [`# hand eval report`, '', `Run: \`${dir.split('/').at(-1)}\``, ''];
 const summary: Record<string, unknown> = {};
 
 // ---------- T1 ----------

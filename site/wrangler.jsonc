@@ -1,8 +1,8 @@
 {
   "account_id": "bfcb6ac5b3ceaf42a09607f6f7925823",
-	"name": "do-site",
+	"name": "hand-site",
 	"compatibility_date": "2026-10-01",
 	"assets": { "directory": "./public", "html_handling": "auto-trailing-slash", "not_found_handling": "404-page" },
 	"workers_dev": false,
-	"routes": [{ "pattern": "do.coey.dev", "custom_domain": true }]
+	"routes": [{ "pattern": "hand.coey.dev", "custom_domain": true }]
 }

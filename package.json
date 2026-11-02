@@ -1,5 +1,5 @@
 {
-  "name": "do",
+  "name": "hand",
   "version": "0.0.1",
   "private": true,
   "description": "Clef steers computer use. Code lists what can be clicked, Clef picks with a probability, code acts, Clef checks.",

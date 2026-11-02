@@ -1,9 +1,9 @@
-# Handoff: do (computer-use library), push it hard
+# Handoff: hand (computer-use library), push it hard
 
 You DO, not plan. Report with receipts: commands, exit codes, run directories, SHAs.
 
 ## What do is
-- Repo: `~/cloudflare/do`, `github.com/acoyfellow/do`, live at do.coey.dev (HTTP 200).
+- Repo: `~/cloudflare/hand`, `github.com/acoyfellow/hand`, live at hand.coey.dev (HTTP 200).
 - A device lists the controls on screen in code. Clef picks one with a probability, the device acts, and Clef checks whether it worked. A writer model is called only when the task needs new text.
 - `src/` ships. `bench/` is the gate every `src/` change must pass.
 - Read `README.md` and `llms.txt` first.
@@ -36,11 +36,11 @@ Make the judge useful enough to ship in `src/` as a done-check that `Hand` can r
 1. Freeze a contract first (`bench/runs/judge-2/CONTRACT.md`): hypothesis, metrics, pass bar, disproof exit. Commit it before running.
 2. Get enough false-done cases: run the hard task set with more repeats, plus planted near-miss faults, so n ≥ 30 negatives. The current 8 is too few.
 3. Score both judges, plus a hybrid (checklist first, then the whole question when the checklist abstains), on false-done caught, false pass, and cost.
-4. If one passes the bar, move it to `src/` (for example `do/check`), add it to the gate in `bench/`, and update the README with the real numbers.
+4. If one passes the bar, move it to `src/` (for example `hand/check`), add it to the gate in `bench/`, and update the README with the real numbers.
 5. Feedback test: show the verdict to the agent before it says done. Arms: real verdict, placebo, none. Measure false "done" claims.
 
 ## Rules
 - Bench: `bun bench/t4-e2e.ts`, run with `DO_JUDGE=1`, `DO_TASK_SET=hard|all`, `DO_TASKS=a,b`. Reports go in `bench/runs/<name>/`. Lint with Biome (`bun x biome check`).
 - Run long jobs with nohup (`# frugal:allow-long`). No sleep loops; use `loops_task` and delete it when it finishes.
-- Never: push or deploy without Jordan's OK, mock, use `--no-verify`, add source comments, or use the `npm do` package (install with `bun add github:acoyfellow/do`).
+- Never: push or deploy without Jordan's OK, mock, use `--no-verify`, add source comments, or use the npm `do` package (install with `bun add github:acoyfellow/hand`).
 - Stay in cmux workspace:37 (JORDAN). Check with `cmux identify --json`, not `$CMUX_WORKSPACE_ID`.

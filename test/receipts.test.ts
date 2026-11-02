@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { macosDevice, type Receipt } from '../src/devices/macos.ts';
 
 const fakeHelper = (script: string) => {
-  const dir = mkdtempSync(join(tmpdir(), 'do-ax-'));
+  const dir = mkdtempSync(join(tmpdir(), 'hand-ax-'));
   const file = join(dir, 'ax');
   writeFileSync(file, `#!/bin/sh\n${script}\n`);
   chmodSync(file, 0o755);
@@ -19,7 +19,7 @@ const snapshot = JSON.stringify({
 
 describe('macOS device receipts', () => {
   test('passes the snapshot ref, the agent and the headless policy to every targeted action', async () => {
-    const log = join(mkdtempSync(join(tmpdir(), 'do-log-')), 'args');
+    const log = join(mkdtempSync(join(tmpdir(), 'hand-log-')), 'args');
     const helper = fakeHelper(
       `echo "$@" >> ${log}\ncase "$1" in snapshot) echo '${snapshot}';; set) echo '{"ok":true,"detail":"AXValue 0","delivery":"delivered_verified","mechanism":"semantic_api"}';; value) echo '{"ok":true,"detail":"hello"}';; esac`,
     );

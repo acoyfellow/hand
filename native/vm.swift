@@ -25,7 +25,7 @@ func flag(_ name: String) -> String? {
 }
 
 let name = flag("--name") ?? "sandbox-1"
-let home = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".do/vm")
+let home = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".hand/vm")
 let paths = Paths(root: home.appendingPathComponent(name))
 let cpus = Int(flag("--cpus") ?? "4") ?? 4
 let memoryGB = UInt64(flag("--memory") ?? "8") ?? 8
@@ -151,10 +151,10 @@ final class Runner: NSObject, NSApplicationDelegate, VZVirtualMachineDelegate, N
             view.capturesSystemKeys = false
             view.automaticallyReconfiguresDisplay = true
             let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1280, height: 800), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
-            window.title = "do · \(name)"
+            window.title = "hand · \(name)"
             window.contentView = view
             window.delegate = self
-            window.setFrameAutosaveName("do-vm-\(name)")
+            window.setFrameAutosaveName("hand-vm-\(name)")
             window.makeKeyAndOrderFront(nil)
             self.window = window
             NSApp.activate(ignoringOtherApps: true)

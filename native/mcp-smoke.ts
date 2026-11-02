@@ -29,7 +29,7 @@ const tool = async (name: string, args: Record<string, unknown>) => {
 
 await rpc('initialize', {});
 console.log('tools', (await rpc('tools/list')).result.tools.map((t: { name: string }) => t.name).join(','));
-const marker = process.argv[2] ?? `do-smoke-${Date.now()}`;
+const marker = process.argv[2] ?? `hand-smoke-${Date.now()}`;
 await tool('activate', { app: 'TextEdit' });
 await tool('outline', { app: 'TextEdit' });
 await tool('type', { app: 'TextEdit', text: marker, into: 'the document text area' });

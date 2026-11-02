@@ -1,8 +1,8 @@
-# do
+# hand
 
 > Don't let a model guess pixels. List what can be clicked, and let a small model choose.
 
-do is a computer-use library. A device lists the controls on screen in code. [Clef](https://developers.cloudflare.com/workers-ai/models/clef/), Cloudflare's small decision model, picks one with a probability. The device acts, and Clef checks whether it worked. A larger model is called only when a task needs text that is not in it word for word.
+hand is a computer-use library. A device lists the controls on screen in code. [Clef](https://developers.cloudflare.com/workers-ai/models/clef/), Cloudflare's small decision model, picks one with a probability. The device acts, and Clef checks whether it worked. A larger model is called only when a task needs text that is not in it word for word.
 
 The repo has two parts:
 
@@ -36,29 +36,29 @@ screen ──► device lists controls ──► Clef: "which one?" + probabilit
   └── Clef: "did it work?" ◄── device acts ◄┘
 ```
 
-- **Device:** the code that sees and touches a screen. It lists controls (role, name, box), takes screenshots, presses, types and sets values. Anything that implements `Device` from `do/hand` works.
-  - `do/devices/macos`: real Mac apps through the accessibility API (see [macOS](#macos)).
+- **Device:** the code that sees and touches a screen. It lists controls (role, name, box), takes screenshots, presses, types and sets values. Anything that implements `Device` from `hand/hand` works.
+  - `hand/devices/macos`: real Mac apps through the accessibility API (see [macOS](#macos)).
   - `bench/browser.ts`: a Playwright browser, used only by the benchmark.
-- **Clef** (`do/clef`) picks from a list. It never writes text.
-- **Clairic** (`do/clairic`) copies values out of the task. It never writes text that is not already there.
-- **Writer** (`do/writer`) writes field values when Clef says the task needs new text. The default is `glm-5.3-flash`, with `kimi-k2.6` filling any field glm leaves empty (see [Writers](#writers)).
-- **Hand** (`do/hand`) is what a caller uses: `outline()`, `act(intent)`, `type(text, into)`, `select(value, into)`, `look(question)`. It refuses when Clef is unsure, blocks controls Clef rates as destructive unless confirmed, and returns a one-line receipt. The caller never receives an image.
+- **Clef** (`hand/clef`) picks from a list. It never writes text.
+- **Clairic** (`hand/clairic`) copies values out of the task. It never writes text that is not already there.
+- **Writer** (`hand/writer`) writes field values when Clef says the task needs new text. The default is `glm-5.3-flash`, with `kimi-k2.6` filling any field glm leaves empty (see [Writers](#writers)).
+- **Hand** (`hand/hand`) is what a caller uses: `outline()`, `act(intent)`, `type(text, into)`, `select(value, into)`, `look(question)`. It refuses when Clef is unsure, blocks controls Clef rates as destructive unless confirmed, and returns a one-line receipt. The caller never receives an image.
 
 ## Install
 
 ```bash
-bun add github:acoyfellow/do
+bun add github:acoyfellow/hand
 ```
 
-do reads a Cloudflare AI Gateway account, gateway name and token the same way as [odds](https://github.com/acoyfellow/odds). See `src/credentials.ts`.
+hand reads a Cloudflare AI Gateway account, gateway name and token the same way as [odds](https://github.com/acoyfellow/odds). See `src/credentials.ts`.
 
 ## Use
 
 ```ts
-import { gatewayTransport } from 'do/clef';
-import { readConfig, readToken } from 'do/credentials';
-import { macosDevice } from 'do/devices/macos';
-import { Hand } from 'do/hand';
+import { gatewayTransport } from 'hand/clef';
+import { readConfig, readToken } from 'hand/credentials';
+import { macosDevice } from 'hand/devices/macos';
+import { Hand } from 'hand/hand';
 
 const transport = gatewayTransport({ ...readConfig(), token: readToken() });
 const device = macosDevice({ helper: './native/ax', app: 'Google Chrome' });
@@ -71,15 +71,15 @@ await hand.look('Is coey.dev open?');            // "p(yes)=0.99"
 
 | Module | Exports |
 |---|---|
-| `do/hand` | `Hand`, `Device`, `HandOptions`, `Step` |
-| `do/devices/macos` | `macosDevice`, `MacosDevice`, `MacosDeviceOptions` |
-| `do/clef` | `ask`, `gatewayTransport`, `checkRequest`, `CLEF_MODELS`, `Transport`, `ClefModel` |
-| `do/clairic` | `extract`, `ClairicField` |
-| `do/writer` | `Writer`, `llmWriter`, `fallbackWriter`, `clefInvolvement`, `writerFromSpec`, `WRITER_PROMPTS` |
-| `do/steer` | `pickTarget`, `verify`, `risky`, `injection`, `Screen`, `Method` |
-| `do/llm` | `chat`, `LLM_MODELS`, `LlmModel`, `Msg`, `Tool` |
-| `do/perceive` | `Box`, `Candidate`, `center`, `inside`, `describe` |
-| `do/credentials` | `readConfig`, `readToken`, `redact` |
+| `hand/hand` | `Hand`, `Device`, `HandOptions`, `Step` |
+| `hand/devices/macos` | `macosDevice`, `MacosDevice`, `MacosDeviceOptions` |
+| `hand/clef` | `ask`, `gatewayTransport`, `checkRequest`, `CLEF_MODELS`, `Transport`, `ClefModel` |
+| `hand/clairic` | `extract`, `ClairicField` |
+| `hand/writer` | `Writer`, `llmWriter`, `fallbackWriter`, `clefInvolvement`, `writerFromSpec`, `WRITER_PROMPTS` |
+| `hand/steer` | `pickTarget`, `verify`, `risky`, `injection`, `Screen`, `Method` |
+| `hand/llm` | `chat`, `LLM_MODELS`, `LlmModel`, `Msg`, `Tool` |
+| `hand/perceive` | `Box`, `Candidate`, `center`, `inside`, `describe` |
+| `hand/credentials` | `readConfig`, `readToken`, `redact` |
 
 ## macOS
 
@@ -109,7 +109,7 @@ How the device acts:
 
 ```bash
 bun src/mcp.ts               # headless
-DO_HEADED=1 bun src/mcp.ts   # allow keystroke and mouse fallbacks
+HAND_HEADED=1 bun src/mcp.ts   # allow keystroke and mouse fallbacks
 ```
 
 | Tool | What it does |

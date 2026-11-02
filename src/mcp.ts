@@ -139,7 +139,7 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
       helper,
       app: name,
       agent: agentId,
-      headed: process.env.DO_HEADED === '1',
+      headed: process.env.HAND_HEADED === '1',
       onAction: ({ phase, receipt }) =>
         notify({
           phase,
@@ -177,7 +177,7 @@ type Rpc = { jsonrpc: '2.0'; id?: number | string; method: string; params?: Reco
 export async function handle(session: () => Session, message: Rpc): Promise<unknown | undefined> {
   const reply = (result: unknown) => ({ jsonrpc: '2.0', id: message.id, result });
   if (message.method === 'initialize')
-    return reply({ protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'do', version: '0.1.0' } });
+    return reply({ protocolVersion: '2025-06-18', capabilities: { tools: {} }, serverInfo: { name: 'hand', version: '0.1.0' } });
   if (message.method === 'tools/list') return reply({ tools: TOOLS });
   if (message.method === 'tools/call') {
     const params = message.params ?? {};
@@ -186,7 +186,7 @@ export async function handle(session: () => Session, message: Rpc): Promise<unkn
     try {
       return reply(await callTool(session(), name, args));
     } catch (error) {
-      return reply(text(`do error: ${describeError(error)}`, true));
+      return reply(text(`hand error: ${describeError(error)}`, true));
     }
   }
   if (message.method === 'ping') return reply({});
@@ -214,7 +214,7 @@ if (import.meta.main) {
   serve(() => {
     cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper(), DEFAULT_HAND, (event) =>
       process.stdout.write(
-        `${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/message', params: { level: 'info', logger: 'do.action', data: event } })}\n`,
+        `${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/message', params: { level: 'info', logger: 'hand.action', data: event } })}\n`,
       ),
     );
     return cached;

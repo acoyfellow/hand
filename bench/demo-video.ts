@@ -207,7 +207,7 @@ if (import.meta.main) {
         <tr><td>LLM plans + Clef clicks</td><td>13.7 / 20</td><td>$0.0049</td><td>22.4 s</td></tr>
         <tr><td>vision · qwen3.8-27b</td><td>12.0 / 20</td><td>$0.0090</td><td>103.7 s</td></tr>
         <tr><td>vision · kimi-k2.6</td><td>11.7 / 20</td><td>$0.0065</td><td>13.4 s</td></tr>
-      </table><p class="muted" style="margin-top:36px">github.com/acoyfellow/do · reproduce with bun run bench</p>`,
+      </table><p class="muted" style="margin-top:36px">github.com/acoyfellow/hand · reproduce with bun run bench</p>`,
     ),
   ];
   const list = `${dir}/list.txt`;
