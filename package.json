@@ -10,6 +10,7 @@
     "lint": "biome check .",
     "test": "bun test test/ bench/",
     "check": "bun run typecheck && bun run lint && bun run test",
+    "lab": "bun lab/build.ts",
     "screens": "bun bench/screens.ts",
     "probe": "bun bench/probe.ts",
     "t1": "bun bench/t1-grounding.ts",

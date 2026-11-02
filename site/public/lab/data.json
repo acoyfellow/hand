@@ -1,0 +1,371 @@
+{
+  "generatedAt": "2026-11-02",
+  "competitors": [
+    {
+      "id": "hand",
+      "name": "hand",
+      "repo": "acoyfellow/hand",
+      "url": "https://hand.coey.dev",
+      "layer": "both",
+      "sees": "accessibility",
+      "brain": "small model picks",
+      "platforms": [
+        "macOS",
+        "browser"
+      ],
+      "ships": "TypeScript library and MCP server",
+      "strength": "A small model picks the control, says how sure it is, asks when unsure, blocks risky clicks and checks the result.",
+      "gap": "No Windows or Linux. No scored real-Mac task set. No done-check that meets its bar.",
+      "adapter": "measured",
+      "stars": 0,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "browser-use",
+      "name": "browser-use",
+      "repo": "browser-use/browser-use",
+      "url": "https://browser-use.com",
+      "layer": "browser",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "Python library and cloud",
+      "strength": "The most used open browser agent, with stealth cloud browsers.",
+      "gap": "Big model every step, so cost and latency scale with every click.",
+      "adapter": "planned",
+      "stars": 119865,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "agent-browser",
+      "name": "agent-browser",
+      "repo": "vercel-labs/agent-browser",
+      "url": "https://agent-browser.dev",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "caller decides",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "Rust CLI on npm",
+      "strength": "Snapshot refs, tiny JSON output, fast native CLI. The default browser tool for many coding agents.",
+      "gap": "No model inside: the calling agent pays a big model to read every snapshot and pick.",
+      "adapter": "planned",
+      "stars": 45279,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "ui-tars",
+      "name": "UI-TARS",
+      "repo": "bytedance/UI-TARS-desktop",
+      "url": "https://github.com/bytedance/UI-TARS-desktop",
+      "layer": "desktop",
+      "sees": "screenshots",
+      "brain": "own vision model",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "browser"
+      ],
+      "ships": "Desktop app and vision model",
+      "strength": "Its own model trained for screen grounding.",
+      "gap": "Screenshots only; needs a large model to run.",
+      "adapter": "none",
+      "stars": 39525,
+      "pushed": "2026-10-09"
+    },
+    {
+      "id": "playwright-mcp",
+      "name": "Playwright MCP",
+      "repo": "microsoft/playwright-mcp",
+      "url": "https://github.com/microsoft/playwright-mcp",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "caller decides",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "MCP server",
+      "strength": "Accessibility snapshots with refs, built into many MCP clients.",
+      "gap": "Large snapshots sent to the caller each step; no picking, no confidence.",
+      "adapter": "planned",
+      "stars": 39028,
+      "pushed": "2026-11-01"
+    },
+    {
+      "id": "cua",
+      "name": "cua",
+      "repo": "trycua/cua",
+      "url": "https://cua.ai",
+      "layer": "desktop",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "macOS",
+        "Linux",
+        "Windows"
+      ],
+      "ships": "Sandboxes, drivers and benchmarks",
+      "strength": "Disposable computers for agents across three systems, plus benchmark harnesses.",
+      "gap": "Infrastructure for any model; the picking is left to the model.",
+      "adapter": "planned",
+      "stars": 31597,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "stagehand",
+      "name": "Stagehand",
+      "repo": "browserbase/stagehand",
+      "url": "https://stagehand.dev",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "big model every step",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "TypeScript SDK",
+      "strength": "Plain-words act and extract from code, closest API to hand on the web.",
+      "gap": "Each act sends the page to a big model.",
+      "adapter": "planned",
+      "stars": 25911,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "skyvern",
+      "name": "Skyvern",
+      "repo": "Skyvern-AI/skyvern",
+      "url": "https://skyvern.com",
+      "layer": "browser",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "Python service and cloud",
+      "strength": "Workflow builder for business forms.",
+      "gap": "AGPL, heavy service, big model every step.",
+      "adapter": "none",
+      "stars": 23336,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "midscene",
+      "name": "Midscene",
+      "repo": "web-infra-dev/midscene",
+      "url": "https://midscenejs.com",
+      "layer": "both",
+      "sees": "screenshots",
+      "brain": "big model every step",
+      "platforms": [
+        "browser",
+        "Android",
+        "iOS"
+      ],
+      "ships": "TypeScript SDK",
+      "strength": "Plain-words UI testing across web and mobile.",
+      "gap": "Vision model every step.",
+      "adapter": "none",
+      "stars": 15474,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "nanobrowser",
+      "name": "Nanobrowser",
+      "repo": "nanobrowser/nanobrowser",
+      "url": "https://nanobrowser.ai",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "big model every step",
+      "platforms": [
+        "Chrome extension"
+      ],
+      "ships": "Chrome extension",
+      "strength": "Runs in your logged-in browser.",
+      "gap": "An end-user agent, not a tool other agents call.",
+      "adapter": "none",
+      "stars": 14222,
+      "pushed": "2026-10-24"
+    },
+    {
+      "id": "agent-s",
+      "name": "Agent S",
+      "repo": "simular-ai/Agent-S",
+      "url": "https://github.com/simular-ai/Agent-S",
+      "layer": "desktop",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "Linux"
+      ],
+      "ships": "Research agent",
+      "strength": "Strong published OSWorld scores.",
+      "gap": "Research code, big models, expensive per task.",
+      "adapter": "none",
+      "stars": 12859,
+      "pushed": "2026-10-30"
+    },
+    {
+      "id": "ufo",
+      "name": "Microsoft UFO",
+      "repo": "microsoft/UFO",
+      "url": "https://github.com/microsoft/UFO",
+      "layer": "desktop",
+      "sees": "accessibility",
+      "brain": "big model every step",
+      "platforms": [
+        "Windows"
+      ],
+      "ships": "Windows agent framework",
+      "strength": "Deep Windows UI Automation support.",
+      "gap": "Windows only, big model every step.",
+      "adapter": "none",
+      "stars": 10167,
+      "pushed": "2026-10-30"
+    },
+    {
+      "id": "agent-desktop",
+      "name": "agent-desktop",
+      "repo": "vercel-labs/agent-desktop",
+      "url": "https://agent-browser.dev/desktop",
+      "layer": "desktop",
+      "sees": "accessibility",
+      "brain": "caller decides",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "Linux"
+      ],
+      "ships": "Rust CLI and C library",
+      "strength": "Three operating systems, snapshot refs, skeleton then drill-down, wait predicates, traces.",
+      "gap": "No model inside, no probabilities, no risk check. The caller reads the tree and decides.",
+      "adapter": "planned",
+      "stars": 9553,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "openadapt",
+      "name": "OpenAdapt",
+      "repo": "OpenAdaptAI/OpenAdapt",
+      "url": "https://openadapt.ai",
+      "layer": "desktop",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "macOS",
+        "Windows"
+      ],
+      "ships": "Record and replay agent",
+      "strength": "Learns from a person showing the task.",
+      "gap": "Small community; replay rather than a general tool.",
+      "adapter": "none",
+      "stars": 1861,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "frontier-cu",
+      "name": "Claude, OpenAI, Gemini computer use",
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/computer-use",
+      "layer": "model",
+      "sees": "screenshots",
+      "brain": "big model every step",
+      "platforms": [
+        "any"
+      ],
+      "ships": "Model APIs",
+      "strength": "The best general reasoning, built into the model.",
+      "gap": "A screenshot and a frontier model per step: hand measured Opus vision at about 18x its cost on the same 30 tasks.",
+      "adapter": "measured"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "hand-30",
+      "name": "hand 30 tasks",
+      "repo": "acoyfellow/hand",
+      "status": "running",
+      "note": "Our own app: settings, mail, files, shop, chat. Truth read from app state."
+    },
+    {
+      "id": "miniwob",
+      "name": "MiniWoB++ (BrowserGym, 125 tasks)",
+      "repo": "Farama-Foundation/miniwob-plusplus",
+      "status": "harness built",
+      "note": "Small public web tasks with their own reward."
+    },
+    {
+      "id": "webarena",
+      "name": "WebArena",
+      "repo": "web-arena-x/webarena",
+      "status": "blocked",
+      "note": "Needs about 180 GB of site images; the image host did not answer."
+    },
+    {
+      "id": "osworld",
+      "name": "OSWorld",
+      "repo": "xlang-ai/OSWorld",
+      "status": "not started",
+      "note": "Real desktop tasks in VMs; the main public desktop score."
+    },
+    {
+      "id": "mac-30",
+      "name": "hand Mac tasks",
+      "repo": "acoyfellow/hand",
+      "status": "not started",
+      "note": "Real Mac apps, scored from app state. Needed to face agent-desktop."
+    }
+  ],
+  "scoreboard": [
+    {
+      "suite": "hand-30",
+      "entrant": "hand",
+      "arm": "hand (default: Clef picks, kimi-k2.6 plans)",
+      "run": "lead-browser-1",
+      "finished": 30,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.0016,
+      "medianSeconds": 3.7,
+      "finishedPerDollar": 624
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "hand",
+      "arm": "hand (Clef + writer only)",
+      "run": "lead-browser-1",
+      "finished": 25,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.0015,
+      "medianSeconds": 2.7,
+      "finishedPerDollar": 556
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "frontier-cu",
+      "arm": "Claude Opus, screenshot every step",
+      "run": "bench-2",
+      "finished": 22.7,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.02889,
+      "medianSeconds": 8.3,
+      "finishedPerDollar": 26
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "frontier-cu",
+      "arm": "Claude Opus, page text every step",
+      "run": "bench-2",
+      "finished": 22,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.02878,
+      "medianSeconds": 19,
+      "finishedPerDollar": 25
+    }
+  ]
+}
