@@ -1,0 +1,29 @@
+package.json
+  s_655b8bbf0a58d9::t_2014685a3d52c7 50
+site/dev.ts
+  s_655b8bbf0a58d9::t_2ca13a4116e92d 9,11-13
+site/public/cursor.js
+  s_655b8bbf0a58d9::t_c659c7b22c7190 1
+site/public/index.html
+  s_655b8bbf0a58d9::t_e0ea134f54469c 100-121,123,161-171,174-176,179-180,265-311
+src/devices/browser.ts
+  s_655b8bbf0a58d9::t_849461572a52a3 1,12-23,248-254,321
+src/hand.ts
+  s_655b8bbf0a58d9::t_cb1cef3ea7dda7 16,151,196
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "332a7b1c74d933fc6a40a23fe0d26c139fa11580",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
