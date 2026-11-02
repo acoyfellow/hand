@@ -34,3 +34,7 @@ MiniWoB++ (Farama-Foundation/miniwob-plusplus at `33c3b4dd`), the task set Brows
 ## Disproof exit
 
 If `do` solves more than 3 fewer tasks than `vision`, or its tasks-per-dollar edge is under 3x, point 5 fails with the numbers and the loop reports.
+
+## Addendum 1, before any data
+
+The viewport line above would shrink MiniWoB's 160 x 210 task area inside a 1280 x 800 screenshot and unfairly hurt the screenshot arm. Both arms instead use BrowserGym's own MiniWoB viewport, 332 x 214, and BrowserGym's setup script, read at run time from `browsergym/miniwob/base.py` so it cannot drift. Everything else is unchanged.
