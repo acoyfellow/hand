@@ -52,7 +52,8 @@
     "./anthropic": "./src/anthropic.ts",
     "./credentials": "./src/credentials.ts",
     "./writer": "./src/writer.ts",
-    "./devices/macos": "./src/devices/macos.ts"
+    "./devices/macos": "./src/devices/macos.ts",
+    "./devices/browser": "./src/devices/browser.ts"
   },
   "files": [
     "src",

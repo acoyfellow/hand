@@ -24,7 +24,11 @@ const app = { type: 'string', description: 'Exact app name as shown by the apps 
 const agent = { type: 'string', description: 'Optional id of the agent acting, so parallel agents get their own cursor and take turns.' };
 
 export const TOOLS: readonly McpTool[] = [
-  { name: 'apps', description: 'List the Mac apps that are running and can be controlled. The first line names the app in front.', inputSchema: { type: 'object', properties: {}, required: [] } },
+  {
+    name: 'apps',
+    description: 'List the Mac apps that are running and can be controlled. The first line names the app in front.',
+    inputSchema: { type: 'object', properties: {}, required: [] },
+  },
   {
     name: 'activate',
     description: 'Bring an app to the front. Typing only works in the frontmost app.',

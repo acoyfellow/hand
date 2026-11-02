@@ -7,6 +7,7 @@ import { Effect } from 'effect';
 import type { CDPSession, Page } from 'playwright';
 import { type ClairicField, extract } from '../src/clairic.ts';
 import { ask, type ClefModel } from '../src/clef.ts';
+import { browserClick, browserSetValue, browserType } from '../src/devices/browser.ts';
 import { Hand } from '../src/hand.ts';
 import { chat, coordinateInstruction, firstJson, type LlmModel, type Msg, screenshotFrame, type Tool, toViewportPoint, withInstructions } from '../src/llm.ts';
 import { type Candidate, center, describe } from '../src/perceive.ts';
@@ -435,29 +436,20 @@ async function clefLoop(page: Page, task: Task, r: Run, fieldValues: FieldValues
         for (const lit of valuesFor.get(c) ?? []) {
           const id = `o${++k}`;
           options[id] = `type "${lit}" into ${describe(c)}`;
-          acts[id] = async () => {
-            const p = center(c);
-            await page.mouse.click(p.x, p.y);
-            await page.keyboard.press('ControlOrMeta+A');
-            await page.keyboard.type(lit);
-          };
+          acts[id] = () => browserType(session, c, lit);
         }
       } else if (c.role === 'combobox') {
         for (const lit of valuesFor.get(c) ?? []) {
           const id = `o${++k}`;
           options[id] = `choose "${lit}" in ${describe(c)}`;
           acts[id] = async () => {
-            const dev = await playwrightDevice(page);
-            await dev.setValue(c, lit);
+            await browserSetValue(session, c, lit);
           };
         }
       } else {
         const id = `o${++k}`;
         options[id] = `click ${describe(c)}`;
-        acts[id] = async () => {
-          const p = center(c);
-          await page.mouse.click(p.x, p.y);
-        };
+        acts[id] = () => browserClick(session, center(c));
       }
     }
     const shot = await screenshot(page);

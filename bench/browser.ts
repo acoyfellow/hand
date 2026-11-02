@@ -1,25 +1,9 @@
 import type { CDPSession, Page } from 'playwright';
+import { browserCandidates, browserDevice } from '../src/devices/browser.ts';
 import type { Device } from '../src/hand.ts';
 import { type Box, type Candidate, center, describe } from '../src/perceive.ts';
 
 export { type Box, type Candidate, center, describe };
-
-const INTERACTIVE = new Set([
-  'button',
-  'link',
-  'textbox',
-  'searchbox',
-  'switch',
-  'checkbox',
-  'radio',
-  'combobox',
-  'tab',
-  'menuitem',
-  'option',
-  'slider',
-  'spinbutton',
-  'listbox',
-]);
 
 export async function cdp(page: Page): Promise<CDPSession> {
   const s = await page.context().newCDPSession(page);
@@ -28,59 +12,9 @@ export async function cdp(page: Page): Promise<CDPSession> {
   return s;
 }
 export async function axCandidates(page: Page, session: CDPSession): Promise<Candidate[]> {
-  await session.send('DOM.getDocument', { depth: -1 });
-  const { nodes } = (await session.send('Accessibility.getFullAXTree')) as { nodes: any[] };
-  const vw = page.viewportSize()?.width ?? 1280;
-  const vh = page.viewportSize()?.height ?? 800;
-  const modal = await page.evaluate(() => !!document.querySelector('[role=dialog]'));
-  const out: Candidate[] = [];
-  for (const n of nodes) {
-    if (n.ignored || !n.backendDOMNodeId) continue;
-    const role = n.role?.value as string;
-    if (!INTERACTIVE.has(role)) continue;
-    let box: Box | undefined;
-    try {
-      const { model } = (await session.send('DOM.getBoxModel', { backendNodeId: n.backendDOMNodeId })) as any;
-      const q = model.border as number[];
-      const xs = [q[0], q[2], q[4], q[6]];
-      const ys = [q[1], q[3], q[5], q[7]];
-      box = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
-    } catch {
-      continue;
-    }
-    if (box.w < 2 || box.h < 2 || box.x + box.w < 0 || box.y + box.h < 0 || box.x > vw || box.y > vh) continue;
-    out.push({
-      id: '',
-      role,
-      name: String(n.name?.value ?? '')
-        .trim()
-        .slice(0, 80),
-      backendNodeId: n.backendDOMNodeId,
-      ...box,
-    });
-  }
-  let list = out;
-  if (modal) {
-    const inDialog = await Promise.all(out.map((c) => insideDialog(session, c.backendNodeId)));
-    list = out.filter((_, i) => inDialog[i]);
-  }
-  list.sort((a, b) => a.y - b.y || a.x - b.x);
-  return list.map((c, i) => ({ ...c, id: `e${i + 1}` }));
+  return browserCandidates(session, page.viewportSize() ?? { width: 1280, height: 800 });
 }
 
-async function insideDialog(session: CDPSession, backendNodeId: number): Promise<boolean> {
-  try {
-    const { object } = (await session.send('DOM.resolveNode', { backendNodeId })) as any;
-    const r = (await session.send('Runtime.callFunctionOn', {
-      objectId: object.objectId,
-      functionDeclaration: 'function(){return !!this.closest("[role=dialog]")}',
-      returnByValue: true,
-    })) as any;
-    return r.result.value === true;
-  } catch {
-    return false;
-  }
-}
 export async function groundTruthId(session: CDPSession, backendNodeId: number): Promise<string | null> {
   try {
     const { object } = (await session.send('DOM.resolveNode', { backendNodeId })) as any;
@@ -179,39 +113,5 @@ export const playwrightScreen = (page: Page) => ({
 });
 
 export async function playwrightDevice(page: Page): Promise<Device> {
-  const session: CDPSession = await cdp(page);
-  return {
-    ...playwrightScreen(page),
-    candidates: () => axCandidates(page, session),
-    click: async (p) => {
-      await page.mouse.click(p.x, p.y);
-    },
-    typeInto: async (c: Candidate, text: string) => {
-      const p = center(c);
-      await page.mouse.click(p.x, p.y);
-      await page.keyboard.press('ControlOrMeta+A');
-      await page.keyboard.type(text);
-    },
-    setValue: async (c: Candidate, value: string) => {
-      const { object } = (await session.send('DOM.resolveNode', { backendNodeId: c.backendNodeId })) as any;
-      const r = (await session.send('Runtime.callFunctionOn', {
-        objectId: object.objectId,
-        functionDeclaration: `function(v){
-          const want = String(v).trim().toLowerCase();
-          if (this.tagName === 'SELECT') {
-            const o = [...this.options].find((o) => o.text.trim().toLowerCase() === want || o.value.toLowerCase() === want);
-            if (!o) return false;
-            this.value = o.value;
-          } else { this.value = v; }
-          this.dispatchEvent(new Event('input', { bubbles: true }));
-          this.dispatchEvent(new Event('change', { bubbles: true }));
-          return true;
-        }`,
-        arguments: [{ value }],
-        returnByValue: true,
-      })) as any;
-      return r.result.value === true;
-    },
-    settle: () => page.waitForTimeout(150),
-  };
+  return browserDevice(await cdp(page));
 }
