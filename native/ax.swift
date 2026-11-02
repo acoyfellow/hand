@@ -103,10 +103,19 @@ func children(_ element: AXUIElement) -> [AXUIElement] {
     attribute(element, kAXChildrenAttribute) ?? []
 }
 
+func windowCount(_ app: NSRunningApplication) -> Int {
+    let windows: [AXUIElement] = attribute(AXUIElementCreateApplication(app.processIdentifier), kAXWindowsAttribute) ?? []
+    return app.isActive ? windows.count + 1000 : windows.count
+}
+
 func application(named name: String?) -> NSRunningApplication? {
     guard let name, name != "-" else { return NSWorkspace.shared.frontmostApplication }
     let running = NSWorkspace.shared.runningApplications
-    return running.first { $0.localizedName == name } ?? running.first { $0.localizedName?.caseInsensitiveCompare(name) == .orderedSame }
+    if let pid = Int32(name), let byPid = running.first(where: { $0.processIdentifier == pid }) { return byPid }
+    if let byBundle = running.first(where: { $0.bundleIdentifier == name }) { return byBundle }
+    let exact = running.filter { $0.localizedName == name }
+    let matches = exact.isEmpty ? running.filter { $0.localizedName?.caseInsensitiveCompare(name) == .orderedSame } : exact
+    return matches.max { windowCount($0) < windowCount($1) }
 }
 
 func roots(of app: NSRunningApplication) -> [AXUIElement] {
