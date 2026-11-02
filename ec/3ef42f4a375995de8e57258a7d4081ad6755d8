@@ -1,0 +1,29 @@
+bench/runs/judge-2/CONTRACT.md
+  s_655b8bbf0a58d9::t_6169e4ced22280 53-60
+bench/runs/judge-2/REPORT.md
+  s_655b8bbf0a58d9::t_ce0f11156dc0e1 1-58
+bench/runs/judge-2/manifest.json
+  s_655b8bbf0a58d9::t_e906174dd10783 1-32
+bench/runs/judge-2/summary.json
+  s_655b8bbf0a58d9::t_e0e47de6754472 1-53
+bench/runs/judge-2/timing.json
+  s_655b8bbf0a58d9::t_b5dcf581d45ab0 1-11
+bench/t4-e2e.ts
+  s_655b8bbf0a58d9::t_0f7578e5a99928 31-41,437-438,495-498,501,503-509
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "ec3ef42f4a375995de8e57258a7d4081ad6755d8",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
