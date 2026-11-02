@@ -104,6 +104,21 @@ details h2{border:0;padding-top:0;margin-top:2rem}
 .show .cap{text-align:center;margin-top:.9rem}
 .big{margin-top:5rem}
 @media (max-width:48rem){.hero{padding:2.5rem 0 3rem}.hero .lede{font-size:1.9rem}}
+.block{max-width:40rem;margin:0 auto;padding:4.5rem 0 0}
+.block h2{border:0;padding:0;margin:0 0 1rem;font-size:1.35rem;letter-spacing:-.01em}
+.block .big{margin:0 0 2rem;font-size:1.75rem;text-align:center}
+.block .stats{grid-template-columns:repeat(3,1fr);gap:1rem}
+.block .stat{padding:1.4rem;text-align:center}
+.block .stat b{font-size:1.9rem}
+.block .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.block .flow .box{min-width:0;padding:1.1rem}
+.block .flow .box b{font-size:1.05rem;margin-bottom:.25rem}
+.block .flow .box span{font-size:.9rem}
+.block pre{margin:1rem 0}
+.block ul{padding-left:1.1rem}
+.block .cap{text-align:center}
+details{max-width:40rem;margin:5rem auto 0}
+@media (max-width:48rem){.block{padding-top:3rem}.block .stats{gap:.5rem}.block .stat{padding:1rem .5rem}.block .stat b{font-size:1.3rem}.block .flow{grid-template-columns:repeat(2,1fr)}.block .big{font-size:1.35rem}}
 </style>
 </head>
 <body>
@@ -133,72 +148,62 @@ details h2{border:0;padding-top:0;margin-top:2rem}
 <p class="cap">A real run. Each step shows how sure the model was.</p>
 </section>
 
-<p class="big" id="results">It finished <b>every one of 30 tasks</b>, three times over, at <b>1/18 the cost</b> of Claude Opus reading screenshots, which finished 23.</p>
+<section class="block" id="results">
+<p class="big">It finished <b>all 30 tasks</b>, three times over, at <b>1/18 the cost</b> of Claude Opus.</p>
 <div class="stats">
-<div class="stat"><b>30/30</b><span>tasks finished, all 3 repeats</span></div>
+<div class="stat"><b>30/30</b><span>tasks finished</span></div>
 <div class="stat"><b>$0.0016</b><span>per task</span></div>
-<div class="stat"><b>2.8 s</b><span>median time per task</span></div>
-<div class="stat"><b>0</b><span>destructive clicks nobody asked for, in any run</span></div>
+<div class="stat"><b>0</b><span>unwanted deletes</span></div>
 </div>
-<p class="cap">Every screen in the test carries a planted "Delete account" button. It has never been clicked. On a real Mac, in live Chrome and Finder, it picked the right control 10 of 10 times from up to 250 choices.</p>
+</section>
 
+<section class="block">
 <video src="/demo.mp4" poster="/demo-poster.jpg" controls playsinline preload="none"></video>
-<p class="cap">A real 38 s recording, in real time. Task: "Let Omar Haddad know in Chat that I'm running about ten minutes late." The message isn't in the task word for word, so do asks a writer model for it once. The small model still makes every click: open the chat, type, send.</p>
+<p class="cap">A real 38 s run. do writes the message and makes every click.</p>
+</section>
 
+<section class="block">
 <h2>How it works</h2>
 <div class="flow">
-<div class="box"><b>1. List</b><span>do reads the screen's buttons and fields through the Mac's accessibility API.</span></div>
-<div class="arr">→</div>
-<div class="box"><b>2. Pick</b><span><a href="https://developers.cloudflare.com/workers-ai/models/clef/">Clef</a>, a small Cloudflare model, picks one and gives a probability.</span></div>
-<div class="arr">→</div>
-<div class="box"><b>3. Act</b><span>do presses or fills it. Unsure? It stops. Destructive? It asks first.</span></div>
-<div class="arr">→</div>
-<div class="box"><b>4. Check</b><span>Clef checks the screen changed the way it should. Then the next step.</span></div>
+<div class="box"><b>List</b><span>Read the buttons on screen.</span></div>
+<div class="box"><b>Pick</b><span>A small model chooses one.</span></div>
+<div class="box"><b>Act</b><span>Click it. Stop if unsure.</span></div>
+<div class="box"><b>Check</b><span>Confirm it worked.</span></div>
 </div>
-<p class="dim">A bigger writer model is called only when the task needs text that isn't in it already, like turning "jordan at cloudflare dot com" into an email address.</p>
+</section>
 
-<h2 id="mcp">Use it with an AI agent (MCP)</h2>
-<p class="dim">Give Claude, Pi or any MCP client your Mac. It gets six tools: <code>apps</code>, <code>activate</code>, <code>outline</code>, <code>act</code>, <code>type</code>, <code>look</code>.</p>
+<section class="block" id="mcp">
+<h2>Use it with an AI agent</h2>
+<p class="dim">Works with Claude, Pi or any MCP client, on a Mac.</p>
 <pre class="code"><span class="f">bun</span> add github:acoyfellow/do
 <span class="f">swiftc</span> -O node_modules/do/native/ax.swift -o node_modules/do/native/ax</pre>
-<p class="dim">Build the helper once, then allow Accessibility for your terminal in System Settings. Add this to your MCP client:</p>
-<pre class="code">{ <span class="s">"mcpServers"</span>: { <span class="s">"do"</span>: { <span class="s">"command"</span>: <span class="s">"bun"</span>, <span class="s">"args"</span>: [<span class="s">"node_modules/do/src/mcp.ts"</span>] } } }</pre>
-<ul>
-<li><b>Safe by default:</b> it acts through accessibility, so it never moves your mouse or types into the wrong window. Real keystrokes need <code>DO_HEADED=1</code>.</li>
-<li><b>It checks its own work:</b> typed text is read back from the field. If the screen changed since it looked, it refuses and looks again.</li>
-<li><b>Several agents can share one Mac:</b> pass an <code>agent</code> id and they take turns.</li>
-<li><b>Every action leaves a receipt:</b> whether it landed, whether it was checked, and how.</li>
-</ul>
+<pre class="code">{
+  <span class="s">"mcpServers"</span>: {
+    <span class="s">"do"</span>: {
+      <span class="s">"command"</span>: <span class="s">"bun"</span>,
+      <span class="s">"args"</span>: [<span class="s">"node_modules/do/src/mcp.ts"</span>]
+    }
+  }
+}</pre>
+<p class="dim">It never moves your mouse, and it reads back what it typed.</p>
+</section>
 
-<h2 id="use">Use it from code</h2>
-<pre class="code"><span class="k">import</span> { gatewayTransport } <span class="k">from</span> <span class="s">'do/clef'</span>;
-<span class="k">import</span> { readConfig, readToken } <span class="k">from</span> <span class="s">'do/credentials'</span>;
-<span class="k">import</span> { macosDevice } <span class="k">from</span> <span class="s">'do/devices/macos'</span>;
-<span class="k">import</span> { Hand } <span class="k">from</span> <span class="s">'do/hand'</span>;
-
-<span class="k">const</span> transport = <span class="f">gatewayTransport</span>({ ...<span class="f">readConfig</span>(), token: <span class="f">readToken</span>() });
-<span class="k">const</span> device = <span class="f">macosDevice</span>({ helper: <span class="s">'./ax'</span>, app: <span class="s">'Google Chrome'</span> });
-<span class="k">const</span> hand = <span class="k">new</span> <span class="f">Hand</span>(transport, device, {
-  model: <span class="s">'clef'</span>, method: <span class="s">'ax_text'</span>, verify: <span class="k">true</span>,
-  tau: <span class="n">0.3</span>, riskTau: <span class="n">0.5</span>, injectionTau: <span class="n">0.5</span>,
-});
-
-<span class="k">await</span> hand.<span class="f">act</span>(<span class="s">'switch to the termlab tab'</span>);
-<span class="c">→ Clicked radio "termlab — web terminal benchmark" (p=0.86).</span>
+<section class="block" id="use">
+<h2>Use it from code</h2>
+<pre class="code"><span class="k">await</span> hand.<span class="f">act</span>(<span class="s">'switch to the termlab tab'</span>);
 <span class="k">await</span> hand.<span class="f">type</span>(<span class="s">'coey.dev'</span>, <span class="s">'the address bar'</span>);
-<span class="c">→ Typed into textbox "Address and search bar" (p=0.97).</span>
-<span class="k">await</span> hand.<span class="f">look</span>(<span class="s">'Is coey.dev open?'</span>);
-<span class="c">→ p(yes)=0.99</span></pre>
-<p class="dim">Needs a Cloudflare AI Gateway account, gateway name and token, read the same way as <a href="https://github.com/acoyfellow/odds#quick-start">odds</a>. The helper is built with <code>swiftc -O node_modules/do/native/ax.swift -o ax</code>.</p>
+<span class="k">await</span> hand.<span class="f">look</span>(<span class="s">'Is coey.dev open?'</span>);</pre>
+<p class="dim"><a href="https://github.com/acoyfellow/do#use">Full setup in the README</a>.</p>
+</section>
 
-<h2>What this does not show yet</h2>
-<ul>
-<li>The test app is easy to read: every control has a label. Canvas apps, unlabelled icons and misleading labels aren't tested.</li>
-<li>The Mac support is new. It has been used on Chrome, Finder, Notes and TextEdit, but there's no scored set of Mac tasks yet.</li>
-<li>One app, 30 tasks. Treat differences under about 3 tasks as noise.</li>
-<li>The Opus numbers are from an older run and haven't been repeated.</li>
-<li>macOS only. No command-line tool, no Windows or Linux yet.</li>
+<section class="block">
+<h2>Not tested yet</h2>
+<ul class="dim">
+<li>Apps with unlabelled icons or canvas UIs.</li>
+<li>A scored set of real Mac tasks.</li>
+<li>Windows and Linux.</li>
 </ul>
+</section>
 
 <details>
 <summary>Details: every result, writer models, the benchmark</summary>
