@@ -1,0 +1,51 @@
+bench/judge-score.ts
+  s_655b8bbf0a58d9::t_84c41b13b159cc 1-92
+bench/parallel.ts
+  s_655b8bbf0a58d9::t_795df16843ae40 48-50,92
+bench/public.ts
+  s_655b8bbf0a58d9::t_1d5462c841edfc 1-279
+bench/runs/judge-2-faults/REPORT.md
+  s_655b8bbf0a58d9::t_929d3c535dc566 1-54
+bench/runs/judge-2-faults/manifest.json
+  s_655b8bbf0a58d9::t_ae907b7f6a03cf 1-33
+bench/runs/judge-2-faults/summary.json
+  s_655b8bbf0a58d9::t_e51d09ab806bdc 1-20
+bench/runs/judge-2-faults/t4.jsonl
+  s_655b8bbf0a58d9::t_b3c5851536d0a0 1-105
+bench/runs/judge-2-faults/timing.json
+  s_655b8bbf0a58d9::t_3ada9cdbdee4ec 1-11
+bench/runs/judge-2/judge-score.json
+  s_655b8bbf0a58d9::t_3445202fa7a729 1-159
+bench/runs/judge-2/lead.json
+  s_655b8bbf0a58d9::t_7f1c0f472aff11 1-20
+bench/runs/lead/PLAN.md
+  s_655b8bbf0a58d9::t_c0cf3db5062840 16,18-22,27
+bench/runs/lead/judge-2-faults.log
+  s_655b8bbf0a58d9::t_aed980e05439e5 1-175
+bench/runs/lead/judge-2.log
+  s_655b8bbf0a58d9::t_1337ec5289f695 1-494
+bench/runs/lead/points.json
+  s_655b8bbf0a58d9::t_3a8dd1e6ddfb92 4-5
+src/devices/browser.ts
+  s_655b8bbf0a58d9::t_83da96d0006fcc 66-67,115-183,189,195-196,199-201,204-227,259-260
+src/hand.ts
+  s_655b8bbf0a58d9::t_0860ce11ccb813 45-46,69,84-100,184,212
+src/mcp.ts
+  s_655b8bbf0a58d9::t_848eedfb6db090 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "0fb3fa75ffcf1cef1254d78ce72ba49d6d89b3b9",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
