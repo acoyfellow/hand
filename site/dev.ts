@@ -6,9 +6,11 @@ const port = Number(process.env.PORT ?? 8799);
 const clients = new Set<ReadableStreamDefaultController<string>>();
 const reloadScript = "<script>new EventSource('/__reload').onmessage=()=>location.reload()</script>";
 
-watch(root, { recursive: true }, () => {
+const reloadAll = () => {
   for (const client of clients) client.enqueue('data: reload\n\n');
-});
+};
+watch(root, { recursive: true }, reloadAll);
+watch(join(import.meta.dir, '..', 'src', 'cursor.js'), reloadAll);
 
 function reloadStream(): Response {
   let own: ReadableStreamDefaultController<string>;

@@ -47,6 +47,7 @@
     "./clairic": "./src/clairic.ts",
     "./hand": "./src/hand.ts",
     "./steer": "./src/steer.ts",
+    "./cursor.js": "./src/cursor.js",
     "./perceive": "./src/perceive.ts",
     "./llm": "./src/llm.ts",
     "./anthropic": "./src/anthropic.ts",

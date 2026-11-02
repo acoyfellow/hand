@@ -13,6 +13,7 @@ export interface Device extends Screen {
   typeInto(c: Candidate, text: string): Promise<void>;
   setValue(c: Candidate, value: string): Promise<boolean>;
   settle(): Promise<void>;
+  show?(target: { x: number; y: number; label: string; p?: number }): Promise<void>;
 }
 
 export interface HandOptions {
@@ -147,6 +148,7 @@ export class Hand {
         ms: performance.now() - t0,
       });
     }
+    await this.d.show?.({ ...pick.point, label: chosen ? describe(chosen) : intent, p: pick.p });
     if (chosen && this.d.press) await this.d.press(chosen);
     else await this.d.click(pick.point);
     await this.d.settle();
@@ -191,6 +193,7 @@ export class Hand {
         costUsd: pick.costUsd,
         ms: performance.now() - t0,
       });
+    await this.d.show?.({ ...center(chosen), label: `type "${text.slice(0, 40)}"`, p: pick.p });
     await this.d.typeInto(chosen, text);
     await this.d.settle();
     return this.log({

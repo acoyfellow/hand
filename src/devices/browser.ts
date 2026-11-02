@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import type { Device } from '../hand.ts';
 import { type Box, type Candidate, center } from '../perceive.ts';
 
@@ -8,6 +9,18 @@ export interface Cdp {
 export interface BrowserDeviceOptions {
   readonly settleMs?: number;
   readonly jpegQuality?: number;
+  readonly showCursor?: boolean;
+}
+
+const CURSOR_SCRIPT = readFileSync(new URL('../cursor.js', import.meta.url), 'utf8');
+const HIDE_CURSOR = `document.querySelectorAll('.hand-cursor,.hand-ring').forEach((el) => { el.dataset.handVisibility = el.style.visibility; el.style.visibility = 'hidden'; })`;
+const RESTORE_CURSOR = `document.querySelectorAll('.hand-cursor,.hand-ring').forEach((el) => { el.style.visibility = el.dataset.handVisibility || ''; })`;
+
+async function browserShow(cdp: Cdp, target: { x: number; y: number; label: string; p?: number }): Promise<void> {
+  await cdp.send('Runtime.evaluate', {
+    expression: `${CURSOR_SCRIPT}; window.__handCursor.click(${target.x}, ${target.y}, ${JSON.stringify(target.label)}, ${target.p ?? 'undefined'})`,
+    awaitPromise: true,
+  });
 }
 
 const INTERACTIVE = new Set([
@@ -232,8 +245,13 @@ export async function browserCandidates(cdp: Cdp, viewport: { width: number; hei
 export async function browserScreenshot(cdp: Cdp, clip?: Box, quality = 80): Promise<string> {
   const params: Record<string, unknown> = { format: 'jpeg', quality };
   if (clip) params.clip = { x: clip.x, y: clip.y, width: clip.w, height: clip.h, scale: 1 };
-  const { data } = await cdp.send('Page.captureScreenshot', params);
-  return `data:image/jpeg;base64,${data}`;
+  await evaluate(cdp, HIDE_CURSOR);
+  try {
+    const { data } = await cdp.send('Page.captureScreenshot', params);
+    return `data:image/jpeg;base64,${data}`;
+  } finally {
+    await evaluate(cdp, RESTORE_CURSOR);
+  }
 }
 
 async function withOverlay(cdp: Cdp, boxes: (Box & { label?: string })[], clip?: Box): Promise<string> {
@@ -300,5 +318,6 @@ export async function browserDevice(cdp: Cdp, opts: BrowserDeviceOptions = {}): 
     typeInto: (c, text) => browserType(cdp, c, text),
     setValue: (c, value) => browserSetValue(cdp, c, value),
     settle: () => wait(settleMs),
+    show: opts.showCursor ? (target) => browserShow(cdp, target) : undefined,
   };
 }
