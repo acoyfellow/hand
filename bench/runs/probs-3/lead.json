@@ -1,0 +1,17 @@
+{
+  "point": "probabilities",
+  "pass": true,
+  "mock": false,
+  "srcCommit": "05e2a9a272f492efceceab77876ca9a50ef973be",
+  "metrics": {
+    "enoughData": true,
+    "minMargin": 0.6,
+    "minSeed": 400,
+    "picks": 1632,
+    "wrongPicks": 60,
+    "askRate": 0.0656,
+    "wrongRemoved": 0.7833,
+    "worstBinGap": 0.0419,
+    "wrongWhenActing": 0.0085
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "run": "probs-3",
+  "wallMs": 38817,
+  "stepsMs": {
+    "bench/probe.ts": 5306,
+    "bench/t1-grounding.ts": 33185,
+    "bench/report.ts": 235
+  },
+  "totalInFlight": 160,
+  "perTestInFlight": 160
+}
