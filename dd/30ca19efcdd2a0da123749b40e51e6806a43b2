@@ -1,0 +1,61 @@
+.gitignore
+  s_655b8bbf0a58d9::t_dbb9e9060d82fe 16
+HANDOFF.md
+  s_655b8bbf0a58d9::t_94feaa328e68c6 1,6,39,45
+README.md
+  s_655b8bbf0a58d9::t_0792d87a6310d0 1,5,39-40,42-45,50,53,58-61,74-82,112
+bench/demo-relay.ts
+  s_655b8bbf0a58d9::t_2f2ebd9f99d906 51
+bench/demo-video.ts
+  s_655b8bbf0a58d9::t_031679cdeef6ad 210
+bench/report.ts
+  s_655b8bbf0a58d9::t_819375033b1fcf 28
+llms.txt
+  s_655b8bbf0a58d9::t_24e3b2a22ad7a2 1,5,7,11-14,26
+native/ax.swift
+  s_655b8bbf0a58d9::t_e728f27d6dc325 277
+native/mcp-smoke.ts
+  s_655b8bbf0a58d9::t_22e61d1fc0fcf4 32
+native/vm.swift
+  s_655b8bbf0a58d9::t_60dc23b2293827 28,154,157
+package.json
+  s_655b8bbf0a58d9::t_decfcb963156c0 2
+site/dev.ts
+  s_655b8bbf0a58d9::t_b10ffbf0ac8edf 46
+site/public/404.html
+  s_655b8bbf0a58d9::t_c80738788e4be4 1
+site/public/brand/favicon.svg
+  s_655b8bbf0a58d9::t_36e33c2db09e0b 1
+site/public/brand/icon.svg
+  s_655b8bbf0a58d9::t_46916bcc47796f 1
+site/public/index.html
+  s_655b8bbf0a58d9::t_63646a52359bd5 6,8,13,15,128,134-136,162,178-179,182,184,196,215,222,231
+site/public/llms.txt
+  s_655b8bbf0a58d9::t_e21166a1579e6e 1,5,7,11-14,26
+site/wrangler.jsonc
+  s_655b8bbf0a58d9::t_dbb899b3b7b498 3,7
+src/devices/macos.ts
+  s_655b8bbf0a58d9::t_87fb849692974f 145,203
+src/mcp.ts
+  s_655b8bbf0a58d9::t_8384905384f62d 142,180,189,217
+test/mcp.test.ts
+  s_655b8bbf0a58d9::t_0c065884c4d13b 16,19
+test/receipts.test.ts
+  s_655b8bbf0a58d9::t_8dc37ef2db9d8a 8,22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "dd30ca19efcdd2a0da123749b40e51e6806a43b2",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
