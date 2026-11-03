@@ -38,7 +38,10 @@ const calculator = (id: string, text: string, want: string): DesktopTask => ({
   app: 'Calculator',
   text,
   setup: async () => {
+    await osa('tell application "Calculator" to quit').catch(() => '');
+    await new Promise((resolve) => setTimeout(resolve, 800));
     await osa('tell application "Calculator" to launch');
+    await new Promise((resolve) => setTimeout(resolve, 1200));
     await clearCalculator();
   },
   check: (helper) => calculatorReads(helper, want),
