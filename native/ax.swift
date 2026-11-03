@@ -91,8 +91,19 @@ func label(_ element: AXUIElement) -> String {
     for key in [kAXTitleAttribute, kAXDescriptionAttribute, kAXHelpAttribute, kAXPlaceholderValueAttribute as String] {
         if let text: String = attribute(element, key), !text.isEmpty { return text }
     }
+    if ["AXCheckBox", "AXSwitch", "AXPopUpButton", "AXSlider"].contains(role), let sibling = siblingText(element) { return sibling }
     if let value: String = attribute(element, kAXValueAttribute), !value.isEmpty, value.count < 80 { return value }
     return ""
+}
+
+func siblingText(_ element: AXUIElement) -> String? {
+    if let titled: AXUIElement = attribute(element, kAXTitleUIElementAttribute), let text: String = attribute(titled, kAXValueAttribute), !text.isEmpty { return text }
+    guard let parent: AXUIElement = attribute(element, kAXParentAttribute) else { return nil }
+    for sibling in children(parent) {
+        let role: String = attribute(sibling, kAXRoleAttribute) ?? ""
+        if role == "AXStaticText", let text: String = attribute(sibling, kAXValueAttribute), !text.isEmpty { return text }
+    }
+    return nil
 }
 
 func fingerprint(role: String, name: String, box: CGRect) -> String {
@@ -484,6 +495,16 @@ case "confirm":
     let lease = acting()
     finish(confirm(element), lease: lease)
 case "activate":
+    guard args.count > 1 else { fail("usage: ax activate <app>", code: 64) }
+    if application(named: args[1]) == nil {
+        let launcher = Process()
+        launcher.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        launcher.arguments = ["-a", args[1]]
+        try? launcher.run()
+        launcher.waitUntilExit()
+        for _ in 0..<40 where application(named: args[1]) == nil { usleep(150000) }
+        usleep(600000)
+    }
     let found = app(1, usage: "usage: ax activate <app>")
     let lease = acting()
     finish(Outcome(ok: found.activate(), detail: "activate \(found.localizedName ?? "?")", mechanism: .semantic, retrySafe: true), lease: lease)

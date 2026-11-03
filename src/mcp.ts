@@ -31,7 +31,7 @@ export const TOOLS: readonly McpTool[] = [
   },
   {
     name: 'activate',
-    description: 'Bring an app to the front. Typing only works in the frontmost app.',
+    description: 'Open an app if it is not running, and bring it to the front. Typing only works in the frontmost app.',
     inputSchema: { type: 'object', properties: { app }, required: ['app'] },
   },
   {
@@ -155,6 +155,7 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
       app: name,
       agent: agentId,
       headed: process.env.HAND_HEADED === '1',
+      allowMouse: process.env.HAND_HEADED === '1',
       onAction: ({ phase, receipt }) =>
         notify({
           phase,

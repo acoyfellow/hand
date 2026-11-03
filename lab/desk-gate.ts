@@ -1,10 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { DESK_ENTRANTS, SPEND_LIMIT_USD } from './desk/entrant-ids.ts';
 import { DESK_TASKS } from './desk/suite.ts';
 
-export const DESK_ENTRANTS = ['hand', 'codex-cu', 'cua', 'claude-cu', 'agent-desktop'] as const;
-
-export const SPEND_LIMIT_USD = 150;
 
 interface Episode {
   readonly entrant: string;

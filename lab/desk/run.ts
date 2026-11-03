@@ -1,6 +1,6 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { DESK_ENTRANTS } from '../desk-gate.ts';
+import { DESK_ENTRANTS } from './entrant-ids.ts';
 import { DESK_ROSTER } from './roster.ts';
 import { DESK_TASKS, defaultVm } from './suite.ts';
 

@@ -84,7 +84,8 @@ export class StaleRef extends Error {
   }
 }
 
-const refOf = (text: string) => /^\s*\[?(e\d+)\]?\s*$/.exec(text)?.[1];
+const refOf = (text: string) =>
+  /^\s*(?:(?:click|press|select|open|choose|toggle)\s+)?(?:the\s+)?(?:control\s+|element\s+|id\s+)?\[?(e\d+)\]?\s*$/i.exec(text)?.[1];
 const isRef = (text: string) => refOf(text) !== undefined;
 
 export class Hand {
