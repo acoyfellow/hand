@@ -259,3 +259,120 @@ export function iconSvg(options, { size, accent = COLORS.accent, fixed = false }
   const dims = size ? ` width="${size}" height="${size}"` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"${dims}><rect width="100" height="100" rx="22" fill="${COLORS.night}"/>${inner}</svg>`;
 }
+
+export const MOTIONS = ['still', 'wave', 'press', 'breathe'];
+export const DEFAULT_MARK = PRESETS.c3;
+
+const PERIOD_MS = 1600;
+
+export function pose(base, motion, time) {
+  const shape = { ...base };
+  const swing = Math.sin(((time % PERIOD_MS) / PERIOD_MS) * Math.PI * 2);
+  if (motion === 'wave') shape.tilt = 7 * swing;
+  if (motion === 'press') {
+    const dip = Math.max(0, swing);
+    shape.fingerLen = base.fingerLen * (1 - 0.16 * dip);
+    shape.dotSize = base.dotSize * (1 + 0.4 * dip);
+  }
+  if (motion === 'breathe') {
+    shape.palmWidth = base.palmWidth * (1 + 0.04 * swing);
+    shape.weight = base.weight * (1 + 0.05 * swing);
+  }
+  return shape;
+}
+
+export function prefersStill() {
+  return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+export function walker(start, { colorful = false, keepStyle = 0.75, hold = 900, move = 1100, startAccent = COLORS.accent } = {}) {
+  let from = balance(start);
+  let fromAccent = startAccent;
+  let to = null;
+  let began = 0;
+  const next = () => {
+    const seed = Math.random().toString(36).slice(2, 10);
+    const style = Math.random() < keepStyle ? from.style : undefined;
+    return { seed, shape: balance(generate(seed, style)), accent: colorful ? accentOf(seed) : startAccent };
+  };
+  return {
+    at(now) {
+      if (!to) {
+        to = next();
+        began = now;
+      }
+      const elapsed = now - began;
+      if (elapsed >= hold + move) {
+        const arrived = to;
+        from = arrived.shape;
+        fromAccent = arrived.accent;
+        to = next();
+        began = now;
+        return { shape: from, accent: fromAccent, arrived };
+      }
+      const t = Math.max(0, (elapsed - hold) / move);
+      return { shape: t > 0 ? mix(from, to.shape, t) : from, accent: t < 0.5 ? fromAccent : to.accent, arrived: null };
+    },
+  };
+}
+
+const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+
+export const FLEET_STORY = { appear: 900, spread: 1100, work: 2600, settle: 5600, loop: 8200 };
+
+export function fleet(el, { base = DEFAULT_MARK, columns = 9, rows = 3, size = 52, gap = 10, ink = COLORS.ink } = {}) {
+  el.replaceChildren();
+  el.style.display = 'grid';
+  el.style.gridTemplateColumns = `repeat(${columns}, ${size}px)`;
+  el.style.gap = `${gap}px`;
+  el.style.justifyContent = 'center';
+  const home = balance(base);
+  const middleRow = Math.floor(rows / 2);
+  const middleColumn = Math.floor(columns / 2);
+  const cells = Array.from({ length: columns * rows }, (_, index) => {
+    const cell = document.createElement('div');
+    cell.style.width = `${size}px`;
+    cell.style.height = `${size}px`;
+    el.appendChild(cell);
+    const row = Math.floor(index / columns);
+    const column = index % columns;
+    const seed = `fleet-${index}`;
+    return {
+      cell,
+      leader: row === middleRow && column === middleColumn,
+      distance: Math.hypot(row - middleRow, (column - middleColumn) * 0.8),
+      shape: balance(generate(seed, base.style)),
+      accent: accentOf(seed),
+      last: '',
+    };
+  });
+  const farthest = Math.max(...cells.map((c) => c.distance)) || 1;
+  const story = FLEET_STORY;
+  const render = (now) => {
+    const t = now % story.loop;
+    for (const c of cells) {
+      const lag = (c.distance / farthest) * 700;
+      const lead = 700 - lag;
+      const shown = c.leader ? 1 : ease((t - story.appear - lag) / 450) * (1 - ease((t - story.settle - 300 - lead) / 450));
+      const away = c.leader ? 0 : ease((t - story.spread - lag) / 900) * (1 - ease((t - story.settle - lead) / 900));
+      const shape = away > 0 ? mix(home, c.shape, away) : home;
+      const working = t > story.work && t < story.settle;
+      const posed = working ? pose(shape, 'press', t + lag * 2.2) : shape;
+      const accent = away > 0.5 ? c.accent : COLORS.accent;
+      c.cell.style.opacity = shown.toFixed(3);
+      const svg = shown > 0.01 ? markSvg(posed, { ink, accent, size, fixed: true }) : '';
+      if (svg !== c.last) {
+        c.cell.innerHTML = svg;
+        c.last = svg;
+      }
+    }
+  };
+  let frame = 0;
+  const loop = (now) => {
+    render(now);
+    frame = requestAnimationFrame(loop);
+  };
+  if (prefersStill()) render(story.work + 400);
+  else frame = requestAnimationFrame(loop);
+  return { stop: () => cancelAnimationFrame(frame) };
+}

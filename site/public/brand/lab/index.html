@@ -44,6 +44,7 @@ output{color:var(--text);font:.9em var(--mono)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
 .sample{display:grid;place-items:center;gap:6px;border:1px solid var(--line);background:#fff;color:var(--text);padding:12px 6px;border-radius:10px}
 .sample.preset{border-color:var(--text)}
+.fleet-wrap{border:1px solid var(--line);border-radius:12px;background:#fff;padding:28px 12px;overflow:hidden}
 .sample span{font:400 11px var(--mono);color:var(--dim);max-width:100%;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:860px){.workspace{grid-template-columns:1fr}.preview{border-right:0;border-bottom:1px solid var(--line)}form{grid-template-columns:1fr}.stage div{width:150px;height:150px}}
 </style>
@@ -53,6 +54,7 @@ output{color:var(--text);font:.9em var(--mono)}
 <div class="actions">
 <div class="segmented" id="presets" role="group" aria-label="Start from"></div>
 <div class="segmented" id="styles" role="group" aria-label="Style"></div>
+<div class="segmented" id="motions" role="group" aria-label="Motion"></div>
 <button type="button" class="quiet" id="morph" aria-pressed="false">Morph: off</button>
 <button type="button" class="quiet" id="color" aria-pressed="false">Colour: blue</button>
 <button id="random">Randomize</button>
@@ -69,12 +71,17 @@ output{color:var(--text);font:.9em var(--mono)}
 </section>
 
 <section class="variance">
+<div class="variance-heading"><div><h2>Fleet</h2><p>The homepage hero. One hand splits into a team, each one its own seed and colour, they work, then come home.</p></div></div>
+<div class="fleet-wrap"><div id="fleet"></div></div>
+</section>
+
+<section class="variance">
 <div class="variance-heading"><div><h2>Generated range</h2><p>Deterministic from the seed. Click one to edit it.</p></div><button class="quiet" id="batch">New batch</button></div>
 <div class="grid" id="grid"></div>
 </section>
 </main>
 <script type="module">
-import { DOTS, PRESETS, PROFILES, STYLES, THUMBS, COLORS, accentOf, balance, generate, iconSvg, markSvg, mix } from '/brand/mark.js';
+import { DOTS, MOTIONS, PRESETS, PROFILES, STYLES, THUMBS, COLORS, accentOf, balance, fleet, generate, iconSvg, markSvg, pose, walker } from '/brand/mark.js';
 
 const RANGES = {
   fingers: [1, 4, 1], fingerLen: [8, 36, 1], root: [0, 14, 1], palmWidth: [36, 64, 1],
@@ -154,45 +161,46 @@ function renderPreview(shape = options, fixed = false) {
   $('sizes').innerHTML = [96, 64, 32, 16].map((s) => `<figure>${iconSvg(shape, { size: s, accent, fixed })}<figcaption>${s}</figcaption></figure>`).join('');
 }
 
-const HOLD_MS = 900;
-const MOVE_MS = 1100;
-let morphFrom = null;
-let morphTo = null;
-let morphStart = 0;
+let motion = 'still';
+let walk = null;
+let ticking = false;
 
-function nextTarget() {
-  const seed = crypto.randomUUID().slice(0, 8);
-  const sameStyle = Math.random() < 0.75 ? options.style : undefined;
-  return { seed, shape: balance(generate(seed, sameStyle)) };
+function tick(now) {
+  if (!morphing && motion === 'still') { ticking = false; return renderPreview(); }
+  let shape = options;
+  if (morphing) {
+    const step = walk.at(now);
+    shape = step.shape;
+    accent = step.accent;
+    if (step.arrived) {
+      options = step.arrived.shape;
+      $('seed').value = step.arrived.seed;
+      renderControls();
+      renderTop();
+    }
+  }
+  renderPreview(pose(shape, motion, now), true);
+  requestAnimationFrame(tick);
 }
 
-function morphFrame(now) {
-  if (!morphing) return;
-  const elapsed = now - morphStart;
-  if (elapsed >= HOLD_MS + MOVE_MS) {
-    options = morphTo.shape;
-    $('seed').value = morphTo.seed;
-    if (colorful) accent = accentOf(morphTo.seed);
-    morphFrom = balance(options);
-    morphTo = nextTarget();
-    morphStart = now;
-    renderControls();
-    renderTop();
-  }
-  const t = Math.max(0, (elapsed - HOLD_MS) / MOVE_MS);
-  renderPreview(t > 0 ? mix(morphFrom, morphTo.shape, Math.min(1, t)) : morphFrom, true);
-  requestAnimationFrame(morphFrame);
+function animate() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(tick);
 }
 
 function setMorph(on) {
   morphing = on;
   $('morph').textContent = on ? 'Morph: on' : 'Morph: off';
   $('morph').setAttribute('aria-pressed', String(on));
-  if (!on) return renderPreview();
-  morphFrom = balance(options);
-  morphTo = nextTarget();
-  morphStart = performance.now();
-  requestAnimationFrame(morphFrame);
+  walk = on ? walker(options, { colorful, startAccent: accent }) : null;
+  animate();
+}
+
+function setMotion(next) {
+  motion = next;
+  renderSegmented($('motions'), MOTIONS, motion, setMotion);
+  animate();
 }
 
 function setColor(on) {
@@ -227,4 +235,6 @@ $('batch').onclick = () => { gallery = Array.from({ length: 24 }, () => crypto.r
 
 refresh();
 renderGallery();
+setMotion('still');
+fleet($('fleet'), { base: options });
 </script>
