@@ -391,43 +391,71 @@ export function agent(seed, { style } = {}) {
 export function backdrop(el, { cell = 150, size = 34, opacity, speed = 0.012, base = DEFAULT_MARK } = {}) {
   const dark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
   const ink = dark ? COLORS.nightInk : COLORS.ink;
-  opacity ??= dark ? 0.13 : 0.09;
+  const alpha = opacity ?? (dark ? 0.13 : 0.09);
   const columns = Math.ceil(innerWidth / cell) + 2;
   const rows = Math.ceil(innerHeight / cell) + 2;
+  const spanX = columns * cell;
+  const spanY = rows * cell;
+  const home = balance(base);
+  const latticeHash = (column, row) => Math.abs(Math.imul(column, 73856093) ^ Math.imul(row, 19349663)) % 9000;
   const layer = document.createElement('div');
-  layer.style.cssText = `position:absolute;left:${-cell}px;top:${-cell}px;display:grid;grid-template-columns:repeat(${columns},${cell}px);grid-auto-rows:${cell}px;will-change:transform`;
+  layer.style.cssText = 'position:absolute;inset:0';
   el.replaceChildren(layer);
-  const tiles = Array.from({ length: columns * rows }, (_, index) => {
-    const tile = document.createElement('div');
-    const row = Math.floor(index / columns);
-    const offset = row % 2 ? cell / 2 : 0;
-    tile.style.cssText = `display:grid;place-items:center;transform:translateX(${offset}px);opacity:${opacity}`;
-    layer.appendChild(tile);
-    const seed = `bg-${index}`;
-    return { tile, phase: (index * 397) % 9000, home: balance(base), away: balance(generate(seed, base.style)), accent: accentOf(seed), last: '' };
-  });
+  const tiles = [];
+  for (let row = 0; row < rows; row++) {
+    for (let column = 0; column < columns; column++) {
+      const node = document.createElement('div');
+      node.style.cssText = `position:absolute;left:0;top:0;width:${cell}px;height:${cell}px;display:grid;place-items:center;opacity:${alpha};will-change:transform`;
+      layer.appendChild(node);
+      tiles.push({ node, column, row, key: '', away: home, accent: COLORS.accent, phase: 0, last: '' });
+    }
+  }
+  const assign = (tile, column, row) => {
+    const key = `${column},${row}`;
+    if (tile.key === key) return;
+    const seed = `bg-${key}`;
+    tile.key = key;
+    tile.away = balance(generate(seed, base.style));
+    tile.accent = accentOf(seed);
+    tile.phase = latticeHash(column, row);
+    tile.last = '';
+  };
+  const wrap = (value, span) => ((value % span) + span) % span;
+  const place = (now) => {
+    const driftX = now * speed;
+    const driftY = now * speed * 0.5;
+    for (const tile of tiles) {
+      const y = wrap(tile.row * cell + driftY, spanY) - cell;
+      const row = Math.round((y + cell - driftY) / cell);
+      const stagger = row % 2 ? cell / 2 : 0;
+      const x = wrap(tile.column * cell + stagger + driftX, spanX) - cell;
+      const column = Math.round((x + cell - stagger - driftX) / cell);
+      assign(tile, column, row);
+      tile.node.style.transform = `translate(${x}px,${y}px)`;
+    }
+  };
   const draw = (now) => {
-    for (const t of tiles) {
-      const cycle = ((now + t.phase) % 9000) / 9000;
-      const amount = ease(Math.min(1, Math.max(0, (Math.sin(cycle * Math.PI * 2) + 0.2) / 1.2)));
-      const shape = mix(t.home, t.away, amount);
-      const svg = markSvg(shape, { ink, accent: amount > 0.5 ? t.accent : COLORS.accent, size, fixed: true });
-      if (svg !== t.last) {
-        t.tile.innerHTML = svg;
-        t.last = svg;
+    for (const tile of tiles) {
+      const cycle = ((now + tile.phase) % 9000) / 9000;
+      const amount = ease((1 - Math.cos(cycle * Math.PI * 2)) / 2);
+      const shape = mix(home, tile.away, amount);
+      const svg = markSvg(shape, { ink, accent: amount > 0.5 ? tile.accent : COLORS.accent, size, fixed: true });
+      if (svg !== tile.last) {
+        tile.node.innerHTML = svg;
+        tile.last = svg;
       }
     }
   };
   requestAnimationFrame(() => el.classList.add('on'));
   if (prefersStill()) {
+    place(0);
     draw(2000);
     return { stop() {} };
   }
   let frame = 0;
-  let lastDraw = 0;
+  let lastDraw = -Infinity;
   const loop = (now) => {
-    const drift = (now * speed) % cell;
-    layer.style.transform = `translate(${drift}px,${drift * 0.5}px)`;
+    place(now);
     if (now - lastDraw > 120) {
       draw(now);
       lastDraw = now;
