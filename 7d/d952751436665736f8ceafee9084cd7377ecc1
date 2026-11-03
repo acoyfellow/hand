@@ -1,0 +1,21 @@
+site/public/footer.js
+  s_655b8bbf0a58d9::t_4e40e67ce9cec9 2
+site/public/index.html
+  s_655b8bbf0a58d9::t_ae4a723af1237a 151
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7dd952751436665736f8ceafee9084cd7377ecc1",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
