@@ -147,6 +147,32 @@ func snapshot(_ app: NSRunningApplication, onlyFront: Bool) -> Snapshot {
     return Snapshot(app: app.localizedName ?? "?", pid: app.processIdentifier, windows: windows.count, visited: visited, ms: Int(Date().timeIntervalSince(started) * 1000), candidates: nodes)
 }
 
+struct ScreenText: Encodable {
+    let app: String
+    let lines: [String]
+}
+
+func screenText(_ app: NSRunningApplication) -> ScreenText {
+    var lines: [String] = []
+    var visited = 0
+    let readable: Set<String> = ["AXStaticText", "AXTextField", "AXTextArea", "AXHeading", "AXCell", "AXValueIndicator"]
+    func walk(_ element: AXUIElement, depth: Int) {
+        visited += 1
+        guard depth < 40, visited < 20000, lines.count < 400 else { return }
+        let role: String = attribute(element, kAXRoleAttribute) ?? ""
+        if readable.contains(role) {
+            let value: String = (attribute(element, kAXValueAttribute) as String?) ?? (attribute(element, kAXTitleAttribute) as String?) ?? (attribute(element, kAXDescriptionAttribute) as String?) ?? ""
+            let clean = value.replacingOccurrences(of: "\u{200E}", with: "").replacingOccurrences(of: "\u{200F}", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
+            if !clean.isEmpty, lines.last != clean { lines.append(String(clean.prefix(300))) }
+        }
+        for child in children(element) { walk(child, depth: depth + 1) }
+    }
+    let windows = roots(of: app)
+    let front = frontWindowIndex(app) ?? 0
+    if front < windows.count { walk(windows[front], depth: 0) }
+    return ScreenText(app: app.localizedName ?? "?", lines: lines)
+}
+
 func resolve(_ app: NSRunningApplication, path: [Int]) -> AXUIElement? {
     guard let first = path.first else { return nil }
     let all = roots(of: app)
@@ -347,6 +373,9 @@ case "front":
 case "snapshot":
     guard let found = application(named: args.dropFirst().first) else { fail("app not found", code: 3) }
     emit(snapshot(found, onlyFront: !args.contains("--all-windows")))
+case "text":
+    guard let found = application(named: args.dropFirst().first) else { fail("app not found", code: 3) }
+    emit(screenText(found))
 case "value":
     let found = app(1, usage: "usage: ax value <app> <path>")
     guard args.count >= 3 else { fail("usage: ax value <app> <path>", code: 64) }

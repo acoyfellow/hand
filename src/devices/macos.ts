@@ -165,6 +165,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     receipts,
     viewport: () => opts.display ?? { width: 1728, height: 1117 },
     screenshot: (clip) => capture(clip),
+    text: async () => (await helper<{ lines: string[] }>('text', appArg)).lines.join('\n').slice(0, 6000),
     marked: () => capture(),
     gridShot: async (region) => ({ img: await capture(region), cells: { a1: region } }),
     candidates: async () => {
