@@ -1,0 +1,73 @@
+bench/lead-record.ts
+  s_655b8bbf0a58d9::t_e38f131e7d2bb0 1-2,9-10,12-13,33-65,69-71
+bench/runs/lead/lab-1.log
+  s_655b8bbf0a58d9::t_4183bfba2c79a4 1-210
+bench/runs/lead/lab-4.log
+  s_5f045b53b1dfb4::t_ccedc912bb9f58 1-2428
+bench/runs/lead/lab-smoke-all.log
+  s_655b8bbf0a58d9::t_5957d54516afc4 1-152
+bench/runs/lead/lab-smoke-bu.log
+  s_655b8bbf0a58d9::t_9abbc4210c7cd7 1-50
+bench/runs/lead/lead-p3-2.log
+  s_32f3749aee7339::t_ad5cc4f03e0355 1-282
+bench/runs/lead/parallel-2.log
+  s_aff9605c3b4204::t_1ea506c04c0750 1-49
+bench/runs/lead/points.json
+  s_655b8bbf0a58d9::t_31ed4676fc6913 4-6
+bench/runs/parallel-2/lead.json
+  s_655b8bbf0a58d9::t_5c07fb531ce8fc 1-15
+bench/runs/parallel-2/parallel.jsonl
+  s_aff9605c3b4204::t_a4649e12fca2a6 1-30
+bench/runs/parallel-2/parallel.summary.json
+  s_aff9605c3b4204::t_551ee5f72d424e 1-9
+bench/runs/public-1/lead.json
+  s_655b8bbf0a58d9::t_2b35f837c11933 1-15
+lab/build.ts
+  s_655b8bbf0a58d9::t_68a9ae1fe4d8de 143-164,174-175
+lab/competitors.ts
+  s_655b8bbf0a58d9::t_df3a85e5f70a6a 234
+site/public/lab/data.json
+  s_655b8bbf0a58d9::t_63f4d48d8da04a 2,18,21,37-38,55-57,76,93-94,114-115,131-133,151,170-171,188,208,228-247,265-266,296-297,321-398,448-555
+site/public/lab/index.html
+  s_655b8bbf0a58d9::t_63a909359b0cfc 53-54,82-101,110,119,149-161
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f40fe4d205037109ab8514fb856b42f296f5bbc1",
+  "prompts": {},
+  "sessions": {
+    "s_32f3749aee7339": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19ccb-b18f-71d7-845e-c8249be3adff",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    },
+    "s_5f045b53b1dfb4": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a177a9-20df-71ac-82c2-3c2b52888d76",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    },
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    },
+    "s_aff9605c3b4204": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a0806f-f6e6-7378-a167-08e626c7de42",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
