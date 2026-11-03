@@ -462,7 +462,12 @@ func app(_ index: Int, usage: String) -> NSRunningApplication {
 
 switch command {
 case "apps":
-    emit(NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }.compactMap(\.localizedName))
+    emit(NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }.compactMap { running -> String? in
+        guard let name = running.localizedName else { return nil }
+        let windows: [AXUIElement] = attribute(AXUIElementCreateApplication(running.processIdentifier), kAXWindowsAttribute) ?? []
+        let titles = windows.compactMap { attribute($0, kAXTitleAttribute) as String? }.filter { !$0.isEmpty && $0 != name }.prefix(4)
+        return titles.isEmpty ? name : "\(name) (windows: \(titles.joined(separator: ", ")))"
+    })
 case "front":
     emit(NSWorkspace.shared.frontmostApplication?.localizedName ?? "")
 case "snapshot":

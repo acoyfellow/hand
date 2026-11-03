@@ -26,12 +26,14 @@ const agent = { type: 'string', description: 'Optional id of the agent acting, s
 export const TOOLS: readonly McpTool[] = [
   {
     name: 'apps',
-    description: 'List the Mac apps that are running and can be controlled. The first line names the app in front.',
+    description:
+      'List the Mac apps that are running and can be controlled. The first line names the app in front. Window titles are shown in brackets: a web app such as "Workbench" runs inside "Google Chrome", so pass "Google Chrome" as the app. To open an app that is not running, call activate with its name; do not use Spotlight.',
     inputSchema: { type: 'object', properties: {}, required: [] },
   },
   {
     name: 'activate',
-    description: 'Open an app if it is not running, and bring it to the front. Typing only works in the frontmost app.',
+    description:
+      'Open any installed app by name (for example "System Settings", "Notes") and bring it to the front. Use this instead of Spotlight, the Dock or Terminal. Typing only works in the frontmost app.',
     inputSchema: { type: 'object', properties: { app }, required: ['app'] },
   },
   {
