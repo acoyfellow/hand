@@ -1,17 +1,18 @@
 export const STYLES = ['line', 'filled'];
-export const PROFILES = ['natural', 'arch', 'index', 'even'];
-export const THUMBS = ['out', 'curl', 'none'];
+export const PROFILES = ['arch', 'index', 'rise', 'fall', 'even'];
+export const THUMBS = ['none', 'curl', 'out'];
 export const DOTS = ['side', 'above', 'tip', 'corner', 'palm', 'none'];
 
 export const PRESETS = {
-  wave: { style: 'line', fingers: 3, profile: 'natural', fingerLen: 26, root: 0, palmWidth: 50, leftLen: 10, rightLen: 26, thumb: 'out', curl: 7, weight: 9, dot: 'corner', dotSize: 6, tilt: -6, fan: 9, knuckle: 5, thumbAngle: 42 },
-  c3: { style: 'line', fingers: 3, profile: 'arch', fingerLen: 24, root: 4, palmWidth: 52, leftLen: 18, rightLen: 30, thumb: 'none', curl: 7, weight: 9, dot: 'corner', dotSize: 5.5, tilt: 0, fan: 4, knuckle: 3, thumbAngle: 40 },
-  c2: { style: 'line', fingers: 2, profile: 'index', fingerLen: 28, root: 3, palmWidth: 48, leftLen: 8, rightLen: 26, thumb: 'curl', curl: 7, weight: 9, dot: 'side', dotSize: 5.5, tilt: 0, fan: 6, knuckle: 3, thumbAngle: 40 },
-  palm: { style: 'filled', fingers: 4, profile: 'natural', fingerLen: 22, root: 0, palmWidth: 48, leftLen: 0, rightLen: 0, thumb: 'out', curl: 7, weight: 10, dot: 'above', dotSize: 6, tilt: -5, fan: 8, knuckle: 5, thumbAngle: 46 },
-  d2: { style: 'filled', fingers: 3, profile: 'arch', fingerLen: 18, root: 0, palmWidth: 50, leftLen: 0, rightLen: 0, thumb: 'out', curl: 7, weight: 13, dot: 'palm', dotSize: 6.5, tilt: 0, fan: 7, knuckle: 4, thumbAngle: 44 },
+  c3: { style: 'line', fingers: 3, profile: 'arch', fingerLen: 24, root: 6, palmWidth: 52, leftLen: 18, rightLen: 30, thumb: 'none', curl: 7, weight: 10, dot: 'corner', dotSize: 5.5, tilt: 0 },
+  c2: { style: 'line', fingers: 2, profile: 'index', fingerLen: 28, root: 6, palmWidth: 48, leftLen: 8, rightLen: 26, thumb: 'curl', curl: 7, weight: 9, dot: 'side', dotSize: 5.5, tilt: 0 },
+  d1: { style: 'filled', fingers: 3, profile: 'arch', fingerLen: 22, root: 0, palmWidth: 46, leftLen: 0, rightLen: 0, thumb: 'none', curl: 7, weight: 11, dot: 'side', dotSize: 5.5, tilt: 0 },
+  d2: { style: 'filled', fingers: 3, profile: 'arch', fingerLen: 18, root: 0, palmWidth: 50, leftLen: 0, rightLen: 0, thumb: 'out', curl: 7, weight: 13, dot: 'palm', dotSize: 6.5, tilt: 0 },
 };
 
 export const COLORS = { ink: '#18181b', accent: '#2E9BF0', paper: '#ffffff', night: '#141416', nightInk: '#ececee' };
+
+export const ACCENTS = ['#2E9BF0', '#F38020', '#16A34A', '#E5484D', '#8B5CF6', '#EAB308', '#14B8A6', '#EC4899'];
 
 export function hashOf(text) {
   let value = 0x811c9dc5;
@@ -32,35 +33,48 @@ function roll(seed, slot, span) {
 const pick = (seed, slot, list) => list[roll(seed, slot, list.length)];
 const between = (seed, slot, low, high) => low + roll(seed, slot, high - low + 1);
 
+export function accentOf(seedText) {
+  return pick(hashOf(seedText), 40, ACCENTS);
+}
+
 export function generate(seedText, style) {
   const seed = hashOf(seedText);
   const chosen = style ?? pick(seed, 1, STYLES);
   const palmWidth = between(seed, 2, 44, 56);
-  const weight = (palmWidth * between(seed, 3, 16, 22)) / 100;
-  const shared = {
-    profile: pick(seed, 5, ['natural', 'natural', 'arch', 'index']),
-    fingerLen: (palmWidth * between(seed, 6, 42, 58)) / 100,
-    palmWidth,
-    thumb: pick(seed, 7, ['out', 'out', 'curl', 'none']),
-    curl: weight * 0.75,
-    weight,
-    dotSize: weight * 0.66,
-    tilt: pick(seed, 10, [-7, -5, -3, 0, 3]),
-    fan: between(seed, 11, 5, 11),
-    knuckle: between(seed, 12, 2, 6),
-    thumbAngle: between(seed, 13, 34, 52),
-  };
+  const weight = (palmWidth * between(seed, 3, 17, 24)) / 100;
   if (chosen === 'filled') {
-    return balance({ ...shared, style: 'filled', fingers: pick(seed, 4, [3, 4, 4]), root: 0, leftLen: 0, rightLen: 0, dot: pick(seed, 8, ['above', 'corner', 'palm']) });
+    return balance({
+      style: 'filled',
+      fingers: pick(seed, 4, [3, 3, 4]),
+      profile: pick(seed, 5, ['arch', 'arch', 'rise', 'even']),
+      fingerLen: (palmWidth * between(seed, 6, 36, 56)) / 100,
+      root: 0,
+      palmWidth,
+      leftLen: 0,
+      rightLen: 0,
+      thumb: pick(seed, 7, ['none', 'none', 'curl']),
+      curl: weight * 0.7,
+      weight,
+      dot: pick(seed, 8, ['above', 'side', 'palm', 'corner']),
+      dotSize: weight * 0.65,
+      tilt: 0,
+    });
   }
   return balance({
-    ...shared,
     style: 'line',
-    fingers: pick(seed, 9, [2, 3, 3]),
-    root: 0,
-    leftLen: (palmWidth * between(seed, 14, 10, 26)) / 100,
-    rightLen: (palmWidth * between(seed, 15, 44, 58)) / 100,
-    dot: pick(seed, 16, ['corner', 'above', 'side']),
+    fingers: pick(seed, 9, [2, 3, 3, 3]),
+    profile: pick(seed, 10, ['arch', 'arch', 'index', 'rise']),
+    fingerLen: (palmWidth * between(seed, 11, 38, 58)) / 100,
+    root: weight * 0.6,
+    palmWidth,
+    leftLen: (palmWidth * between(seed, 12, 14, 36)) / 100,
+    rightLen: (palmWidth * between(seed, 13, 42, 60)) / 100,
+    thumb: pick(seed, 14, ['none', 'none', 'curl']),
+    curl: weight * 0.7,
+    weight,
+    dot: pick(seed, 15, ['corner', 'side', 'above']),
+    dotSize: weight * 0.65,
+    tilt: 0,
   });
 }
 
@@ -73,10 +87,7 @@ export const RULES = {
   maxFingers: { line: 4, filled: 4 },
   dotToWeight: [0.55, 0.8],
   dotClearance: 0.9,
-  tilt: 10,
-  fan: [0, 13],
-  knuckle: [0, 8],
-  thumbAngle: [25, 60],
+  tilt: 8,
 };
 
 function spacingOf(style, palmWidth, weight, fingers) {
@@ -104,11 +115,7 @@ export function balance(input) {
   const high = Math.min(o.palmWidth * RULES.weightToPalm[1], fitHigh);
   o.weight = low <= high ? clamp(o.weight, low, high) : high;
   o.fingerLen = clamp(o.fingerLen, o.palmWidth * RULES.fingerToPalm[0], o.palmWidth * RULES.fingerToPalm[1]);
-  o.root = style === 'line' ? clamp(o.root ?? 0, 0, o.weight * 0.7) : 0;
-  o.fan = clamp(o.fan ?? 0, ...RULES.fan);
-  o.knuckle = clamp(o.knuckle ?? 0, ...RULES.knuckle);
-  o.thumbAngle = clamp(o.thumbAngle ?? 40, ...RULES.thumbAngle);
-  if (o.fingers > 3) o.fan = Math.min(o.fan, 9);
+  o.root = style === 'line' ? clamp(o.root, o.weight * 0.3, o.weight * 0.9) : 0;
   if (style === 'line') {
     o.rightLen = clamp(o.rightLen, o.palmWidth * 0.35, o.palmWidth * 0.62);
     o.leftLen = clamp(o.leftLen, o.thumb === 'none' ? o.palmWidth * 0.12 : o.palmWidth * 0.05, o.rightLen * 0.8);
@@ -121,52 +128,27 @@ export function balance(input) {
   return o;
 }
 
+const NUMERIC = ['fingerLen', 'root', 'palmWidth', 'leftLen', 'rightLen', 'curl', 'weight', 'dotSize', 'tilt'];
+
+export function mix(from, to, t) {
+  const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+  const out = { ...(eased < 0.5 ? from : to) };
+  for (const key of NUMERIC) out[key] = from[key] + (to[key] - from[key]) * eased;
+  return out;
+}
+
 function lengths(count, profile) {
   return Array.from({ length: count }, (_, index) => {
     const t = count === 1 ? 0.5 : index / (count - 1);
-    if (profile === 'natural') {
-      if (count === 2) return [0.96, 1][index];
-      if (count === 3) return [0.88, 1, 0.9][index];
-      return [0.86, 1, 0.94, 0.74][index];
-    }
-    if (profile === 'arch') return 1 - 0.3 * Math.abs(t - 0.5) * 2;
-    if (profile === 'index') return index === 0 ? 1 : 0.7 - 0.06 * (index - 1);
+    if (profile === 'arch') return 1 - 0.32 * Math.abs(t - 0.5) * 2;
+    if (profile === 'index') return index === 0 ? 1 : 0.68;
+    if (profile === 'rise') return 0.66 + 0.34 * t;
+    if (profile === 'fall') return 1 - 0.34 * t;
     return 1;
   });
 }
 
-function fanned(o, count, left, right, baseY, factors) {
-  const mid = (count - 1) / 2;
-  return factors.map((factor, index) => {
-    const t = count === 1 ? 0.5 : index / (count - 1);
-    const angle = ((index - mid) * o.fan * Math.PI) / 180;
-    const x0 = left + t * (right - left);
-    const dip = o.knuckle * (2 * (t - 0.5)) ** 2;
-    const y0 = baseY + dip;
-    const length = o.fingerLen * factor;
-    return { x0, y0, x1: x0 + Math.sin(angle) * length, y1: y0 - Math.cos(angle) * length };
-  });
-}
-
 const round = (value) => Math.round(value * 100) / 100;
-
-function topmost(fingers, fallback) {
-  return fingers.reduce((best, f) => (f.y1 < best.y1 ? f : best), fingers[0] ?? fallback);
-}
-
-function thumbStroke(o, sideX, sideY, direction) {
-  const angle = (o.thumbAngle * Math.PI) / 180;
-  const length = o.curl * 2.6;
-  const tipX = sideX - direction * Math.cos(angle) * length;
-  const tipY = sideY - Math.sin(angle) * length;
-  if (o.thumb === 'out') return { d: `M${round(sideX)} ${round(sideY)}L${round(tipX)} ${round(tipY)}`, tip: [tipX, tipY] };
-  if (o.thumb === 'curl') {
-    const ctrlX = sideX - direction * length * 0.95;
-    const ctrlY = sideY + length * 0.15;
-    return { d: `M${round(sideX)} ${round(sideY)}Q${round(ctrlX)} ${round(ctrlY)} ${round(tipX)} ${round(tipY)}`, tip: [tipX, tipY] };
-  }
-  return { d: '', tip: null };
-}
 
 function lineHand(o, ink) {
   const cx = 48;
@@ -176,21 +158,26 @@ function lineHand(o, ink) {
   const rx = cx + r;
   const leftTop = cy - o.leftLen;
   const rightTop = cy - o.rightLen;
-  const palm = `M${lx} ${leftTop}V${cy}A${r} ${r} 0 0 0 ${rx} ${cy}V${rightTop}`;
-  const thumbY = cy + r * 0.15;
-  const thumbX = cx - Math.sqrt(Math.max(0, r * r - (thumbY - cy) ** 2));
-  const thumb = thumbStroke(o, thumbX, thumbY, 1);
-  const spacing = (rx - lx) / (o.fingers + 1);
-  const baseY = cy - o.root;
-  const fingers = fanned(o, o.fingers, lx + spacing, rx - spacing, baseY, lengths(o.fingers, o.profile));
-  const strokes = [palm, thumb.d, ...fingers.map((f) => `M${round(f.x0)} ${round(f.y0)}L${round(f.x1)} ${round(f.y1)}`)].filter(Boolean);
-  const top = topmost(fingers, { x1: cx, y1: cy - 20 });
+  let start = `M${lx} ${leftTop}`;
+  if (o.thumb === 'curl') start = `M${round(lx - o.curl * 2)} ${round(leftTop + o.curl * 0.4)}A${o.curl} ${o.curl} 0 0 1 ${lx} ${leftTop}`;
+  const palm = `${start}V${cy}A${r} ${r} 0 0 0 ${rx} ${cy}V${rightTop}`;
+  const thumbY = Math.min(cy, Math.max(leftTop + o.weight, cy - r * 0.25));
+  const reach = o.curl * 2.4;
+  const thumbOut = o.thumb === 'out' ? `M${lx} ${round(thumbY)}L${round(lx - reach * 0.75)} ${round(thumbY - reach)}` : '';
+  const factors = lengths(o.fingers, o.profile);
+  const base = cy - o.root;
+  const fingers = factors.map((factor, index) => {
+    const x = lx + ((index + 1) * (rx - lx)) / (o.fingers + 1);
+    return { x: round(x), tip: round(base - o.root - o.fingerLen * factor), base };
+  });
+  const strokes = [palm, thumbOut, ...fingers.map((f) => `M${f.x} ${f.base}V${f.tip}`)].filter(Boolean);
+  const tallest = fingers.reduce((best, f) => (f.tip < best.tip ? f : best), fingers[0] ?? { x: cx, tip: cy - 20 });
   const clear = o.weight * (0.5 + RULES.dotClearance) + o.dotSize;
   const anchors = {
-    side: thumb.tip ? [thumb.tip[0] - clear * 0.4, thumb.tip[1] - clear] : [lx, leftTop - clear],
-    above: [top.x1, top.y1 - clear],
-    tip: [top.x1, top.y1],
-    corner: [rx + o.weight * 0.3 + o.dotSize, rightTop - clear],
+    side: o.thumb === 'curl' ? [lx - o.curl, leftTop - o.curl - clear] : o.thumb === 'out' ? [lx - reach * 0.75, thumbY - reach - clear] : [lx, leftTop - clear],
+    above: [tallest.x, tallest.tip - clear],
+    tip: [tallest.x, tallest.tip],
+    corner: [rx + o.weight * 0.35 + o.dotSize, rightTop - clear],
     palm: [cx, cy + r * 0.25],
   };
   const body = `<g fill="none" stroke="${ink}" stroke-width="${o.weight}" stroke-linecap="round" stroke-linejoin="round">${strokes.map((d) => `<path d="${d}"/>`).join('')}</g>`;
@@ -203,22 +190,29 @@ function filledHand(o, ink) {
   const r = o.palmWidth / 2;
   const lx = cx - r;
   const rx = cx + r;
+  const top = cy - Math.max(6, r * 0.35);
+  const palm = `<path d="M${lx} ${top}V${cy}A${r} ${r} 0 0 0 ${rx} ${cy}V${top}Z" fill="${ink}"/>`;
   const w = o.weight;
-  const shoulder = cy - Math.max(6, r * 0.4);
-  const palm = `<path d="M${lx} ${shoulder}Q${lx} ${shoulder - r * 0.18} ${cx} ${shoulder - r * 0.22}Q${rx} ${shoulder - r * 0.18} ${rx} ${shoulder}V${cy}A${r} ${r} 0 0 1 ${lx} ${cy}Z" fill="${ink}"/>`;
-  const baseY = shoulder + w * 0.2;
-  const fingers = fanned(o, o.fingers, lx + w / 2, rx - w / 2, baseY, lengths(o.fingers, o.profile));
-  const thumb = thumbStroke(o, lx + w * 0.55, cy + r * 0.05, 1);
-  const strokes = fingers.map((f) => `<path d="M${round(f.x0)} ${round(f.y0)}L${round(f.x1)} ${round(f.y1)}"/>`).join('') + (thumb.d ? `<path d="${thumb.d}"/>` : '');
-  const top = topmost(fingers, { x1: cx, y1: cy - 20 });
-  const last = fingers[fingers.length - 1];
-  const clear = w * (0.5 + RULES.dotClearance) + o.dotSize;
+  const factors = lengths(o.fingers, o.profile);
+  const span = rx - lx - w;
+  const fingers = factors.map((factor, index) => {
+    const x = lx + w / 2 + (o.fingers === 1 ? span / 2 : (index * span) / (o.fingers - 1));
+    return { x: round(x), tip: round(top - o.fingerLen * factor) };
+  });
+  const reach = o.curl * 2.2;
+  const thumbs = {
+    out: `<path d="M${round(lx + w * 0.5)} ${round(cy + r * 0.2)}L${round(lx - reach * 0.7)} ${round(cy - reach * 0.6)}"/>`,
+    curl: `<path d="M${round(lx + w * 0.5)} ${round(cy + r * 0.25)}Q${round(lx - reach * 0.8)} ${round(cy)} ${round(lx - reach * 0.3)} ${round(cy - reach * 0.7)}"/>`,
+  };
+  const thumb = thumbs[o.thumb] ?? '';
+  const strokes = fingers.map((f) => `<path d="M${f.x} ${top + w / 2}V${f.tip}"/>`).join('') + thumb;
+  const tallest = fingers.reduce((best, f) => (f.tip < best.tip ? f : best), fingers[0]);
   const anchors = {
-    side: thumb.tip ? [thumb.tip[0] - clear * 0.4, thumb.tip[1] - clear] : [lx - clear, fingers[0].y1 + o.dotSize],
-    above: [top.x1, top.y1 - clear],
-    tip: [top.x1, top.y1],
-    corner: [last.x1 + clear * 0.75, last.y1 - clear * 0.75],
-    palm: [cx + r * 0.15, cy + r * 0.1],
+    side: [lx - w * RULES.dotClearance - o.dotSize, fingers[0].tip + o.dotSize],
+    above: [tallest.x, tallest.tip - w * (0.5 + RULES.dotClearance) - o.dotSize],
+    tip: [tallest.x, tallest.tip],
+    corner: [rx + w * RULES.dotClearance * 0.6 + o.dotSize, fingers[fingers.length - 1].tip - w * RULES.dotClearance - o.dotSize],
+    palm: [cx + r * 0.2, cy + r * 0.12],
   };
   const body = `${palm}<g fill="none" stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${strokes}</g>`;
   return { body, anchors };
@@ -232,6 +226,8 @@ export function markBody(input, ink = COLORS.ink, accent = COLORS.accent) {
   const tilt = options.tilt ? ` transform="rotate(${options.tilt} 48 56)"` : '';
   return `<g${tilt}>${body}${dot}</g>`;
 }
+
+export const FIXED_VIEW = '-6 -10 108 108';
 
 export function fitBox(body) {
   const probe = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -247,18 +243,19 @@ export function fitBox(body) {
   return [round(x), round(y), round(side + pad * 2), round(side + pad * 2)];
 }
 
-export function markSvg(input, { ink = COLORS.ink, accent = COLORS.accent, size } = {}) {
+export function markSvg(input, { ink = COLORS.ink, accent = COLORS.accent, size, fixed = false } = {}) {
   const options = balance(input);
   const body = markBody(options, ink, accent);
+  const dims = size ? ` width="${size}" height="${size}"` : '';
+  if (fixed) return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${FIXED_VIEW}"${dims}>${body}</svg>`;
   const reach = options.weight / 2;
   const [x, y, w, h] = fitBox(body);
   const view = `${round(x - reach)} ${round(y - reach)} ${round(w + reach * 2)} ${round(h + reach * 2)}`;
-  const dims = size ? ` width="${size}" height="${size}"` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${view}"${dims}>${body}</svg>`;
 }
 
-export function iconSvg(options, { size } = {}) {
-  const inner = markSvg(options, { ink: COLORS.nightInk }).replace('<svg ', '<svg x="18" y="18" width="64" height="64" ');
+export function iconSvg(options, { size, accent = COLORS.accent, fixed = false } = {}) {
+  const inner = markSvg(options, { ink: COLORS.nightInk, accent, fixed }).replace('<svg ', '<svg x="18" y="18" width="64" height="64" ');
   const dims = size ? ` width="${size}" height="${size}"` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"${dims}><rect width="100" height="100" rx="22" fill="${COLORS.night}"/>${inner}</svg>`;
 }

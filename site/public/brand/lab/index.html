@@ -49,10 +49,12 @@ output{color:var(--text);font:.9em var(--mono)}
 </style>
 <main>
 <header>
-<div><a href="/brand/">hand brand</a><h1>Mark lab</h1><p>The hand mark is generated, not drawn. Sliders move freely; the rules hold spacing, weight and the dot in proportion, and show “held” when they step in.</p></div>
+<div><a href="/brand/">hand brand</a><h1>Mark lab</h1><p>The hand mark is generated, not drawn. The rules hold spacing, weight and the dot in proportion. Morph walks between random states so you can watch it change.</p></div>
 <div class="actions">
 <div class="segmented" id="presets" role="group" aria-label="Start from"></div>
 <div class="segmented" id="styles" role="group" aria-label="Style"></div>
+<button type="button" class="quiet" id="morph" aria-pressed="false">Morph: off</button>
+<button type="button" class="quiet" id="color" aria-pressed="false">Colour: blue</button>
 <button id="random">Randomize</button>
 </div>
 </header>
@@ -72,29 +74,30 @@ output{color:var(--text);font:.9em var(--mono)}
 </section>
 </main>
 <script type="module">
-import { DOTS, PRESETS, PROFILES, STYLES, THUMBS, COLORS, balance, generate, iconSvg, markSvg } from '/brand/mark.js';
+import { DOTS, PRESETS, PROFILES, STYLES, THUMBS, COLORS, accentOf, balance, generate, iconSvg, markSvg, mix } from '/brand/mark.js';
 
 const RANGES = {
   fingers: [1, 4, 1], fingerLen: [8, 36, 1], root: [0, 14, 1], palmWidth: [36, 64, 1],
-  leftLen: [0, 30, 1], rightLen: [0, 40, 1], curl: [3, 12, 1], weight: [5, 16, 0.5], dotSize: [3, 9, 0.5], tilt: [-12, 12, 1],
-  fan: [0, 14, 0.5], knuckle: [0, 9, 0.5], thumbAngle: [20, 65, 1],
+  leftLen: [0, 30, 1], rightLen: [0, 40, 1], curl: [3, 12, 1], weight: [5, 16, 0.5], dotSize: [3, 9, 0.5], tilt: [-8, 8, 1],
 };
 const CHOICES = { profile: PROFILES, thumb: THUMBS, dot: DOTS };
 const LABELS = {
-  fingers: 'Fingers', profile: 'Finger heights', fingerLen: 'Finger length', root: 'Lift from palm',
+  fingers: 'Fingers', profile: 'Finger heights', fingerLen: 'Finger length', root: 'Finger gap from palm',
   palmWidth: 'Palm width', leftLen: 'Left side', rightLen: 'Right side', thumb: 'Thumb', curl: 'Thumb size',
   weight: 'Line weight', dot: 'Dot position', dotSize: 'Dot size', tilt: 'Tilt',
-  fan: 'Finger spread', knuckle: 'Knuckle curve', thumbAngle: 'Thumb angle',
 };
 const GROUPS = [
-  { title: 'Fingers', keys: ['fingers', 'profile', 'fingerLen', 'fan', 'knuckle', 'root'] },
-  { title: 'Palm', keys: ['palmWidth', 'leftLen', 'rightLen', 'thumb', 'thumbAngle', 'curl'] },
+  { title: 'Fingers', keys: ['fingers', 'profile', 'fingerLen', 'root'] },
+  { title: 'Palm', keys: ['palmWidth', 'leftLen', 'rightLen', 'thumb', 'curl'] },
   { title: 'Line', keys: ['weight', 'tilt'] },
   { title: 'Dot', keys: ['dot', 'dotSize'] },
 ];
 
-let options = { ...PRESETS.wave };
-let preset = 'wave';
+let options = { ...PRESETS.c3 };
+let preset = 'c3';
+let accent = COLORS.accent;
+let morphing = false;
+let colorful = false;
 let gallery = Array.from({ length: 24 }, (_, i) => `hand-${i + 1}`);
 const $ = (id) => document.getElementById(id);
 
@@ -145,10 +148,60 @@ function download(name, svg) {
   link.click();
 }
 
-function renderPreview() {
-  $('onPaper').innerHTML = markSvg(options, { size: 150 });
-  $('onNight').innerHTML = markSvg(options, { ink: COLORS.nightInk, size: 150 });
-  $('sizes').innerHTML = [96, 64, 32, 16].map((s) => `<figure>${iconSvg(options, { size: s })}<figcaption>${s}</figcaption></figure>`).join('');
+function renderPreview(shape = options, fixed = false) {
+  $('onPaper').innerHTML = markSvg(shape, { size: 150, accent, fixed });
+  $('onNight').innerHTML = markSvg(shape, { ink: COLORS.nightInk, size: 150, accent, fixed });
+  $('sizes').innerHTML = [96, 64, 32, 16].map((s) => `<figure>${iconSvg(shape, { size: s, accent, fixed })}<figcaption>${s}</figcaption></figure>`).join('');
+}
+
+const HOLD_MS = 900;
+const MOVE_MS = 1100;
+let morphFrom = null;
+let morphTo = null;
+let morphStart = 0;
+
+function nextTarget() {
+  const seed = crypto.randomUUID().slice(0, 8);
+  const sameStyle = Math.random() < 0.75 ? options.style : undefined;
+  return { seed, shape: balance(generate(seed, sameStyle)) };
+}
+
+function morphFrame(now) {
+  if (!morphing) return;
+  const elapsed = now - morphStart;
+  if (elapsed >= HOLD_MS + MOVE_MS) {
+    options = morphTo.shape;
+    $('seed').value = morphTo.seed;
+    if (colorful) accent = accentOf(morphTo.seed);
+    morphFrom = balance(options);
+    morphTo = nextTarget();
+    morphStart = now;
+    renderControls();
+    renderTop();
+  }
+  const t = Math.max(0, (elapsed - HOLD_MS) / MOVE_MS);
+  renderPreview(t > 0 ? mix(morphFrom, morphTo.shape, Math.min(1, t)) : morphFrom, true);
+  requestAnimationFrame(morphFrame);
+}
+
+function setMorph(on) {
+  morphing = on;
+  $('morph').textContent = on ? 'Morph: on' : 'Morph: off';
+  $('morph').setAttribute('aria-pressed', String(on));
+  if (!on) return renderPreview();
+  morphFrom = balance(options);
+  morphTo = nextTarget();
+  morphStart = performance.now();
+  requestAnimationFrame(morphFrame);
+}
+
+function setColor(on) {
+  colorful = on;
+  accent = on ? accentOf($('seed').value) : COLORS.accent;
+  $('color').textContent = on ? 'Colour: by seed' : 'Colour: blue';
+  $('color').setAttribute('aria-pressed', String(on));
+  renderPreview();
+  renderGallery();
 }
 
 function renderTop() {
@@ -159,15 +212,17 @@ function renderTop() {
 function renderGallery() {
   const presets = Object.entries(PRESETS).map(([name, o]) => `<button class="sample preset" data-preset="${name}">${markSvg(o, { size: 72 })}<span>${name}</span></button>`).join('');
   const style = preset ? undefined : options.style;
-  $('grid').innerHTML = presets + gallery.map((seed) => `<button class="sample" data-seed="${seed}">${markSvg(generate(seed, style), { size: 72 })}<span>${seed}</span></button>`).join('');
+  $('grid').innerHTML = presets + gallery.map((seed) => `<button class="sample" data-seed="${seed}">${markSvg(generate(seed, style), { size: 72, accent: colorful ? accentOf(seed) : COLORS.accent })}<span>${seed}</span></button>`).join('');
   $('grid').querySelectorAll('[data-preset]').forEach((b) => (b.onclick = () => { preset = b.dataset.preset; options = { ...PRESETS[preset] }; refresh(); }));
-  $('grid').querySelectorAll('[data-seed]').forEach((b) => (b.onclick = () => { $('seed').value = b.dataset.seed; options = generate(b.dataset.seed, style); preset = ''; refresh(); }));
+  $('grid').querySelectorAll('[data-seed]').forEach((b) => (b.onclick = () => { $('seed').value = b.dataset.seed; options = generate(b.dataset.seed, style); if (colorful) accent = accentOf(b.dataset.seed); preset = ''; refresh(); }));
 }
 
 function refresh() { options = balance(options); renderTop(); renderControls(); renderPreview(); }
 
 $('seed').onchange = () => { options = generate($('seed').value); preset = ''; refresh(); renderGallery(); };
 $('random').onclick = () => { $('seed').value = crypto.randomUUID().slice(0, 8); options = generate($('seed').value); preset = ''; refresh(); };
+$('morph').onclick = () => setMorph(!morphing);
+$('color').onclick = () => setColor(!colorful);
 $('batch').onclick = () => { gallery = Array.from({ length: 24 }, () => crypto.randomUUID().slice(0, 8)); renderGallery(); };
 
 refresh();
