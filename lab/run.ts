@@ -4,7 +4,7 @@ import { close, jsonl, open, pool, runDir, specUrl, type ScreenSpec, THINKING, t
 import { TASKS as BASE_TASKS, HARD_TASKS, type Task } from '../bench/tasks.ts';
 import { type AppState, ENTRANTS, type Session } from './entrants.ts';
 
-const ENTRANT_IDS = (process.env.LAB_ENTRANTS ?? 'hand,agent-browser').split(',');
+const ENTRANT_IDS = (process.env.LAB_ENTRANTS ?? 'hand,agent-browser,playwright-mcp,stagehand,browser-use').split(',');
 const PLANNER = (process.env.LAB_PLANNER ?? 'kimi-k2.6') as LlmModel;
 const REPEATS = Number(process.env.LAB_REPEATS ?? 1);
 const CONCURRENCY = Number(process.env.LAB_CONC ?? 8);
