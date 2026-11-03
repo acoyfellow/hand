@@ -21,6 +21,8 @@ const TAG_TONES: Record<string, string> = {
   'own vision model': 'bg-[#fde8f1] text-[#9d1d5a] dark:bg-[#3a1428] dark:text-[#ffa8cf]',
   measured: 'bg-[#e7f6ec] text-[#17663a] dark:bg-[#123222] dark:text-[#8ee0ad]',
   planned: 'bg-[#fff8db] text-[#6b5200] dark:bg-[#352d0c] dark:text-[#f2d77a]',
+  pass: 'bg-[#e7f6ec] text-[#17663a] dark:bg-[#123222] dark:text-[#8ee0ad]',
+  fail: 'bg-[#fdeaea] text-[#9b1c1c] dark:bg-[#3a1616] dark:text-[#f5a3a3]',
 };
 
 const tag = (h: H, text: string): Html => h.span([h.Class(`${TAG} ${TAG_TONES[text] ?? 'bg-raise text-dim'}`)], [text]);
@@ -120,11 +122,94 @@ const headToHead = (h: H): Html => {
   );
 };
 
+const miniwob = (h: H): Html | undefined => {
+  const result = LAB_DATA.miniwob;
+  if (!result) return undefined;
+  const arms = [
+    { name: 'hand', arm: result.do },
+    { name: 'Same planner, screenshot every step', arm: result.vision },
+  ];
+  return section(
+    h,
+    2,
+    'miniwob',
+    'Public benchmark: MiniWoB++',
+    ["All 125 MiniWoB++ tasks, scored by MiniWoB's own reward, never the agent's claim. hand against the same planner looking at a screenshot every step."],
+    [
+      table(
+        h,
+        'MiniWoB++',
+        [
+          { label: 'Setup' },
+          { label: 'Solved', numeric: true },
+          { label: 'Cost per task', numeric: true },
+          { label: 'Solved per $1', numeric: true },
+          { label: 'Median time', numeric: true, wide: true },
+          { label: 'Errors', numeric: true, wide: true },
+        ],
+        arms.map(({ name, arm }, index) =>
+          bodyRow(
+            h,
+            [
+              { content: [bold(h, name)], header: true },
+              { content: [`${arm.solved}/${arm.tasks}`], numeric: true },
+              { content: [money(arm.usdPerTask)], numeric: true },
+              { content: [String(Math.round(arm.solvedPerDollar))], numeric: true },
+              { content: [`${arm.medianSeconds.toFixed(1)} s`], numeric: true, wide: true },
+              { content: [String(arm.errors)], numeric: true, wide: true },
+            ],
+            index === 0,
+          ),
+        ),
+      ),
+      h.p(
+        [h.Class('mt-2.5 text-[13px] text-dim')],
+        ['Same success, half the cost. Our bar was 3x the value, so this counts as a ', bold(h, 'fail'), '. Both solve about half the set. Run ', h.a([h.Href(runUrl(result.run))], [result.run]), '.'],
+      ),
+    ],
+  );
+};
+
+const brief = (metrics: Record<string, unknown>) =>
+  Object.entries(metrics)
+    .filter(([key]) => key !== 'benchmark' && key !== 'arm')
+    .slice(0, 4)
+    .map(([key, value]) => `${key} ${typeof value === 'number' ? Number(value.toFixed(4)) : String(value)}`)
+    .join(', ');
+
+const tests = (h: H): Html =>
+  section(
+    h,
+    3,
+    'tests',
+    'Every test, pass or fail',
+    ['Each test had its pass bar written down before it ran. Failures stay here. They are the hill to climb.'],
+    [
+      table(
+        h,
+        'Every test, pass or fail',
+        [{ label: 'Claim' }, { label: 'Result' }, { label: 'Numbers', wide: true }, { label: 'Run' }],
+        LAB_DATA.tests.map((test) =>
+          bodyRow(
+            h,
+            [
+              { content: [test.claim], header: true },
+              { content: [tag(h, test.pass ? 'pass' : 'fail')] },
+              { content: [h.small([h.Class('text-xs text-dim')], [brief(test.metrics)])], wide: true },
+              { content: [h.a([h.Href(runUrl(test.run))], [test.run])] },
+            ],
+            false,
+          ),
+        ),
+      ),
+    ],
+  );
+
 const frontier = (h: H): Html => {
   const best = LAB_DATA.scoreboard[0];
   return section(
     h,
-    2,
+    4,
     'frontier',
     'Against a frontier model',
     ['hand with a small planner against Claude Opus doing everything itself, on the same 30 tasks.'],
@@ -162,7 +247,7 @@ const frontier = (h: H): Html => {
 const landscape = (h: H): Html =>
   section(
     h,
-    3,
+    5,
     'landscape',
     'Landscape',
     ['How each one sees the screen, and who decides where to click. That second column is most of the cost.'],
@@ -209,7 +294,7 @@ const landscape = (h: H): Html =>
 const benchmarks = (h: H): Html =>
   section(
     h,
-    4,
+    6,
     'benchmarks',
     'Benchmarks',
     ['Where the scoreboard is going. Public sets first, so anyone can check the numbers.'],
@@ -251,6 +336,8 @@ export const labMain = (h: H): readonly Child[] => [
     ],
   ),
   headToHead(h),
+  ...(LAB_DATA.miniwob ? [miniwob(h) as Html] : []),
+  tests(h),
   frontier(h),
   landscape(h),
   benchmarks(h),
