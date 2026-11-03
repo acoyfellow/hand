@@ -241,3 +241,6 @@ setMotion('still');
 let current = swarm($('swarm'));
 $('reswarm').onclick = () => { current.stop(); current = swarm($('swarm'), { seeds: Array.from({ length: 4 }, () => crypto.randomUUID().slice(0, 6)) }); };
 </script>
+
+<footer data-site-foot></footer>
+<script src="/footer.js" defer></script>

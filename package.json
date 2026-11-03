@@ -26,7 +26,8 @@
     "bench:verify": "bun bench/verify.ts",
     "gate": "bun bench/gate.ts",
     "bench:mock:reference": "DO_MOCK=1 DO_RUN=reference DO_SCREENS=2 DO_PER_SCREEN=2 DO_T3_PER_SCREEN=1 DO_TASKS=mail-archive DO_REPEATS=2 DO_ARMS=vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot bun bench/run-all.ts",
-    "writers": "bun bench/writer-eval.ts"
+    "writers": "bun bench/writer-eval.ts",
+    "brand": "bun site/brand-build.ts"
   },
   "dependencies": {
     "effect": "4.0.0"

@@ -387,3 +387,56 @@ export function cursorSvg(options, { accent = COLORS.accent, size = 30 } = {}) {
 export function agent(seed, { style } = {}) {
   return { seed, shape: balance(generate(seed, style)), accent: accentOf(seed) };
 }
+
+export function backdrop(el, { cell = 168, size = 28, opacity = 0.035, speed = 0.012, base = DEFAULT_MARK } = {}) {
+  const dark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
+  const ink = dark ? COLORS.nightInk : COLORS.ink;
+  const columns = Math.ceil(innerWidth / cell) + 2;
+  const rows = Math.ceil(innerHeight / cell) + 2;
+  const layer = document.createElement('div');
+  layer.style.cssText = `position:absolute;left:${-cell}px;top:${-cell}px;display:grid;grid-template-columns:repeat(${columns},${cell}px);grid-auto-rows:${cell}px;will-change:transform`;
+  el.replaceChildren(layer);
+  const tiles = Array.from({ length: columns * rows }, (_, index) => {
+    const tile = document.createElement('div');
+    const row = Math.floor(index / columns);
+    const offset = row % 2 ? cell / 2 : 0;
+    tile.style.cssText = `display:grid;place-items:center;transform:translateX(${offset}px);opacity:${opacity}`;
+    layer.appendChild(tile);
+    const seed = `bg-${index}`;
+    return { tile, phase: (index * 397) % 9000, home: balance(base), away: balance(generate(seed, base.style)), accent: accentOf(seed), last: '' };
+  });
+  const draw = (now) => {
+    for (const t of tiles) {
+      const cycle = ((now + t.phase) % 9000) / 9000;
+      const amount = ease(Math.min(1, Math.max(0, (Math.sin(cycle * Math.PI * 2) + 0.2) / 1.2)));
+      const shape = mix(t.home, t.away, amount);
+      const svg = markSvg(shape, { ink, accent: amount > 0.5 ? t.accent : COLORS.accent, size, fixed: true });
+      if (svg !== t.last) {
+        t.tile.innerHTML = svg;
+        t.last = svg;
+      }
+    }
+  };
+  requestAnimationFrame(() => el.classList.add('on'));
+  if (prefersStill()) {
+    draw(2000);
+    return { stop() {} };
+  }
+  let frame = 0;
+  let lastDraw = 0;
+  const loop = (now) => {
+    const drift = (now * speed) % cell;
+    layer.style.transform = `translate(${drift}px,${drift * 0.5}px)`;
+    if (now - lastDraw > 120) {
+      draw(now);
+      lastDraw = now;
+    }
+    frame = requestAnimationFrame(loop);
+  };
+  frame = requestAnimationFrame(loop);
+  return { stop: () => cancelAnimationFrame(frame) };
+}
+
+export function logoSvg({ size = 40, base = DEFAULT_MARK } = {}) {
+  return iconSvg(base, { size, fixed: false });
+}

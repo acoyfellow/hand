@@ -4,7 +4,7 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const MARKUP = `
 <div class="sw-app">
-  <div class="sw-bar"><i></i><i></i><i></i><span>Workspace</span></div>
+  <div class="sw-bar"><i></i><i></i><i></i><span>Workspace</span><div class="sw-done" data-done></div></div>
   <div class="sw-cols">
     <div class="sw-card sw-mail">
       <b>Inbox</b>
@@ -27,7 +27,6 @@ const MARKUP = `
       </div>
     </div>
   </div>
-  <div class="sw-done" data-done></div>
 </div>`;
 
 const CSS = `
@@ -50,11 +49,11 @@ const CSS = `
 .sw-primary{justify-self:start;background:#18181b!important;color:#fff!important;border-color:#18181b!important}
 .sw-item{display:flex;justify-content:space-between;align-items:center}
 .sw-cart{color:var(--dim,#6b6b70);font-size:12px}.sw-cart strong{color:var(--text,#18181b)}
-.sw-done{position:absolute;right:12px;bottom:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:end;max-width:60%}
-.sw-done span{font-size:11px;padding:3px 8px;border-radius:999px;background:var(--raise,#f4f4f2);color:var(--dim,#6b6b70);display:flex;align-items:center;gap:5px;animation:sw-in .3s ease-out}
+.sw-done{margin-left:auto;display:flex;gap:6px;flex-wrap:nowrap;justify-content:end;overflow:hidden;min-height:20px}
+.sw-done span{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--bg,#fff);border:1px solid var(--line,#ebebe8);white-space:nowrap;color:var(--dim,#6b6b70);display:flex;align-items:center;gap:5px;animation:sw-in .3s ease-out}
 .sw-done i{width:7px;height:7px;border-radius:50%}
 @keyframes sw-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-@media (max-width:640px){.sw-cols{grid-template-columns:1fr}.sw-row{grid-template-columns:70px 1fr auto}}`;
+@media (max-width:640px){.sw-done span:nth-child(n+3){display:none}.sw-cols{grid-template-columns:1fr}.sw-row{grid-template-columns:70px 1fr auto}}`;
 
 const TASKS = [
   { name: 'Archive invoices', steps: [['archive-0', 'Archive Ana Souza', 0.97]] },

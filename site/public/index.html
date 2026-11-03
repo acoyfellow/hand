@@ -102,7 +102,6 @@ details h2{border:0;padding-top:0;margin-top:2rem}
 .hero .install{margin:0 auto 1.5rem}
 .hero .links{justify-content:center;gap:1.75rem}
 .show{max-width:52rem;margin:0 auto 5rem}
-.stage{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem;align-items:stretch;position:relative}
 .app{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;font-family:var(--sans);font-size:.9rem;position:relative}
 .app-bar{display:flex;align-items:center;gap:6px;padding:.6rem .8rem;background:var(--raise);border-bottom:1px solid var(--line)}
 .app-bar span{width:9px;height:9px;border-radius:50%;background:#d9d6d0}
@@ -118,15 +117,6 @@ details h2{border:0;padding-top:0;margin-top:2rem}
 .btn.danger{margin-left:auto;color:#c2410c;border-color:#f1c6b3}
 .toast{margin:1rem 0 0;font-size:.8rem;color:var(--dim);opacity:0;transition:opacity .3s}
 .toast.on{opacity:1}
-.stage .trace{margin:0}
-.stage .trace li{opacity:.35;transition:opacity .3s}
-.stage .trace li.on{opacity:1}
-.stage .hand-cursor,.stage .hand-ring{position:absolute}
-@media (max-width:720px){.stage{grid-template-columns:1fr}}
-.show .trace{margin:0;font-size:.95rem}
-.show .trace li{padding:.7rem 1.25rem;gap:1rem}
-.show .task{padding:1rem 1.25rem;font-size:1rem}
-.show .cap{text-align:center;margin-top:.9rem}
 .big{margin-top:5rem}
 @media (max-width:48rem){.hero{padding:2.5rem 0 3rem}.hero .lede{font-size:1.9rem}}
 .block{max-width:40rem;margin:0 auto;padding:4.5rem 0 0}
@@ -145,9 +135,15 @@ details h2{border:0;padding-top:0;margin-top:2rem}
 details{max-width:40rem;margin:5rem auto 0}
 @media (max-width:48rem){.block{padding-top:3rem}.block .stats{gap:.5rem}.block .stat{padding:1rem .5rem}.block .stat b{font-size:1.3rem}.block .flow{grid-template-columns:repeat(2,1fr)}.block .big{font-size:1.35rem}}
 .swarm{max-width:760px;margin:2rem auto 0;position:relative}
+.swarm-cap{text-align:center;color:var(--dim);font-size:.85rem;margin:.7rem 0 0}
+.backdrop{position:fixed;inset:0;contain:strict;z-index:-1;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.6s ease}
+.backdrop.on{opacity:1}
+html,body{overflow-x:clip}
+body{position:relative;z-index:0}
 </style>
 </head>
 <body>
+<div class="backdrop" id="backdrop" aria-hidden="true"></div>
 <div class="wrap">
 <header>
 <img src="/brand/icon.svg" alt="">
@@ -161,30 +157,9 @@ details{max-width:40rem;margin:5rem auto 0}
 <div class="install"><code>bun add github:acoyfellow/hand</code><button type="button" data-copy="bun add github:acoyfellow/hand">Copy</button></div>
 <p class="links"><a href="#mcp">Use with an AI agent</a></p>
 <div class="swarm" id="swarm" aria-label="Four agents, each with its own hand, working in one app at once"></div>
+<p class="swarm-cap">Four agents, each with its own hand, working in one app at once.</p>
 </section>
 
-<section class="show">
-<div class="stage" id="stage" aria-label="A replay of a real run: hand turns on email notifications and saves">
-<div class="app">
-<div class="app-bar"><span></span><span></span><span></span><b>Settings</b></div>
-<div class="app-body">
-<div class="row"><span>Email notifications</span><i class="switch" data-step="0"></i></div>
-<div class="row"><span>Dark mode</span><i class="switch"></i></div>
-<div class="actions"><em class="btn primary" data-step="1">Save changes</em><em class="btn">Cancel</em><em class="btn danger">Delete account</em></div>
-<p class="toast">Settings saved</p>
-</div>
-</div>
-<div class="trace">
-<div class="task">Turn on email notifications and save.</div>
-<ol>
-<li data-line="0"><span>click "Email notifications"</span><span class="p">95%</span></li>
-<li data-line="1"><span>click "Save changes"</span><span class="p">94%</span></li>
-<li data-line="2"><span>done</span><span class="p">94%</span></li>
-</ol>
-</div>
-</div>
-<p class="cap">A replay of a real run. The cursor is the same one hand shows while it works.</p>
-</section>
 
 <section class="block" id="results">
 <p class="big">It finished <b>all 30 tasks</b>, three times over, at <b>1/18 the cost</b> of Claude Opus.</p>
@@ -266,62 +241,19 @@ details{max-width:40rem;margin:5rem auto 0}
 <span class="f">bun</span> run bench   <span class="c"># real models, writes bench/runs/&lt;id&gt;/</span></pre>
 </details>
 
-<footer>hand · MIT · <a href="https://github.com/acoyfellow/hand">source</a> · <a href="/brand/">brand</a> · part of <a href="https://customer0.dev">customer0</a></footer>
+<footer data-site-foot></footer>
 </div>
 <script src="/cursor.js"></script>
-<script>
-(() => {
-  const stage = document.getElementById('stage');
-  if (!stage || !window.__handCursorMount) return;
-  const cursor = window.__handCursorMount(stage);
-  const lines = [...stage.querySelectorAll('[data-line]')];
-  const toggle = stage.querySelector('[data-step="0"]');
-  const save = stage.querySelector('[data-step="1"]');
-  const toast = stage.querySelector('.toast');
-  const steps = [
-    { el: toggle, label: 'switch "Email notifications"', p: 0.95, then: () => toggle.classList.add('on') },
-    { el: save, label: 'button "Save changes"', p: 0.94, then: () => toast.classList.add('on') },
-  ];
-  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const centre = (el) => {
-    const a = el.getBoundingClientRect();
-    const b = stage.getBoundingClientRect();
-    return { x: a.left - b.left + a.width / 2, y: a.top - b.top + a.height / 2 };
-  };
-  async function play() {
-    for (;;) {
-      toggle.classList.remove('on');
-      toast.classList.remove('on');
-      lines.forEach((line) => line.classList.remove('on'));
-      cursor.hide();
-      await wait(900);
-      for (const [index, step] of steps.entries()) {
-        lines[index].classList.add('on');
-        const point = centre(step.el);
-        await cursor.click(point.x, point.y, step.label, step.p);
-        step.then();
-        await wait(900);
-      }
-      lines[2].classList.add('on');
-      await wait(2600);
-    }
-  }
-  const seen = new IntersectionObserver((entries) => {
-    if (entries.some((entry) => entry.isIntersecting)) {
-      seen.disconnect();
-      play();
-    }
-  });
-  seen.observe(stage);
-})();
-</script>
 <script>
 document.querySelectorAll('[data-copy]').forEach((b)=>b.addEventListener('click',async()=>{await navigator.clipboard.writeText(b.dataset.copy);b.textContent='Copied';setTimeout(()=>{b.textContent='Copy'},1500)}));
 </script>
 <script type="module">
+import { backdrop } from '/brand/mark.js';
 import { swarm } from '/brand/swarm.js';
+backdrop(document.getElementById('backdrop'));
 const el = document.getElementById('swarm');
 if (el && window.__handCursorMount) swarm(el);
 </script>
+<script src="/footer.js" defer></script>
 </body>
 </html>
