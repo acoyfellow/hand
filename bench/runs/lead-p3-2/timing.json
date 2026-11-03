@@ -1,0 +1,11 @@
+{
+  "run": "lead-p3-2",
+  "wallMs": 150303,
+  "stepsMs": {
+    "bench/probe.ts": 7313,
+    "bench/t4-e2e.ts": 142419,
+    "bench/report.ts": 483
+  },
+  "totalInFlight": 160,
+  "perTestInFlight": 160
+}

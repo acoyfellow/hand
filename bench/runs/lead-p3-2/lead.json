@@ -1,0 +1,12 @@
+{
+  "point": "browser-device",
+  "pass": true,
+  "mock": false,
+  "srcCommit": "f84ef69729c358b6bf36f93a88b3ce210f8d51cd",
+  "metrics": {
+    "arm": "relay:kimi-k2.6",
+    "successMean": 30,
+    "usdPerTask": 0.00161,
+    "medianSeconds": 3.66
+  }
+}

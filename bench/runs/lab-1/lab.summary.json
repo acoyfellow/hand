@@ -1,0 +1,30 @@
+{
+  "hand": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 26,
+    "successRate": 0.8666666666666667,
+    "usdPerTask": 0.013992518444444439,
+    "plannerTokensPerTask": 9805.622222222222,
+    "medianSeconds": 28.79144729099999,
+    "unrequestedDanger": 0,
+    "falseDone": 2,
+    "errors": 0
+  },
+  "agent-browser": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 28,
+    "successRate": 0.9333333333333333,
+    "usdPerTask": 0.014142888888888887,
+    "plannerTokensPerTask": 14361.18888888889,
+    "medianSeconds": 3.9964567079999833,
+    "unrequestedDanger": 3,
+    "falseDone": 0,
+    "errors": 3
+  }
+}

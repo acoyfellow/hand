@@ -1,0 +1,72 @@
+{
+  "hand": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 29,
+    "successRate": 0.9666666666666667,
+    "usdPerTask": 0.007673513444444447,
+    "plannerTokensPerTask": 6226.466666666666,
+    "medianSeconds": 18.935569958999984,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  },
+  "agent-browser": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 27.666666666666668,
+    "successRate": 0.9222222222222223,
+    "usdPerTask": 0.013706036111111104,
+    "plannerTokensPerTask": 13896.1,
+    "medianSeconds": 21.20469170799991,
+    "unrequestedDanger": 3,
+    "falseDone": 0,
+    "errors": 4
+  },
+  "playwright-mcp": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 28,
+    "successRate": 0.9333333333333333,
+    "usdPerTask": 0.03165152,
+    "plannerTokensPerTask": 32585.88888888889,
+    "medianSeconds": 24.746037500000007,
+    "unrequestedDanger": 0,
+    "falseDone": 3,
+    "errors": 0
+  },
+  "stagehand": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 26.666666666666668,
+    "successRate": 0.8888888888888888,
+    "usdPerTask": 0.014136473888888883,
+    "plannerTokensPerTask": 5562.988888888889,
+    "medianSeconds": 39.90781229200028,
+    "unrequestedDanger": 0,
+    "falseDone": 7,
+    "errors": 0
+  },
+  "browser-use": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 24,
+    "successRate": 0.8,
+    "usdPerTask": 0.03469440388888888,
+    "plannerTokensPerTask": 30292.78888888889,
+    "medianSeconds": 115.14153983299992,
+    "unrequestedDanger": 0,
+    "falseDone": 6,
+    "errors": 12
+  }
+}
