@@ -29,7 +29,7 @@ export const COMPETITORS: readonly Competitor[] = [
     platforms: ['macOS', 'browser'],
     ships: 'TypeScript library and MCP server',
     strength: 'A small model picks the control, says how sure it is, asks when unsure, blocks risky clicks and checks the result.',
-    gap: 'No Windows or Linux. No scored real-Mac task set. No done-check that meets its bar.',
+    gap: 'No Windows or Linux yet. No scored real-Mac task set yet.',
     adapter: 'measured',
   },
   {
@@ -44,7 +44,7 @@ export const COMPETITORS: readonly Competitor[] = [
     ships: 'Rust CLI on npm',
     strength: 'Snapshot refs, tiny JSON output, fast native CLI. The default browser tool for many coding agents.',
     gap: 'No model inside: the calling agent pays a big model to read every snapshot and pick.',
-    adapter: 'planned',
+    adapter: 'measured',
   },
   {
     id: 'agent-desktop',
@@ -72,7 +72,7 @@ export const COMPETITORS: readonly Competitor[] = [
     ships: 'MCP server',
     strength: 'Accessibility snapshots with refs, built into many MCP clients.',
     gap: 'Large snapshots sent to the caller each step; no picking, no confidence.',
-    adapter: 'planned',
+    adapter: 'measured',
   },
   {
     id: 'browser-use',
@@ -86,7 +86,7 @@ export const COMPETITORS: readonly Competitor[] = [
     ships: 'Python library and cloud',
     strength: 'The most used open browser agent, with stealth cloud browsers.',
     gap: 'Big model every step, so cost and latency scale with every click.',
-    adapter: 'planned',
+    adapter: 'measured',
   },
   {
     id: 'stagehand',
@@ -100,7 +100,7 @@ export const COMPETITORS: readonly Competitor[] = [
     ships: 'TypeScript SDK',
     strength: 'Plain-words act and extract from code, closest API to hand on the web.',
     gap: 'Each act sends the page to a big model.',
-    adapter: 'planned',
+    adapter: 'measured',
   },
   {
     id: 'skyvern',

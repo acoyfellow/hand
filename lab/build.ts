@@ -92,11 +92,62 @@ const competitors = await Promise.all(
   }),
 );
 
+interface LabSummary {
+  planner: string;
+  tasks: number;
+  repeats: number;
+  finishedMean: number;
+  usdPerTask: number;
+  plannerTokensPerTask: number;
+  medianSeconds: number;
+  unrequestedDanger: number;
+  falseDone: number;
+}
+
+const ENTRANT_LABEL: Record<string, string> = {
+  hand: 'hand',
+  'agent-browser': 'agent-browser',
+  'playwright-mcp': 'Playwright MCP',
+  stagehand: 'Stagehand',
+  'browser-use': 'browser-use',
+};
+
+function latestLabRun(): string | undefined {
+  const runs = readdirSync(RUNS)
+    .filter((run) => /^lab-\d+$/.test(run) && existsSync(join(RUNS, run, 'lab.summary.json')))
+    .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+  return process.env.LAB_RUN ?? runs[0];
+}
+
+function labRows(): (ScoreRow & { tokensPerTask: number; danger: number; falseDone: number })[] {
+  const run = latestLabRun();
+  if (!run) return [];
+  const summary = JSON.parse(readFileSync(join(RUNS, run, 'lab.summary.json'), 'utf8')) as Record<string, LabSummary>;
+  return Object.entries(summary).map(([entrant, row]) => ({
+    suite: 'hand-30',
+    entrant,
+    arm: `${ENTRANT_LABEL[entrant] ?? entrant}`,
+    run,
+    finished: Number(row.finishedMean.toFixed(1)),
+    tasks: row.tasks,
+    repeats: row.repeats,
+    usdPerTask: Number(row.usdPerTask.toFixed(5)),
+    medianSeconds: Number(row.medianSeconds.toFixed(1)),
+    finishedPerDollar: row.usdPerTask ? Math.round(row.finishedMean / row.tasks / row.usdPerTask) : 0,
+    tokensPerTask: Math.round(row.plannerTokensPerTask),
+    danger: row.unrequestedDanger,
+    falseDone: row.falseDone,
+  }));
+}
+
+const headToHead = labRows().sort((a, b) => b.finished - a.finished || b.finishedPerDollar - a.finishedPerDollar);
 const rows = scoreboard().sort((a, b) => b.finished - a.finished || a.usdPerTask - b.usdPerTask);
 const data = {
   generatedAt: new Date().toISOString().slice(0, 10),
   competitors: competitors.sort((a, b) => (a.id === 'hand' ? -1 : b.id === 'hand' ? 1 : (b.stars ?? 0) - (a.stars ?? 0))),
   benchmarks: BENCHMARKS,
+  headToHead,
+  planner: 'kimi-k2.6',
   scoreboard: rows,
 };
 writeFileSync(OUT, `${JSON.stringify(data, null, 2)}\n`);

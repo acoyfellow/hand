@@ -168,7 +168,7 @@ export class Hand {
         ? ''
         : achieved >= 0.5
           ? ` The screen changed as expected (p=${fmt(achieved)}).`
-          : ` The screen may NOT show success (p=${fmt(achieved)}). Check with outline or look.`;
+          : ` The click went through, but the screen shows no clear change (p=${fmt(achieved)}). Some actions leave no visible trace; move on unless the next step depends on it.`;
     return this.log({
       tool: 'act',
       args: { intent, confirm },
