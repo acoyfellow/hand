@@ -44,12 +44,25 @@ export interface Step {
 
 const TEXT_ROLES = new Set(['textbox', 'searchbox', 'combobox', 'spinbutton']);
 const fmt = (p: number) => p.toFixed(2);
+export class StaleRef extends Error {
+  constructor(
+    readonly ref: string,
+    readonly was: string | undefined,
+    readonly now: string | undefined,
+  ) {
+    super(
+      `STALE_REF: [${ref}] ${was ? `was ${was}` : 'is not from the last outline'}${now ? ` and is now ${now}` : ' and is gone'}. The screen changed; call outline again and use the new ids.`,
+    );
+  }
+}
+
 const refOf = (text: string) => /^\s*\[?(e\d+)\]?\s*$/.exec(text)?.[1];
 const isRef = (text: string) => refOf(text) !== undefined;
 
 export class Hand {
   readonly steps: Step[] = [];
   private warned = new Set<string>();
+  private outlined = new Map<string, string>();
   constructor(
     private readonly t: Transport,
     private readonly d: Device,
@@ -68,6 +81,7 @@ export class Hand {
   async outline(): Promise<string> {
     const t0 = performance.now();
     const cands = await this.d.candidates();
+    this.outlined = new Map(cands.map((c) => [c.id, describe(c)]));
     const lines = cands.map((c) => `- [${c.id}] ${describe(c)}`).join('\n');
     const text = this.d.text ? (await this.d.text()).trim() : '';
     const reading = text ? `\n\nText on screen:\n${text}` : '';
@@ -87,6 +101,8 @@ export class Hand {
   private async choose(intent: string, cands: Candidate[], shot: string) {
     const named = refOf(intent);
     const byRef = named ? cands.find((c) => c.id === named) : undefined;
+    if (named && (!byRef || (this.outlined.has(named) && this.outlined.get(named) !== describe(byRef))))
+      throw new StaleRef(named, this.outlined.get(named), byRef ? describe(byRef) : undefined);
     if (byRef) {
       const pick = {
         method: this.opts.method,
@@ -124,7 +140,15 @@ export class Hand {
     const named = refOf(intent);
     const byRef = named ? cands.find((c) => c.id === named) : undefined;
     const earlyRisk = byRef ? risky(this.t, this.opts.model, before, describe(byRef)) : undefined;
-    const [inj, { pick, chosen, top }] = await Promise.all([this.injectionNote(before), this.choose(intent, cands, before)]);
+    let chose: Awaited<ReturnType<Hand['choose']>>;
+    let inj: { note: string; cost: number };
+    try {
+      [inj, chose] = await Promise.all([this.injectionNote(before), this.choose(intent, cands, before)]);
+    } catch (error) {
+      if (!(error instanceof StaleRef)) throw error;
+      return this.log({ tool: 'act', args: { intent, confirm }, result: error.message, costUsd: 0, ms: performance.now() - t0 });
+    }
+    const { pick, chosen, top } = chose;
     cost += inj.cost + pick.costUsd;
     const what = chosen ? describe(chosen) : `point (${Math.round(pick.point.x)}, ${Math.round(pick.point.y)})`;
     if (shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0)) {
@@ -187,7 +211,14 @@ export class Hand {
     const fields = (await this.d.candidates()).filter((c) => TEXT_ROLES.has(c.role));
     if (!fields.length) return this.log({ tool: 'type', args: { text, into }, result: 'No text fields on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
-    const { pick, chosen, top } = await this.choose(isRef(into) ? into : `Type into ${into}`, fields, shot);
+    let chose: Awaited<ReturnType<Hand['choose']>>;
+    try {
+      chose = await this.choose(isRef(into) ? into : `Type into ${into}`, fields, shot);
+    } catch (error) {
+      if (!(error instanceof StaleRef)) throw error;
+      return this.log({ tool: 'type', args: { text, into }, result: error.message, costUsd: 0, ms: performance.now() - t0 });
+    }
+    const { pick, chosen, top } = chose;
     if (!chosen || shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0))
       return this.log({
         tool: 'type',
@@ -216,7 +247,14 @@ export class Hand {
     const boxes = (await this.d.candidates()).filter((c) => c.role === 'combobox' || c.role === 'listbox');
     if (!boxes.length) return this.log({ tool: 'select', args: { value, into }, result: 'No dropdowns on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
-    const { pick, chosen, top } = await this.choose(isRef(into) ? into : `Choose an option in ${into}`, boxes, shot);
+    let chose: Awaited<ReturnType<Hand['choose']>>;
+    try {
+      chose = await this.choose(isRef(into) ? into : `Choose an option in ${into}`, boxes, shot);
+    } catch (error) {
+      if (!(error instanceof StaleRef)) throw error;
+      return this.log({ tool: 'select', args: { value, into }, result: error.message, costUsd: 0, ms: performance.now() - t0 });
+    }
+    const { pick, chosen, top } = chose;
     if (!chosen || shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0))
       return this.log({
         tool: 'select',
