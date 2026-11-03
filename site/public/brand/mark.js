@@ -388,9 +388,10 @@ export function agent(seed, { style } = {}) {
   return { seed, shape: balance(generate(seed, style)), accent: accentOf(seed) };
 }
 
-export function backdrop(el, { cell = 168, size = 28, opacity = 0.035, speed = 0.012, base = DEFAULT_MARK } = {}) {
+export function backdrop(el, { cell = 150, size = 34, opacity, speed = 0.012, base = DEFAULT_MARK } = {}) {
   const dark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
   const ink = dark ? COLORS.nightInk : COLORS.ink;
+  opacity ??= dark ? 0.13 : 0.09;
   const columns = Math.ceil(innerWidth / cell) + 2;
   const rows = Math.ceil(innerHeight / cell) + 2;
   const layer = document.createElement('div');
