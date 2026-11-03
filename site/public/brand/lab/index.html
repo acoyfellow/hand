@@ -1,0 +1,175 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>hand mark lab</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{--bg:#f7f7f6;--surface:#fff;--line:#e4e4e1;--strong:#b4b4b0;--text:#18181b;--dim:#6b6b70;--accent:#2E9BF0;
+--sans:"Google Sans Flex","Google Sans",system-ui,sans-serif;--mono:"Google Sans Code",ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 14px/1.5 var(--sans)}
+button,input,select{font:inherit}
+main{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:32px 0 64px}
+header{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:24px;flex-wrap:wrap}
+header a{color:var(--dim);text-decoration:none}
+h1{margin:4px 0;font-size:clamp(26px,4vw,38px);font-weight:600;line-height:1.1}
+h2{margin:0;font-size:18px;font-weight:600}
+p{margin:0;color:var(--dim)}
+button{border:1px solid var(--text);border-radius:8px;background:var(--text);color:#fff;padding:8px 14px;font-weight:500;cursor:pointer}
+button.quiet{border-color:var(--line);background:var(--surface);color:var(--text)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.segmented{display:flex;gap:2px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:2px}
+.segmented button{border:0;border-radius:6px;background:transparent;color:var(--dim);padding:6px 12px}
+.segmented button.active{background:var(--text);color:#fff}
+.workspace{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(420px,1.1fr);border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.preview{display:grid;gap:18px;align-content:center;justify-items:center;padding:28px;border-right:1px solid var(--line);background:var(--bg)}
+.stage{display:flex;gap:14px}
+.stage div{border-radius:12px;display:grid;place-items:center;width:190px;height:190px}
+.stage .paper{background:#fff;border:1px solid var(--line)} .stage .night{background:#141416}
+.sizes{display:flex;gap:14px;align-items:end}
+.sizes figure{margin:0;display:grid;gap:4px;justify-items:center} figcaption{font:400 11px var(--mono);color:var(--dim)}
+.seed{display:grid;gap:6px;width:100%;color:var(--dim)}
+.seed input{width:100%}
+form{display:grid;grid-template-columns:1fr 1fr;align-content:start;gap:18px 24px;padding:24px}
+fieldset{display:grid;align-content:start;gap:10px;margin:0;border:0;padding:0}
+legend{margin-bottom:6px;padding:0;font-weight:600}
+label{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;color:var(--dim)}
+label input[type=range]{grid-column:1/-1;width:100%;margin:0;accent-color:var(--text)}
+select,input:not([type=range]){min-height:34px;border:1px solid var(--strong);border-radius:6px;background:#fff;color:var(--text);padding:5px 9px}
+select{min-width:120px}
+output{color:var(--text);font:.9em var(--mono)}
+.export{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+.variance{display:grid;gap:14px;margin-top:24px}
+.variance-heading{display:flex;justify-content:space-between;align-items:end;gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.sample{display:grid;place-items:center;gap:6px;border:1px solid var(--line);background:#fff;color:var(--text);padding:12px 6px;border-radius:10px}
+.sample.preset{border-color:var(--text)}
+.sample span{font:400 11px var(--mono);color:var(--dim);max-width:100%;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:860px){.workspace{grid-template-columns:1fr}.preview{border-right:0;border-bottom:1px solid var(--line)}form{grid-template-columns:1fr}.stage div{width:150px;height:150px}}
+</style>
+<main>
+<header>
+<div><a href="/brand/">hand brand</a><h1>Mark lab</h1><p>The hand mark is generated, not drawn. Sliders move freely; the rules hold spacing, weight and the dot in proportion, and show “held” when they step in.</p></div>
+<div class="actions">
+<div class="segmented" id="presets" role="group" aria-label="Start from"></div>
+<div class="segmented" id="styles" role="group" aria-label="Style"></div>
+<button id="random">Randomize</button>
+</div>
+</header>
+
+<section class="workspace">
+<div class="preview">
+<div class="stage"><div class="paper" id="onPaper"></div><div class="night" id="onNight"></div></div>
+<div class="sizes" id="sizes"></div>
+<label class="seed">Seed<input id="seed" value="hand"></label>
+</div>
+<form id="controls" onsubmit="return false"></form>
+</section>
+
+<section class="variance">
+<div class="variance-heading"><div><h2>Generated range</h2><p>Deterministic from the seed. Click one to edit it.</p></div><button class="quiet" id="batch">New batch</button></div>
+<div class="grid" id="grid"></div>
+</section>
+</main>
+<script type="module">
+import { DOTS, PRESETS, PROFILES, STYLES, THUMBS, COLORS, balance, generate, iconSvg, markSvg } from '/brand/mark.js';
+
+const RANGES = {
+  fingers: [1, 4, 1], fingerLen: [8, 36, 1], root: [0, 14, 1], palmWidth: [36, 64, 1],
+  leftLen: [0, 30, 1], rightLen: [0, 40, 1], curl: [3, 12, 1], weight: [5, 16, 0.5], dotSize: [3, 9, 0.5], tilt: [-12, 12, 1],
+  fan: [0, 14, 0.5], knuckle: [0, 9, 0.5], thumbAngle: [20, 65, 1],
+};
+const CHOICES = { profile: PROFILES, thumb: THUMBS, dot: DOTS };
+const LABELS = {
+  fingers: 'Fingers', profile: 'Finger heights', fingerLen: 'Finger length', root: 'Lift from palm',
+  palmWidth: 'Palm width', leftLen: 'Left side', rightLen: 'Right side', thumb: 'Thumb', curl: 'Thumb size',
+  weight: 'Line weight', dot: 'Dot position', dotSize: 'Dot size', tilt: 'Tilt',
+  fan: 'Finger spread', knuckle: 'Knuckle curve', thumbAngle: 'Thumb angle',
+};
+const GROUPS = [
+  { title: 'Fingers', keys: ['fingers', 'profile', 'fingerLen', 'fan', 'knuckle', 'root'] },
+  { title: 'Palm', keys: ['palmWidth', 'leftLen', 'rightLen', 'thumb', 'thumbAngle', 'curl'] },
+  { title: 'Line', keys: ['weight', 'tilt'] },
+  { title: 'Dot', keys: ['dot', 'dotSize'] },
+];
+
+let options = { ...PRESETS.wave };
+let preset = 'wave';
+let gallery = Array.from({ length: 24 }, (_, i) => `hand-${i + 1}`);
+const $ = (id) => document.getElementById(id);
+
+function renderSegmented(el, items, active, onPick) {
+  el.innerHTML = items.map((item) => `<button type="button" class="${item === active ? 'active' : ''}" data-v="${item}">${item}</button>`).join('');
+  el.querySelectorAll('button').forEach((b) => (b.onclick = () => onPick(b.dataset.v)));
+}
+
+function renderControls() {
+  const form = $('controls');
+  form.innerHTML = GROUPS.map((group) => `<fieldset><legend>${group.title}</legend>${group.keys.map((key) => {
+    if (CHOICES[key]) return `<label>${LABELS[key]}<select data-k="${key}">${CHOICES[key].map((c) => `<option ${c === options[key] ? 'selected' : ''}>${c}</option>`).join('')}</select></label>`;
+    const [min, max, step] = RANGES[key];
+    return `<label>${LABELS[key]} <output data-o="${key}">${options[key]}</output><input type="range" data-k="${key}" min="${min}" max="${max}" step="${step}" value="${options[key]}"></label>`;
+  }).join('')}</fieldset>`).join('') + `<div class="export"><button type="button" id="dlMark" class="quiet">Download mark.svg</button><button type="button" id="dlIcon" class="quiet">Download icon.svg</button><button type="button" id="copy" class="quiet">Copy settings</button></div>`;
+  form.querySelectorAll('[data-k]').forEach((input) => {
+    input.oninput = () => {
+      const key = input.dataset.k;
+      options[key] = CHOICES[key] ? input.value : Number(input.value);
+      const out = form.querySelector(`[data-o="${key}"]`);
+      if (out) out.textContent = input.value;
+      preset = '';
+      renderTop();
+      renderPreview();
+      showBalanced();
+    };
+  });
+  $('dlMark').onclick = () => download('hand-mark.svg', markSvg(options));
+  showBalanced();
+  $('dlIcon').onclick = () => download('hand-icon.svg', iconSvg(options));
+  $('copy').onclick = () => navigator.clipboard.writeText(JSON.stringify(options));
+}
+
+function showBalanced() {
+  const shown = balance(options);
+  for (const [key, value] of Object.entries(shown)) {
+    const out = document.querySelector(`[data-o="${key}"]`);
+    if (!out) continue;
+    const rounded = Math.round(value * 10) / 10;
+    out.textContent = rounded === options[key] ? `${rounded}` : `${rounded} (held)`;
+  }
+}
+
+function download(name, svg) {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+  link.download = name;
+  link.click();
+}
+
+function renderPreview() {
+  $('onPaper').innerHTML = markSvg(options, { size: 150 });
+  $('onNight').innerHTML = markSvg(options, { ink: COLORS.nightInk, size: 150 });
+  $('sizes').innerHTML = [96, 64, 32, 16].map((s) => `<figure>${iconSvg(options, { size: s })}<figcaption>${s}</figcaption></figure>`).join('');
+}
+
+function renderTop() {
+  renderSegmented($('presets'), Object.keys(PRESETS), preset, (name) => { preset = name; options = { ...PRESETS[name] }; refresh(); });
+  renderSegmented($('styles'), STYLES, options.style, (style) => { options = generate($('seed').value, style); preset = ''; refresh(); });
+}
+
+function renderGallery() {
+  const presets = Object.entries(PRESETS).map(([name, o]) => `<button class="sample preset" data-preset="${name}">${markSvg(o, { size: 72 })}<span>${name}</span></button>`).join('');
+  const style = preset ? undefined : options.style;
+  $('grid').innerHTML = presets + gallery.map((seed) => `<button class="sample" data-seed="${seed}">${markSvg(generate(seed, style), { size: 72 })}<span>${seed}</span></button>`).join('');
+  $('grid').querySelectorAll('[data-preset]').forEach((b) => (b.onclick = () => { preset = b.dataset.preset; options = { ...PRESETS[preset] }; refresh(); }));
+  $('grid').querySelectorAll('[data-seed]').forEach((b) => (b.onclick = () => { $('seed').value = b.dataset.seed; options = generate(b.dataset.seed, style); preset = ''; refresh(); }));
+}
+
+function refresh() { options = balance(options); renderTop(); renderControls(); renderPreview(); }
+
+$('seed').onchange = () => { options = generate($('seed').value); preset = ''; refresh(); renderGallery(); };
+$('random').onclick = () => { $('seed').value = crypto.randomUUID().slice(0, 8); options = generate($('seed').value); preset = ''; refresh(); };
+$('batch').onclick = () => { gallery = Array.from({ length: 24 }, () => crypto.randomUUID().slice(0, 8)); renderGallery(); };
+
+refresh();
+renderGallery();
+</script>
