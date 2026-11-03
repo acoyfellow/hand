@@ -72,4 +72,4 @@ const nativeTask = (task: (typeof NATIVE_TASKS)[number]): DeskTask => ({
 
 export const DESK_TASKS: readonly DeskTask[] = [...WEB_TASKS.map(webTask), ...NATIVE_TASKS.map(nativeTask)];
 
-export const defaultVm = () => vm(process.env.DESK_VM_HOST ?? '192.168.64.4');
+export const defaultVm = () => vm(process.env.DESK_VM_HOST ?? '192.168.64.5');
