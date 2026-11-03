@@ -1,0 +1,29 @@
+site/public/brand/icons/act.svg
+  s_655b8bbf0a58d9::t_4217b2ccb61e85 1
+site/public/brand/icons/check.svg
+  s_655b8bbf0a58d9::t_dbcc66618c5aa9 1
+site/public/brand/icons/list.svg
+  s_655b8bbf0a58d9::t_c7281848f43e47 1
+site/public/brand/icons/pick.svg
+  s_655b8bbf0a58d9::t_d7b318a70e69a0 1
+site/public/brand/index.html
+  s_655b8bbf0a58d9::t_a6bb1c6fbb596c 1-96
+site/public/index.html
+  s_655b8bbf0a58d9::t_55f2f04704c1e7 88,204-207,267
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "fdbabbcaa99335883664c16781bf6d68dbba17ae",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
