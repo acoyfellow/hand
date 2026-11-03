@@ -1,0 +1,4 @@
+lab playwright-mcp r0 mail-spam                PASS turns=4 $0.0109
+lab playwright-mcp r0 settings-lang            PASS turns=6 $0.0146
+lab playwright-mcp r0 settings-name            PASS turns=6 $0.0141
+lab playwright-mcp r0 shop-two                 PASS turns=7 $0.0203

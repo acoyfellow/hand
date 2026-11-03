@@ -1,0 +1,11 @@
+desktop hand           r0 calc-add         PASS turns=9 $0.0143
+desktop agent-desktop  r0 calc-add         PASS turns=9 $0.0175
+desktop hand           r0 calc-multiply    PASS turns=7 $0.0098
+desktop agent-desktop  r0 calc-multiply    PASS turns=7 $0.0126
+desktop hand           r0 calc-subtract    PASS turns=10 $0.0167
+desktop agent-desktop  r0 calc-subtract    fail turns=20 $0.0563
+desktop hand           r0 calc-divide      fail turns=20 $0.0239
+desktop agent-desktop  r0 calc-divide      fail turns=20 $0.0395
+desktop hand           r0 calc-chain       fail turns=20 $0.0133
+desktop agent-desktop  r0 calc-chain       fail turns=20 $0.0396
+desktop hand           r0 calc-percent     fail turns=20 $0.0134

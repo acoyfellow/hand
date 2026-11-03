@@ -1,0 +1,288 @@
+public do      buy-ticket                   PASS steps=3 $0.0019
+public do      choose-date-medium           fail steps=4 $0.0024
+public do      choose-date                  fail steps=4 $0.0024
+public do      choose-date-easy             fail steps=4 $0.0024
+public do      ascending-numbers            PASS steps=5 $0.0031
+public do      circle-center                fail steps=3 $0.0018
+public do      choose-list                  PASS steps=3 $0.0015
+public do      choose-date-nodelay          fail steps=4 $0.0024
+public do      click-button                 PASS steps=2 $0.0011
+public do      click-button-sequence        PASS steps=3 $0.0017
+public do      book-flight-nodelay          fail steps=10 $0.0092
+public do      click-checkboxes             PASS steps=2 $0.0020
+public do      click-checkboxes-transfer    PASS steps=2 $0.0010
+public do      bisect-angle                 fail steps=10 $0.0074
+public do      click-checkboxes-large       PASS steps=3 $0.0043
+public do      click-dialog                 PASS steps=2 $0.0009
+public do      click-collapsible            PASS steps=3 $0.0017
+public do      click-checkboxes-soft        PASS steps=4 $0.0029
+public do      click-collapsible-nodelay    PASS steps=3 $0.0017
+public do      book-flight                  fail steps=10 $0.0093
+public do      click-color                  PASS steps=5 $0.0028
+public do      click-dialog-2               PASS steps=2 $0.0010
+public do      click-link                   PASS steps=2 $0.0011
+public do      click-menu                   fail steps=2 $0.0010
+public do      click-option                 PASS steps=2 $0.0014
+public do      click-menu-2                 PASS steps=3 $0.0017
+public do      click-shape                  PASS steps=2 $0.0011
+public do      click-tab                    PASS steps=2 $0.0010
+public do      click-collapsible-2          fail steps=10 $0.0110
+public do      click-collapsible-2-nodelay  fail steps=10 $0.0110
+public do      click-tab-2-medium           PASS steps=2 $0.0011
+public do      click-pie                    fail steps=9 $0.0084
+public do      click-pie-nodelay            PASS steps=8 $0.0070
+public do      click-scroll-list            fail steps=5 $0.0040
+public do      click-test                   PASS steps=2 $0.0009
+public do      click-test-2                 PASS steps=2 $0.0010
+public do      click-shades                 fail steps=10 $0.0070
+public do      click-test-transfer          PASS steps=2 $0.0010
+public do      copy-paste-2                 fail steps=3 $0.0016
+public do      click-widget                 PASS steps=2 $0.0012
+public do      click-tab-2-easy             fail steps=10 $0.0085
+public do      click-tab-2                  fail steps=10 $0.0105
+public do      click-tab-2-hard             fail steps=10 $0.0118
+public do      count-shape                  fail steps=5 $0.0027
+public do      drag-circle                  fail steps=3 $0.0017
+public do      copy-paste                   fail steps=10 $0.0068
+public do      drag-items-grid              fail steps=4 $0.0018
+public do      count-sides                  PASS steps=8 $0.0058
+public do      drag-box                     fail steps=10 $0.0085
+public do      drag-shapes                  PASS steps=5 $0.0036
+public do      daily-calendar               fail steps=10 $0.0097
+public do      drag-single-shape            fail steps=3 $0.0017
+public do      drag-items                   fail steps=10 $0.0087
+public do      email-inbox-delete           PASS steps=3 $0.0030
+public do      drag-cube                    fail steps=10 $0.0071
+public do      email-inbox-forward-nl       fail steps=1 $0.0003
+public do      email-inbox-forward-nl-turk  fail steps=1 $0.0003
+public do      email-inbox-nl-turk          fail steps=1 $0.0003
+public do      email-inbox-important        PASS steps=2 $0.0015
+public do      drag-shapes-2                fail steps=10 $0.0075
+public do      email-inbox-forward          PASS steps=7 $0.0086
+public do      drag-sort-numbers            fail steps=10 $0.0075
+public do      draw-circle                  fail steps=8 $0.0065
+public do      email-inbox                  PASS steps=8 $0.0113
+public do      email-inbox-star-reply       PASS steps=3 $0.0027
+public do      draw-line                    fail steps=10 $0.0073
+public do      enter-text                   PASS steps=2 $0.0010
+public do      enter-date                   fail steps=3 $0.0019
+public do      enter-password               PASS steps=3 $0.0017
+public do      enter-text-2                 PASS steps=3 $0.0015
+public do      enter-text-dynamic           PASS steps=3 $0.0014
+public do      focus-text                   PASS steps=2 $0.0009
+public do      enter-time                   fail steps=3 $0.0019
+public do      find-greatest                PASS steps=4 $0.0025
+public do      focus-text-2                 PASS steps=2 $0.0010
+public do      email-inbox-noscroll         PASS steps=7 $0.0080
+public do      find-word                    PASS steps=3 $0.0015
+public do      find-midpoint                PASS steps=3 $0.0018
+public do      form-sequence-2              fail steps=3 $0.0017
+public do      email-inbox-reply            PASS steps=10 $0.0139
+public do      form-sequence-3              PASS steps=3 $0.0017
+public do      highlight-text               fail steps=3 $0.0016
+public do      grid-coordinate              PASS steps=2 $0.0015
+public do      generate-number              PASS steps=3 $0.0017
+public do      form-sequence                fail steps=5 $0.0035
+public do      identify-shape               PASS steps=2 $0.0011
+public do      highlight-text-2             fail steps=3 $0.0017
+public do      hot-cold                     PASS steps=4 $0.0021
+public do      guess-number                 PASS steps=5 $0.0029
+public do      login-user                   PASS steps=3 $0.0017
+public do      login-user-popup             PASS steps=3 $0.0017
+public do      multi-layouts                PASS steps=3 $0.0019
+public do      navigate-tree                PASS steps=2 $0.0012
+public do      multi-orderings              PASS steps=3 $0.0019
+public do      read-table                   PASS steps=3 $0.0015
+public do      read-table-2                 PASS steps=3 $0.0018
+public do      scroll-text                  fail steps=3 $0.0020
+public do      odd-or-even                  fail steps=10 $0.0109
+public do      phone-book                   fail steps=7 $0.0061
+public do      number-checkboxes            fail steps=10 $0.0085
+public do      scroll-text-2                fail steps=4 $0.0029
+public do      right-angle                  fail steps=7 $0.0048
+public do      resize-textarea              fail steps=7 $0.0055
+public do      sign-agreement               PASS steps=3 $0.0026
+public do      simple-algebra               PASS steps=3 $0.0015
+public do      simple-arithmetic            PASS steps=3 $0.0015
+public do      search-engine                fail steps=6 $0.0041
+public do      order-food                   fail steps=10 $0.0090
+public do      stock-market                 fail steps=2 $0.0010
+public do      text-transform               fail steps=3 $0.0015
+public do      use-autocomplete             PASS steps=3 $0.0015
+public do      unicode-test                 PASS steps=2 $0.0011
+public do      social-media                 fail steps=10 $0.0109
+public do      use-autocomplete-nodelay     fail steps=4 $0.0019
+public do      social-media-some            fail steps=9 $0.0084
+public do      social-media-all             fail steps=10 $0.0114
+public do      tic-tac-toe                  fail steps=10 $0.0089
+public do      terminal                     fail steps=10 $0.0080
+public do      visual-addition              fail steps=3 $0.0014
+public do      use-colorwheel               fail steps=6 $0.0035
+public do      text-editor                  fail steps=10 $0.0109
+public do      use-colorwheel-2             fail steps=6 $0.0035
+public do      use-spinner                  PASS steps=3 $0.0015
+public vision  buy-ticket                   PASS steps=1 $0.0015
+public do      use-slider-2                 fail steps=5 $0.0037
+public vision  choose-date-easy             PASS steps=3 $0.0045
+public vision  choose-date                  PASS steps=4 $0.0060
+public vision  choose-date-medium           PASS steps=3 $0.0045
+public do      use-slider                   fail steps=10 $0.0077
+public vision  choose-list                  PASS steps=2 $0.0030
+public vision  choose-date-nodelay          PASS steps=3 $0.0045
+public vision  ascending-numbers            fail steps=10 $0.0152
+public vision  book-flight                  fail steps=10 $0.0154
+public vision  click-button                 PASS steps=1 $0.0015
+public vision  book-flight-nodelay          fail steps=10 $0.0154
+public vision  click-button-sequence        fail steps=2 $0.0029
+public vision  click-checkboxes-transfer    PASS steps=1 $0.0015
+public vision  click-checkboxes             PASS steps=4 $0.0060
+public vision  click-collapsible-nodelay    PASS steps=2 $0.0029
+public vision  bisect-angle                 fail steps=10 $0.0177
+public vision  click-color                  PASS steps=1 $0.0015
+public vision  click-dialog                 PASS steps=1 $0.0015
+public vision  click-checkboxes-large       PASS steps=7 $0.0107
+public vision  click-dialog-2               PASS steps=1 $0.0015
+public vision  click-menu                   fail steps=1 $0.0015
+public vision  click-link                   PASS steps=1 $0.0015
+public vision  click-checkboxes-soft        fail steps=10 $0.0152
+public vision  click-menu-2                 PASS steps=2 $0.0030
+public vision  click-collapsible-2-nodelay  PASS steps=9 $0.0140
+public vision  click-option                 PASS steps=2 $0.0029
+public vision  click-pie-nodelay            PASS steps=2 $0.0030
+public vision  circle-center                fail steps=10 $0.0153
+public vision  click-shape                  PASS steps=1 $0.0015
+public vision  click-collapsible            fail steps=10 $0.0152
+public vision  click-tab                    PASS steps=1 $0.0015
+public vision  click-tab-2-easy             PASS steps=1 $0.0015
+public vision  click-test                   PASS steps=1 $0.0015
+public vision  click-tab-2-medium           PASS steps=1 $0.0015
+public vision  click-test-2                 PASS steps=1 $0.0015
+public vision  click-widget                 PASS steps=1 $0.0015
+public vision  click-test-transfer          PASS steps=1 $0.0015
+public vision  click-collapsible-2          fail steps=10 $0.0153
+public vision  count-shape                  fail steps=1 $0.0014
+public vision  copy-paste-2                 fail steps=2 $0.0030 err=press: Unknown key: "Ctrl"
+public vision  click-pie                    fail steps=10 $0.0153
+public vision  click-tab-2-hard             PASS steps=3 $0.0045
+public vision  count-sides                  PASS steps=1 $0.0015
+public vision  click-tab-2                  PASS steps=5 $0.0075
+public vision  click-scroll-list            fail steps=10 $0.0153
+public vision  copy-paste                   fail steps=6 $0.0090
+public vision  drag-circle                  fail steps=1 $0.0023
+public vision  click-shades                 fail steps=10 $0.0152
+public vision  daily-calendar               fail steps=10 $0.0153
+public vision  drag-single-shape            fail steps=5 $0.0078
+public vision  drag-items                   fail steps=1 $0.0042
+public vision  drag-items-grid              fail steps=1 $0.0042
+public vision  drag-shapes                  fail steps=1 $0.0046
+public vision  email-inbox-delete           PASS steps=1 $0.0015
+public vision  drag-cube                    fail steps=10 $0.0153
+public vision  email-inbox-forward-nl       fail steps=1 $0.0014
+public vision  drag-box                     fail steps=4 $0.0106
+public vision  email-inbox-important        PASS steps=1 $0.0015
+public vision  email-inbox-nl-turk          fail steps=1 $0.0014
+public vision  drag-shapes-2                fail steps=2 $0.0084
+public vision  drag-sort-numbers            fail steps=10 $0.0156
+public vision  email-inbox-star-reply       PASS steps=1 $0.0015
+public vision  email-inbox                  fail steps=10 $0.0156
+public vision  draw-line                    fail steps=10 $0.0161
+public vision  email-inbox-forward          fail steps=10 $0.0156
+public vision  email-inbox-forward-nl-turk  fail steps=9 $0.0143
+public vision  enter-text                   PASS steps=3 $0.0044
+public vision  enter-password               PASS steps=5 $0.0075
+public vision  enter-text-2                 PASS steps=3 $0.0045
+public vision  email-inbox-reply            fail steps=10 $0.0157
+public vision  enter-date                   fail steps=5 $0.0076 err=press: Unknown key: "Ctrl"
+public vision  email-inbox-noscroll         fail steps=10 $0.0153
+public vision  focus-text                   PASS steps=1 $0.0015
+public vision  enter-time                   fail steps=4 $0.0059
+public vision  enter-text-dynamic           PASS steps=3 $0.0044
+public vision  focus-text-2                 PASS steps=1 $0.0015
+public vision  find-word                    PASS steps=3 $0.0045
+public vision  generate-number              PASS steps=2 $0.0030
+public vision  grid-coordinate              PASS steps=1 $0.0015
+public vision  form-sequence-2              fail steps=4 $0.0059
+public vision  find-midpoint                fail steps=10 $0.0153
+public vision  find-greatest                fail steps=8 $0.0106
+public vision  hot-cold                     PASS steps=2 $0.0029
+public vision  form-sequence-3              fail steps=10 $0.0153
+public vision  identify-shape               PASS steps=1 $0.0015
+public vision  form-sequence                fail steps=10 $0.0153
+public vision  highlight-text               fail steps=10 $0.0152
+public vision  draw-circle                  fail steps=10 $0.0276
+public vision  navigate-tree                PASS steps=1 $0.0015
+public vision  guess-number                 fail steps=10 $0.0154
+public vision  login-user                   PASS steps=5 $0.0075
+public vision  login-user-popup             PASS steps=5 $0.0075
+public vision  highlight-text-2             fail steps=10 $0.0153
+public vision  order-food                   fail steps=3 $0.0044
+public vision  multi-layouts                PASS steps=7 $0.0106
+public vision  phone-book                   PASS steps=2 $0.0030
+public vision  odd-or-even                  PASS steps=4 $0.0060
+public vision  read-table                   PASS steps=3 $0.0044
+public vision  multi-orderings              PASS steps=7 $0.0106
+public vision  scroll-text                  fail steps=4 $0.0060 err=press: Unknown key: "Ctrl"
+public vision  sign-agreement               PASS steps=1 $0.0015
+public vision  read-table-2                 fail steps=5 $0.0074
+public vision  social-media                 fail steps=1 $0.0014
+public vision  scroll-text-2                fail steps=4 $0.0059
+public vision  simple-arithmetic            PASS steps=3 $0.0044
+public vision  simple-algebra               PASS steps=3 $0.0044
+public vision  stock-market                 PASS steps=1 $0.0015
+public vision  right-angle                  fail steps=10 $0.0153
+public vision  number-checkboxes            fail steps=10 $0.0179
+public vision  search-engine                fail steps=10 $0.0154
+public vision  unicode-test                 PASS steps=1 $0.0015
+public vision  resize-textarea              fail steps=10 $0.0153
+public vision  text-transform               PASS steps=3 $0.0044
+public vision  tic-tac-toe                  PASS steps=3 $0.0045
+public vision  terminal                     PASS steps=7 $0.0105
+public vision  use-autocomplete             fail steps=4 $0.0059
+public vision  social-media-all             fail steps=10 $0.0153
+public vision  text-editor                  fail steps=10 $0.0153
+public vision  use-autocomplete-nodelay     fail steps=4 $0.0059
+public vision  social-media-some            fail steps=10 $0.0153
+public vision  use-spinner                  fail steps=3 $0.0045
+public vision  visual-addition              PASS steps=3 $0.0044
+public vision  use-colorwheel               fail steps=10 $0.0151 err=press: Unknown key: "Ctrl"
+public vision  use-slider                   fail steps=10 $0.0152
+public vision  use-slider-2                 fail steps=10 $0.0153
+public vision  use-colorwheel-2             fail steps=10 $0.0151
+{
+  "do": {
+    "tasks": 125,
+    "solved": 62,
+    "successRate": 0.496,
+    "usdPerTask": 0.00391834904,
+    "solvedPerDollar": 126.58392474397841,
+    "medianSeconds": 21.673397332999972,
+    "errors": 0
+  },
+  "vision": {
+    "tasks": 125,
+    "solved": 61,
+    "successRate": 0.488,
+    "usdPerTask": 0.007706620799999995,
+    "solvedPerDollar": 63.32217617350529,
+    "medianSeconds": 21.63401150000002,
+    "errors": 4
+  }
+}
+1 | import { readFileSync, writeFileSync } from 'node:fs';
+2 | import type { LeadResult, PointId } from './lead-gate.ts';
+3 | 
+4 | type Summary = { t4: Record<string, { successMean: number; usdPerTask: number; medianSecondsPerTask: number }> };
+5 | 
+6 | const readJson = <T>(path: string): T => JSON.parse(readFileSync(path, 'utf8')) as T;
+                                                        ^
+ENOENT: no such file or directory, open 'bench/runs/public-1/manifest.json'
+    path: "bench/runs/public-1/manifest.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readJson (/Users/jcoeyman/cloudflare/do/bench/lead-record.ts:6:53)
+      at writeLead (/Users/jcoeyman/cloudflare/do/bench/lead-record.ts:9:20)
+      at /Users/jcoeyman/cloudflare/do/bench/public.ts:269:3
+
+Bun v1.3.12 (macOS arm64)

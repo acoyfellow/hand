@@ -1,6 +1,7 @@
 {
   "browser-device": "lead-p3-2",
   "probabilities": "probs-3",
-  "parallel-agents": "parallel-1",
-  "done-check": "judge-2"
+  "parallel-agents": "parallel-2",
+  "done-check": "judge-2",
+  "public-benchmark": "public-1"
 }

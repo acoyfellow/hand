@@ -1,0 +1,2 @@
+desktop hand           r0 calc-add         fail turns=20 $0.0137
+desktop agent-desktop  r0 calc-add         fail turns=20 $0.0332

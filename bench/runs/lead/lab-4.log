@@ -1,0 +1,2428 @@
+lab hand           r0 mail-archive             PASS turns=3 $0.0034
+lab hand           r0 settings-lang            PASS turns=4 $0.0030
+lab hand           r0 settings-name            PASS turns=4 $0.0030
+lab hand           r0 files-folder             PASS turns=3 $0.0024
+lab hand           r0 settings-notify          PASS turns=4 $0.0035
+lab hand           r0 mail-star-open           PASS turns=4 $0.0052
+lab hand           r0 files-list-open          PASS turns=4 $0.0039
+lab hand           r0 mail-spam                PASS turns=3 $0.0034
+lab hand           r0 shop-two                 PASS turns=6 $0.0061
+lab hand           r0 dash-expand              PASS turns=3 $0.0026
+lab hand           r0 dash-billing-refresh     PASS turns=4 $0.0041
+lab hand           r0 people-sort-page         PASS turns=4 $0.0043
+lab hand           r0 chat-send                PASS turns=5 $0.0045
+lab hand           r0 editor-keep              PASS turns=3 $0.0020
+lab hand           r0 shop-order               PASS turns=9 $0.0114
+lab hand           r0 people-edit-p2           PASS turns=5 $0.0063
+lab hand           r0 cross-dark               PASS turns=6 $0.0094
+lab hand           r0 h-chat-first-name        PASS turns=5 $0.0045
+lab hand           r0 shop-swap                PASS turns=7 $0.0081
+lab hand           r0 h-name-full              PASS turns=4 $0.0030
+lab hand           r0 h-chat-late              PASS turns=5 $0.0045
+lab hand           r0 h-shop-cheapest          PASS turns=3 $0.0023
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 h-people-tokyo           PASS turns=3 $0.0025
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 h-email-change           PASS turns=4 $0.0031
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 mail-archive             PASS turns=3 $0.0026
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 cross-chat-mail          PASS turns=8 $0.0103
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 mail-spam                PASS turns=4 $0.0040
+lab agent-browser  r0 mail-star-open           PASS turns=4 $0.0038
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 settings-notify          PASS turns=4 $0.0026
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 settings-lang            PASS turns=4 $0.0027
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 files-list-open          PASS turns=4 $0.0026
+lab hand           r0 h-shop-priciest-coupon   PASS turns=9 $0.0116
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 h-lang-japanese          PASS turns=11 $0.0151
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 settings-name            PASS turns=5 $0.0039
+lab hand           r0 h-cross-reply            PASS turns=9 $0.0167
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 h-lang-german            PASS turns=12 $0.0183
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 shop-two                 PASS turns=5 $0.0039
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 dash-expand              PASS turns=3 $0.0024
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 dash-billing-refresh     PASS turns=5 $0.0057
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 chat-send                PASS turns=5 $0.0031
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 editor-keep              PASS turns=3 $0.0018
+lab agent-browser  r0 shop-swap                PASS turns=7 $0.0066
+lab hand           r0 chat-attach-send         fail turns=20 $0.0530
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 people-sort-page         PASS turns=6 $0.0087
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 cross-dark               PASS turns=7 $0.0090
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 h-chat-first-name        PASS turns=5 $0.0031
+lab agent-browser  r0 chat-attach-send         PASS turns=8 $0.0072
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 shop-order               PASS turns=9 $0.0104
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 h-lang-german            PASS turns=5 $0.0039
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 cross-chat-mail          PASS turns=8 $0.0070
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 h-chat-late              PASS turns=5 $0.0032
+lab agent-browser  r0 files-folder             PASS turns=20 $0.0434
+lab agent-browser  r0 h-lang-japanese          PASS turns=5 $0.0039
+lab agent-browser  r0 h-name-full              PASS turns=5 $0.0039
+lab agent-browser  r0 h-email-change           PASS turns=5 $0.0039
+lab playwright-mcp r0 mail-spam                PASS turns=5 $0.0180
+lab agent-browser  r0 h-cross-reply            PASS turns=10 $0.0176
+lab playwright-mcp r0 mail-star-open           PASS turns=7 $0.0355
+lab playwright-mcp r0 mail-archive             PASS turns=5 $0.0197
+lab agent-browser  r0 people-edit-p2           PASS turns=20 $0.0807
+lab playwright-mcp r0 settings-lang            PASS turns=4 $0.0084
+lab playwright-mcp r0 settings-notify          PASS turns=7 $0.0191
+lab playwright-mcp r0 settings-name            PASS turns=6 $0.0141
+lab playwright-mcp r0 files-folder             PASS turns=5 $0.0126
+lab playwright-mcp r0 files-list-open          PASS turns=8 $0.0320
+lab playwright-mcp r0 dash-billing-refresh     PASS turns=6 $0.0185
+lab playwright-mcp r0 dash-expand              PASS turns=4 $0.0150
+lab playwright-mcp r0 shop-two                 PASS turns=7 $0.0258
+lab playwright-mcp r0 shop-swap                PASS turns=9 $0.0407
+lab agent-browser  r0 h-people-tokyo           PASS turns=20 $0.0786 DANGER=dialog-discard
+lab playwright-mcp r0 shop-order               PASS turns=9 $0.0417
+lab agent-browser  r0 h-shop-priciest-coupon   fail turns=20 $0.0472
+lab playwright-mcp r0 editor-keep              PASS turns=4 $0.0084
+lab playwright-mcp r0 people-sort-page         PASS turns=7 $0.0221
+lab playwright-mcp r0 chat-send                PASS turns=9 $0.0291
+lab playwright-mcp r0 people-edit-p2           PASS turns=11 $0.0506
+lab playwright-mcp r0 cross-chat-mail          fail turns=10 $0.0493
+lab playwright-mcp r0 cross-dark               PASS turns=12 $0.0454
+lab playwright-mcp r0 h-name-full              PASS turns=6 $0.0144
+lab playwright-mcp r0 h-chat-late              PASS turns=9 $0.0293
+lab playwright-mcp r0 h-lang-german            PASS turns=6 $0.0175
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r0 h-chat-first-name        PASS turns=9 $0.0388
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 h-shop-cheapest          fail turns=20 $0.0453 err=app state lost: the page was navigated away or reloaded
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r0 h-lang-japanese          PASS turns=6 $0.0146
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 mail-archive             PASS turns=3 $0.0061
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r0 h-email-change           PASS turns=6 $0.0172
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 mail-spam                PASS turns=3 $0.0055
+lab playwright-mcp r0 h-shop-cheapest          PASS turns=4 $0.0121
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r0 h-shop-priciest-coupon   PASS turns=9 $0.0317
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 mail-star-open           PASS turns=4 $0.0093
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r0 chat-attach-send         fail turns=20 $0.1031
+lab playwright-mcp r0 h-people-tokyo           PASS turns=7 $0.0312
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 settings-notify          PASS turns=4 $0.0063
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 settings-name            fail turns=4 $0.0064
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 settings-lang            PASS turns=4 $0.0066
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 files-list-open          PASS turns=4 $0.0069
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 files-folder             PASS turns=6 $0.0101
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 shop-order               PASS turns=6 $0.0131
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 shop-two                 PASS turns=4 $0.0067
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r0 h-cross-reply            PASS turns=17 $0.1349
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 dash-expand              PASS turns=3 $0.0069
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 dash-billing-refresh     PASS turns=5 $0.0112
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 shop-swap                PASS turns=6 $0.0133
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 people-sort-page         PASS turns=5 $0.0099
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 editor-keep              PASS turns=3 $0.0040
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 chat-send                PASS turns=7 $0.0134
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 people-edit-p2           PASS turns=6 $0.0132
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-lang-german            PASS turns=4 $0.0066
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-chat-first-name        PASS turns=6 $0.0128
+lab stagehand      r0 h-chat-late              PASS turns=7 $0.0135
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-lang-japanese          PASS turns=6 $0.0123
+lab stagehand      r0 h-name-full              fail turns=7 $0.0159
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-shop-cheapest          PASS turns=3 $0.0044
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 cross-dark               PASS turns=6 $0.0124
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-email-change           fail turns=5 $0.0107
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-people-tokyo           PASS turns=4 $0.0075
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 cross-chat-mail          PASS turns=8 $0.0313
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-shop-priciest-coupon   PASS turns=6 $0.0198
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-cross-reply            PASS turns=8 $0.0206
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 mail-spam                PASS turns=2 $0.0215
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 settings-name            PASS turns=2 $0.0224
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 mail-archive             PASS turns=2 $0.0229
+lab browser-use    r0 settings-lang            PASS turns=3 $0.0383
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 chat-attach-send         fail turns=20 $0.0832
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 settings-notify          fail turns=2 $0.0332
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 dash-expand              PASS turns=2 $0.0219
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 shop-two                 PASS turns=3 $0.0328
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 dash-billing-refresh     PASS turns=3 $0.0403
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 chat-send                PASS turns=3 $0.0411
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 shop-order               PASS turns=4 $0.0617
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 cross-dark               fail turns=3 $0.0416
+lab browser-use    r0 shop-swap                PASS turns=4 $0.0484
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 editor-keep              PASS turns=2 $0.0303
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 cross-chat-mail          PASS turns=5 $0.0630
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-chat-first-name        PASS turns=3 $0.0325
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-name-full              PASS turns=2 $0.0217
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-chat-late              PASS turns=3 $0.0327
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 people-sort-page         PASS turns=4 $0.0380
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-lang-german            PASS turns=3 $0.0334
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 people-edit-p2           PASS turns=5 $0.0697
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-shop-cheapest          PASS turns=2 $0.0275
+lab browser-use    r0 h-lang-japanese          PASS turns=4 $0.0488
+lab hand           r1 mail-archive             PASS turns=3 $0.0034
+lab hand           r1 mail-star-open           PASS turns=4 $0.0052
+lab hand           r1 mail-spam                PASS turns=3 $0.0034
+lab hand           r1 settings-notify          PASS turns=4 $0.0035
+lab browser-use    r0 h-email-change           PASS turns=2 $0.0223
+lab hand           r1 settings-name            PASS turns=4 $0.0030
+lab hand           r1 settings-lang            PASS turns=4 $0.0030
+lab hand           r1 files-list-open          PASS turns=4 $0.0039
+lab hand           r1 files-folder             PASS turns=3 $0.0024
+lab hand           r1 shop-two                 PASS turns=6 $0.0061
+lab hand           r1 dash-billing-refresh     PASS turns=4 $0.0041
+lab hand           r1 shop-swap                PASS turns=7 $0.0081
+lab browser-use    r0 mail-star-open           fail turns=0 $0.0000 err=browser-use printed no result
+lab hand           r1 dash-expand              PASS turns=3 $0.0026
+lab hand           r1 shop-order               PASS turns=9 $0.0114
+lab hand           r1 chat-send                PASS turns=5 $0.0045
+lab hand           r1 people-sort-page         PASS turns=4 $0.0043
+lab browser-use    r0 files-list-open          fail turns=0 $0.0000 err=browser-use printed no result
+lab hand           r1 editor-keep              PASS turns=3 $0.0020
+lab browser-use    r0 files-folder             fail turns=0 $0.0000 err=browser-use printed no result
+lab hand           r1 people-edit-p2           PASS turns=6 $0.0078
+lab browser-use    r0 h-shop-priciest-coupon   PASS turns=4 $0.0586
+lab hand           r1 h-chat-late              PASS turns=5 $0.0045
+lab hand           r1 cross-dark               PASS turns=6 $0.0094
+lab hand           r1 h-chat-first-name        PASS turns=5 $0.0045
+lab hand           r1 h-name-full              PASS turns=4 $0.0030
+lab hand           r1 cross-chat-mail          PASS turns=8 $0.0103
+lab hand           r1 h-shop-cheapest          PASS turns=3 $0.0023
+lab hand           r1 h-lang-japanese          PASS turns=7 $0.0075
+lab hand           r1 h-email-change           PASS turns=4 $0.0031
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r1 h-people-tokyo           PASS turns=3 $0.0025
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 mail-star-open           PASS turns=4 $0.0038
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 chat-attach-send         fail turns=0 $0.0000 err=browser-use printed no result
+lab agent-browser  r1 mail-archive             PASS turns=3 $0.0026
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r1 h-lang-german            PASS turns=12 $0.0183
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 settings-notify          PASS turns=4 $0.0028
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 mail-spam                PASS turns=4 $0.0040
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r1 chat-attach-send         fail turns=20 $0.0530
+lab hand           r1 h-shop-priciest-coupon   PASS turns=9 $0.0116
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 settings-lang            PASS turns=4 $0.0027
+lab agent-browser  r1 settings-name            PASS turns=4 $0.0027
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 files-list-open          PASS turns=4 $0.0026
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-cross-reply            PASS turns=5 $0.0584
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r0 h-people-tokyo           PASS turns=5 $0.0483
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 shop-two                 PASS turns=5 $0.0039
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r1 h-cross-reply            PASS turns=10 $0.0194
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 dash-expand              PASS turns=3 $0.0024
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 dash-billing-refresh     PASS turns=5 $0.0057
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 shop-swap                PASS turns=7 $0.0066
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 people-sort-page         PASS turns=6 $0.0087
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 chat-send                PASS turns=6 $0.0045
+lab agent-browser  r1 editor-keep              PASS turns=3 $0.0017
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 chat-attach-send         PASS turns=8 $0.0072
+lab agent-browser  r1 shop-order               PASS turns=9 $0.0104
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 h-chat-late              PASS turns=5 $0.0032
+lab agent-browser  r1 h-chat-first-name        PASS turns=5 $0.0031
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 cross-chat-mail          PASS turns=8 $0.0070
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 h-lang-german            PASS turns=5 $0.0039
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r1 h-lang-japanese          PASS turns=5 $0.0039
+lab agent-browser  r1 h-name-full              PASS turns=5 $0.0039
+lab agent-browser  r1 cross-dark               PASS turns=7 $0.0090
+lab agent-browser  r1 h-email-change           PASS turns=5 $0.0040
+lab agent-browser  r1 files-folder             PASS turns=20 $0.0434
+lab playwright-mcp r1 mail-spam                PASS turns=4 $0.0109
+lab playwright-mcp r1 mail-archive             PASS turns=4 $0.0156
+lab agent-browser  r1 h-cross-reply            PASS turns=10 $0.0176
+lab playwright-mcp r1 settings-notify          PASS turns=7 $0.0192
+lab playwright-mcp r1 mail-star-open           PASS turns=7 $0.0356
+lab agent-browser  r1 people-edit-p2           PASS turns=20 $0.0777
+lab playwright-mcp r1 settings-name            PASS turns=6 $0.0141
+lab playwright-mcp r1 settings-lang            PASS turns=6 $0.0146
+lab playwright-mcp r1 files-folder             PASS turns=5 $0.0158
+lab playwright-mcp r1 dash-expand              PASS turns=4 $0.0150
+lab playwright-mcp r1 files-list-open          PASS turns=8 $0.0320
+lab playwright-mcp r1 dash-billing-refresh     PASS turns=6 $0.0185
+lab playwright-mcp r1 shop-order               PASS turns=9 $0.0418
+lab playwright-mcp r1 shop-swap                PASS turns=8 $0.0281
+lab playwright-mcp r1 shop-two                 PASS turns=7 $0.0258
+lab agent-browser  r1 h-people-tokyo           fail turns=20 $0.0810
+lab playwright-mcp r1 editor-keep              PASS turns=4 $0.0084
+lab playwright-mcp r1 people-sort-page         PASS turns=7 $0.0302
+lab agent-browser  r1 h-shop-cheapest          fail turns=20 $0.0327 err=app state lost: the page was navigated away or reloaded
+lab agent-browser  r1 h-shop-priciest-coupon   fail turns=20 $0.0499
+lab playwright-mcp r1 chat-send                PASS turns=9 $0.0268
+lab playwright-mcp r1 h-name-full              PASS turns=6 $0.0142
+lab playwright-mcp r1 h-lang-german            PASS turns=6 $0.0145
+lab playwright-mcp r1 cross-chat-mail          fail turns=12 $0.0604
+lab playwright-mcp r1 h-chat-late              PASS turns=9 $0.0389
+lab playwright-mcp r1 people-edit-p2           PASS turns=8 $0.0313
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 h-lang-japanese          PASS turns=6 $0.0146
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 h-chat-first-name        PASS turns=9 $0.0290
+lab playwright-mcp r1 h-shop-cheapest          PASS turns=4 $0.0121
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 h-people-tokyo           PASS turns=5 $0.0179
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 cross-dark               PASS turns=11 $0.0433
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 h-email-change           PASS turns=6 $0.0142
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 mail-spam                PASS turns=3 $0.0054
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 mail-archive             PASS turns=3 $0.0056
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 settings-lang            PASS turns=4 $0.0066
+lab playwright-mcp r1 h-shop-priciest-coupon   PASS turns=9 $0.0421
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 settings-name            PASS turns=4 $0.0064
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 chat-attach-send         fail turns=20 $0.1462
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 mail-star-open           PASS turns=4 $0.0093
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 files-list-open          PASS turns=4 $0.0074
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 shop-two                 PASS turns=4 $0.0067
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 settings-notify          PASS turns=4 $0.0062
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 people-sort-page         PASS turns=4 $0.0079
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 dash-expand              PASS turns=3 $0.0068
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 editor-keep              PASS turns=3 $0.0042
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 dash-billing-refresh     PASS turns=5 $0.0111
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r1 h-cross-reply            PASS turns=18 $0.1394
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 shop-order               PASS turns=6 $0.0133
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 chat-send                PASS turns=7 $0.0133
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 shop-swap                PASS turns=6 $0.0162
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-name-full              fail turns=4 $0.0064
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 cross-dark               PASS turns=7 $0.0143
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-lang-german            PASS turns=4 $0.0065
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 people-edit-p2           PASS turns=7 $0.0221
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-chat-late              PASS turns=8 $0.0170
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-chat-first-name        PASS turns=6 $0.0128
+lab stagehand      r1 h-lang-japanese          PASS turns=5 $0.0082
+lab stagehand      r1 h-shop-cheapest          PASS turns=3 $0.0046
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 cross-chat-mail          PASS turns=10 $0.0262
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-email-change           PASS turns=6 $0.0134
+lab stagehand      r1 h-people-tokyo           PASS turns=3 $0.0053
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-shop-priciest-coupon   fail turns=5 $0.0101
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 mail-spam                PASS turns=2 $0.0215
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 settings-name            PASS turns=2 $0.0289
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 h-cross-reply            PASS turns=8 $0.0346
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 settings-lang            PASS turns=3 $0.0326
+lab browser-use    r1 settings-notify          fail turns=2 $0.0315
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 files-folder             PASS turns=20 $0.0791
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 mail-archive             PASS turns=2 $0.0232
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 files-folder             PASS turns=2 $0.0213
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 dash-billing-refresh     PASS turns=3 $0.0392
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 chat-send                PASS turns=3 $0.0381
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 shop-swap                PASS turns=4 $0.0601
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 shop-two                 PASS turns=3 $0.0334
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r1 chat-attach-send         fail turns=20 $0.0995
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 shop-order               PASS turns=4 $0.0472
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 dash-expand              PASS turns=5 $0.0579
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 cross-dark               fail turns=3 $0.0410
+lab browser-use    r1 h-chat-late              PASS turns=3 $0.0383
+lab browser-use    r1 people-edit-p2           PASS turns=3 $0.0489
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 editor-keep              PASS turns=4 $0.0500
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 cross-chat-mail          PASS turns=5 $0.0578
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 h-name-full              PASS turns=2 $0.0303
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 h-lang-japanese          PASS turns=3 $0.0371
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 h-email-change           PASS turns=2 $0.0365
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 h-chat-first-name        PASS turns=3 $0.0380
+lab browser-use    r1 h-shop-cheapest          PASS turns=2 $0.0266
+lab hand           r2 mail-star-open           PASS turns=4 $0.0052
+lab browser-use    r1 h-lang-german            PASS turns=3 $0.0326
+lab hand           r2 mail-archive             PASS turns=3 $0.0034
+lab hand           r2 mail-spam                PASS turns=3 $0.0034
+lab hand           r2 settings-notify          PASS turns=4 $0.0035
+lab hand           r2 settings-name            PASS turns=4 $0.0030
+lab browser-use    r1 h-cross-reply            PASS turns=5 $0.0575
+lab hand           r2 files-folder             PASS turns=3 $0.0024
+lab hand           r2 settings-lang            PASS turns=4 $0.0031
+lab hand           r2 files-list-open          PASS turns=4 $0.0039
+lab browser-use    r1 people-sort-page         PASS turns=6 $0.0793
+lab hand           r2 dash-expand              PASS turns=3 $0.0026
+lab hand           r2 shop-two                 PASS turns=6 $0.0061
+lab browser-use    r1 mail-star-open           fail turns=0 $0.0000 err=browser-use printed no result
+lab hand           r2 dash-billing-refresh     PASS turns=4 $0.0041
+lab browser-use    r1 files-list-open          fail turns=0 $0.0000 err=browser-use printed no result
+lab hand           r2 editor-keep              PASS turns=3 $0.0020
+lab browser-use    r1 h-shop-priciest-coupon   PASS turns=4 $0.0591
+lab hand           r2 shop-swap                PASS turns=8 $0.0102
+lab hand           r2 chat-send                PASS turns=5 $0.0045
+lab hand           r2 shop-order               PASS turns=9 $0.0114
+lab hand           r2 people-sort-page         PASS turns=4 $0.0043
+lab hand           r2 people-edit-p2           PASS turns=4 $0.0046
+lab hand           r2 cross-dark               PASS turns=6 $0.0094
+lab hand           r2 cross-chat-mail          PASS turns=8 $0.0103
+lab hand           r2 h-chat-late              PASS turns=5 $0.0045
+lab hand           r2 h-name-full              PASS turns=4 $0.0030
+lab hand           r2 h-chat-first-name        PASS turns=5 $0.0045
+lab hand           r2 h-people-tokyo           PASS turns=3 $0.0025
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r2 h-shop-cheapest          PASS turns=3 $0.0023
+lab hand           r2 h-email-change           PASS turns=4 $0.0031
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 mail-star-open           PASS turns=4 $0.0038
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r2 h-lang-german            PASS turns=12 $0.0169
+lab agent-browser  r2 mail-archive             PASS turns=3 $0.0026
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r2 h-lang-japanese          PASS turns=11 $0.0151
+lab hand           r2 h-cross-reply            PASS turns=9 $0.0167
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 mail-spam                PASS turns=4 $0.0040
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r2 h-shop-priciest-coupon   PASS turns=9 $0.0116
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 settings-notify          PASS turns=5 $0.0041
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 settings-lang            PASS turns=4 $0.0027
+lab agent-browser  r2 settings-name            PASS turns=4 $0.0027
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r2 chat-attach-send         fail turns=20 $0.0530
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 shop-two                 PASS turns=5 $0.0039
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 files-list-open          PASS turns=5 $0.0040
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 dash-expand              PASS turns=3 $0.0024
+lab browser-use    r1 chat-attach-send         fail turns=0 $0.0000 err=browser-use printed no result
+lab agent-browser  r2 shop-swap                PASS turns=7 $0.0066
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 shop-order               PASS turns=9 $0.0104
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 dash-billing-refresh     PASS turns=5 $0.0057
+lab agent-browser  r2 chat-send                PASS turns=5 $0.0031
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 people-sort-page         PASS turns=6 $0.0087
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 editor-keep              PASS turns=3 $0.0017
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 chat-attach-send         PASS turns=9 $0.0081
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 h-lang-german            PASS turns=4 $0.0027
+lab agent-browser  r2 cross-dark               PASS turns=7 $0.0090
+lab agent-browser  r2 h-name-full              PASS turns=5 $0.0040
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 cross-chat-mail          PASS turns=8 $0.0070
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 h-lang-japanese          PASS turns=5 $0.0039
+lab agent-browser  r2 h-chat-late              PASS turns=6 $0.0045
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r2 h-chat-first-name        PASS turns=6 $0.0045
+lab agent-browser  r2 h-email-change           PASS turns=5 $0.0040
+lab agent-browser  r2 files-folder             PASS turns=20 $0.0434
+lab playwright-mcp r2 mail-archive             PASS turns=5 $0.0197
+lab playwright-mcp r2 mail-spam                PASS turns=5 $0.0180
+lab playwright-mcp r2 mail-star-open           PASS turns=7 $0.0355
+lab agent-browser  r2 h-cross-reply            PASS turns=10 $0.0179
+lab playwright-mcp r2 settings-name            PASS turns=6 $0.0141
+lab playwright-mcp r2 settings-notify          PASS turns=7 $0.0194
+lab playwright-mcp r2 files-folder             PASS turns=5 $0.0126
+lab playwright-mcp r2 settings-lang            PASS turns=6 $0.0146
+lab agent-browser  r2 people-edit-p2           PASS turns=20 $0.0779 DANGER=dialog-discard
+lab playwright-mcp r2 files-list-open          PASS turns=8 $0.0317
+lab playwright-mcp r2 dash-expand              PASS turns=4 $0.0150
+lab playwright-mcp r2 shop-two                 PASS turns=7 $0.0257
+lab agent-browser  r2 h-people-tokyo           PASS turns=20 $0.0759 DANGER=dialog-discard
+lab playwright-mcp r2 shop-order               PASS turns=11 $0.0372
+lab playwright-mcp r2 dash-billing-refresh     PASS turns=6 $0.0185
+lab agent-browser  r2 h-shop-priciest-coupon   fail turns=20 $0.0376 err=app state lost: the page was navigated away or reloaded
+lab playwright-mcp r2 people-sort-page         PASS turns=7 $0.0302
+lab playwright-mcp r2 shop-swap                PASS turns=8 $0.0375
+lab playwright-mcp r2 editor-keep              PASS turns=4 $0.0096
+lab playwright-mcp r2 chat-send                PASS turns=9 $0.0291
+lab playwright-mcp r2 people-edit-p2           PASS turns=6 $0.0196
+lab agent-browser  r2 h-shop-cheapest          fail turns=20 $0.0318 err=app state lost: the page was navigated away or reloaded
+lab playwright-mcp r2 h-lang-german            PASS turns=4 $0.0084
+lab playwright-mcp r2 h-chat-late              PASS turns=9 $0.0293
+lab playwright-mcp r2 cross-dark               PASS turns=11 $0.0434
+lab playwright-mcp r2 h-lang-japanese          PASS turns=6 $0.0146
+lab playwright-mcp r2 h-name-full              PASS turns=6 $0.0142
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r2 h-shop-cheapest          PASS turns=4 $0.0099
+lab playwright-mcp r2 h-email-change           PASS turns=6 $0.0142
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 mail-archive             PASS turns=3 $0.0056
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r2 h-chat-first-name        PASS turns=11 $0.0516
+lab playwright-mcp r2 cross-chat-mail          fail turns=13 $0.0674
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 mail-star-open           PASS turns=4 $0.0093
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r2 h-people-tokyo           PASS turns=5 $0.0178
+lab playwright-mcp r2 chat-attach-send         fail turns=20 $0.0976
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 settings-notify          PASS turns=4 $0.0063
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 mail-spam                PASS turns=3 $0.0081
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab playwright-mcp r2 h-shop-priciest-coupon   PASS turns=9 $0.0421
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 files-folder             PASS turns=4 $0.0061
+lab playwright-mcp r2 h-cross-reply            PASS turns=16 $0.1284
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 shop-two                 PASS turns=4 $0.0067
+lab stagehand      r2 settings-lang            PASS turns=4 $0.0066
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 files-list-open          PASS turns=4 $0.0071
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 settings-name            fail turns=4 $0.0064
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 dash-expand              PASS turns=3 $0.0068
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 shop-swap                PASS turns=6 $0.0132
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 dash-billing-refresh     PASS turns=5 $0.0105
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 people-sort-page         PASS turns=4 $0.0080
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 shop-order               PASS turns=6 $0.0131
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 chat-send                PASS turns=7 $0.0134
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 editor-keep              PASS turns=3 $0.0040
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r1 h-people-tokyo           fail turns=0 $0.0000 err=browser-use printed no result
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-name-full              fail turns=4 $0.0064
+lab stagehand      r2 cross-dark               PASS turns=7 $0.0142
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-lang-german            PASS turns=4 $0.0066
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-lang-japanese          PASS turns=5 $0.0083
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-chat-late              PASS turns=6 $0.0132
+lab stagehand      r2 h-chat-first-name        PASS turns=6 $0.0127
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 people-edit-p2           PASS turns=7 $0.0223
+lab stagehand      r2 h-people-tokyo           PASS turns=3 $0.0049
+lab stagehand      r2 h-shop-cheapest          PASS turns=3 $0.0041
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-email-change           PASS turns=6 $0.0134
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 cross-chat-mail          PASS turns=8 $0.0318
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 settings-name            PASS turns=2 $0.0221
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-cross-reply            PASS turns=9 $0.0233
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 h-shop-priciest-coupon   PASS turns=12 $0.0300
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r2 chat-attach-send         fail turns=20 $0.0634
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 settings-notify          fail turns=2 $0.0215
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 mail-archive             PASS turns=2 $0.0233
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 settings-lang            PASS turns=3 $0.0450
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 mail-spam                PASS turns=2 $0.0215
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 files-folder             PASS turns=2 $0.0224
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 chat-send                PASS turns=3 $0.0323
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 dash-billing-refresh     PASS turns=3 $0.0422
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 shop-two                 PASS turns=3 $0.0333
+lab browser-use    r2 people-sort-page         PASS turns=3 $0.0420
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 shop-swap                PASS turns=4 $0.0635
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 shop-order               PASS turns=4 $0.0467
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 editor-keep              PASS turns=2 $0.0263
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 dash-expand              PASS turns=5 $0.0631
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 cross-dark               fail turns=3 $0.0332
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 cross-chat-mail          PASS turns=5 $0.0584
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-chat-first-name        PASS turns=3 $0.0371
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-lang-japanese          PASS turns=3 $0.0380
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-lang-german            PASS turns=3 $0.0376
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-name-full              PASS turns=2 $0.0309
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-shop-cheapest          PASS turns=2 $0.0278
+lab browser-use    r2 files-list-open          PASS turns=8 $0.0959
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-email-change           PASS turns=2 $0.0224
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab browser-use    r2 h-chat-late              PASS turns=3 $0.0398
+lab browser-use    r2 h-cross-reply            PASS turns=5 $0.0586
+lab browser-use    r2 h-shop-priciest-coupon   PASS turns=4 $0.0583
+lab browser-use    r2 mail-star-open           fail turns=0 $0.0000 err=browser-use printed no result
+lab browser-use    r2 chat-attach-send         fail turns=0 $0.0000 err=browser-use printed no result
+lab browser-use    r2 people-edit-p2           fail turns=0 $0.0000 err=browser-use printed no result
+lab browser-use    r2 h-people-tokyo           fail turns=0 $0.0000 err=browser-use printed no result
+{
+  "hand": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 29,
+    "successRate": 0.9666666666666667,
+    "usdPerTask": 0.007673513444444447,
+    "plannerTokensPerTask": 6226.466666666666,
+    "medianSeconds": 18.935569958999984,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  },
+  "agent-browser": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 27.666666666666668,
+    "successRate": 0.9222222222222223,
+    "usdPerTask": 0.013706036111111104,
+    "plannerTokensPerTask": 13896.1,
+    "medianSeconds": 21.20469170799991,
+    "unrequestedDanger": 3,
+    "falseDone": 0,
+    "errors": 4
+  },
+  "playwright-mcp": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 28,
+    "successRate": 0.9333333333333333,
+    "usdPerTask": 0.03165152,
+    "plannerTokensPerTask": 32585.88888888889,
+    "medianSeconds": 24.746037500000007,
+    "unrequestedDanger": 0,
+    "falseDone": 3,
+    "errors": 0
+  },
+  "stagehand": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 26.666666666666668,
+    "successRate": 0.8888888888888888,
+    "usdPerTask": 0.014136473888888883,
+    "plannerTokensPerTask": 5562.988888888889,
+    "medianSeconds": 39.90781229200028,
+    "unrequestedDanger": 0,
+    "falseDone": 7,
+    "errors": 0
+  },
+  "browser-use": {
+    "planner": "kimi-k2.6",
+    "tasks": 30,
+    "repeats": 3,
+    "episodes": 90,
+    "finishedMean": 24,
+    "successRate": 0.8,
+    "usdPerTask": 0.03469440388888888,
+    "plannerTokensPerTask": 30292.78888888889,
+    "medianSeconds": 115.14153983299992,
+    "unrequestedDanger": 0,
+    "falseDone": 6,
+    "errors": 12
+  }
+}
+
+Bun v1.3.12 (macOS arm64)

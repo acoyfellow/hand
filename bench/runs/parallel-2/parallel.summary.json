@@ -1,0 +1,9 @@
+{
+  "runs": 30,
+  "successes": 30,
+  "lostActions": 0,
+  "crossedActions": 0,
+  "actions": 61,
+  "wallSeconds": 243.8,
+  "usdPerTask": 0.00497
+}

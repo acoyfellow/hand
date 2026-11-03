@@ -1,0 +1,152 @@
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 h-shop-cheapest          PASS turns=3 $0.0028
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab agent-browser  r0 mail-archive             PASS turns=3 $0.0026
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 mail-archive             PASS turns=3 $0.0060
+lab hand           r0 h-email-change           PASS turns=4 $0.0036
+lab agent-browser  r0 h-email-change           PASS turns=5 $0.0040
+lab hand           r0 mail-archive             PASS turns=3 $0.0038
+lab playwright-mcp r0 h-shop-cheapest          PASS turns=4 $0.0121
+lab playwright-mcp r0 mail-archive             PASS turns=5 $0.0197
+lab playwright-mcp r0 h-email-change           PASS turns=6 $0.0172
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab stagehand      r0 h-shop-cheapest          PASS turns=3 $0.0046
+lab stagehand      r0 h-email-change           PASS turns=6 $0.0135
+lab browser-use    r0 h-shop-cheapest          PASS turns=2 $0.0289
+lab agent-browser  r0 h-shop-cheapest          fail turns=20 $0.0387 err=null is not an object (evaluating 's.shop')
+lab browser-use    r0 mail-archive             PASS turns=2 $0.0230
+lab browser-use    r0 h-email-change           PASS turns=2 $0.0233
+{
+  "hand": {
+    "planner": "kimi-k2.6",
+    "tasks": 3,
+    "repeats": 1,
+    "episodes": 3,
+    "finishedMean": 3,
+    "successRate": 1,
+    "usdPerTask": 0.003395493333333334,
+    "plannerTokensPerTask": 2265.3333333333335,
+    "medianSeconds": 9.518363875,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  },
+  "agent-browser": {
+    "planner": "kimi-k2.6",
+    "tasks": 3,
+    "repeats": 1,
+    "episodes": 3,
+    "finishedMean": 2,
+    "successRate": 0.6666666666666666,
+    "usdPerTask": 0.015072466666666666,
+    "plannerTokensPerTask": 15005.333333333334,
+    "medianSeconds": 7.316345332999999,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 1
+  },
+  "playwright-mcp": {
+    "planner": "kimi-k2.6",
+    "tasks": 3,
+    "repeats": 1,
+    "episodes": 3,
+    "finishedMean": 3,
+    "successRate": 1,
+    "usdPerTask": 0.016340666666666667,
+    "plannerTokensPerTask": 16641,
+    "medianSeconds": 9.971935291,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  },
+  "stagehand": {
+    "planner": "kimi-k2.6",
+    "tasks": 3,
+    "repeats": 1,
+    "episodes": 3,
+    "finishedMean": 3,
+    "successRate": 1,
+    "usdPerTask": 0.008046133333333334,
+    "plannerTokensPerTask": 2334,
+    "medianSeconds": 9.424031916,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  },
+  "browser-use": {
+    "planner": "kimi-k2.6",
+    "tasks": 3,
+    "repeats": 1,
+    "episodes": 3,
+    "finishedMean": 3,
+    "successRate": 1,
+    "usdPerTask": 0.025090033333333334,
+    "plannerTokensPerTask": 22355.666666666668,
+    "medianSeconds": 89.79805408300001,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  }
+}
+
+Bun v1.3.12 (macOS arm64)

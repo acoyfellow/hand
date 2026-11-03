@@ -1,0 +1,15 @@
+{
+  "point": "public-benchmark",
+  "pass": false,
+  "mock": false,
+  "srcCommit": "755b295",
+  "metrics": {
+    "benchmark": "MiniWoB++ (BrowserGym miniwob, 125 tasks)",
+    "doSolved": 62,
+    "visionSolved": 61,
+    "doUsdPerTask": 0.00392,
+    "visionUsdPerTask": 0.00771,
+    "doSolvedPerDollar": 126.6,
+    "visionSolvedPerDollar": 63.3
+  }
+}

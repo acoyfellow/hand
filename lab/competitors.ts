@@ -231,7 +231,7 @@ export const COMPETITORS: readonly Competitor[] = [
 
 export const BENCHMARKS = [
   { id: 'hand-30', name: 'hand 30 tasks', repo: 'acoyfellow/hand', status: 'running', note: 'Our own app: settings, mail, files, shop, chat. Truth read from app state.' },
-  { id: 'miniwob', name: 'MiniWoB++ (BrowserGym, 125 tasks)', repo: 'Farama-Foundation/miniwob-plusplus', status: 'harness built', note: 'Small public web tasks with their own reward.' },
+  { id: 'miniwob', name: 'MiniWoB++ (BrowserGym, 125 tasks)', repo: 'Farama-Foundation/miniwob-plusplus', status: 'run: public-1', note: 'Small public web tasks with their own reward. hand 62/125 vs screenshot agent 61/125 at half the cost; missed our 3x cost bar.' },
   { id: 'webarena', name: 'WebArena', repo: 'web-arena-x/webarena', status: 'blocked', note: 'Needs about 180 GB of site images; the image host did not answer.' },
   { id: 'osworld', name: 'OSWorld', repo: 'xlang-ai/OSWorld', status: 'not started', note: 'Real desktop tasks in VMs; the main public desktop score.' },
   { id: 'mac-30', name: 'hand Mac tasks', repo: 'acoyfellow/hand', status: 'not started', note: 'Real Mac apps, scored from app state. Needed to face agent-desktop.' },

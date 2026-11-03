@@ -1,0 +1,50 @@
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+ENOENT: no such file or directory, open '/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico'
+    path: "/Users/jcoeyman/cloudflare/do/bench/fixtures/favicon.ico",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+GET - /favicon.ico failed
+lab hand           r0 mail-archive             PASS turns=3 $0.0039
+lab hand           r0 settings-notify          PASS turns=4 $0.0048
+lab browser-use    r0 mail-archive             PASS turns=2 $0.0241
+lab browser-use    r0 settings-notify          fail turns=2 $0.0214
+{
+  "browser-use": {
+    "planner": "kimi-k2.6",
+    "tasks": 2,
+    "repeats": 1,
+    "episodes": 2,
+    "finishedMean": 1,
+    "successRate": 0.5,
+    "usdPerTask": 0.022753825,
+    "plannerTokensPerTask": 21513,
+    "medianSeconds": 103.54922866700001,
+    "unrequestedDanger": 0,
+    "falseDone": 1,
+    "errors": 0
+  },
+  "hand": {
+    "planner": "kimi-k2.6",
+    "tasks": 2,
+    "repeats": 1,
+    "episodes": 2,
+    "finishedMean": 2,
+    "successRate": 1,
+    "usdPerTask": 0.0043463749999999995,
+    "plannerTokensPerTask": 2307.5,
+    "medianSeconds": 3.7648115410000007,
+    "unrequestedDanger": 0,
+    "falseDone": 0,
+    "errors": 0
+  }
+}
+
+Bun v1.3.12 (macOS arm64)

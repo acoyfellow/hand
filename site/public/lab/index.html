@@ -50,6 +50,8 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-si
 .site-nav nav a{color:var(--dim);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
 .site-nav nav a:hover,.site-nav nav a[aria-current]{color:var(--text)}
 .site-nav nav svg{width:18px;height:18px;fill:currentColor}
+.tag.pass{background:#e6f6ec;color:#11622f}.tag.fail{background:#fdeaea;color:#9b1c1c}
+@media (prefers-color-scheme:dark){.tag.pass{background:#12341f;color:#8fe0a8}.tag.fail{background:#3a1616;color:#f5a3a3}}
 </style>
 </head>
 <body>
@@ -77,7 +79,26 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-si
 </section>
 
 <section>
-<h2><span>2</span>Against a frontier model</h2>
+<h2><span>2</span>Public benchmark: MiniWoB++</h2>
+<p>All 125 MiniWoB++ tasks, scored by MiniWoB's own reward, never the agent's claim. hand against the same planner looking at a screenshot every step.</p>
+<div class="scroll"><table>
+<thead><tr><th>Setup</th><th class="n">Solved</th><th class="n">Cost per task</th><th class="n">Solved per $1</th><th class="n hide-sm">Median time</th><th class="n hide-sm">Errors</th></tr></thead>
+<tbody id="miniwob"></tbody>
+</table></div>
+<p class="note" id="miniwob-note"></p>
+</section>
+
+<section>
+<h2><span>3</span>Every test, pass or fail</h2>
+<p>Each test had its pass bar written down before it ran. Failures stay here. They are the hill to climb.</p>
+<div class="scroll"><table>
+<thead><tr><th>Claim</th><th>Result</th><th class="hide-sm">Numbers</th><th>Run</th></tr></thead>
+<tbody id="tests"></tbody>
+</table></div>
+</section>
+
+<section>
+<h2><span>4</span>Against a frontier model</h2>
 <p>hand with a small planner against Claude Opus doing everything itself, on the same 30 tasks.</p>
 <div class="scroll"><table>
 <thead><tr><th>Setup</th><th class="n">Finished</th><th class="n">Cost per task</th><th class="n">Tasks per $1</th><th class="n hide-sm">Median time</th><th class="hide-sm">Run</th></tr></thead>
@@ -86,7 +107,7 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-si
 </section>
 
 <section>
-<h2><span>3</span>Landscape</h2>
+<h2><span>5</span>Landscape</h2>
 <p>How each one sees the screen, and who decides where to click. That second column is most of the cost.</p>
 <div class="scroll"><table>
 <thead><tr><th>Tool</th><th>Who decides</th><th class="hide-sm">Sees</th><th class="hide-sm">Runs on</th><th>Strength</th><th>Gap</th><th class="n hide-sm">Stars</th><th>In the lab</th></tr></thead>
@@ -95,7 +116,7 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-si
 </section>
 
 <section>
-<h2><span>4</span>Benchmarks</h2>
+<h2><span>6</span>Benchmarks</h2>
 <p>Where the scoreboard is going. Public sets first, so anyone can check the numbers.</p>
 <div class="scroll"><table>
 <thead><tr><th>Benchmark</th><th>Status</th><th>What it is</th></tr></thead>
@@ -125,6 +146,19 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-si
   document.getElementById('h2h-note').innerHTML = runName
     ? `Run <a href="https://github.com/acoyfellow/hand/tree/main/bench/runs/${esc(runName)}">${esc(runName)}</a>, contract in CONTRACT.md there. agent-desktop needs a desktop task set and is next.`
     : '';
+  const repo = 'https://github.com/acoyfellow/hand/tree/main/bench/runs/';
+  const mw = data.miniwob;
+  if (mw) {
+    const arms = [['hand', mw.do], ['Same planner, screenshot every step', mw.vision]];
+    document.getElementById('miniwob').innerHTML = arms
+      .map(([name, a], i) => `<tr class="${i === 0 ? 'lead' : ''}"><td><b>${esc(name)}</b></td><td class="n">${a.solved}/${a.tasks}</td><td class="n">${money(a.usdPerTask)}</td><td class="n">${Math.round(a.solvedPerDollar)}</td><td class="n hide-sm">${a.medianSeconds.toFixed(1)} s</td><td class="n hide-sm">${a.errors}</td></tr>`)
+      .join('');
+    document.getElementById('miniwob-note').innerHTML = `Same success, half the cost. Our bar was 3x the value, so this counts as a <b>fail</b>. Both solve about half the set. Run <a href="${repo}${esc(mw.run)}">${esc(mw.run)}</a>.`;
+  }
+  const brief = (m) => Object.entries(m).filter(([k]) => k !== 'benchmark' && k !== 'arm').slice(0, 4).map(([k, v]) => `${esc(k)} ${esc(typeof v === 'number' ? +v.toFixed(4) : v)}`).join(', ');
+  document.getElementById('tests').innerHTML = (data.tests ?? [])
+    .map((t) => `<tr><td>${esc(t.claim)}</td><td><span class="tag ${t.pass ? 'pass' : 'fail'}">${t.pass ? 'pass' : 'fail'}</span></td><td class="hide-sm"><small>${brief(t.metrics)}</small></td><td><a href="${repo}${esc(t.run)}">${esc(t.run)}</a></td></tr>`)
+    .join('');
   const best = data.scoreboard[0];
   document.getElementById('score').innerHTML = data.scoreboard
     .map((row) => `<tr class="${row === best ? 'lead' : ''}"><td><b>${esc(row.arm)}</b></td><td class="n">${row.finished}/${row.tasks}</td><td class="n">${money(row.usdPerTask)}</td><td class="n">${row.finishedPerDollar.toLocaleString()}</td><td class="n hide-sm">${row.medianSeconds} s</td><td class="hide-sm"><a href="https://github.com/acoyfellow/hand/tree/main/bench/runs/${esc(row.run)}">${esc(row.run)}</a></td></tr>`)

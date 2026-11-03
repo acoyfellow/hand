@@ -1,0 +1,49 @@
+parallel a2 mail-archive           PASS actions=1 lost=0 crossed=0
+parallel a1 mail-archive           PASS actions=1 lost=0 crossed=0
+parallel a3 mail-archive           PASS actions=1 lost=0 crossed=0
+parallel a1 mail-spam              PASS actions=1 lost=0 crossed=0
+parallel a2 mail-spam              PASS actions=1 lost=0 crossed=0
+parallel a3 mail-spam              PASS actions=1 lost=0 crossed=0
+parallel a2 settings-notify        PASS actions=2 lost=0 crossed=0
+parallel a1 settings-notify        PASS actions=2 lost=0 crossed=0
+parallel a2 settings-lang          PASS actions=2 lost=0 crossed=0
+parallel a3 settings-notify        PASS actions=2 lost=0 crossed=0
+parallel a1 settings-lang          PASS actions=2 lost=0 crossed=0
+parallel a2 files-folder           PASS actions=1 lost=0 crossed=0
+parallel a3 settings-lang          PASS actions=2 lost=0 crossed=0
+parallel a1 files-folder           PASS actions=1 lost=0 crossed=0
+parallel a3 files-folder           PASS actions=1 lost=0 crossed=0
+parallel a2 shop-two               PASS actions=2 lost=0 crossed=0
+parallel a1 shop-two               PASS actions=2 lost=0 crossed=0
+parallel a3 shop-two               PASS actions=2 lost=0 crossed=0
+parallel a2 dash-billing-refresh   PASS actions=2 lost=0 crossed=0
+parallel a1 dash-billing-refresh   PASS actions=2 lost=0 crossed=0
+parallel a3 dash-billing-refresh   PASS actions=2 lost=0 crossed=0
+parallel a2 chat-send              PASS actions=3 lost=0 crossed=0
+parallel a3 chat-send              PASS actions=3 lost=0 crossed=0
+parallel a2 people-sort-page       PASS actions=2 lost=0 crossed=0
+parallel a3 people-sort-page       PASS actions=2 lost=0 crossed=0
+parallel a2 cross-dark             PASS actions=3 lost=0 crossed=0
+parallel a1 chat-send              PASS actions=7 lost=0 crossed=0
+parallel a3 cross-dark             PASS actions=3 lost=0 crossed=0
+parallel a1 people-sort-page       PASS actions=2 lost=0 crossed=0
+parallel a1 cross-dark             PASS actions=3 lost=0 crossed=0
+{"pass":true,"runs":30,"successes":30,"lostActions":0,"crossedActions":0,"actions":61,"wallSeconds":243.8,"usdPerTask":0.00497}
+1 | import { readFileSync, writeFileSync } from 'node:fs';
+2 | import type { LeadResult, PointId } from './lead-gate.ts';
+3 | 
+4 | type Summary = { t4: Record<string, { successMean: number; usdPerTask: number; medianSecondsPerTask: number }> };
+5 | 
+6 | const readJson = <T>(path: string): T => JSON.parse(readFileSync(path, 'utf8')) as T;
+                                                        ^
+ENOENT: no such file or directory, open 'bench/runs/parallel-2/manifest.json'
+    path: "bench/runs/parallel-2/manifest.json",
+ syscall: "open",
+   errno: -2,
+    code: "ENOENT"
+
+      at readJson (/Users/jcoeyman/cloudflare/do/bench/lead-record.ts:6:53)
+      at writeLead (/Users/jcoeyman/cloudflare/do/bench/lead-record.ts:9:20)
+      at /Users/jcoeyman/cloudflare/do/bench/parallel.ts:192:41
+
+Bun v1.3.12 (macOS arm64)

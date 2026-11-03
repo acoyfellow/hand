@@ -140,6 +140,28 @@ function labRows(): (ScoreRow & { tokensPerTask: number; danger: number; falseDo
   }));
 }
 
+const POINT_LABEL: Record<string, string> = {
+  'browser-device': 'hand finishes 30 browser tasks cheaply and fast',
+  probabilities: "hand's confidence is honest: it asks instead of guessing",
+  'parallel-agents': 'Three agents share one browser without losing or crossing clicks',
+  'done-check': 'A checker can catch an agent that says "done" when it is not',
+  'public-benchmark': 'MiniWoB++: as many tasks as a screenshot agent at 3x the value',
+};
+
+function tests() {
+  const points = JSON.parse(readFileSync(join(RUNS, 'lead', 'points.json'), 'utf8')) as Record<string, string>;
+  return Object.entries(points).map(([point, run]) => {
+    const lead = JSON.parse(readFileSync(join(RUNS, run, 'lead.json'), 'utf8')) as { pass: boolean; metrics: Record<string, unknown>; srcCommit: string };
+    return { point, claim: POINT_LABEL[point] ?? point, run, pass: lead.pass, srcCommit: lead.srcCommit, metrics: lead.metrics };
+  });
+}
+
+function miniwob() {
+  const path = join(RUNS, 'public-1', 'public.summary.json');
+  if (!existsSync(path)) return undefined;
+  return { run: 'public-1', ...(JSON.parse(readFileSync(path, 'utf8')) as Record<string, unknown>) };
+}
+
 const headToHead = labRows().sort((a, b) => b.finished - a.finished || b.finishedPerDollar - a.finishedPerDollar);
 const rows = scoreboard().sort((a, b) => b.finished - a.finished || a.usdPerTask - b.usdPerTask);
 const data = {
@@ -149,6 +171,8 @@ const data = {
   headToHead,
   planner: 'kimi-k2.6',
   scoreboard: rows,
+  tests: tests(),
+  miniwob: miniwob(),
 };
 writeFileSync(OUT, `${JSON.stringify(data, null, 2)}\n`);
 console.log(`lab: ${competitors.length} entrants, ${rows.length} scored rows -> ${OUT}`);

@@ -1,0 +1,20 @@
+{
+  "do": {
+    "tasks": 125,
+    "solved": 62,
+    "successRate": 0.496,
+    "usdPerTask": 0.00391834904,
+    "solvedPerDollar": 126.58392474397841,
+    "medianSeconds": 21.673397332999972,
+    "errors": 0
+  },
+  "vision": {
+    "tasks": 125,
+    "solved": 61,
+    "successRate": 0.488,
+    "usdPerTask": 0.007706620799999995,
+    "solvedPerDollar": 63.32217617350529,
+    "medianSeconds": 21.63401150000002,
+    "errors": 4
+  }
+}
