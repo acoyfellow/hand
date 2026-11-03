@@ -44,6 +44,34 @@ export interface Step {
 
 const TEXT_ROLES = new Set(['textbox', 'searchbox', 'combobox', 'spinbutton']);
 const fmt = (p: number) => p.toFixed(2);
+const lineSet = (text: string) =>
+  new Set(
+    text
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean),
+  );
+
+export function describeChange(before: Candidate[], after: Candidate[], textBefore: string, textAfter: string): string {
+  const was = new Set(before.map(describe));
+  const now = new Set(after.map(describe));
+  const appeared = [...now].filter((control) => !was.has(control));
+  const gone = [...was].filter((control) => !now.has(control));
+  const linesWas = lineSet(textBefore);
+  const newText = [...lineSet(textAfter)].filter((line) => !linesWas.has(line));
+  const parts = [
+    newText.length
+      ? `new text: ${newText
+          .slice(0, 6)
+          .map((line) => JSON.stringify(line.slice(0, 120)))
+          .join(', ')}`
+      : '',
+    appeared.length ? `new controls: ${appeared.slice(0, 6).join(', ')}${appeared.length > 6 ? ` (+${appeared.length - 6} more)` : ''}` : '',
+    gone.length ? `gone: ${gone.slice(0, 6).join(', ')}${gone.length > 6 ? ` (+${gone.length - 6} more)` : ''}` : '',
+  ].filter(Boolean);
+  return parts.length ? `${parts.join('; ')}.` : '';
+}
+
 export class StaleRef extends Error {
   constructor(
     readonly ref: string,
@@ -76,6 +104,10 @@ export class Hand {
   private log(s: Step) {
     this.steps.push(s);
     return s.result;
+  }
+
+  private async screenText(): Promise<string> {
+    return this.d.text ? (await this.d.text()).trim() : '';
   }
 
   async outline(): Promise<string> {
@@ -135,8 +167,7 @@ export class Hand {
   async act(intent: string, confirm = false): Promise<string> {
     const t0 = performance.now();
     let cost = 0;
-    const cands = await this.d.candidates();
-    const before = await this.d.screenshot();
+    const [cands, before, textBefore] = await Promise.all([this.d.candidates(), this.d.screenshot(), this.screenText()]);
     const named = refOf(intent);
     const byRef = named ? cands.find((c) => c.id === named) : undefined;
     const earlyRisk = byRef ? risky(this.t, this.opts.model, before, describe(byRef)) : undefined;
@@ -181,18 +212,23 @@ export class Hand {
     else await this.d.click(pick.point);
     await this.d.settle();
     let achieved: number | undefined;
+    let tail = '';
     if (this.opts.verify) {
-      const after = await this.d.screenshot();
-      const v = await verify(this.t, this.opts.model, intent, after, before);
-      cost += v.costUsd;
-      achieved = v.p;
+      const [candsAfter, textAfter] = await Promise.all([this.d.candidates(), this.screenText()]);
+      const change = describeChange(cands, candsAfter, textBefore, textAfter);
+      if (change) {
+        achieved = 1;
+        tail = ` Changed: ${change}`;
+      } else {
+        const v = await verify(this.t, this.opts.model, intent, await this.d.screenshot(), before);
+        cost += v.costUsd;
+        achieved = v.p;
+        tail =
+          achieved >= 0.5
+            ? ` The screen changed as expected (p=${fmt(achieved)}).`
+            : ` The click went through, but the screen shows no clear change (p=${fmt(achieved)}). Some actions leave no visible trace; move on unless the next step depends on it.`;
+      }
     }
-    const tail =
-      achieved === undefined
-        ? ''
-        : achieved >= 0.5
-          ? ` The screen changed as expected (p=${fmt(achieved)}).`
-          : ` The click went through, but the screen shows no clear change (p=${fmt(achieved)}). Some actions leave no visible trace; move on unless the next step depends on it.`;
     return this.log({
       tool: 'act',
       args: { intent, confirm },
