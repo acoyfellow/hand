@@ -7,10 +7,10 @@ export interface Vm {
   readonly host: string;
   readonly run: (command: string) => Promise<string>;
   readonly status: (command: string) => Promise<number>;
+  readonly sshOptions: readonly string[];
 }
 
-const sshArgs = (host: string, command: string) => [
-  'ssh',
+const SSH_OPTIONS = [
   '-i',
   join(KEY_DIR, 'id_ed25519'),
   '-o',
@@ -19,12 +19,19 @@ const sshArgs = (host: string, command: string) => [
   'BatchMode=yes',
   '-o',
   'ConnectTimeout=8',
-  `ax@${host}`,
-  `export PATH=$HOME/.bun/bin:/usr/local/bin:$PATH; ${command}`,
+  '-o',
+  'ControlMaster=auto',
+  '-o',
+  `ControlPath=${join(KEY_DIR, 'cm-%r@%h')}`,
+  '-o',
+  'ControlPersist=600',
 ];
+
+const sshArgs = (host: string, command: string) => ['ssh', ...SSH_OPTIONS, `ax@${host}`, `export PATH=$HOME/.bun/bin:/usr/local/bin:$PATH; ${command}`];
 
 export const vm = (host: string): Vm => ({
   host,
+  sshOptions: SSH_OPTIONS,
   run: async (command) => {
     const child = Bun.spawn(sshArgs(host, command), { stdout: 'pipe', stderr: 'pipe' });
     const [out, err, code] = await Promise.all([new Response(child.stdout).text(), new Response(child.stderr).text(), child.exited]);

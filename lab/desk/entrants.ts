@@ -95,3 +95,46 @@ export const hand: DeskEntrant = {
     return plannerLoop(tools, call, handUsd, task, limits);
   },
 };
+
+const AGENT_DESKTOP = '$HOME/.npm-global/bin/agent-desktop';
+const QUIET = '>' + '/dev/null';
+
+const agentDesktopGuide = async (box: Vm) => {
+  const raw = await box.run(`${AGENT_DESKTOP} skills get desktop; echo; ${AGENT_DESKTOP} skills get platform`);
+  return raw
+    .split('\n')
+    .filter((line) => line.startsWith('{'))
+    .map((line) => (JSON.parse(line) as { data?: { content?: string } }).data?.content ?? '')
+    .join('\n\n');
+};
+
+let cachedGuide = '';
+
+export const agentDesktop: DeskEntrant = {
+  id: 'agent-desktop',
+  label: 'agent-desktop',
+  install: async (box) =>
+    (await box.status(`${AGENT_DESKTOP} version ${QUIET}`)) === 0 ? { ok: true } : { ok: false, reason: 'agent-desktop CLI did not start in the VM (npm i -g agent-desktop)' },
+  run: async (box, task, limits) => {
+    cachedGuide ||= await agentDesktopGuide(box);
+    const tools: Tool[] = [
+      {
+        type: 'function',
+        function: {
+          name: 'agent_desktop',
+          description: 'Run one agent-desktop command. Pass the arguments after "agent-desktop", for example: snapshot --app Finder -i --compact',
+          parameters: { type: 'object', properties: { args: { type: 'string' } }, required: ['args'] },
+        },
+      },
+    ];
+    const call = async (_name: string, args: Record<string, unknown>) => {
+      const line = String(args.args ?? '').replace(/^agent-desktop\s+/, '');
+      const child = Bun.spawn(['ssh', ...box.sshOptions, `ax@${box.host}`, `${AGENT_DESKTOP} ${line} --headed 2>&1 | head -c 12000`], { stdout: 'pipe', stderr: 'pipe' });
+      return (await new Response(child.stdout).text()) || '(no output)';
+    };
+    const system = `${SYSTEM}\n\nYou control the Mac with the agent-desktop CLI. Its makers' guide follows.\n\n${cachedGuide}`;
+    return plannerLoop(tools, call, () => 0, task, limits, system);
+  },
+};
+
+export const DESK_ENTRANT_IMPLS: Record<string, DeskEntrant> = { hand, 'agent-desktop': agentDesktop };
