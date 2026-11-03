@@ -1,4 +1,4 @@
-import { agent, cursorSvg } from '/brand/mark.js';
+import { agent, cursorSvg } from './mark.js';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

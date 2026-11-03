@@ -1,0 +1,42 @@
+{
+  "name": "hand-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun scripts/dev.ts",
+    "build": "bun scripts/build.ts",
+    "preview": "bun scripts/serve.ts",
+    "a11y": "bun scripts/a11y.ts",
+    "shots": "bun scripts/a11y.ts --shots",
+    "typecheck": "tsc -p tsconfig.json",
+    "brand": "bun scripts/brand-build.ts",
+    "deploy": "bun scripts/build.ts && alchemy deploy",
+    "plan": "alchemy plan"
+  },
+  "dependencies": {
+    "effect": "4.0.0",
+    "foldkit": "0.168.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.0",
+    "@foldkit/vite-plugin": "0.26.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/bun": "^1.3.14",
+    "alchemy": "2.0.0-beta.83",
+    "playwright": "1.64.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vite": "8.3.3"
+  },
+  "overrides": {
+    "@cloudflare/unenv-preset": "2.16.2",
+    "@cloudflare/workers-types": "5.20261012.1",
+    "workerd": "1.20261006.1",
+    "@cloudflare/workerd-darwin-64": "1.20261006.1",
+    "@cloudflare/workerd-darwin-arm64": "1.20261006.1",
+    "@cloudflare/workerd-linux-64": "1.20261006.1",
+    "@cloudflare/workerd-linux-arm64": "1.20261006.1",
+    "@cloudflare/workerd-windows-64": "1.20261006.1",
+    "miniflare": "5.20261006.1-alpha"
+  }
+}
