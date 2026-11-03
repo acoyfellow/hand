@@ -29,3 +29,7 @@ hand wins if it finishes at least as many tasks as agent-desktop (within 1) at l
 ## Why desk-2 replaces desk-1
 
 desk-1 was stopped after 10 episodes: Calculator's window stopped answering accessibility queries after a few tasks, so both entrants failed every later task for a reason outside either tool. desk-2 quits and relaunches Calculator before every Calculator episode. Nothing else changes. desk-1's partial data is kept in `bench/runs/desk-1-void`.
+
+## Stopped
+
+desk-2 was stopped after 2 episodes. On this Mac, Calculator now launches with no window (System Events reports 0 windows even after a fresh launch), so neither entrant can see a control. The cause is the desktop session, not either tool. The desktop head-to-head needs a quiet screen or the VM, which is not reachable right now. No desktop result is claimed.
