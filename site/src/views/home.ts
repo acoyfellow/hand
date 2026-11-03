@@ -3,6 +3,7 @@ import { Message } from '../message.ts';
 import type { Model } from '../model.ts';
 import { Swarm } from '../mounts.ts';
 import { INSTALL_COMMAND } from '../update.ts';
+import { howDiagram } from './diagram.ts';
 import { STEPS, stepIcon } from './icons.ts';
 import { type Child, GITHUB, type H, codeBlock, scrollRegion } from './kit.ts';
 
@@ -38,6 +39,7 @@ const hero = (h: H, model: Model): Html =>
         ],
       ),
       h.p([h.Class('m-0 font-mono text-[0.85rem]')], [h.a([h.Href('#mcp'), h.Class(DIM)], ['Use with an AI agent'])]),
+      howDiagram(h),
       h.figure(
         [h.Class('relative mx-auto mt-8 mb-0 max-w-[760px]')],
         [
