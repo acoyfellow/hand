@@ -15,8 +15,15 @@ export const codexSandbox = process.env.DESK_CODEX_SANDBOX ?? 'danger-full-acces
 export const codexCu: DeskEntrant = {
   id: 'codex-cu',
   label: 'Codex computer use',
-  install: async (box) =>
-    (await box.status(`${CODEX} mcp list | grep -q computer-use`)) === 0 ? { ok: true } : { ok: false, reason: 'codex CLI or its computer-use MCP server not found in the VM' },
+  install: async (box) => {
+    if ((await box.status(`${CODEX} mcp list | grep -q computer-use`)) !== 0) return { ok: false, reason: 'codex CLI or its computer-use MCP server not found in the VM' };
+    const child = Bun.spawn(['perl', '-e', 'alarm 120; exec @ARGV', 'ssh', ...box.sshOptions, '-R', '49449:127.0.0.1:49449', `ax@${box.host}`, `${CODEX} exec --skip-git-repo-check --json -s read-only "Call the computer-use list_apps tool once and stop." 2>&1 | grep mcp_tool_call | tail -1`], { stdout: 'pipe', stderr: 'pipe' });
+    const probe = await new Response(child.stdout).text();
+    if (!probe.includes('mcp_tool_call')) return { ok: false, reason: `Codex never called its computer-use tool during the install probe: ${probe.slice(0, 160) || 'no output'}` };
+    return /procNotFound|bootstrapTimedOut|"status":"failed"/.test(probe)
+      ? { ok: false, reason: 'Codex Computer Use was not granted macOS Accessibility and Screen Recording in the VM (its tool returns procNotFound). macOS accepts that grant only from a human click in System Settings.' }
+      : { ok: true };
+  },
   run: async (box, task, limits): Promise<EpisodeRun> => {
     const seconds = Math.max(10, Math.round((limits.deadline - Date.now()) / 1000));
     const command = `${CODEX} exec --skip-git-repo-check --json -s ${codexSandbox} ${JSON.stringify(task)} 2>&1 | tail -c 200000`;

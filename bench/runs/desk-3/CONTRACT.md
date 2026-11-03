@@ -56,3 +56,9 @@ If an entrant cannot be installed or started in the VM, its row records `install
 ## Gate
 
 `bun lab/desk-gate.ts desk-3` exits 0 only when every entrant has a row, each with all 50 tasks run or a written install failure, the recomputed finish counts match the summary, and total spend is at most $150.
+
+## Addendum, 2026-11-03, before any scored episode
+
+- Codex computer use runs screen-only (`codex exec -s read-only`): its shell cannot change files, so it is judged on computer use like every other entrant. Jordan did not choose between screen-only and shell-allowed; this is the driver's default, recorded here.
+- Codex Computer Use and CuaDriver need macOS Accessibility and Screen Recording, which macOS grants only from a human click in System Settings. Synthetic clicks from the host and from inside the VM are ignored, and the TCC database is protected by SIP. If neither is granted when the scored run starts, both rows record `installed: false` with that reason. They can be run later from the same snapshot and added.
+- Every smoke run is kept in this folder (`smoke-*.jsonl`) and is never scored.
