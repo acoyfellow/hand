@@ -57,7 +57,7 @@ const CLICK_LOG_SCRIPT = `
 window.__doClicks = window.__doClicks || [];
 addEventListener('pointerdown', (event) => { window.__doClicks.push({ at: Date.now(), x: event.clientX, y: event.clientY }); }, true);
 `;
-export async function open(spec: ScreenSpec): Promise<Page> {
+export async function open(spec: ScreenSpec, url = specUrl(spec)): Promise<Page> {
   const b = await launch();
   const ctx = await b.newContext({
     viewport: VIEWPORT,
@@ -68,7 +68,7 @@ export async function open(spec: ScreenSpec): Promise<Page> {
   const pageCreatedAt = Date.now();
   const page = await ctx.newPage();
   recordingStart.set(page, pageCreatedAt);
-  await page.goto(specUrl(spec));
+  await page.goto(url);
   if (spec.notoast) await page.addStyleTag({ content: '#toast{display:none!important}' });
   await page.waitForTimeout(50);
   return page;

@@ -14,3 +14,5 @@ native/ax-dump
 native/vm
 bench/external/
 .wrangler/
+lab/py/.venv/
+.playwright-mcp/

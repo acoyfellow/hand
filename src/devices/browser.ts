@@ -12,6 +12,36 @@ export interface BrowserDeviceOptions {
   readonly showCursor?: boolean;
 }
 
+const SCREEN_TEXT = `(() => {
+  const skip = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'SVG']);
+  const lines = [];
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => {
+      const parent = node.parentElement;
+      if (!parent || skip.has(parent.tagName) || parent.closest('.hand-cursor,.hand-ring,[aria-hidden="true"]')) return NodeFilter.FILTER_REJECT;
+      if (!node.textContent.trim()) return NodeFilter.FILTER_REJECT;
+      const style = getComputedStyle(parent);
+      if (style.visibility === 'hidden' || style.display === 'none') return NodeFilter.FILTER_REJECT;
+      const box = parent.getBoundingClientRect();
+      if (box.width === 0 || box.height === 0 || box.bottom < 0 || box.top > innerHeight || box.right < 0 || box.left > innerWidth) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+  let last = null;
+  let line = '';
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const block = node.parentElement.closest('p,li,tr,h1,h2,h3,h4,h5,h6,label,button,a,div,section,article,td,th,dt,dd');
+    const piece = node.textContent.replace(/\\s+/g, ' ').trim();
+    if (block !== last && line) { lines.push(line); line = ''; }
+    line = line ? line + ' ' + piece : piece;
+    last = block;
+  }
+  if (line) lines.push(line);
+  const unique = [];
+  for (const entry of lines) if (entry !== unique[unique.length - 1]) unique.push(entry);
+  return unique.join('\\n').slice(0, 6000);
+})()`;
+
 const CURSOR_SCRIPT = readFileSync(new URL('../cursor.js', import.meta.url), 'utf8');
 const HIDE_CURSOR = `document.querySelectorAll('.hand-cursor,.hand-ring').forEach((el) => { el.dataset.handVisibility = el.style.visibility; el.style.visibility = 'hidden'; })`;
 const RESTORE_CURSOR = `document.querySelectorAll('.hand-cursor,.hand-ring').forEach((el) => { el.style.visibility = el.dataset.handVisibility || ''; })`;
@@ -319,5 +349,6 @@ export async function browserDevice(cdp: Cdp, opts: BrowserDeviceOptions = {}): 
     setValue: (c, value) => browserSetValue(cdp, c, value),
     settle: () => wait(settleMs),
     show: opts.showCursor ? (target) => browserShow(cdp, target) : undefined,
+    text: async () => String(await evaluate(cdp, SCREEN_TEXT)),
   };
 }

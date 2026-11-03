@@ -116,8 +116,9 @@ export async function callTool(session: Session, name: string, args: Record<stri
     return text(`${body}\nReceipts:\n${lines.join('\n')}`);
   };
   if (name === 'outline') return text(await hand.outline());
-  if (name === 'act') return withReceipts(await hand.act(str(args, 'intent'), args.confirm === true));
-  if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), str(args, 'into')));
+  const target = (key: string) => (typeof args.id === 'string' && args.id ? args.id : str(args, key));
+  if (name === 'act') return withReceipts(await hand.act(target('intent'), args.confirm === true));
+  if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into')));
   if (name === 'look') return text(await hand.look(str(args, 'question')));
   return text(`unknown tool ${name}`, true);
 }

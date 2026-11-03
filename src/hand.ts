@@ -14,6 +14,7 @@ export interface Device extends Screen {
   setValue(c: Candidate, value: string): Promise<boolean>;
   settle(): Promise<void>;
   show?(target: { x: number; y: number; label: string; p?: number }): Promise<void>;
+  text?(): Promise<string>;
 }
 
 export interface HandOptions {
@@ -68,7 +69,9 @@ export class Hand {
     const t0 = performance.now();
     const cands = await this.d.candidates();
     const lines = cands.map((c) => `- [${c.id}] ${describe(c)}`).join('\n');
-    return this.log({ tool: 'outline', args: {}, result: `${cands.length} controls on screen:\n${lines}`, costUsd: 0, ms: performance.now() - t0 });
+    const text = this.d.text ? (await this.d.text()).trim() : '';
+    const reading = text ? `\n\nText on screen:\n${text}` : '';
+    return this.log({ tool: 'outline', args: {}, result: `${cands.length} controls on screen:\n${lines}${reading}`, costUsd: 0, ms: performance.now() - t0 });
   }
 
   private async injectionNote(shot: string): Promise<{ note: string; cost: number }> {
@@ -118,10 +121,11 @@ export class Hand {
     let cost = 0;
     const cands = await this.d.candidates();
     const before = await this.d.screenshot();
-    const inj = await this.injectionNote(before);
-    cost += inj.cost;
-    const { pick, chosen, top } = await this.choose(intent, cands, before);
-    cost += pick.costUsd;
+    const named = refOf(intent);
+    const byRef = named ? cands.find((c) => c.id === named) : undefined;
+    const earlyRisk = byRef ? risky(this.t, this.opts.model, before, describe(byRef)) : undefined;
+    const [inj, { pick, chosen, top }] = await Promise.all([this.injectionNote(before), this.choose(intent, cands, before)]);
+    cost += inj.cost + pick.costUsd;
     const what = chosen ? describe(chosen) : `point (${Math.round(pick.point.x)}, ${Math.round(pick.point.y)})`;
     if (shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0)) {
       return this.log({
@@ -133,7 +137,7 @@ export class Hand {
         ms: performance.now() - t0,
       });
     }
-    const rk = await risky(this.t, this.opts.model, before, what);
+    const rk = await (earlyRisk ?? risky(this.t, this.opts.model, before, what));
     cost += rk.costUsd;
     if (rk.p >= this.opts.riskTau && !confirm) {
       return this.log({
