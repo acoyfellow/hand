@@ -59,7 +59,7 @@ const section = (h: H, index: number, id: string, title: string, lede: readonly 
     [h.AriaLabelledBy(id)],
     [
       h.h2([h.Id(id), h.Class('mt-11 mb-1.5 text-[19px] font-semibold')], [h.span([h.Class('mr-2 font-medium text-dim')], [String(index)]), title]),
-      h.p([h.Class('m-0 mb-3.5 max-w-[48rem] text-sm text-dim')], [...lede]),
+      h.p([h.Class('m-0 mb-3.5 max-w-[48rem] text-sm text-dim text-pretty')], [...lede]),
       ...body,
     ],
   );
@@ -327,7 +327,7 @@ export const labMain = (h: H): readonly Child[] => [
         [
           h.h1([h.Class('m-0 text-[clamp(28px,6vw,42px)] leading-tight font-semibold tracking-[-0.035em]')], ['Computer-use tools, measured']),
           h.p(
-            [h.Class('mt-2 mb-0 max-w-[44rem] text-dim')],
+            [h.Class('mt-2 mb-0 max-w-[44rem] text-dim text-balance')],
             ['Every tool that lets an AI agent click and type, side by side. Who decides where to click, what it costs, and how many tasks it finishes on the same tests.'],
           ),
         ],

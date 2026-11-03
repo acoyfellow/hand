@@ -21,7 +21,7 @@ const hero = (h: H, model: Model): Html =>
         [h.Id('hero-title'), h.Class('mx-auto mb-5 max-w-[36rem] text-[1.9rem] leading-[1.15] font-semibold tracking-[-0.025em] md:text-[2.75rem]')],
         ['Let your AI agent use a computer without guessing where to click.'],
       ),
-      h.p([h.Class(`mx-auto mb-9 max-w-[30rem] text-[1.15rem] ${DIM}`)], ['A small model picks the button. hand clicks it and checks it worked.']),
+      h.p([h.Class(`mx-auto mb-9 max-w-[30rem] text-[1.15rem] text-balance ${DIM}`)], ['A small model picks the button. hand clicks it and checks it worked.']),
       h.div(
         [h.Class('mx-auto mb-6 flex max-w-[26rem] items-center gap-2 rounded-[10px] bg-raise py-1.5 pr-1.5 pl-4 text-left font-mono text-[0.9rem]')],
         [

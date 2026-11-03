@@ -186,7 +186,7 @@ const controls = (h: H, lab: MarkLab): Html => {
 const heading = (h: H, id: string, title: string, text: string, button: Html): Html =>
   h.div(
     [h.Class('flex flex-wrap items-end justify-between gap-4')],
-    [h.div([], [h.h2([h.Id(id), h.Class('m-0 text-lg font-semibold')], [title]), h.p([h.Class('m-0 text-dim')], [text])]), button],
+    [h.div([], [h.h2([h.Id(id), h.Class('m-0 text-lg font-semibold')], [title]), h.p([h.Class('m-0 text-dim text-balance')], [text])]), button],
   );
 
 const swarmSection = (h: H, model: Model): Html =>

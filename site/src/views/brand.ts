@@ -7,7 +7,7 @@ import type { Child, H } from './kit.ts';
 
 const SECTION = 'border-b border-line py-12';
 const H2 = 'm-0 mb-1.5 text-lg font-semibold';
-const LEDE = 'm-0 mb-6 max-w-[60ch] text-dim';
+const LEDE = 'm-0 mb-6 max-w-[60ch] text-dim text-balance';
 const TILE = 'relative grid min-h-[200px] place-items-center rounded-xl border p-8';
 const PAPER = `${TILE} border-[#ebebe8] bg-paper`;
 const NIGHT = `${TILE} border-[#26262b] bg-night`;
