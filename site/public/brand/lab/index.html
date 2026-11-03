@@ -71,8 +71,8 @@ output{color:var(--text);font:.9em var(--mono)}
 </section>
 
 <section class="variance">
-<div class="variance-heading"><div><h2>Fleet</h2><p>The homepage hero. One hand splits into a team, each one its own seed and colour, they work, then come home.</p></div></div>
-<div class="fleet-wrap"><div id="fleet"></div></div>
+<div class="variance-heading"><div><h2>Swarm</h2><p>The homepage hero. Each agent is a seed: its own hand and colour, working in the same app at once.</p></div><button class="quiet" id="reswarm">New agents</button></div>
+<div class="fleet-wrap"><div id="swarm"></div></div>
 </section>
 
 <section class="variance">
@@ -80,7 +80,9 @@ output{color:var(--text);font:.9em var(--mono)}
 <div class="grid" id="grid"></div>
 </section>
 </main>
+<script src="/cursor.js"></script>
 <script type="module">
+import { swarm } from '/brand/swarm.js';
 import { DOTS, MOTIONS, PRESETS, PROFILES, STYLES, THUMBS, COLORS, accentOf, balance, fleet, generate, iconSvg, markSvg, pose, walker } from '/brand/mark.js';
 
 const RANGES = {
@@ -236,5 +238,6 @@ $('batch').onclick = () => { gallery = Array.from({ length: 24 }, () => crypto.r
 refresh();
 renderGallery();
 setMotion('still');
-fleet($('fleet'), { base: options });
+let current = swarm($('swarm'));
+$('reswarm').onclick = () => { current.stop(); current = swarm($('swarm'), { seeds: Array.from({ length: 4 }, () => crypto.randomUUID().slice(0, 6)) }); };
 </script>

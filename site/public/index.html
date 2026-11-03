@@ -144,8 +144,7 @@ details h2{border:0;padding-top:0;margin-top:2rem}
 .block .cap{text-align:center}
 details{max-width:40rem;margin:5rem auto 0}
 @media (max-width:48rem){.block{padding-top:3rem}.block .stats{gap:.5rem}.block .stat{padding:1rem .5rem}.block .stat b{font-size:1.3rem}.block .flow{grid-template-columns:repeat(2,1fr)}.block .big{font-size:1.35rem}}
-.fleet{min-height:210px;margin:0 auto 1.6rem;max-width:100%;overflow:hidden}
-@media (max-width:640px){.fleet{min-height:150px}}
+.swarm{max-width:760px;margin:2rem auto 0;position:relative}
 </style>
 </head>
 <body>
@@ -157,11 +156,11 @@ details{max-width:40rem;margin:5rem auto 0}
 </header>
 
 <section class="hero">
-<div class="fleet" id="fleet" aria-hidden="true"></div>
 <p class="lede">Let your AI agent use a computer without guessing where to click.</p>
 <p class="sub">A small model picks the button. hand clicks it and checks it worked.</p>
 <div class="install"><code>bun add github:acoyfellow/hand</code><button type="button" data-copy="bun add github:acoyfellow/hand">Copy</button></div>
 <p class="links"><a href="#mcp">Use with an AI agent</a></p>
+<div class="swarm" id="swarm" aria-label="Four agents, each with its own hand, working in one app at once"></div>
 </section>
 
 <section class="show">
@@ -320,11 +319,9 @@ details{max-width:40rem;margin:5rem auto 0}
 document.querySelectorAll('[data-copy]').forEach((b)=>b.addEventListener('click',async()=>{await navigator.clipboard.writeText(b.dataset.copy);b.textContent='Copied';setTimeout(()=>{b.textContent='Copy'},1500)}));
 </script>
 <script type="module">
-import { COLORS, fleet } from '/brand/mark.js';
-const el = document.getElementById('fleet');
-const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-const narrow = innerWidth < 640;
-fleet(el, { columns: narrow ? 5 : 7, rows: 3, size: narrow ? 40 : 56, gap: narrow ? 10 : 18, ink: dark ? COLORS.nightInk : COLORS.ink });
+import { swarm } from '/brand/swarm.js';
+const el = document.getElementById('swarm');
+if (el && window.__handCursorMount) swarm(el);
 </script>
 </body>
 </html>

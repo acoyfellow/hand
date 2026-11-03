@@ -376,3 +376,14 @@ export function fleet(el, { base = DEFAULT_MARK, columns = 9, rows = 3, size = 5
   else frame = requestAnimationFrame(loop);
   return { stop: () => cancelAnimationFrame(frame) };
 }
+
+export function cursorSvg(options, { accent = COLORS.accent, size = 30 } = {}) {
+  const shape = balance(options);
+  const outline = markBody(shape, '#ffffff', '#ffffff').replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${Number(w) + 5}"`).replace(/fill="#ffffff"/g, 'fill="#ffffff" stroke="#ffffff" stroke-width="5"');
+  const body = markBody(shape, COLORS.ink, accent);
+  return `<svg width="${size}" height="${size}" viewBox="${FIXED_VIEW}" aria-hidden="true" style="overflow:visible">${outline}${body}</svg>`;
+}
+
+export function agent(seed, { style } = {}) {
+  return { seed, shape: balance(generate(seed, style)), accent: accentOf(seed) };
+}
