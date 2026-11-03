@@ -59,6 +59,12 @@ export const TOOLS: readonly McpTool[] = [
     },
   },
   {
+    name: 'key',
+    description:
+      'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command.',
+    inputSchema: { type: 'object', properties: { app, key: { type: 'string' } }, required: ['app', 'key'] },
+  },
+  {
     name: 'look',
     description: 'Ask a yes/no question about what is on screen now. Returns p(yes).',
     inputSchema: { type: 'object', properties: { app, question: { type: 'string' } }, required: ['app', 'question'] },
@@ -95,6 +101,14 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'apps') {
     const [apps, front] = await Promise.all([run(session.helper, ['apps']), run(session.helper, ['front'])]);
     return text([`In front: ${JSON.parse(front.stdout) as string}`, ...(JSON.parse(apps.stdout) as string[])].join('\n'));
+  }
+  if (name === 'key') {
+    const policy = process.env.HAND_HEADED === '1' ? ['--headed'] : [];
+    const { stdout } = await run(session.helper, ['key', str(args, 'app'), str(args, 'key').toLowerCase(), ...policy]).catch((error: { stdout?: string }) => ({
+      stdout: error.stdout ?? '{"ok":false,"detail":"key failed"}',
+    }));
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    return text(outcome.detail, !outcome.ok);
   }
   if (name === 'activate') {
     const { stdout } = await run(session.helper, ['activate', str(args, 'app')]);

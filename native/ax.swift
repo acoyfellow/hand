@@ -50,8 +50,10 @@ func refused(_ code: String, _ detail: String) -> Outcome {
 let interactiveRoles: Set<String> = [
     "AXButton", "AXLink", "AXTextField", "AXTextArea", "AXSearchField", "AXCheckBox", "AXRadioButton",
     "AXPopUpButton", "AXComboBox", "AXMenuItem", "AXMenuButton", "AXTab", "AXSlider", "AXIncrementor",
-    "AXDisclosureTriangle", "AXSwitch",
+    "AXDisclosureTriangle", "AXSwitch", "AXMenuBarItem", "AXRow", "AXCell",
 ]
+
+let namedOnlyRoles: Set<String> = ["AXImage", "AXGroup"]
 
 func attribute<T>(_ element: AXUIElement, _ name: String) -> T? {
     var value: CFTypeRef?
@@ -69,7 +71,23 @@ func frame(_ element: AXUIElement) -> CGRect? {
     return CGRect(origin: origin, size: size)
 }
 
+func descendantText(_ element: AXUIElement, depth: Int = 0) -> String {
+    guard depth < 4 else { return "" }
+    for child in children(element) {
+        let role: String = attribute(child, kAXRoleAttribute) ?? ""
+        if role == "AXStaticText" || role == "AXTextField", let value: String = attribute(child, kAXValueAttribute), !value.isEmpty { return value }
+        let nested = descendantText(child, depth: depth + 1)
+        if !nested.isEmpty { return nested }
+    }
+    return ""
+}
+
 func label(_ element: AXUIElement) -> String {
+    let role: String = attribute(element, kAXRoleAttribute) ?? ""
+    if role == "AXRow" || role == "AXCell" {
+        let text = descendantText(element)
+        if !text.isEmpty { return text }
+    }
     for key in [kAXTitleAttribute, kAXDescriptionAttribute, kAXHelpAttribute, kAXPlaceholderValueAttribute as String] {
         if let text: String = attribute(element, key), !text.isEmpty { return text }
     }
@@ -125,6 +143,18 @@ func roots(of app: NSRunningApplication) -> [AXUIElement] {
     return windows + (menuBar.map { [$0] } ?? [])
 }
 
+func insideCollection(path: [Int], element: AXUIElement) -> Bool {
+    var current: AXUIElement? = attribute(element, kAXParentAttribute)
+    var hops = 0
+    while let node = current, hops < 4 {
+        let role: String = attribute(node, kAXRoleAttribute) ?? ""
+        if ["AXList", "AXOutline", "AXTable", "AXBrowser", "AXCollection", "AXScrollArea"].contains(role) { return true }
+        current = attribute(node, kAXParentAttribute)
+        hops += 1
+    }
+    return false
+}
+
 func snapshot(_ app: NSRunningApplication, onlyFront: Bool) -> Snapshot {
     let started = Date()
     var nodes: [Node] = []
@@ -133,7 +163,10 @@ func snapshot(_ app: NSRunningApplication, onlyFront: Bool) -> Snapshot {
         visited += 1
         guard path.count < 40, visited < 20000 else { return }
         let role: String = attribute(element, kAXRoleAttribute) ?? ""
-        if interactiveRoles.contains(role), let box = frame(element), box.width > 1, box.height > 1 {
+        let parentRole: String = (attribute(element, kAXParentAttribute) as AXUIElement?).flatMap { attribute($0, kAXRoleAttribute) } ?? ""
+        let coveredByRow = role == "AXCell" && parentRole == "AXRow"
+        let listed = !coveredByRow && (interactiveRoles.contains(role) || (namedOnlyRoles.contains(role) && insideCollection(path: path, element: element) && !label(element).isEmpty))
+        if listed, let box = frame(element), box.width > 1, box.height > 1 {
             let name = label(element)
             nodes.append(Node(id: "e\(nodes.count + 1)", role: role, name: name, x: box.minX, y: box.minY, w: box.width, h: box.height, path: path, ref: fingerprint(role: role, name: stableName(element), box: box)))
         }
@@ -210,19 +243,33 @@ func clickAt(x: Double, y: Double) -> Outcome {
     return Outcome(ok: true, detail: "clicked \(Int(x)),\(Int(y))", mechanism: .physical)
 }
 
-let keyCodes: [String: CGKeyCode] = ["return": 36, "tab": 48, "escape": 53, "space": 49, "down": 125, "up": 126]
+let keyCodes: [String: CGKeyCode] = [
+    "return": 36, "enter": 36, "tab": 48, "escape": 53, "esc": 53, "space": 49, "down": 125, "up": 126, "left": 123, "right": 124,
+    "delete": 51, "backspace": 51, "a": 0, "s": 1, "d": 2, "f": 3, "h": 4, "g": 5, "z": 6, "x": 7, "c": 8, "v": 9, "b": 11, "q": 12,
+    "w": 13, "e": 14, "r": 15, "y": 16, "t": 17, "o": 31, "u": 32, "i": 34, "p": 35, "l": 37, "j": 38, "k": 40, "n": 45, "m": 46,
+    ",": 43, ".": 47, "/": 44,
+]
 
-func pressKey(_ name: String, to app: NSRunningApplication) -> Outcome {
+let modifierFlags: [String: CGEventFlags] = ["cmd": .maskCommand, "command": .maskCommand, "shift": .maskShift, "option": .maskAlternate, "alt": .maskAlternate, "ctrl": .maskControl, "control": .maskControl]
+
+func pressKey(_ chord: String, to app: NSRunningApplication) -> Outcome {
+    let parts = chord.split(separator: "+").map { String($0) }
+    let name = parts.last ?? chord
+    let flags = parts.dropLast().reduce(CGEventFlags()) { $0.union(modifierFlags[$1] ?? []) }
     guard let code = keyCodes[name] else { return Outcome(ok: false, detail: "unknown key \(name)") }
     guard NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier else {
         return Outcome(ok: false, detail: "refused: \(app.localizedName ?? "?") is not the frontmost app")
     }
     let source = CGEventSource(stateID: .hidSystemState)
     let pid = app.processIdentifier
-    CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: true)?.postToPid(pid)
+    let down = CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: true)
+    let up = CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: false)
+    down?.flags = flags
+    up?.flags = flags
+    down?.post(tap: .cghidEventTap)
     usleep(20000)
-    CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: false)?.postToPid(pid)
-    return Outcome(ok: true, detail: "key \(name) to pid \(pid)")
+    up?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "pressed \(chord) in \(app.localizedName ?? "?")")
 }
 
 func typeText(_ text: String, to app: NSRunningApplication) -> Outcome {
