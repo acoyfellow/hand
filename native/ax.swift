@@ -233,14 +233,51 @@ func setValue(_ element: AXUIElement, _ text: String) -> Outcome {
     return Outcome(ok: matches, detail: "AXValue \(result.rawValue), read back \(readBack == text ? "matches" : "differs")", code: matches ? nil : "NOT_VERIFIED", delivery: matches ? .verified : (result == .success ? .unverified : .notDelivered), retrySafe: true)
 }
 
-func clickAt(x: Double, y: Double) -> Outcome {
+func clickAt(x: Double, y: Double, button: CGMouseButton = .left, count: Int = 1) -> Outcome {
     let point = CGPoint(x: x, y: y)
     let source = CGEventSource(stateID: .hidSystemState)
-    for type in [CGEventType.mouseMoved, .leftMouseDown, .leftMouseUp] {
-        CGEvent(mouseEventSource: source, mouseType: type, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
-        usleep(30000)
+    let (down, up): (CGEventType, CGEventType) = button == .right ? (.rightMouseDown, .rightMouseUp) : (.leftMouseDown, .leftMouseUp)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: point, mouseButton: button)?.post(tap: .cghidEventTap)
+    usleep(30000)
+    for click in 1...max(1, count) {
+        for type in [down, up] {
+            let event = CGEvent(mouseEventSource: source, mouseType: type, mouseCursorPosition: point, mouseButton: button)
+            event?.setIntegerValueField(.mouseEventClickState, value: Int64(click))
+            event?.post(tap: .cghidEventTap)
+            usleep(30000)
+        }
     }
     return Outcome(ok: true, detail: "clicked \(Int(x)),\(Int(y))", mechanism: .physical)
+}
+
+func moveTo(x: Double, y: Double) -> Outcome {
+    let source = CGEventSource(stateID: .hidSystemState)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: CGPoint(x: x, y: y), mouseButton: .left)?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "moved to \(Int(x)),\(Int(y))", mechanism: .physical)
+}
+
+func dragFrom(x: Double, y: Double, toX: Double, toY: Double) -> Outcome {
+    let source = CGEventSource(stateID: .hidSystemState)
+    let start = CGPoint(x: x, y: y), end = CGPoint(x: toX, y: toY)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: start, mouseButton: .left)?.post(tap: .cghidEventTap)
+    usleep(40000)
+    CGEvent(mouseEventSource: source, mouseType: .leftMouseDown, mouseCursorPosition: start, mouseButton: .left)?.post(tap: .cghidEventTap)
+    for step in 1...12 {
+        let t = Double(step) / 12
+        let point = CGPoint(x: x + (toX - x) * t, y: y + (toY - y) * t)
+        CGEvent(mouseEventSource: source, mouseType: .leftMouseDragged, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
+        usleep(25000)
+    }
+    CGEvent(mouseEventSource: source, mouseType: .leftMouseUp, mouseCursorPosition: end, mouseButton: .left)?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "dragged to \(Int(toX)),\(Int(toY))", mechanism: .physical)
+}
+
+func scrollAt(x: Double, y: Double, dy: Int32, dx: Int32) -> Outcome {
+    let source = CGEventSource(stateID: .hidSystemState)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: CGPoint(x: x, y: y), mouseButton: .left)?.post(tap: .cghidEventTap)
+    usleep(30000)
+    CGEvent(scrollWheelEvent2Source: source, units: .line, wheelCount: 2, wheel1: dy, wheel2: dx, wheel3: 0)?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "scrolled \(dy),\(dx)", mechanism: .physical)
 }
 
 let keyCodes: [String: CGKeyCode] = [
@@ -468,11 +505,27 @@ case "key":
     outcome.mechanism = .physical
     if outcome.detail.hasPrefix("refused") { outcome = refused("NOT_FRONTMOST", outcome.detail) }
     finish(outcome, lease: lease)
-case "click":
-    guard args.count >= 3, let x = Double(args[1]), let y = Double(args[2]) else { fail("usage: ax click <x> <y> --headed", code: 64) }
-    needsHeaded("click")
+case "click", "rightclick", "doubleclick", "tripleclick", "move":
+    guard args.count >= 3, let x = Double(args[1]), let y = Double(args[2]) else { fail("usage: ax \(command) <x> <y> --headed", code: 64) }
+    needsHeaded(command)
     let lease = acting()
-    finish(clickAt(x: x, y: y), lease: lease)
+    switch command {
+    case "move": finish(moveTo(x: x, y: y), lease: lease)
+    case "rightclick": finish(clickAt(x: x, y: y, button: .right), lease: lease)
+    case "doubleclick": finish(clickAt(x: x, y: y, count: 2), lease: lease)
+    case "tripleclick": finish(clickAt(x: x, y: y, count: 3), lease: lease)
+    default: finish(clickAt(x: x, y: y), lease: lease)
+    }
+case "drag":
+    guard args.count >= 5, let x = Double(args[1]), let y = Double(args[2]), let toX = Double(args[3]), let toY = Double(args[4]) else { fail("usage: ax drag <x> <y> <toX> <toY> --headed", code: 64) }
+    needsHeaded("drag")
+    let lease = acting()
+    finish(dragFrom(x: x, y: y, toX: toX, toY: toY), lease: lease)
+case "scroll":
+    guard args.count >= 5, let x = Double(args[1]), let y = Double(args[2]), let dy = Int32(args[3]), let dx = Int32(args[4]) else { fail("usage: ax scroll <x> <y> <dy> <dx> --headed", code: 64) }
+    needsHeaded("scroll")
+    let lease = acting()
+    finish(scrollAt(x: x, y: y, dy: dy, dx: dx), lease: lease)
 default:
     fail("unknown command \(command)", code: 64)
 }

@@ -137,4 +137,4 @@ export const agentDesktop: DeskEntrant = {
   },
 };
 
-export const DESK_ENTRANT_IMPLS: Record<string, DeskEntrant> = { hand, 'agent-desktop': agentDesktop };
+
