@@ -1,0 +1,23 @@
+bench/runs/desk-1-void/CONTRACT.md
+  s_655b8bbf0a58d9::t_143bcb6d547ce6 1-27
+bench/runs/desk-2/CONTRACT.md
+  s_655b8bbf0a58d9::t_0e10f191fd9678 1-31
+lab/desktop-tasks.ts
+  s_655b8bbf0a58d9::t_f81635785ab545 41-42,44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "0f9e2e523f20a362f69b1f5281aa8b8469faa948",
+  "prompts": {},
+  "sessions": {
+    "s_655b8bbf0a58d9": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "01a19718-604a-73f6-b03a-229138c2d1be",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jordan Coeyman <acoyfellow@users.noreply.github.com>"
+    }
+  }
+}
