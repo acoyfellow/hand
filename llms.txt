@@ -15,7 +15,7 @@ import { Hand } from 'hand/hand';
 const transport = gatewayTransport({ ...readConfig(), token: readToken() });
 const device = macosDevice({ helper: './native/ax', app: 'Google Chrome' });
 const hand = new Hand(transport, device, { model: 'clef', method: 'ax_text', tau: 0.3, riskTau: 0.5, injectionTau: 0.5, verify: true });
-await hand.outline();                          // text list of controls in the front window
+await hand.outline();                          // controls with ids like [e3], plus the text on screen
 await hand.act('switch to the termlab tab');   // Clef picks, device presses via accessibility, returns a receipt
 await hand.type('coey.dev', 'the address bar'); // focus, select all, real keystrokes to that app only
 await hand.select('Japanese', 'language');
@@ -23,7 +23,7 @@ await hand.look('is coey.dev open?');           // p(yes)
 ```
 macOS device rules: headless by default, so press and type go through accessibility, and keystroke or mouse fallbacks are refused with POLICY_DENIED unless macosDevice({ headed: true }). type sets the value and reads the field back. STALE_REF means the control changed since the snapshot: call outline() again. Pass agent: 'id' so parallel agents take turns on a shared lock (LEASE_TIMEOUT after 10 s). device.receipts lists every action with delivery (delivered_verified | delivered_unverified | not_delivered), mechanism (semantic_api | physical_synthetic | none), retrySafe and code; onAction gives before/after events.
 
-MCP server (macOS, stdio): bun src/mcp.ts (HAND_HEADED=1 to allow keystrokes and mouse). Tools: apps, activate, outline, act {app, intent, confirm?, agent?}, type {app, text, into, agent?}, look {app, question}. Actions are also sent as notifications/message with logger do.action.
+MCP server (macOS, stdio): bun src/mcp.ts (HAND_HEADED=1 to allow keystrokes and mouse). Tools: apps, activate, outline, act {app, intent, confirm?, agent?}, type {app, text, into, agent?}, look {app, question}. Actions are also sent as notifications/message with logger hand.action.
 
 Hand receipts start with "Clicked", "Typed", "UNSURE" (did not act) or "BLOCKED" (looks destructive; pass confirm=true only if the user asked).
 
@@ -46,3 +46,7 @@ interface Device {
 ```
 
 Bench: bench/, bun run gate (fails if results are stale or worse than bench/baseline.json). Not included: CLI, desktop tasks in the bench, Windows/Linux devices.
+
+Ids: act and type take an id from the last outline (for example act('e3')) or plain words. An id whose control changed since that outline returns STALE_REF; call outline() again.
+
+Lab: hand.coey.dev/lab compares hand with agent-browser, Playwright MCP, Stagehand, browser-use and agent-desktop on the same tasks and planner.

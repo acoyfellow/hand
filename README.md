@@ -42,7 +42,7 @@ screen ──► device lists controls ──► Clef: "which one?" + probabilit
 - **Clef** (`hand/clef`) picks from a list. It never writes text.
 - **Clairic** (`hand/clairic`) copies values out of the task. It never writes text that is not already there.
 - **Writer** (`hand/writer`) writes field values when Clef says the task needs new text. The default is `glm-5.3-flash`, with `kimi-k2.6` filling any field glm leaves empty (see [Writers](#writers)).
-- **Hand** (`hand/hand`) is what a caller uses: `outline()`, `act(intent)`, `type(text, into)`, `select(value, into)`, `look(question)`. It refuses when Clef is unsure, blocks controls Clef rates as destructive unless confirmed, and returns a one-line receipt. The caller never receives an image.
+- **Hand** (`hand/hand`) is what a caller uses: `outline()`, `act(intent)`, `type(text, into)`, `select(value, into)`, `look(question)`. `outline()` lists each control with an id like `[e3]` and the text on screen. `act` and `type` take that id or plain words. An id whose control changed since the last outline is refused with `STALE_REF`. It refuses when Clef is unsure, blocks controls Clef rates as destructive unless confirmed, and returns a one-line receipt. The caller never receives an image.
 
 ## Install
 
@@ -116,7 +116,7 @@ HAND_HEADED=1 bun src/mcp.ts   # allow keystroke and mouse fallbacks
 |---|---|
 | `apps` | List running Mac apps that can be controlled |
 | `activate` | Bring an app to the front |
-| `outline` | List the controls in the app's front window and menu bar |
+| `outline` | List the controls in the app's front window and menu bar, each with an id, plus the text on screen |
 | `act` | Click a control described in plain words; `confirm: true` only when the user asked for a destructive action |
 | `type` | Type text into a field described in plain words |
 | `look` | Ask a yes/no question about the screen; returns p(yes) |
@@ -151,6 +151,18 @@ Runs `writer-1` to `writer-3` on the same 44 cases:
 - **glm alone varies from run to run** (42, then 39). The pair stays at 42 or above.
 - **Asking Clef, not Clairic, decides when to call the backup.** Clairic copied the planted "delete everything" as if the user had asked for it. Clef scores that task 0.10, so the field stays empty.
 - **Every writer misses `address-line`** ("Market 101" instead of "101 Market").
+
+## Lab
+
+`lab/` runs hand and its competitors on the same tasks with the same planner model, so only the tool changes. Results and the full landscape are at [hand.coey.dev/lab](https://hand.coey.dev/lab/).
+
+```sh
+bun lab/run.ts       # browser: hand, agent-browser, Playwright MCP, Stagehand, browser-use
+bun lab/desktop.ts   # Mac: hand, agent-desktop
+bun run lab          # rebuild the lab page data
+```
+
+Each run has a CONTRACT.md in `bench/runs/<run>/`, written before the data.
 
 ## Bench
 
