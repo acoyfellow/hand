@@ -41,7 +41,7 @@ const readEpisodes = (): Episode[] =>
     .map((line) => JSON.parse(line) as Episode);
 
 const spent = () => readEpisodes().reduce((sum, episode) => sum + episode.usd, 0);
-const done = new Set(readEpisodes().map((episode) => `${episode.cell}|${episode.task}`));
+const alreadyRun = (cell: string, task: string) => readEpisodes().some((episode) => episode.cell === cell && episode.task === task);
 const installs: Record<string, { ok: boolean; reason?: string }> = existsSync(installsPath) ? JSON.parse(readFileSync(installsPath, 'utf8')) : {};
 
 const box = vm(host);
@@ -62,7 +62,7 @@ for (const gridCell of cells) {
     continue;
   }
   for (const task of tasks) {
-    if (done.has(`${gridCell.key}|${task.id}`)) continue;
+    if (alreadyRun(gridCell.key, task.id)) continue;
     if (spent() >= STOP_AT_USD) {
       console.log(`stopping: spend reached $${STOP_AT_USD}`);
       process.exit(0);

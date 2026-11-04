@@ -44,3 +44,11 @@ The runner stopped at $56 with 11 claude-cu@claude-opus-5-5 tasks not run. Jorda
 ## Addendum, 2026-11-04, kimi-k3 replaced by DeepSeek V4 Pro
 
 kimi-k3 was refused for this account on every call (HTTP 403, "This account is not allowed to access @cf/moonshotai/kimi-k3", code 5018), so no kimi-k3 episode was ever run. Jordan chose to replace it with the strongest DeepSeek on Workers AI: `@cf/deepseek-ai/deepseek-v4-pro-0813`, priced from the Workers AI model catalogue at $1.32 per million input tokens and $3.96 per million output tokens. It passed the same `probeModel` check as the other models before any scored episode. The hand and agent-desktop rows for it run the same 15 tasks under the same rules. The spend limit is $200.
+
+## Addendum, 2026-11-04, proxy 502 on two claude-cu@claude-opus-5-5 episodes
+
+mac-textedit-edit-line and mac-cross-copy-to-note ended with `harness: anthropic 502: Bad Gateway` from the local model proxy, at $0 and 0 turns. That is a transport fault, not a model result. Both are moved to `claude-cu-void-proxy-502.jsonl` and rerun once with no other change.
+
+## Addendum, 2026-11-04, duplicate agent-desktop@deepseek-v4-pro episodes
+
+To finish sooner, agent-desktop@deepseek-v4-pro ran on both VMs at once. Lane b had loaded its task list before the runner learned to re-read finished episodes, so pwa-mail-spam and pwa-editor-keep ran on both lanes. Lane a's episodes, which started first, are scored. Lane b's copies are moved to `agent-desktop-deepseek-duplicate-lane-b.jsonl` and are not scored, whatever their result.

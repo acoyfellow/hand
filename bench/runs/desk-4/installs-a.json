@@ -20,5 +20,8 @@
   },
   "claude-cu@claude-opus-5-5": {
     "ok": true
+  },
+  "agent-desktop@deepseek-v4-pro": {
+    "ok": true
   }
 }
