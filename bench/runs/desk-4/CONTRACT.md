@@ -32,3 +32,7 @@ Success only from app state after the episode. Also recorded: cost, seconds, tur
 ## Not in scope
 
 The hand Mac cursor overlay is built in a separate worktree at the same time and is not installed in either VM until scoring ends, because a drawn cursor would appear in screenshot-based tools' screens.
+
+## Addendum, 2026-11-04, harness fault in the Claude computer use cells
+
+The first 30 claude-cu episodes all failed in 0 turns at $0: Claude 5.5 models refuse the `computer_20251124` tool (HTTP 400, "does not support tool types"). Their computer tool is the new `computer_toolset_20260801`, which takes no display size and returns one tool_use per action, with a `toolset_name` that results must echo back. The adapter now uses the toolset for 5.5 models and keeps `computer_20251124` for older ones. The 30 void episodes are kept in `claude-cu-void-tool-type.jsonl` and are not scored. Both claude-cu cells rerun from the start with no other change. A one-task check of the fix (pwa-mail-spam, not scored) passed in 5 turns for $0.12.
