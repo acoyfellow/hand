@@ -4,6 +4,7 @@ import { Effect } from 'effect';
 import { transport } from '../../bench/lib.ts';
 import { chat, firstJson, type LlmModel, type Msg, type Tool } from '../../src/llm.ts';
 import { callTool, DEFAULT_HAND, makeSession, TOOLS } from '../../src/mcp.ts';
+import { plannerChat } from './models.ts';
 import type { Vm } from './vm.ts';
 
 export interface Turn {
@@ -41,6 +42,7 @@ export const plannerLoop = async (
   task: string,
   limits: { maxTurns: number; deadline: number },
   system = SYSTEM,
+  model?: string,
 ): Promise<EpisodeRun> => {
   const t = transport();
   const msgs: Msg[] = [
@@ -51,7 +53,9 @@ export const plannerLoop = async (
   let usd = 0;
   for (let turn = 1; turn <= limits.maxTurns; turn++) {
     if (Date.now() > limits.deadline) return { claimedDone: false, turns: turn - 1, usd: usd + toolUsd(), trace, error: 'time limit' };
-    const reply = await Effect.runPromise(chat(t, PLANNER, msgs, { tools: [...tools, DONE], maxTokens: 1500 }));
+    const reply = model
+      ? await plannerChat(model, msgs, [...tools, DONE]).then((r) => ({ text: r.text, toolCalls: r.toolCalls, costUsd: r.usd }))
+      : await Effect.runPromise(chat(t, PLANNER, msgs, { tools: [...tools, DONE], maxTokens: 1500 }));
     usd += reply.costUsd;
     let calls = reply.toolCalls;
     if (!calls.length) {
@@ -78,9 +82,9 @@ export const plannerLoop = async (
 
 const AX_REMOTE = join(homedir(), '.do', 'vm', 'ax-remote');
 
-export const hand: DeskEntrant = {
+export const handWith = (model?: string): DeskEntrant => ({
   id: 'hand',
-  label: 'hand',
+  label: model ? `hand (${model})` : 'hand',
   install: async (box) => ((await box.status('test -x /Users/ax/desk/ax')) === 0 ? { ok: true } : { ok: false, reason: 'hand accessibility helper missing in the VM at ~/desk/ax' }),
   run: async (_box, task, limits) => {
     const session = makeSession(transport(), AX_REMOTE, DEFAULT_HAND);
@@ -92,9 +96,11 @@ export const hand: DeskEntrant = {
       return result.content.map((part) => part.text).join('\n');
     };
     const handUsd = () => [...used].reduce((sum, app) => sum + session.hand(app).costUsd, 0);
-    return plannerLoop(tools, call, handUsd, task, limits);
+    return plannerLoop(tools, call, handUsd, task, limits, SYSTEM, model);
   },
-};
+});
+
+export const hand = handWith();
 
 const AGENT_DESKTOP = '$HOME/.npm-global/bin/agent-desktop';
 const QUIET = '>' + '/dev/null';
@@ -110,9 +116,9 @@ const agentDesktopGuide = async (box: Vm) => {
 
 let cachedGuide = '';
 
-export const agentDesktop: DeskEntrant = {
+export const agentDesktopWith = (model?: string): DeskEntrant => ({
   id: 'agent-desktop',
-  label: 'agent-desktop',
+  label: model ? `agent-desktop (${model})` : 'agent-desktop',
   install: async (box) =>
     (await box.status(`${AGENT_DESKTOP} version ${QUIET}`)) === 0 ? { ok: true } : { ok: false, reason: 'agent-desktop CLI did not start in the VM (npm i -g agent-desktop)' },
   run: async (box, task, limits) => {
@@ -133,8 +139,10 @@ export const agentDesktop: DeskEntrant = {
       return (await new Response(child.stdout).text()) || '(no output)';
     };
     const system = `${SYSTEM}\n\nYou control the Mac with the agent-desktop CLI. Its makers' guide follows.\n\n${cachedGuide}`;
-    return plannerLoop(tools, call, () => 0, task, limits, system);
+    return plannerLoop(tools, call, () => 0, task, limits, system, model);
   },
-};
+});
+
+export const agentDesktop = agentDesktopWith();
 
 
