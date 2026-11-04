@@ -1,0 +1,39 @@
+{
+  "hand": {
+    "entrant": "hand",
+    "installed": true,
+    "tasks": 50,
+    "finished": 33,
+    "usd": 2.7924
+  },
+  "agent-desktop": {
+    "entrant": "agent-desktop",
+    "installed": true,
+    "tasks": 50,
+    "finished": 30,
+    "usd": 11.4053
+  },
+  "claude-cu": {
+    "entrant": "claude-cu",
+    "installed": true,
+    "tasks": 50,
+    "finished": 40,
+    "usd": 11.3232
+  },
+  "codex-cu": {
+    "entrant": "codex-cu",
+    "installed": false,
+    "reason": "Codex Computer Use was not granted macOS Accessibility and Screen Recording in the VM (its tool returns procNotFound). macOS accepts that grant only from a human click in System Settings.",
+    "tasks": 0,
+    "finished": 0,
+    "usd": 0
+  },
+  "cua": {
+    "entrant": "cua",
+    "installed": false,
+    "reason": "CuaDriver was not granted macOS Accessibility and Screen Recording in the VM: with its daemon started, check_permissions returns permissions_pending. macOS accepts that grant only from a human click in System Settings; synthetic clicks and TCC writes are blocked by SIP.",
+    "tasks": 0,
+    "finished": 0,
+    "usd": 0
+  }
+}
