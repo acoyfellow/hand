@@ -230,6 +230,30 @@ func resolve(_ app: NSRunningApplication, path: [Int]) -> AXUIElement? {
     return element
 }
 
+func showCursor(at point: CGPoint, label: String, click: Bool) {
+    let path = ProcessInfo.processInfo.environment["HAND_CURSOR_SOCKET"] ?? "/tmp/hand-cursor.sock"
+    guard FileManager.default.fileExists(atPath: path) else { return }
+    let payload: [String: Any] = ["agent": agent, "x": point.x, "y": point.y, "label": label, "click": click]
+    guard let data = try? JSONSerialization.data(withJSONObject: payload) else { return }
+    let fd = socket(AF_UNIX, SOCK_DGRAM, 0)
+    defer { close(fd) }
+    var address = sockaddr_un()
+    address.sun_family = sa_family_t(AF_UNIX)
+    withUnsafeMutableBytes(of: &address.sun_path) { raw in
+        path.utf8CString.withUnsafeBytes { raw.copyMemory(from: UnsafeRawBufferPointer(rebasing: $0.prefix(raw.count - 1))) }
+    }
+    _ = data.withUnsafeBytes { bytes in
+        withUnsafePointer(to: &address) { $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { sendto(fd, bytes.baseAddress, data.count, 0, $0, socklen_t(MemoryLayout<sockaddr_un>.size)) } }
+    }
+    usleep(450000)
+}
+
+func showCursor(on element: AXUIElement, label: String) {
+    guard let box = frame(element) else { return }
+    let name: String = attribute(element, kAXTitleAttribute) ?? attribute(element, kAXDescriptionAttribute) ?? ""
+    showCursor(at: CGPoint(x: box.midX, y: box.midY), label: name.isEmpty ? label : "\(label) \(name.prefix(28))", click: true)
+}
+
 func press(_ element: AXUIElement) -> Outcome {
     let result = AXUIElementPerformAction(element, kAXPressAction as CFString)
     if result == .actionUnsupported { return refused("ACTION_NOT_SUPPORTED", "the control has no AXPress action") }
@@ -492,12 +516,14 @@ case "press", "set":
     guard args.count >= 3 else { fail("usage: ax \(command) <app> <path> [text]", code: 64) }
     let element = target(found, args[2])
     let lease = acting()
+    showCursor(on: element, label: command == "press" ? "press" : "type")
     finish(command == "press" ? press(element) : setValue(element, args.count > 3 ? args[3] : ""), lease: lease, after: command == "set" ? element : nil)
 case "confirm":
     let found = app(1, usage: "usage: ax confirm <app> <path>")
     guard args.count >= 3 else { fail("usage: ax confirm <app> <path>", code: 64) }
     let element = target(found, args[2])
     let lease = acting()
+    showCursor(on: element, label: "confirm")
     finish(confirm(element), lease: lease)
 case "activate":
     guard args.count > 1 else { fail("usage: ax activate <app>", code: 64) }
@@ -535,6 +561,7 @@ case "click", "rightclick", "doubleclick", "tripleclick", "move":
     guard args.count >= 3, let x = Double(args[1]), let y = Double(args[2]) else { fail("usage: ax \(command) <x> <y> --headed", code: 64) }
     needsHeaded(command)
     let lease = acting()
+    showCursor(at: CGPoint(x: x, y: y), label: command, click: command != "move")
     switch command {
     case "move": finish(moveTo(x: x, y: y), lease: lease)
     case "rightclick": finish(clickAt(x: x, y: y, button: .right), lease: lease)
