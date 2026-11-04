@@ -1,0 +1,58 @@
+{
+  "hand": {
+    "accent": "#2E9BF0",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "claude": {
+    "accent": "#E5484D",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "codex": {
+    "accent": "#EC4899",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "agent-desktop": {
+    "accent": "#8B5CF6",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "cua": {
+    "accent": "#EAB308",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "default": {
+    "accent": "#EC4899",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "fallback": {
+    "accent": "#2E9BF0",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  }
+}

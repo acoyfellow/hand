@@ -11,54 +11,38 @@ struct CursorCommand: Decodable {
     let click: Bool?
 }
 
-let palette: [NSColor] = [
-    NSColor(red: 0.18, green: 0.61, blue: 0.94, alpha: 1),
-    NSColor(red: 0.96, green: 0.45, blue: 0.24, alpha: 1),
-    NSColor(red: 0.30, green: 0.75, blue: 0.45, alpha: 1),
-    NSColor(red: 0.67, green: 0.42, blue: 0.93, alpha: 1),
-    NSColor(red: 0.93, green: 0.30, blue: 0.55, alpha: 1),
-]
-
-func accent(for agent: String) -> NSColor {
-    let sum = agent.unicodeScalars.reduce(0) { ($0 &* 31 &+ Int($1.value)) & 0x7fffffff }
-    return palette[sum % palette.count]
+struct CursorLook: Decodable {
+    let accent: String
+    let hotspot: [Double]
+    let size: Double
 }
 
-final class ArrowView: NSView {
-    let color: NSColor
-    init(color: NSColor) {
-        self.color = color
-        super.init(frame: NSRect(x: 0, y: 0, width: 26, height: 26))
-    }
+let cursorDirectory = URL(fileURLWithPath: ProcessInfo.processInfo.environment["HAND_CURSOR_DIR"] ?? URL(fileURLWithPath: CommandLine.arguments[0]).deletingLastPathComponent().appendingPathComponent("cursors").path)
+let looks: [String: CursorLook] = (try? JSONDecoder().decode([String: CursorLook].self, from: Data(contentsOf: cursorDirectory.appendingPathComponent("cursors.json")))) ?? [:]
 
-    required init?(coder: NSCoder) { nil }
+func accentColor(hex: String) -> NSColor {
+    let value = UInt32(hex.dropFirst(), radix: 16) ?? 0x2E9BF0
+    return NSColor(red: CGFloat((value >> 16) & 0xff) / 255, green: CGFloat((value >> 8) & 0xff) / 255, blue: CGFloat(value & 0xff) / 255, alpha: 1)
+}
 
-    override var isFlipped: Bool { true }
-
-    override func draw(_ dirtyRect: NSRect) {
-        let path = NSBezierPath()
-        path.move(to: NSPoint(x: 3, y: 2))
-        path.line(to: NSPoint(x: 20, y: 11.5))
-        path.line(to: NSPoint(x: 12.5, y: 13.3))
-        path.line(to: NSPoint(x: 9, y: 21))
-        path.close()
-        path.lineJoinStyle = .round
-        path.lineWidth = 1.8
-        color.setFill()
-        path.fill()
-        NSColor.white.setStroke()
-        path.stroke()
-    }
+func lookName(for agent: String) -> String {
+    looks[agent] != nil ? agent : "fallback"
 }
 
 final class AgentCursor {
     let window: NSWindow
     let label: NSTextField
     let color: NSColor
+    let hotspot: NSPoint
+    let side: CGFloat
 
     init(agent: String) {
-        color = accent(for: agent)
-        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 220, height: 56), styleMask: .borderless, backing: .buffered, defer: false)
+        let name = lookName(for: agent)
+        let look = looks[name] ?? CursorLook(accent: "#2E9BF0", hotspot: [30, 19], size: 60)
+        color = accentColor(hex: look.accent)
+        hotspot = NSPoint(x: look.hotspot[0], y: look.hotspot[1])
+        side = look.size
+        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 260, height: look.size), styleMask: .borderless, backing: .buffered, defer: false)
         window.isOpaque = false
         window.backgroundColor = .clear
         window.hasShadow = false
@@ -67,7 +51,10 @@ final class AgentCursor {
         window.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle, .fullScreenAuxiliary]
         window.sharingType = captureSharing
         let root = NSView(frame: window.contentLayoutRect)
-        root.addSubview(ArrowView(color: color))
+        let image = NSImageView(frame: NSRect(x: 0, y: 0, width: look.size, height: look.size))
+        image.image = NSImage(contentsOf: cursorDirectory.appendingPathComponent("\(name).png"))
+        image.imageScaling = .scaleProportionallyUpOrDown
+        root.addSubview(image)
         label = NSTextField(labelWithString: agent)
         label.font = .systemFont(ofSize: 11, weight: .semibold)
         label.textColor = .white
@@ -76,7 +63,7 @@ final class AgentCursor {
         label.isBezeled = false
         label.wantsLayer = true
         label.layer?.cornerRadius = 8
-        label.frame = NSRect(x: 22, y: 26, width: 190, height: 18)
+        label.frame = NSRect(x: look.size - 8, y: 4, width: 190, height: 18)
         root.addSubview(label)
         window.contentView = root
         window.alphaValue = 0
@@ -87,7 +74,7 @@ final class AgentCursor {
         label.stringValue = " \(text) "
         label.sizeToFit()
         let screenHeight = NSScreen.screens.first?.frame.height ?? 0
-        let origin = NSPoint(x: point.x - 3, y: screenHeight - point.y - window.frame.height + 2)
+        let origin = NSPoint(x: point.x - hotspot.x, y: screenHeight - point.y - (side - hotspot.y))
         if window.alphaValue == 0 {
             window.setFrameOrigin(NSPoint(x: origin.x + 40, y: origin.y - 40))
         }
