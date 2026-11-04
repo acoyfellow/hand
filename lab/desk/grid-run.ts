@@ -61,7 +61,7 @@ for (const gridCell of cells) {
     console.log(`${gridCell.key}: not run: ${install.reason}`);
     continue;
   }
-  for (const task of tasks) {
+  for (const task of process.argv.includes('--from-end') ? [...tasks].reverse() : tasks) {
     if (alreadyRun(gridCell.key, task.id)) continue;
     if (spent() >= STOP_AT_USD) {
       console.log(`stopping: spend reached $${STOP_AT_USD}`);

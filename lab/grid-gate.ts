@@ -58,6 +58,8 @@ for (const gridCell of GRID_CELLS) {
   }
   const missing = GRID_TASKS.filter((task) => !mine.some((episode) => episode.task === task));
   if (missing.length) fail(`${gridCell.key} missing ${missing.length} tasks, e.g. ${missing.slice(0, 3).join(', ')}`);
+  const repeated = GRID_TASKS.filter((task) => mine.filter((episode) => episode.task === task).length > 1);
+  if (repeated.length) fail(`${gridCell.key} has tasks recorded more than once: ${repeated.join(', ')}`);
 }
 
 const total = episodes.reduce((sum, episode) => sum + episode.usd, 0);

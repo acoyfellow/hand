@@ -52,3 +52,4 @@ mac-textedit-edit-line and mac-cross-copy-to-note ended with `harness: anthropic
 ## Addendum, 2026-11-04, duplicate agent-desktop@deepseek-v4-pro episodes
 
 To finish sooner, agent-desktop@deepseek-v4-pro ran on both VMs at once. Lane b had loaded its task list before the runner learned to re-read finished episodes, so pwa-mail-spam and pwa-editor-keep ran on both lanes. Lane a's episodes, which started first, are scored. Lane b's copies are moved to `agent-desktop-deepseek-duplicate-lane-b.jsonl` and are not scored, whatever their result.
+Later the same day, with both lanes running the last tasks from opposite ends, mac-settings-dark started on both lanes at once. Lane a's episode is scored, as before; lane b's copy is added to the same side file. `lab/grid-gate.ts` now fails if any cell has a task recorded twice.
