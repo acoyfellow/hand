@@ -18,6 +18,7 @@ export const GRID_MODELS: Record<string, GridModel> = {
   'gpt-6.1-sol': { id: 'gpt-6.1-sol', route: 'openai', upstreamId: 'gpt-6.1-sol', usdIn: 1.25, usdOut: 10 },
   'glm-5.3': { id: 'glm-5.3', route: 'workers-ai', upstreamId: '@cf/zai-org/glm-5.3', usdIn: 0.6, usdOut: 2.2 },
   'kimi-k3': { id: 'kimi-k3', route: 'workers-ai', upstreamId: '@cf/moonshotai/kimi-k3', usdIn: 0.95, usdOut: 4 },
+  'deepseek-v4-pro': { id: 'deepseek-v4-pro', route: 'workers-ai', upstreamId: '@cf/deepseek-ai/deepseek-v4-pro-0813', usdIn: 1.32, usdOut: 3.96 },
   'kimi-k2.6': { id: 'kimi-k2.6', route: 'workers-ai', upstreamId: '@cf/moonshotai/kimi-k2.6', usdIn: 0.95, usdOut: 4 },
 };
 

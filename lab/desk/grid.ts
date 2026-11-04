@@ -19,7 +19,7 @@ export const GRID_TASKS = [
   'mac-cross-copy-to-note',
 ] as const;
 
-export const GRID_PLANNER_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5', 'gpt-6.1-sol', 'glm-5.3', 'kimi-k3'] as const;
+export const GRID_PLANNER_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5', 'gpt-6.1-sol', 'glm-5.3', 'deepseek-v4-pro'] as const;
 export const GRID_CLAUDE_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5'] as const;
 
 export interface GridCell {
@@ -37,4 +37,4 @@ export const GRID_CELLS: readonly GridCell[] = [
   ...GRID_CLAUDE_MODELS.map((model) => cell('claude-cu', model, () => claudeCuWith(model))),
 ];
 
-export const GRID_SPEND_LIMIT_USD = 60;
+export const GRID_SPEND_LIMIT_USD = 200;

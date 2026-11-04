@@ -11,7 +11,7 @@ const flag = (name: string) => {
 };
 
 const runName = flag('run') ?? 'desk-4';
-const host = flag('host') ?? '192.168.64.5';
+const host = flag('host') ?? '192.168.64.7';
 const lane = flag('lane') ?? 'a';
 const cells = (flag('cells')?.split(',') ?? GRID_CELLS.map((gridCell) => gridCell.key)).map((key) => {
   const found = GRID_CELLS.find((gridCell) => gridCell.key === key);

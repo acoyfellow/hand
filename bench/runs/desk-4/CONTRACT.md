@@ -36,3 +36,11 @@ The hand Mac cursor overlay is built in a separate worktree at the same time and
 ## Addendum, 2026-11-04, harness fault in the Claude computer use cells
 
 The first 30 claude-cu episodes all failed in 0 turns at $0: Claude 5.5 models refuse the `computer_20251124` tool (HTTP 400, "does not support tool types"). Their computer tool is the new `computer_toolset_20260801`, which takes no display size and returns one tool_use per action, with a `toolset_name` that results must echo back. The adapter now uses the toolset for 5.5 models and keeps `computer_20251124` for older ones. The 30 void episodes are kept in `claude-cu-void-tool-type.jsonl` and are not scored. Both claude-cu cells rerun from the start with no other change. A one-task check of the fix (pwa-mail-spam, not scored) passed in 5 turns for $0.12.
+
+## Addendum, 2026-11-04, spend limit raised to $200
+
+The runner stopped at $56 with 11 claude-cu@claude-opus-5-5 tasks not run. Jordan raised the limit to $200 so the row can finish. Only those 11 tasks run; no finished episode is rerun or changed.
+
+## Addendum, 2026-11-04, kimi-k3 replaced by DeepSeek V4 Pro
+
+kimi-k3 was refused for this account on every call (HTTP 403, "This account is not allowed to access @cf/moonshotai/kimi-k3", code 5018), so no kimi-k3 episode was ever run. Jordan chose to replace it with the strongest DeepSeek on Workers AI: `@cf/deepseek-ai/deepseek-v4-pro-0813`, priced from the Workers AI model catalogue at $1.32 per million input tokens and $3.96 per million output tokens. It passed the same `probeModel` check as the other models before any scored episode. The hand and agent-desktop rows for it run the same 15 tasks under the same rules. The spend limit is $200.
