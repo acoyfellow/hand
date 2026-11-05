@@ -132,7 +132,7 @@ const howItWorks = (h: H): Html =>
         [h.Class('m-0 my-5 grid list-none grid-cols-2 gap-4 p-0 md:grid-cols-4')],
         STEPS.map((step) =>
           h.li(
-            [h.Class('m-0 min-w-0 rounded-[10px] border border-line p-[1.1rem]')],
+            [h.Class('m-0 min-w-0 rounded-[10px] border border-line bg-bg p-[1.1rem]')],
             [
               stepIcon(h, step.name, 56),
               h.strong([h.Class('mb-1 block text-[1.05rem]')], [step.name]),

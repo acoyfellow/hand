@@ -121,7 +121,7 @@ const peek = (h: H): Html =>
         h.Height('362'),
         h.Loading('lazy'),
         h.Class(
-          'absolute bottom-0 left-0 h-auto w-full origin-bottom [transform:translateY(calc((1_-_var(--peek,0))_*_100%))_rotate(calc((1_-_var(--peek,0))_*_-10deg))] group-data-[settled=true]:animate-chill motion-reduce:[transform:none]',
+          'absolute bottom-0 left-0 h-auto w-full origin-bottom [transform:translateY(calc((1_-_var(--peek,0))_*_100%))_rotate(calc((1_-_var(--peek,0))_*_-10deg))] motion-reduce:[transform:none]',
         ),
       ]),
     ],

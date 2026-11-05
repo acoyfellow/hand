@@ -1,10 +1,11 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { BENCHMARKS, COMPETITORS } from './competitors.ts';
 
 const ROOT = join(import.meta.dir, '..');
 const RUNS = join(ROOT, 'bench', 'runs');
 const OUT = join(ROOT, 'site', 'public', 'lab', 'data.json');
+const SOURCE_COPY = join(ROOT, 'site', 'src', 'generated', 'lab-data.json');
 
 interface ArmSummary {
   successMean: number;
@@ -292,4 +293,6 @@ const data = {
   desk4: desk4(),
 };
 writeFileSync(OUT, `${JSON.stringify(data, null, 2)}\n`);
+mkdirSync(dirname(SOURCE_COPY), { recursive: true });
+writeFileSync(SOURCE_COPY, `${JSON.stringify(data, null, 2)}\n`);
 console.log(`lab: ${competitors.length} entrants, ${rows.length} scored rows -> ${OUT}`);
