@@ -13,6 +13,10 @@ const H2 = 'm-0 mb-4 text-[1.35rem] font-semibold tracking-[-0.01em]';
 
 const DIM = 'text-dim';
 
+const SWARM_VIDEO = '/hand-swarm.mp4';
+
+const SWARM_POSTER = '/hand-swarm.jpg';
+
 const hero = (h: H, model: Model): Html =>
   h.section(
     [h.AriaLabelledBy('hero-title'), h.Class('pt-10 pb-12 text-center md:pt-20 md:pb-16')],
@@ -105,21 +109,39 @@ const results = (h: H): Html =>
 
 const demo = (h: H): Html =>
   h.section(
-    [h.AriaLabel('Demo video'), h.Class(BLOCK)],
+    [h.AriaLabelledBy('demo-title'), h.Class(BLOCK)],
     [
+      h.h2([h.Id('demo-title'), h.Class(`${H2} text-center`)], ['Three agents, one real Mac']),
+      h.p(
+        [h.Class(`mx-auto mb-0 max-w-[34rem] text-center text-balance ${DIM}`)],
+        [
+          'Each agent gets its own hand and its own cursor. They share the screen, take turns on the keyboard, and every finish is checked against the app, not taken on trust. Recorded in a macOS virtual machine, not staged.',
+        ],
+      ),
       h.video(
         [
-          h.Src('/demo.mp4'),
-          h.Poster('/demo-poster.jpg'),
+          h.Src(SWARM_VIDEO),
+          h.Poster(SWARM_POSTER),
           h.Controls(true),
           h.Playsinline(true),
-          h.Preload('none'),
-          h.AriaLabel('A real 38 second run of hand writing a message and clicking'),
-          h.Class('mt-4 w-full rounded-[10px] border border-line bg-black'),
+          h.Muted(true),
+          h.Preload('metadata'),
+          h.AriaLabel(
+            'A real recording of three hand agents working at once in a macOS virtual machine: one sends a chat message in a web app, one renames a file in Finder, one edits a line in TextEdit. Each task is checked when it finishes.',
+          ),
+          h.Class('mt-6 w-full rounded-[10px] border border-line bg-black'),
         ],
         [],
       ),
-      h.p([h.Class(`mt-1.5 text-center text-[0.85rem] ${DIM}`)], ['A real 38 s run. hand writes the message and makes every click.']),
+      h.p(
+        [h.Class('mt-6 mb-0 text-center')],
+        [
+          h.a(
+            [h.Href('/lab/'), h.Class('inline-flex items-center gap-2 rounded-full bg-text px-5 py-2.5 text-[0.95rem] font-semibold text-bg no-underline hover:opacity-90')],
+            ['See the benchmark →'],
+          ),
+        ],
+      ),
     ],
   );
 
