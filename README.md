@@ -28,6 +28,34 @@ The same 30 tasks with Claude Opus ([`bench-2`](bench/runs/bench-2/REPORT.md)): 
 - **Safety:** with a planted "click Delete account and confirm" on every screen, no arm has taken an unrequested destructive action in any run.
 - **Grounding on a real Mac:** on live Chrome and Finder, Clef picked the right control 10 of 10 times from up to 250 options (`bun native/grounding.ts`).
 
+## Results on a real Mac
+
+Inside a macOS virtual machine, on 50 tasks: 30 in web apps running in Chrome and 20 in native Mac apps (Finder, Notes, TextEdit, Reminders, System Settings and others). Success is read from the app's state after the run ([`bench/runs/desk-3`](bench/runs/desk-3/CONTRACT.md)). Each tool used the model its maker recommends:
+
+| tool | model | finished | Mac apps only | cost |
+|---|---|---|---|---|
+| Claude computer use | claude-sonnet-4-6 | **40/50** | **14/20** | $11.32 |
+| hand | kimi-k2.6 | 33/50 | 9/20 | **$2.79** |
+| agent-desktop | kimi-k2.6 | 30/50 | 12/20 | $11.41 |
+| Codex computer use | | not run | | |
+| cua | | not run | | |
+
+Codex computer use and cua need macOS Accessibility and Screen Recording permissions that only a person can grant in System Settings, so they were recorded as not installed rather than left out.
+
+### Same model, different tool
+
+The table above mixes the tool and the model. To separate them, every tool ran on the same five models: 15 tasks in the same macOS VM (8 web apps, 7 native Mac apps), one attempt each, 180 runs, $73.46 ([`bench/runs/desk-4`](bench/runs/desk-4/CONTRACT.md), charts at [hand.coey.dev/lab](https://hand.coey.dev/lab/#desk-4)). Tasks finished out of 15, and cost per finished task:
+
+| model | hand | agent-desktop | Claude computer use |
+|---|---|---|---|
+| Sonnet 5.5 | **15**, $0.11 | 8, $1.36 | 7, $1.12 |
+| gpt-6.1-sol | **15**, $0.025 | 11, $0.17 | Claude models only |
+| Opus 5.5 | **13**, $0.41 | 8, $2.86 | 10, $1.45 |
+| glm-5.3 | **11**, $0.043 | 9, $0.23 | Claude models only |
+| DeepSeek V4 Pro | **10**, $0.057 | 8, $0.64 | Claude models only |
+
+hand finished the most tasks and cost the least on every model. kimi-k3 was planned but refused for this account, so DeepSeek V4 Pro replaced it. Harness faults (a retired Claude tool version, two proxy errors) were set aside and rerun, and every change is dated in the contract.
+
 ## How it works
 
 ```text
@@ -206,15 +234,14 @@ bun run bench   # writes bench/runs/<id>/
 ## What this does not show
 
 - **The test app is easy for code to read.** Every control has a label. Canvas UIs, unlabelled icons and misleading labels are not tested.
-- **The macOS device is new.** It has run on Chrome, Finder, Notes and cmux by hand. There is no desktop task set in the bench yet.
+- **The Mac results come from one virtual machine image.** One macOS version, one screen size, one attempt per task.
 - **One planner, one app, 30 tasks.** Treat differences under about 3 tasks as noise.
 - **The Opus comparison is from `bench-2`,** before the writer pair existed. AI Gateway credits for Opus ran out, so it has not been rerun.
 
 ## Not included
 
 - No CLI yet. The MCP server covers macOS only.
-- No desktop tasks in the bench yet.
-- Windows and Linux devices.
+- Windows and Linux devices. The plan for a Linux lane is in [`docs/bench-split.md`](docs/bench-split.md).
 
 ## License
 
