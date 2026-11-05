@@ -15,7 +15,6 @@
   --color-paper: #ffffff;
   --font-sans: "Google Sans Flex", "Google Sans", system-ui, sans-serif;
   --font-mono: "Google Sans Code", ui-monospace, monospace;
-  --animate-chill: chill 6s ease-in-out infinite;
   --animate-wing-up: wing-up 2.4s step-end infinite;
   --animate-wing-down: wing-down 2.4s step-end infinite;
   --animate-inhale: inhale 2.4s step-end infinite;
@@ -24,11 +23,6 @@
   --animate-fire-3: fire-3 2.4s step-end infinite;
   --animate-fire-4: fire-4 2.4s step-end infinite;
 
-  @keyframes chill {
-    0%, 100% { translate: 0; rotate: 0deg; }
-    30% { translate: 0 -4px; rotate: -3deg; }
-    60% { translate: 0 -1px; rotate: 2.5deg; }
-  }
   @keyframes wing-up {
     0%, 25%, 50%, 75% { opacity: 1; }
     12.5%, 37.5%, 62.5%, 87.5% { opacity: 0; }

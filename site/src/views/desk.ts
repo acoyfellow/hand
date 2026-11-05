@@ -139,7 +139,7 @@ const describe = (data: Desk4Data, metric: Metric) =>
 
 const slopeChart = (h: H, data: Desk4Data, metric: Metric): Html =>
   h.figure(
-    [h.Class('m-0 rounded-[10px] border border-line p-3 sm:p-4')],
+    [h.Class('m-0 rounded-[10px] border border-line bg-bg p-3 sm:p-4')],
     [
       h.figcaption([h.Class('mb-1 text-sm font-semibold text-balance')], [metric.title, h.span([h.Class('ml-2 text-xs font-normal text-dim')], [metric.better])]),
       h.div(

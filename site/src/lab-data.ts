@@ -1,5 +1,5 @@
 import { Schema } from 'effect';
-import raw from '../public/lab/data.json';
+import raw from './generated/lab-data.json';
 
 const Row = Schema.Struct({
   arm: Schema.String,

@@ -1,0 +1,1048 @@
+{
+  "generatedAt": "2026-11-05",
+  "competitors": [
+    {
+      "id": "hand",
+      "name": "hand",
+      "repo": "acoyfellow/hand",
+      "url": "https://hand.coey.dev",
+      "layer": "both",
+      "sees": "accessibility",
+      "brain": "small model picks",
+      "platforms": [
+        "macOS",
+        "browser"
+      ],
+      "ships": "TypeScript library and MCP server",
+      "strength": "A small model picks the control, says how sure it is, asks when unsure, blocks risky clicks and checks the result.",
+      "gap": "No Windows or Linux yet. Lost to Claude computer use on desk-3 (its own model, 40 vs 33 of 50).",
+      "adapter": "measured",
+      "stars": 4,
+      "pushed": "2026-11-03"
+    },
+    {
+      "id": "browser-use",
+      "name": "browser-use",
+      "repo": "browser-use/browser-use",
+      "url": "https://browser-use.com",
+      "layer": "browser",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "Python library and cloud",
+      "strength": "The most used open browser agent, with stealth cloud browsers.",
+      "gap": "Big model every step, so cost and latency scale with every click.",
+      "adapter": "measured",
+      "stars": 120045,
+      "pushed": "2026-11-02"
+    },
+    {
+      "id": "agent-browser",
+      "name": "agent-browser",
+      "repo": "vercel-labs/agent-browser",
+      "url": "https://agent-browser.dev",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "caller decides",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "Rust CLI on npm",
+      "strength": "Snapshot refs, tiny JSON output, fast native CLI. The default browser tool for many coding agents.",
+      "gap": "No model inside: the calling agent pays a big model to read every snapshot and pick.",
+      "adapter": "measured",
+      "stars": 45539,
+      "pushed": "2026-11-05"
+    },
+    {
+      "id": "ui-tars",
+      "name": "UI-TARS",
+      "repo": "bytedance/UI-TARS-desktop",
+      "url": "https://github.com/bytedance/UI-TARS-desktop",
+      "layer": "desktop",
+      "sees": "screenshots",
+      "brain": "own vision model",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "browser"
+      ],
+      "ships": "Desktop app and vision model",
+      "strength": "Its own model trained for screen grounding.",
+      "gap": "Screenshots only; needs a large model to run.",
+      "adapter": "none",
+      "stars": 39545,
+      "pushed": "2026-10-09"
+    },
+    {
+      "id": "playwright-mcp",
+      "name": "Playwright MCP",
+      "repo": "microsoft/playwright-mcp",
+      "url": "https://github.com/microsoft/playwright-mcp",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "caller decides",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "MCP server",
+      "strength": "Accessibility snapshots with refs, built into many MCP clients.",
+      "gap": "Large snapshots sent to the caller each step; no picking, no confidence.",
+      "adapter": "measured",
+      "stars": 39187,
+      "pushed": "2026-11-04"
+    },
+    {
+      "id": "cua",
+      "name": "cua",
+      "repo": "trycua/cua",
+      "url": "https://cua.ai",
+      "layer": "desktop",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "macOS",
+        "Linux",
+        "Windows"
+      ],
+      "ships": "Sandboxes, drivers and benchmarks",
+      "strength": "Disposable computers for agents across three systems, plus benchmark harnesses.",
+      "gap": "Infrastructure for any model; the picking is left to the model.",
+      "adapter": "planned",
+      "stars": 31743,
+      "pushed": "2026-11-05"
+    },
+    {
+      "id": "stagehand",
+      "name": "Stagehand",
+      "repo": "browserbase/stagehand",
+      "url": "https://stagehand.dev",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "big model every step",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "TypeScript SDK",
+      "strength": "Plain-words act and extract from code, closest API to hand on the web.",
+      "gap": "Each act sends the page to a big model.",
+      "adapter": "measured",
+      "stars": 25950,
+      "pushed": "2026-11-05"
+    },
+    {
+      "id": "skyvern",
+      "name": "Skyvern",
+      "repo": "Skyvern-AI/skyvern",
+      "url": "https://skyvern.com",
+      "layer": "browser",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "browser"
+      ],
+      "ships": "Python service and cloud",
+      "strength": "Workflow builder for business forms.",
+      "gap": "AGPL, heavy service, big model every step.",
+      "adapter": "none",
+      "stars": 23340,
+      "pushed": "2026-11-05"
+    },
+    {
+      "id": "midscene",
+      "name": "Midscene",
+      "repo": "web-infra-dev/midscene",
+      "url": "https://midscenejs.com",
+      "layer": "both",
+      "sees": "screenshots",
+      "brain": "big model every step",
+      "platforms": [
+        "browser",
+        "Android",
+        "iOS"
+      ],
+      "ships": "TypeScript SDK",
+      "strength": "Plain-words UI testing across web and mobile.",
+      "gap": "Vision model every step.",
+      "adapter": "none",
+      "stars": 15502,
+      "pushed": "2026-11-04"
+    },
+    {
+      "id": "agent-desktop",
+      "name": "agent-desktop",
+      "repo": "vercel-labs/agent-desktop",
+      "url": "https://agent-browser.dev/desktop",
+      "layer": "desktop",
+      "sees": "accessibility",
+      "brain": "caller decides",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "Linux"
+      ],
+      "ships": "Rust CLI and C library",
+      "strength": "Three operating systems, snapshot refs, skeleton then drill-down, wait predicates, traces.",
+      "gap": "No model inside, no probabilities, no risk check. The caller reads the tree and decides.",
+      "adapter": "planned",
+      "stars": 15160,
+      "pushed": "2026-11-05"
+    },
+    {
+      "id": "nanobrowser",
+      "name": "Nanobrowser",
+      "repo": "nanobrowser/nanobrowser",
+      "url": "https://nanobrowser.ai",
+      "layer": "browser",
+      "sees": "page structure",
+      "brain": "big model every step",
+      "platforms": [
+        "Chrome extension"
+      ],
+      "ships": "Chrome extension",
+      "strength": "Runs in your logged-in browser.",
+      "gap": "An end-user agent, not a tool other agents call.",
+      "adapter": "none",
+      "stars": 14238,
+      "pushed": "2026-10-24"
+    },
+    {
+      "id": "agent-s",
+      "name": "Agent S",
+      "repo": "simular-ai/Agent-S",
+      "url": "https://github.com/simular-ai/Agent-S",
+      "layer": "desktop",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "Linux"
+      ],
+      "ships": "Research agent",
+      "strength": "Strong published OSWorld scores.",
+      "gap": "Research code, big models, expensive per task.",
+      "adapter": "none",
+      "stars": 12876,
+      "pushed": "2026-10-30"
+    },
+    {
+      "id": "ufo",
+      "name": "Microsoft UFO",
+      "repo": "microsoft/UFO",
+      "url": "https://github.com/microsoft/UFO",
+      "layer": "desktop",
+      "sees": "accessibility",
+      "brain": "big model every step",
+      "platforms": [
+        "Windows"
+      ],
+      "ships": "Windows agent framework",
+      "strength": "Deep Windows UI Automation support.",
+      "gap": "Windows only, big model every step.",
+      "adapter": "none",
+      "stars": 10169,
+      "pushed": "2026-10-30"
+    },
+    {
+      "id": "openadapt",
+      "name": "OpenAdapt",
+      "repo": "OpenAdaptAI/OpenAdapt",
+      "url": "https://openadapt.ai",
+      "layer": "desktop",
+      "sees": "mixed",
+      "brain": "big model every step",
+      "platforms": [
+        "macOS",
+        "Windows"
+      ],
+      "ships": "Record and replay agent",
+      "strength": "Learns from a person showing the task.",
+      "gap": "Small community; replay rather than a general tool.",
+      "adapter": "none",
+      "stars": 1864,
+      "pushed": "2026-11-05"
+    },
+    {
+      "id": "frontier-cu",
+      "name": "Claude, OpenAI, Gemini computer use",
+      "url": "https://docs.anthropic.com/en/docs/agents-and-tools/computer-use",
+      "layer": "model",
+      "sees": "screenshots",
+      "brain": "big model every step",
+      "platforms": [
+        "any"
+      ],
+      "ships": "Model APIs",
+      "strength": "The best general reasoning, built into the model.",
+      "gap": "A screenshot and a frontier model per step: hand measured Opus vision at about 18x its cost on the same 30 tasks.",
+      "adapter": "measured"
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "desk-4",
+      "name": "hand desk-4: same model, different tool",
+      "repo": "acoyfellow/hand",
+      "status": "measured",
+      "note": "15 Mac tasks (8 web apps, 7 native) on five models, three tools, one macOS VM. 180 runs."
+    },
+    {
+      "id": "desk-3",
+      "name": "hand desk-3: each maker's model",
+      "repo": "acoyfellow/hand",
+      "status": "measured",
+      "note": "50 Mac tasks (30 web apps, 20 native), five tools. Codex and cua could not be installed."
+    },
+    {
+      "id": "hand-30",
+      "name": "hand 30 tasks",
+      "repo": "acoyfellow/hand",
+      "status": "measured",
+      "note": "Our own app: settings, mail, files, shop, chat. Truth read from app state."
+    },
+    {
+      "id": "miniwob",
+      "name": "MiniWoB++ (BrowserGym, 125 tasks)",
+      "repo": "Farama-Foundation/miniwob-plusplus",
+      "status": "run: public-1",
+      "note": "Small public web tasks with their own reward. hand 62/125 vs screenshot agent 61/125 at half the cost; missed our 3x cost bar."
+    },
+    {
+      "id": "webarena",
+      "name": "WebArena",
+      "repo": "web-arena-x/webarena",
+      "status": "blocked",
+      "note": "Needs about 180 GB of site images; the image host did not answer."
+    },
+    {
+      "id": "osworld",
+      "name": "OSWorld",
+      "repo": "xlang-ai/OSWorld",
+      "status": "not started",
+      "note": "Real desktop tasks in VMs; the main public desktop score."
+    },
+    {
+      "id": "mac-30",
+      "name": "hand Mac tasks",
+      "repo": "acoyfellow/hand",
+      "status": "not started",
+      "note": "Real Mac apps, scored from app state. Needed to face agent-desktop."
+    }
+  ],
+  "headToHead": [
+    {
+      "suite": "hand-30",
+      "entrant": "hand",
+      "arm": "hand",
+      "run": "lab-4",
+      "finished": 29,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.00767,
+      "medianSeconds": 18.9,
+      "finishedPerDollar": 126,
+      "tokensPerTask": 6226,
+      "danger": 0,
+      "falseDone": 0
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "playwright-mcp",
+      "arm": "Playwright MCP",
+      "run": "lab-4",
+      "finished": 28,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.03165,
+      "medianSeconds": 24.7,
+      "finishedPerDollar": 29,
+      "tokensPerTask": 32586,
+      "danger": 0,
+      "falseDone": 3
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "agent-browser",
+      "arm": "agent-browser",
+      "run": "lab-4",
+      "finished": 27.7,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.01371,
+      "medianSeconds": 21.2,
+      "finishedPerDollar": 67,
+      "tokensPerTask": 13896,
+      "danger": 3,
+      "falseDone": 0
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "stagehand",
+      "arm": "Stagehand",
+      "run": "lab-4",
+      "finished": 26.7,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.01414,
+      "medianSeconds": 39.9,
+      "finishedPerDollar": 63,
+      "tokensPerTask": 5563,
+      "danger": 0,
+      "falseDone": 7
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "browser-use",
+      "arm": "browser-use",
+      "run": "lab-4",
+      "finished": 24,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.03469,
+      "medianSeconds": 115.1,
+      "finishedPerDollar": 23,
+      "tokensPerTask": 30293,
+      "danger": 0,
+      "falseDone": 6
+    }
+  ],
+  "planner": "kimi-k2.6",
+  "scoreboard": [
+    {
+      "suite": "hand-30",
+      "entrant": "hand",
+      "arm": "hand (default: Clef picks, kimi-k2.6 plans)",
+      "run": "lead-browser-1",
+      "finished": 30,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.0016,
+      "medianSeconds": 3.7,
+      "finishedPerDollar": 624
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "hand",
+      "arm": "hand (Clef + writer only)",
+      "run": "lead-browser-1",
+      "finished": 25,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.0015,
+      "medianSeconds": 2.7,
+      "finishedPerDollar": 556
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "frontier-cu",
+      "arm": "Claude Opus, screenshot every step",
+      "run": "bench-2",
+      "finished": 22.7,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.02889,
+      "medianSeconds": 8.3,
+      "finishedPerDollar": 26
+    },
+    {
+      "suite": "hand-30",
+      "entrant": "frontier-cu",
+      "arm": "Claude Opus, page text every step",
+      "run": "bench-2",
+      "finished": 22,
+      "tasks": 30,
+      "repeats": 3,
+      "usdPerTask": 0.02878,
+      "medianSeconds": 19,
+      "finishedPerDollar": 25
+    }
+  ],
+  "tests": [
+    {
+      "point": "browser-device",
+      "claim": "hand finishes 30 browser tasks cheaply and fast",
+      "run": "lead-p3-2",
+      "pass": true,
+      "srcCommit": "f84ef69729c358b6bf36f93a88b3ce210f8d51cd",
+      "metrics": {
+        "arm": "relay:kimi-k2.6",
+        "successMean": 30,
+        "usdPerTask": 0.00161,
+        "medianSeconds": 3.66
+      }
+    },
+    {
+      "point": "probabilities",
+      "claim": "hand's confidence is honest: it asks instead of guessing",
+      "run": "probs-3",
+      "pass": true,
+      "srcCommit": "05e2a9a272f492efceceab77876ca9a50ef973be",
+      "metrics": {
+        "enoughData": true,
+        "minMargin": 0.6,
+        "minSeed": 400,
+        "picks": 1632,
+        "wrongPicks": 60,
+        "askRate": 0.0656,
+        "wrongRemoved": 0.7833,
+        "worstBinGap": 0.0419,
+        "wrongWhenActing": 0.0085
+      }
+    },
+    {
+      "point": "parallel-agents",
+      "claim": "Three agents share one browser without losing or crossing clicks",
+      "run": "parallel-2",
+      "pass": true,
+      "srcCommit": "755b295",
+      "metrics": {
+        "runs": 30,
+        "successes": 30,
+        "lostActions": 0,
+        "crossedActions": 0,
+        "actions": 61,
+        "wallSeconds": 243.8,
+        "usdPerTask": 0.00497
+      }
+    },
+    {
+      "point": "done-check",
+      "claim": "A checker can catch an agent that says \"done\" when it is not",
+      "run": "judge-2",
+      "pass": false,
+      "srcCommit": "05e2a9a272f492efceceab77876ca9a50ef973be",
+      "metrics": {
+        "stage": "judge selection",
+        "best": "checklist",
+        "falseDone": 125,
+        "caught": 94,
+        "catchRate": 0.752,
+        "catchLower95": 0.6695,
+        "falsePassRate": 0.0455,
+        "falseAlarmRate": 0.413,
+        "abstainRate": 0.041,
+        "usdPerCheck": 0.0007,
+        "trueDone": 368,
+        "negatives": 682
+      }
+    },
+    {
+      "point": "public-benchmark",
+      "claim": "MiniWoB++: as many tasks as a screenshot agent at 3x the value",
+      "run": "public-1",
+      "pass": false,
+      "srcCommit": "755b295",
+      "metrics": {
+        "benchmark": "MiniWoB++ (BrowserGym miniwob, 125 tasks)",
+        "doSolved": 62,
+        "visionSolved": 61,
+        "doUsdPerTask": 0.00392,
+        "visionUsdPerTask": 0.00771,
+        "doSolvedPerDollar": 126.6,
+        "visionSolvedPerDollar": 63.3
+      }
+    }
+  ],
+  "miniwob": {
+    "run": "public-1",
+    "do": {
+      "tasks": 125,
+      "solved": 62,
+      "successRate": 0.496,
+      "usdPerTask": 0.00391834904,
+      "solvedPerDollar": 126.58392474397841,
+      "medianSeconds": 21.673397332999972,
+      "errors": 0
+    },
+    "vision": {
+      "tasks": 125,
+      "solved": 61,
+      "successRate": 0.488,
+      "usdPerTask": 0.007706620799999995,
+      "solvedPerDollar": 63.32217617350529,
+      "medianSeconds": 21.63401150000002,
+      "errors": 4
+    }
+  },
+  "desk3": {
+    "run": "desk-3",
+    "rows": [
+      {
+        "tool": "Claude computer use",
+        "model": "Sonnet 4.6",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 40,
+        "mac": 14,
+        "macTasks": 20,
+        "usd": 11.32
+      },
+      {
+        "tool": "hand",
+        "model": "kimi-k2.6",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 33,
+        "mac": 9,
+        "macTasks": 20,
+        "usd": 2.79
+      },
+      {
+        "tool": "agent-desktop",
+        "model": "kimi-k2.6",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 30,
+        "mac": 12,
+        "macTasks": 20,
+        "usd": 11.41
+      },
+      {
+        "tool": "Codex computer use",
+        "model": "",
+        "installed": false,
+        "reason": "Codex Computer Use was not granted macOS Accessibility and Screen Recording in the VM (its tool returns procNotFound). macOS accepts that grant only from a human click in System Settings.",
+        "tasks": 0,
+        "finished": 0,
+        "mac": 0,
+        "macTasks": 0,
+        "usd": 0
+      },
+      {
+        "tool": "cua",
+        "model": "",
+        "installed": false,
+        "reason": "CuaDriver was not granted macOS Accessibility and Screen Recording in the VM: with its daemon started, check_permissions returns permissions_pending. macOS accepts that grant only from a human click in System Settings; synthetic clicks and TCC writes are blocked by SIP.",
+        "tasks": 0,
+        "finished": 0,
+        "mac": 0,
+        "macTasks": 0,
+        "usd": 0
+      }
+    ]
+  },
+  "desk4": {
+    "run": "desk-4",
+    "tasks": [
+      "pwa-chat-attach-send",
+      "pwa-editor-keep",
+      "pwa-h-shop-cheapest",
+      "pwa-mail-spam",
+      "pwa-mail-star-open",
+      "pwa-settings-lang",
+      "pwa-settings-name",
+      "pwa-shop-order",
+      "mac-calendar-event",
+      "mac-cross-copy-to-note",
+      "mac-finder-rename",
+      "mac-finder-tag-red",
+      "mac-settings-24h",
+      "mac-settings-dark",
+      "mac-textedit-edit-line"
+    ],
+    "episodes": 180,
+    "usd": 73.46,
+    "models": [
+      {
+        "id": "claude-opus-5-5",
+        "label": "Opus 5.5"
+      },
+      {
+        "id": "claude-sonnet-5-5",
+        "label": "Sonnet 5.5"
+      },
+      {
+        "id": "gpt-6.1-sol",
+        "label": "gpt-6.1-sol"
+      },
+      {
+        "id": "glm-5.3",
+        "label": "glm-5.3"
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "label": "DeepSeek V4 Pro"
+      }
+    ],
+    "cells": [
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "Sonnet 5.5",
+        "modelId": "claude-sonnet-5-5",
+        "tasks": 15,
+        "finished": 15,
+        "web": 8,
+        "webTasks": 8,
+        "mac": 7,
+        "macTasks": 7,
+        "usd": 1.6261,
+        "usdPerFinished": 0.1084,
+        "results": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "Opus 5.5",
+        "modelId": "claude-opus-5-5",
+        "tasks": 15,
+        "finished": 13,
+        "web": 7,
+        "webTasks": 8,
+        "mac": 6,
+        "macTasks": 7,
+        "usd": 5.3342,
+        "usdPerFinished": 0.4103,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "gpt-6.1-sol",
+        "modelId": "gpt-6.1-sol",
+        "tasks": 15,
+        "finished": 15,
+        "web": 8,
+        "webTasks": 8,
+        "mac": 7,
+        "macTasks": 7,
+        "usd": 0.379,
+        "usdPerFinished": 0.0253,
+        "results": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "glm-5.3",
+        "modelId": "glm-5.3",
+        "tasks": 15,
+        "finished": 11,
+        "web": 6,
+        "webTasks": 8,
+        "mac": 5,
+        "macTasks": 7,
+        "usd": 0.4735,
+        "usdPerFinished": 0.043,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "Claude computer use",
+        "toolId": "claude-cu",
+        "model": "Sonnet 5.5",
+        "modelId": "claude-sonnet-5-5",
+        "tasks": 15,
+        "finished": 7,
+        "web": 5,
+        "webTasks": 8,
+        "mac": 2,
+        "macTasks": 7,
+        "usd": 7.84,
+        "usdPerFinished": 1.12,
+        "results": [
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ]
+      },
+      {
+        "tool": "Claude computer use",
+        "toolId": "claude-cu",
+        "model": "Opus 5.5",
+        "modelId": "claude-opus-5-5",
+        "tasks": 15,
+        "finished": 10,
+        "web": 7,
+        "webTasks": 8,
+        "mac": 3,
+        "macTasks": 7,
+        "usd": 14.4664,
+        "usdPerFinished": 1.4466,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "DeepSeek V4 Pro",
+        "modelId": "deepseek-v4-pro",
+        "tasks": 15,
+        "finished": 8,
+        "web": 4,
+        "webTasks": 8,
+        "mac": 4,
+        "macTasks": 7,
+        "usd": 5.1059,
+        "usdPerFinished": 0.6382,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "Sonnet 5.5",
+        "modelId": "claude-sonnet-5-5",
+        "tasks": 15,
+        "finished": 8,
+        "web": 4,
+        "webTasks": 8,
+        "mac": 4,
+        "macTasks": 7,
+        "usd": 10.8711,
+        "usdPerFinished": 1.3589,
+        "results": [
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "Opus 5.5",
+        "modelId": "claude-opus-5-5",
+        "tasks": 15,
+        "finished": 8,
+        "web": 6,
+        "webTasks": 8,
+        "mac": 2,
+        "macTasks": 7,
+        "usd": 22.9082,
+        "usdPerFinished": 2.8635,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "gpt-6.1-sol",
+        "modelId": "gpt-6.1-sol",
+        "tasks": 15,
+        "finished": 11,
+        "web": 8,
+        "webTasks": 8,
+        "mac": 3,
+        "macTasks": 7,
+        "usd": 1.862,
+        "usdPerFinished": 0.1693,
+        "results": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "glm-5.3",
+        "modelId": "glm-5.3",
+        "tasks": 15,
+        "finished": 9,
+        "web": 6,
+        "webTasks": 8,
+        "mac": 3,
+        "macTasks": 7,
+        "usd": 2.033,
+        "usdPerFinished": 0.2259,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "DeepSeek V4 Pro",
+        "modelId": "deepseek-v4-pro",
+        "tasks": 15,
+        "finished": 10,
+        "web": 5,
+        "webTasks": 8,
+        "mac": 5,
+        "macTasks": 7,
+        "usd": 0.565,
+        "usdPerFinished": 0.0565,
+        "results": [
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true
+        ]
+      }
+    ]
+  }
+}
