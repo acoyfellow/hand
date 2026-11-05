@@ -1,0 +1,2 @@
+{"cell":"claude-cu@claude-opus-5-5","entrant":"claude-cu","model":"claude-opus-5-5","task":"mac-textedit-edit-line","kind":"native","success":false,"falseDone":false,"usd":0,"seconds":332,"turns":0,"error":"harness: anthropic 502: Bad Gateway","trace":[]}
+{"cell":"claude-cu@claude-opus-5-5","entrant":"claude-cu","model":"claude-opus-5-5","task":"mac-cross-copy-to-note","kind":"native","success":false,"falseDone":false,"usd":0,"seconds":0,"turns":0,"error":"harness: anthropic 502: Bad Gateway","trace":[]}

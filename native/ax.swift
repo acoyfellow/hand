@@ -50,8 +50,10 @@ func refused(_ code: String, _ detail: String) -> Outcome {
 let interactiveRoles: Set<String> = [
     "AXButton", "AXLink", "AXTextField", "AXTextArea", "AXSearchField", "AXCheckBox", "AXRadioButton",
     "AXPopUpButton", "AXComboBox", "AXMenuItem", "AXMenuButton", "AXTab", "AXSlider", "AXIncrementor",
-    "AXDisclosureTriangle", "AXSwitch",
+    "AXDisclosureTriangle", "AXSwitch", "AXMenuBarItem", "AXRow", "AXCell",
 ]
+
+let namedOnlyRoles: Set<String> = ["AXImage", "AXGroup"]
 
 func attribute<T>(_ element: AXUIElement, _ name: String) -> T? {
     var value: CFTypeRef?
@@ -69,12 +71,39 @@ func frame(_ element: AXUIElement) -> CGRect? {
     return CGRect(origin: origin, size: size)
 }
 
+func descendantText(_ element: AXUIElement, depth: Int = 0) -> String {
+    guard depth < 4 else { return "" }
+    for child in children(element) {
+        let role: String = attribute(child, kAXRoleAttribute) ?? ""
+        if role == "AXStaticText" || role == "AXTextField", let value: String = attribute(child, kAXValueAttribute), !value.isEmpty { return value }
+        let nested = descendantText(child, depth: depth + 1)
+        if !nested.isEmpty { return nested }
+    }
+    return ""
+}
+
 func label(_ element: AXUIElement) -> String {
+    let role: String = attribute(element, kAXRoleAttribute) ?? ""
+    if role == "AXRow" || role == "AXCell" {
+        let text = descendantText(element)
+        if !text.isEmpty { return text }
+    }
     for key in [kAXTitleAttribute, kAXDescriptionAttribute, kAXHelpAttribute, kAXPlaceholderValueAttribute as String] {
         if let text: String = attribute(element, key), !text.isEmpty { return text }
     }
+    if ["AXCheckBox", "AXSwitch", "AXPopUpButton", "AXSlider"].contains(role), let sibling = siblingText(element) { return sibling }
     if let value: String = attribute(element, kAXValueAttribute), !value.isEmpty, value.count < 80 { return value }
     return ""
+}
+
+func siblingText(_ element: AXUIElement) -> String? {
+    if let titled: AXUIElement = attribute(element, kAXTitleUIElementAttribute), let text: String = attribute(titled, kAXValueAttribute), !text.isEmpty { return text }
+    guard let parent: AXUIElement = attribute(element, kAXParentAttribute) else { return nil }
+    for sibling in children(parent) {
+        let role: String = attribute(sibling, kAXRoleAttribute) ?? ""
+        if role == "AXStaticText", let text: String = attribute(sibling, kAXValueAttribute), !text.isEmpty { return text }
+    }
+    return nil
 }
 
 func fingerprint(role: String, name: String, box: CGRect) -> String {
@@ -125,6 +154,18 @@ func roots(of app: NSRunningApplication) -> [AXUIElement] {
     return windows + (menuBar.map { [$0] } ?? [])
 }
 
+func insideCollection(path: [Int], element: AXUIElement) -> Bool {
+    var current: AXUIElement? = attribute(element, kAXParentAttribute)
+    var hops = 0
+    while let node = current, hops < 4 {
+        let role: String = attribute(node, kAXRoleAttribute) ?? ""
+        if ["AXList", "AXOutline", "AXTable", "AXBrowser", "AXCollection", "AXScrollArea"].contains(role) { return true }
+        current = attribute(node, kAXParentAttribute)
+        hops += 1
+    }
+    return false
+}
+
 func snapshot(_ app: NSRunningApplication, onlyFront: Bool) -> Snapshot {
     let started = Date()
     var nodes: [Node] = []
@@ -133,7 +174,10 @@ func snapshot(_ app: NSRunningApplication, onlyFront: Bool) -> Snapshot {
         visited += 1
         guard path.count < 40, visited < 20000 else { return }
         let role: String = attribute(element, kAXRoleAttribute) ?? ""
-        if interactiveRoles.contains(role), let box = frame(element), box.width > 1, box.height > 1 {
+        let parentRole: String = (attribute(element, kAXParentAttribute) as AXUIElement?).flatMap { attribute($0, kAXRoleAttribute) } ?? ""
+        let coveredByRow = role == "AXCell" && parentRole == "AXRow"
+        let listed = !coveredByRow && (interactiveRoles.contains(role) || (namedOnlyRoles.contains(role) && insideCollection(path: path, element: element) && !label(element).isEmpty))
+        if listed, let box = frame(element), box.width > 1, box.height > 1 {
             let name = label(element)
             nodes.append(Node(id: "e\(nodes.count + 1)", role: role, name: name, x: box.minX, y: box.minY, w: box.width, h: box.height, path: path, ref: fingerprint(role: role, name: stableName(element), box: box)))
         }
@@ -200,29 +244,80 @@ func setValue(_ element: AXUIElement, _ text: String) -> Outcome {
     return Outcome(ok: matches, detail: "AXValue \(result.rawValue), read back \(readBack == text ? "matches" : "differs")", code: matches ? nil : "NOT_VERIFIED", delivery: matches ? .verified : (result == .success ? .unverified : .notDelivered), retrySafe: true)
 }
 
-func clickAt(x: Double, y: Double) -> Outcome {
+func clickAt(x: Double, y: Double, button: CGMouseButton = .left, count: Int = 1) -> Outcome {
     let point = CGPoint(x: x, y: y)
     let source = CGEventSource(stateID: .hidSystemState)
-    for type in [CGEventType.mouseMoved, .leftMouseDown, .leftMouseUp] {
-        CGEvent(mouseEventSource: source, mouseType: type, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
-        usleep(30000)
+    let (down, up): (CGEventType, CGEventType) = button == .right ? (.rightMouseDown, .rightMouseUp) : (.leftMouseDown, .leftMouseUp)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: point, mouseButton: button)?.post(tap: .cghidEventTap)
+    usleep(30000)
+    for click in 1...max(1, count) {
+        for type in [down, up] {
+            let event = CGEvent(mouseEventSource: source, mouseType: type, mouseCursorPosition: point, mouseButton: button)
+            event?.setIntegerValueField(.mouseEventClickState, value: Int64(click))
+            event?.post(tap: .cghidEventTap)
+            usleep(30000)
+        }
     }
     return Outcome(ok: true, detail: "clicked \(Int(x)),\(Int(y))", mechanism: .physical)
 }
 
-let keyCodes: [String: CGKeyCode] = ["return": 36, "tab": 48, "escape": 53, "space": 49, "down": 125, "up": 126]
+func moveTo(x: Double, y: Double) -> Outcome {
+    let source = CGEventSource(stateID: .hidSystemState)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: CGPoint(x: x, y: y), mouseButton: .left)?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "moved to \(Int(x)),\(Int(y))", mechanism: .physical)
+}
 
-func pressKey(_ name: String, to app: NSRunningApplication) -> Outcome {
+func dragFrom(x: Double, y: Double, toX: Double, toY: Double) -> Outcome {
+    let source = CGEventSource(stateID: .hidSystemState)
+    let start = CGPoint(x: x, y: y), end = CGPoint(x: toX, y: toY)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: start, mouseButton: .left)?.post(tap: .cghidEventTap)
+    usleep(40000)
+    CGEvent(mouseEventSource: source, mouseType: .leftMouseDown, mouseCursorPosition: start, mouseButton: .left)?.post(tap: .cghidEventTap)
+    for step in 1...12 {
+        let t = Double(step) / 12
+        let point = CGPoint(x: x + (toX - x) * t, y: y + (toY - y) * t)
+        CGEvent(mouseEventSource: source, mouseType: .leftMouseDragged, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
+        usleep(25000)
+    }
+    CGEvent(mouseEventSource: source, mouseType: .leftMouseUp, mouseCursorPosition: end, mouseButton: .left)?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "dragged to \(Int(toX)),\(Int(toY))", mechanism: .physical)
+}
+
+func scrollAt(x: Double, y: Double, dy: Int32, dx: Int32) -> Outcome {
+    let source = CGEventSource(stateID: .hidSystemState)
+    CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: CGPoint(x: x, y: y), mouseButton: .left)?.post(tap: .cghidEventTap)
+    usleep(30000)
+    CGEvent(scrollWheelEvent2Source: source, units: .line, wheelCount: 2, wheel1: dy, wheel2: dx, wheel3: 0)?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "scrolled \(dy),\(dx)", mechanism: .physical)
+}
+
+let keyCodes: [String: CGKeyCode] = [
+    "return": 36, "enter": 36, "tab": 48, "escape": 53, "esc": 53, "space": 49, "down": 125, "up": 126, "left": 123, "right": 124,
+    "delete": 51, "backspace": 51, "a": 0, "s": 1, "d": 2, "f": 3, "h": 4, "g": 5, "z": 6, "x": 7, "c": 8, "v": 9, "b": 11, "q": 12,
+    "w": 13, "e": 14, "r": 15, "y": 16, "t": 17, "o": 31, "u": 32, "i": 34, "p": 35, "l": 37, "j": 38, "k": 40, "n": 45, "m": 46,
+    ",": 43, ".": 47, "/": 44,
+]
+
+let modifierFlags: [String: CGEventFlags] = ["cmd": .maskCommand, "command": .maskCommand, "shift": .maskShift, "option": .maskAlternate, "alt": .maskAlternate, "ctrl": .maskControl, "control": .maskControl]
+
+func pressKey(_ chord: String, to app: NSRunningApplication) -> Outcome {
+    let parts = chord.split(separator: "+").map { String($0) }
+    let name = parts.last ?? chord
+    let flags = parts.dropLast().reduce(CGEventFlags()) { $0.union(modifierFlags[$1] ?? []) }
     guard let code = keyCodes[name] else { return Outcome(ok: false, detail: "unknown key \(name)") }
     guard NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier else {
         return Outcome(ok: false, detail: "refused: \(app.localizedName ?? "?") is not the frontmost app")
     }
     let source = CGEventSource(stateID: .hidSystemState)
     let pid = app.processIdentifier
-    CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: true)?.postToPid(pid)
+    let down = CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: true)
+    let up = CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: false)
+    down?.flags = flags
+    up?.flags = flags
+    down?.post(tap: .cghidEventTap)
     usleep(20000)
-    CGEvent(keyboardEventSource: source, virtualKey: code, keyDown: false)?.postToPid(pid)
-    return Outcome(ok: true, detail: "key \(name) to pid \(pid)")
+    up?.post(tap: .cghidEventTap)
+    return Outcome(ok: true, detail: "pressed \(chord) in \(app.localizedName ?? "?")")
 }
 
 func typeText(_ text: String, to app: NSRunningApplication) -> Outcome {
@@ -367,7 +462,12 @@ func app(_ index: Int, usage: String) -> NSRunningApplication {
 
 switch command {
 case "apps":
-    emit(NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }.compactMap(\.localizedName))
+    emit(NSWorkspace.shared.runningApplications.filter { $0.activationPolicy == .regular }.compactMap { running -> String? in
+        guard let name = running.localizedName else { return nil }
+        let windows: [AXUIElement] = attribute(AXUIElementCreateApplication(running.processIdentifier), kAXWindowsAttribute) ?? []
+        let titles = windows.compactMap { attribute($0, kAXTitleAttribute) as String? }.filter { !$0.isEmpty && $0 != name }.prefix(4)
+        return titles.isEmpty ? name : "\(name) (windows: \(titles.joined(separator: ", ")))"
+    })
 case "front":
     emit(NSWorkspace.shared.frontmostApplication?.localizedName ?? "")
 case "snapshot":
@@ -400,6 +500,16 @@ case "confirm":
     let lease = acting()
     finish(confirm(element), lease: lease)
 case "activate":
+    guard args.count > 1 else { fail("usage: ax activate <app>", code: 64) }
+    if application(named: args[1]) == nil {
+        let launcher = Process()
+        launcher.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        launcher.arguments = ["-a", args[1]]
+        try? launcher.run()
+        launcher.waitUntilExit()
+        for _ in 0..<40 where application(named: args[1]) == nil { usleep(150000) }
+        usleep(600000)
+    }
     let found = app(1, usage: "usage: ax activate <app>")
     let lease = acting()
     finish(Outcome(ok: found.activate(), detail: "activate \(found.localizedName ?? "?")", mechanism: .semantic, retrySafe: true), lease: lease)
@@ -421,11 +531,27 @@ case "key":
     outcome.mechanism = .physical
     if outcome.detail.hasPrefix("refused") { outcome = refused("NOT_FRONTMOST", outcome.detail) }
     finish(outcome, lease: lease)
-case "click":
-    guard args.count >= 3, let x = Double(args[1]), let y = Double(args[2]) else { fail("usage: ax click <x> <y> --headed", code: 64) }
-    needsHeaded("click")
+case "click", "rightclick", "doubleclick", "tripleclick", "move":
+    guard args.count >= 3, let x = Double(args[1]), let y = Double(args[2]) else { fail("usage: ax \(command) <x> <y> --headed", code: 64) }
+    needsHeaded(command)
     let lease = acting()
-    finish(clickAt(x: x, y: y), lease: lease)
+    switch command {
+    case "move": finish(moveTo(x: x, y: y), lease: lease)
+    case "rightclick": finish(clickAt(x: x, y: y, button: .right), lease: lease)
+    case "doubleclick": finish(clickAt(x: x, y: y, count: 2), lease: lease)
+    case "tripleclick": finish(clickAt(x: x, y: y, count: 3), lease: lease)
+    default: finish(clickAt(x: x, y: y), lease: lease)
+    }
+case "drag":
+    guard args.count >= 5, let x = Double(args[1]), let y = Double(args[2]), let toX = Double(args[3]), let toY = Double(args[4]) else { fail("usage: ax drag <x> <y> <toX> <toY> --headed", code: 64) }
+    needsHeaded("drag")
+    let lease = acting()
+    finish(dragFrom(x: x, y: y, toX: toX, toY: toY), lease: lease)
+case "scroll":
+    guard args.count >= 5, let x = Double(args[1]), let y = Double(args[2]), let dy = Int32(args[3]), let dx = Int32(args[4]) else { fail("usage: ax scroll <x> <y> <dy> <dx> --headed", code: 64) }
+    needsHeaded("scroll")
+    let lease = acting()
+    finish(scrollAt(x: x, y: y, dy: dy, dx: dx), lease: lease)
 default:
     fail("unknown command \(command)", code: 64)
 }

@@ -1,0 +1,24 @@
+{
+  "agent-desktop@claude-sonnet-5-5": {
+    "ok": true
+  },
+  "agent-desktop@claude-opus-5-5": {
+    "ok": true
+  },
+  "agent-desktop@gpt-6.1-sol": {
+    "ok": true
+  },
+  "agent-desktop@glm-5.3": {
+    "ok": true
+  },
+  "agent-desktop@kimi-k3": {
+    "ok": false,
+    "reason": "kimi-k3 unavailable: 403: {\"errors\":[{\"message\":\"AiError: Ai: This account is not allowed to access @cf/moonshotai/kimi-k3. (b9062845-5844-4be2-81ce-d4cf8e0fd408)\",\"code\":5018}],\"success\":false,\"result\":{},\"messages\":[]}"
+  },
+  "hand@deepseek-v4-pro": {
+    "ok": true
+  },
+  "agent-desktop@deepseek-v4-pro": {
+    "ok": true
+  }
+}

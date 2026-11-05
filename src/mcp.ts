@@ -26,12 +26,14 @@ const agent = { type: 'string', description: 'Optional id of the agent acting, s
 export const TOOLS: readonly McpTool[] = [
   {
     name: 'apps',
-    description: 'List the Mac apps that are running and can be controlled. The first line names the app in front.',
+    description:
+      'List the Mac apps that are running and can be controlled. The first line names the app in front. Window titles are shown in brackets: a web app such as "Workbench" runs inside "Google Chrome", so pass "Google Chrome" as the app. To open an app that is not running, call activate with its name; do not use Spotlight.',
     inputSchema: { type: 'object', properties: {}, required: [] },
   },
   {
     name: 'activate',
-    description: 'Bring an app to the front. Typing only works in the frontmost app.',
+    description:
+      'Open any installed app by name (for example "System Settings", "Notes") and bring it to the front. Use this instead of Spotlight, the Dock or Terminal. Typing only works in the frontmost app.',
     inputSchema: { type: 'object', properties: { app }, required: ['app'] },
   },
   {
@@ -57,6 +59,12 @@ export const TOOLS: readonly McpTool[] = [
       properties: { app, agent, text: { type: 'string' }, into: { type: 'string' } },
       required: ['app', 'text', 'into'],
     },
+  },
+  {
+    name: 'key',
+    description:
+      'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command.',
+    inputSchema: { type: 'object', properties: { app, key: { type: 'string' } }, required: ['app', 'key'] },
   },
   {
     name: 'look',
@@ -95,6 +103,14 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'apps') {
     const [apps, front] = await Promise.all([run(session.helper, ['apps']), run(session.helper, ['front'])]);
     return text([`In front: ${JSON.parse(front.stdout) as string}`, ...(JSON.parse(apps.stdout) as string[])].join('\n'));
+  }
+  if (name === 'key') {
+    const policy = process.env.HAND_HEADED === '1' ? ['--headed'] : [];
+    const { stdout } = await run(session.helper, ['key', str(args, 'app'), str(args, 'key').toLowerCase(), ...policy]).catch((error: { stdout?: string }) => ({
+      stdout: error.stdout ?? '{"ok":false,"detail":"key failed"}',
+    }));
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    return text(outcome.detail, !outcome.ok);
   }
   if (name === 'activate') {
     const { stdout } = await run(session.helper, ['activate', str(args, 'app')]);
@@ -141,6 +157,7 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
       app: name,
       agent: agentId,
       headed: process.env.HAND_HEADED === '1',
+      allowMouse: process.env.HAND_HEADED === '1',
       onAction: ({ phase, receipt }) =>
         notify({
           phase,

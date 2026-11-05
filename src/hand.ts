@@ -10,6 +10,7 @@ export interface Device extends Screen {
   candidates(): Promise<Candidate[]>;
   click(p: { x: number; y: number }): Promise<void>;
   press?(c: Candidate): Promise<void>;
+  pointerClick?(c: Candidate): Promise<boolean>;
   typeInto(c: Candidate, text: string): Promise<void>;
   setValue(c: Candidate, value: string): Promise<boolean>;
   settle(): Promise<void>;
@@ -84,7 +85,8 @@ export class StaleRef extends Error {
   }
 }
 
-const refOf = (text: string) => /^\s*\[?(e\d+)\]?\s*$/.exec(text)?.[1];
+const refOf = (text: string) =>
+  /^\s*(?:(?:click|press|select|open|choose|toggle)\s+)?(?:the\s+)?(?:control\s+|element\s+|id\s+)?\[?(e\d+)\]?\s*$/i.exec(text)?.[1];
 const isRef = (text: string) => refOf(text) !== undefined;
 
 export class Hand {
@@ -215,7 +217,13 @@ export class Hand {
     let tail = '';
     if (this.opts.verify) {
       const [candsAfter, textAfter] = await Promise.all([this.d.candidates(), this.screenText()]);
-      const change = describeChange(cands, candsAfter, textBefore, textAfter);
+      let change = describeChange(cands, candsAfter, textBefore, textAfter);
+      if (!change && chosen && this.d.press && this.d.pointerClick && (await this.d.pointerClick(chosen))) {
+        await this.d.settle();
+        const [candsRetry, textRetry] = await Promise.all([this.d.candidates(), this.screenText()]);
+        const retried = describeChange(cands, candsRetry, textBefore, textRetry);
+        if (retried) change = `${retried} (the accessibility press did nothing, so hand clicked it with the mouse)`;
+      }
       if (change) {
         achieved = 1;
         tail = ` Changed: ${change}`;

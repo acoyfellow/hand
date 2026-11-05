@@ -181,6 +181,13 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       const outcome = await helper<AxOutcome>('click', String(p.x), String(p.y));
       lastActions.push(`mouse ${outcome.detail}`);
     },
+    pointerClick: async (c) => {
+      if (!opts.allowMouse) return false;
+      const target = c as MacosCandidate;
+      const outcome = await helper<AxOutcome>('click', String(target.x + target.w / 2), String(target.y + target.h / 2));
+      lastActions.push(`mouse ${outcome.detail}`);
+      return outcome.ok;
+    },
     click: async (p) => {
       const target = smallestContaining(last, p);
       if (target && (await press(target))) return;
