@@ -7,11 +7,11 @@ const money = (usd: number) => (usd < 0.01 ? `$${usd.toFixed(4)}` : `$${usd.toFi
 
 const runUrl = (run: string) => `https://github.com/acoyfellow/hand/tree/main/bench/runs/${run}`;
 
-const TH = 'whitespace-nowrap border-b border-line bg-raise px-3 py-2 text-left align-top text-xs font-medium text-dim';
+const TH = 'whitespace-nowrap border-b border-line bg-bg px-3 py-2 text-left align-top text-xs font-medium text-dim';
 const TD = 'border-b border-line px-3 py-2 text-left align-top';
 const NUM = 'text-right tabular-nums whitespace-nowrap';
 const WIDE = 'hidden sm:table-cell';
-const LEAD = 'bg-lead';
+const LEAD = 'font-semibold';
 
 const TAG = 'inline-block whitespace-nowrap rounded-full px-[7px] py-1 text-[11px] leading-none font-medium';
 

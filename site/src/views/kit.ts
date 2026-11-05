@@ -23,7 +23,7 @@ export const rawSvg = (h: H, attributes: { viewBox: string; className: string; l
 
 export const scrollRegion = (h: H, label: string, children: readonly Child[]): Html =>
   h.div(
-    [h.Class('overflow-x-auto rounded-[10px] border border-line'), h.Role('region'), h.AriaLabel(label), h.Tabindex(0)],
+    [h.Class('overflow-x-auto rounded-[10px] border border-line bg-bg'), h.Role('region'), h.AriaLabel(label), h.Tabindex(0)],
     [...children],
   );
 

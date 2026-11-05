@@ -39,7 +39,6 @@ const hero = (h: H, model: Model): Html =>
         ],
       ),
       h.p([h.Class('m-0 font-mono text-[0.85rem]')], [h.a([h.Href('#mcp'), h.Class(DIM)], ['Use with an AI agent'])]),
-      howDiagram(h),
       h.figure(
         [h.Class('relative mx-auto mt-8 mb-0 max-w-[760px]')],
         [
@@ -57,6 +56,7 @@ const hero = (h: H, model: Model): Html =>
           h.figcaption([h.Class(`mt-3 text-center text-[0.85rem] ${DIM}`)], ['Four agents, each with its own hand, working in one app at once.']),
         ],
       ),
+      h.div([h.Class('mt-12')], [howDiagram(h)]),
     ],
   );
 

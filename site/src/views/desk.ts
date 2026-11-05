@@ -152,7 +152,7 @@ const slopeChart = (h: H, data: Desk4Data, metric: Metric): Html =>
     ],
   );
 
-const TH = 'whitespace-nowrap border-b border-line bg-raise px-3 py-2 text-left align-top text-xs font-medium text-dim';
+const TH = 'whitespace-nowrap border-b border-line bg-bg px-3 py-2 text-left align-top text-xs font-medium text-dim';
 const TD = 'border-b border-line px-3 py-2 align-top';
 const NUM = 'text-right tabular-nums whitespace-nowrap';
 
@@ -213,7 +213,7 @@ const sortableTable = (h: H, data: Desk4Data): Html => {
           [],
           rows.map((cell) =>
             h.tr(
-              [h.Class(`[&:last-child>*]:border-b-0 ${cell.toolId === 'hand' ? 'bg-lead' : ''}`)],
+              [h.Class(`[&:last-child>*]:border-b-0 `)],
               SORT_COLUMNS.map((column, index) => {
                 const winner = index === 2 && best.has(`${cell.toolId}@${cell.modelId}`);
                 const content: Child[] = [column.show(cell)];
@@ -237,7 +237,7 @@ const taskGrid = (h: H, data: Desk4Data): Html => {
   const divider = (index: number) => (index === firstMac ? 'border-l-2 border-l-line' : '');
   return scrollRegion(h, 'Every task, every run', [
     h.table(
-      [h.Class('border-collapse text-[12px]')],
+      [h.Class('w-full border-collapse text-[12px]')],
       [
         h.thead(
           [],
@@ -245,10 +245,10 @@ const taskGrid = (h: H, data: Desk4Data): Html => {
             h.tr(
               [],
               [
-                h.th([h.Class(`${TH} align-bottom`)], [h.span([h.Class('sr-only')], ['Tool and model'])]),
+                h.th([h.Class(`${TH} sticky left-0 z-10 border-r align-bottom`)], [h.span([h.Class('sr-only')], ['Tool and model'])]),
                 ...data.tasks.map((task, index) =>
                   h.th(
-                    [h.Scope('col'), h.Class(`border-b border-line bg-raise px-1 py-2 align-bottom text-[11px] font-normal text-dim ${divider(index)}`)],
+                    [h.Scope('col'), h.Class(`border-b border-line bg-bg px-1 py-2 align-bottom text-[11px] font-normal text-dim ${divider(index)}`)],
                     [h.span([h.Class('inline-block whitespace-nowrap [writing-mode:vertical-rl] rotate-180')], [shortTask(task)])],
                   ),
                 ),
@@ -260,9 +260,9 @@ const taskGrid = (h: H, data: Desk4Data): Html => {
           [],
           cells.map((cell) =>
             h.tr(
-              [h.Class(cell.toolId === 'hand' ? 'bg-lead' : '')],
+              [],
               [
-                h.th([h.Scope('row'), h.Class('whitespace-nowrap border-b border-line px-3 py-1.5 text-left font-normal')], [h.span([h.Class('font-semibold')], [cell.tool]), ` · ${cell.model}`]),
+                h.th([h.Scope('row'), h.Class('sticky left-0 z-10 whitespace-nowrap border-b border-r border-line bg-bg px-3 py-1.5 text-left font-normal')], [h.span([h.Class('font-semibold')], [cell.tool]), ` · ${cell.model}`]),
                 ...cell.results.map((result, index) =>
                   h.td(
                     [h.Class(`border-b border-line px-1 py-1.5 text-center ${divider(index)} ${result ? 'text-[#16a34a]' : result === false ? 'text-[#e5484d]' : 'text-dim'}`)],
@@ -344,7 +344,7 @@ export const desk3Section = (h: H, data: Desk3Data, index: number): Html =>
               [],
               data.rows.map((row, position) =>
                 h.tr(
-                  [h.Class(`[&:last-child>*]:border-b-0 ${row.tool === 'hand' ? 'bg-lead' : ''}`)],
+                  [h.Class(`[&:last-child>*]:border-b-0 `)],
                   row.installed
                     ? [
                         h.th([h.Scope('row'), h.Class(`${TD} text-left font-semibold`)], [row.tool]),
