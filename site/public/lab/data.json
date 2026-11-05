@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03",
+  "generatedAt": "2026-11-05",
   "competitors": [
     {
       "id": "hand",
@@ -15,9 +15,9 @@
       ],
       "ships": "TypeScript library and MCP server",
       "strength": "A small model picks the control, says how sure it is, asks when unsure, blocks risky clicks and checks the result.",
-      "gap": "No Windows or Linux yet. No scored real-Mac task set yet.",
+      "gap": "No Windows or Linux yet. Lost to Claude computer use on desk-3 (its own model, 40 vs 33 of 50).",
       "adapter": "measured",
-      "stars": 0,
+      "stars": 4,
       "pushed": "2026-11-03"
     },
     {
@@ -35,7 +35,7 @@
       "strength": "The most used open browser agent, with stealth cloud browsers.",
       "gap": "Big model every step, so cost and latency scale with every click.",
       "adapter": "measured",
-      "stars": 119939,
+      "stars": 120045,
       "pushed": "2026-11-02"
     },
     {
@@ -53,8 +53,8 @@
       "strength": "Snapshot refs, tiny JSON output, fast native CLI. The default browser tool for many coding agents.",
       "gap": "No model inside: the calling agent pays a big model to read every snapshot and pick.",
       "adapter": "measured",
-      "stars": 45377,
-      "pushed": "2026-11-03"
+      "stars": 45539,
+      "pushed": "2026-11-05"
     },
     {
       "id": "ui-tars",
@@ -73,7 +73,7 @@
       "strength": "Its own model trained for screen grounding.",
       "gap": "Screenshots only; needs a large model to run.",
       "adapter": "none",
-      "stars": 39533,
+      "stars": 39545,
       "pushed": "2026-10-09"
     },
     {
@@ -91,8 +91,8 @@
       "strength": "Accessibility snapshots with refs, built into many MCP clients.",
       "gap": "Large snapshots sent to the caller each step; no picking, no confidence.",
       "adapter": "measured",
-      "stars": 39129,
-      "pushed": "2026-11-01"
+      "stars": 39187,
+      "pushed": "2026-11-04"
     },
     {
       "id": "cua",
@@ -111,8 +111,8 @@
       "strength": "Disposable computers for agents across three systems, plus benchmark harnesses.",
       "gap": "Infrastructure for any model; the picking is left to the model.",
       "adapter": "planned",
-      "stars": 31665,
-      "pushed": "2026-11-03"
+      "stars": 31743,
+      "pushed": "2026-11-05"
     },
     {
       "id": "stagehand",
@@ -129,8 +129,8 @@
       "strength": "Plain-words act and extract from code, closest API to hand on the web.",
       "gap": "Each act sends the page to a big model.",
       "adapter": "measured",
-      "stars": 25925,
-      "pushed": "2026-11-03"
+      "stars": 25950,
+      "pushed": "2026-11-05"
     },
     {
       "id": "skyvern",
@@ -147,8 +147,8 @@
       "strength": "Workflow builder for business forms.",
       "gap": "AGPL, heavy service, big model every step.",
       "adapter": "none",
-      "stars": 23336,
-      "pushed": "2026-11-03"
+      "stars": 23340,
+      "pushed": "2026-11-05"
     },
     {
       "id": "midscene",
@@ -167,8 +167,28 @@
       "strength": "Plain-words UI testing across web and mobile.",
       "gap": "Vision model every step.",
       "adapter": "none",
-      "stars": 15492,
-      "pushed": "2026-11-03"
+      "stars": 15502,
+      "pushed": "2026-11-04"
+    },
+    {
+      "id": "agent-desktop",
+      "name": "agent-desktop",
+      "repo": "vercel-labs/agent-desktop",
+      "url": "https://agent-browser.dev/desktop",
+      "layer": "desktop",
+      "sees": "accessibility",
+      "brain": "caller decides",
+      "platforms": [
+        "macOS",
+        "Windows",
+        "Linux"
+      ],
+      "ships": "Rust CLI and C library",
+      "strength": "Three operating systems, snapshot refs, skeleton then drill-down, wait predicates, traces.",
+      "gap": "No model inside, no probabilities, no risk check. The caller reads the tree and decides.",
+      "adapter": "planned",
+      "stars": 15160,
+      "pushed": "2026-11-05"
     },
     {
       "id": "nanobrowser",
@@ -185,7 +205,7 @@
       "strength": "Runs in your logged-in browser.",
       "gap": "An end-user agent, not a tool other agents call.",
       "adapter": "none",
-      "stars": 14227,
+      "stars": 14238,
       "pushed": "2026-10-24"
     },
     {
@@ -205,28 +225,8 @@
       "strength": "Strong published OSWorld scores.",
       "gap": "Research code, big models, expensive per task.",
       "adapter": "none",
-      "stars": 12864,
+      "stars": 12876,
       "pushed": "2026-10-30"
-    },
-    {
-      "id": "agent-desktop",
-      "name": "agent-desktop",
-      "repo": "vercel-labs/agent-desktop",
-      "url": "https://agent-browser.dev/desktop",
-      "layer": "desktop",
-      "sees": "accessibility",
-      "brain": "caller decides",
-      "platforms": [
-        "macOS",
-        "Windows",
-        "Linux"
-      ],
-      "ships": "Rust CLI and C library",
-      "strength": "Three operating systems, snapshot refs, skeleton then drill-down, wait predicates, traces.",
-      "gap": "No model inside, no probabilities, no risk check. The caller reads the tree and decides.",
-      "adapter": "planned",
-      "stars": 12066,
-      "pushed": "2026-11-03"
     },
     {
       "id": "ufo",
@@ -243,7 +243,7 @@
       "strength": "Deep Windows UI Automation support.",
       "gap": "Windows only, big model every step.",
       "adapter": "none",
-      "stars": 10170,
+      "stars": 10169,
       "pushed": "2026-10-30"
     },
     {
@@ -262,8 +262,8 @@
       "strength": "Learns from a person showing the task.",
       "gap": "Small community; replay rather than a general tool.",
       "adapter": "none",
-      "stars": 1862,
-      "pushed": "2026-11-03"
+      "stars": 1864,
+      "pushed": "2026-11-05"
     },
     {
       "id": "frontier-cu",
@@ -283,10 +283,24 @@
   ],
   "benchmarks": [
     {
+      "id": "desk-4",
+      "name": "hand desk-4: same model, different tool",
+      "repo": "acoyfellow/hand",
+      "status": "measured",
+      "note": "15 Mac tasks (8 web apps, 7 native) on five models, three tools, one macOS VM. 180 runs."
+    },
+    {
+      "id": "desk-3",
+      "name": "hand desk-3: each maker's model",
+      "repo": "acoyfellow/hand",
+      "status": "measured",
+      "note": "50 Mac tasks (30 web apps, 20 native), five tools. Codex and cua could not be installed."
+    },
+    {
       "id": "hand-30",
       "name": "hand 30 tasks",
       "repo": "acoyfellow/hand",
-      "status": "running",
+      "status": "measured",
       "note": "Our own app: settings, mail, files, shop, chat. Truth read from app state."
     },
     {
@@ -552,5 +566,483 @@
       "medianSeconds": 21.63401150000002,
       "errors": 4
     }
+  },
+  "desk3": {
+    "run": "desk-3",
+    "rows": [
+      {
+        "tool": "Claude computer use",
+        "model": "Sonnet 4.6",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 40,
+        "mac": 14,
+        "macTasks": 20,
+        "usd": 11.32
+      },
+      {
+        "tool": "hand",
+        "model": "kimi-k2.6",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 33,
+        "mac": 9,
+        "macTasks": 20,
+        "usd": 2.79
+      },
+      {
+        "tool": "agent-desktop",
+        "model": "kimi-k2.6",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 30,
+        "mac": 12,
+        "macTasks": 20,
+        "usd": 11.41
+      },
+      {
+        "tool": "Codex computer use",
+        "model": "",
+        "installed": false,
+        "reason": "Codex Computer Use was not granted macOS Accessibility and Screen Recording in the VM (its tool returns procNotFound). macOS accepts that grant only from a human click in System Settings.",
+        "tasks": 0,
+        "finished": 0,
+        "mac": 0,
+        "macTasks": 0,
+        "usd": 0
+      },
+      {
+        "tool": "cua",
+        "model": "",
+        "installed": false,
+        "reason": "CuaDriver was not granted macOS Accessibility and Screen Recording in the VM: with its daemon started, check_permissions returns permissions_pending. macOS accepts that grant only from a human click in System Settings; synthetic clicks and TCC writes are blocked by SIP.",
+        "tasks": 0,
+        "finished": 0,
+        "mac": 0,
+        "macTasks": 0,
+        "usd": 0
+      }
+    ]
+  },
+  "desk4": {
+    "run": "desk-4",
+    "tasks": [
+      "pwa-chat-attach-send",
+      "pwa-editor-keep",
+      "pwa-h-shop-cheapest",
+      "pwa-mail-spam",
+      "pwa-mail-star-open",
+      "pwa-settings-lang",
+      "pwa-settings-name",
+      "pwa-shop-order",
+      "mac-calendar-event",
+      "mac-cross-copy-to-note",
+      "mac-finder-rename",
+      "mac-finder-tag-red",
+      "mac-settings-24h",
+      "mac-settings-dark",
+      "mac-textedit-edit-line"
+    ],
+    "episodes": 180,
+    "usd": 73.46,
+    "models": [
+      {
+        "id": "claude-opus-5-5",
+        "label": "Opus 5.5"
+      },
+      {
+        "id": "claude-sonnet-5-5",
+        "label": "Sonnet 5.5"
+      },
+      {
+        "id": "gpt-6.1-sol",
+        "label": "gpt-6.1-sol"
+      },
+      {
+        "id": "glm-5.3",
+        "label": "glm-5.3"
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "label": "DeepSeek V4 Pro"
+      }
+    ],
+    "cells": [
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "Sonnet 5.5",
+        "modelId": "claude-sonnet-5-5",
+        "tasks": 15,
+        "finished": 15,
+        "web": 8,
+        "webTasks": 8,
+        "mac": 7,
+        "macTasks": 7,
+        "usd": 1.6261,
+        "usdPerFinished": 0.1084,
+        "results": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "Opus 5.5",
+        "modelId": "claude-opus-5-5",
+        "tasks": 15,
+        "finished": 13,
+        "web": 7,
+        "webTasks": 8,
+        "mac": 6,
+        "macTasks": 7,
+        "usd": 5.3342,
+        "usdPerFinished": 0.4103,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "gpt-6.1-sol",
+        "modelId": "gpt-6.1-sol",
+        "tasks": 15,
+        "finished": 15,
+        "web": 8,
+        "webTasks": 8,
+        "mac": 7,
+        "macTasks": 7,
+        "usd": 0.379,
+        "usdPerFinished": 0.0253,
+        "results": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "glm-5.3",
+        "modelId": "glm-5.3",
+        "tasks": 15,
+        "finished": 11,
+        "web": 6,
+        "webTasks": 8,
+        "mac": 5,
+        "macTasks": 7,
+        "usd": 0.4735,
+        "usdPerFinished": 0.043,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "Claude computer use",
+        "toolId": "claude-cu",
+        "model": "Sonnet 5.5",
+        "modelId": "claude-sonnet-5-5",
+        "tasks": 15,
+        "finished": 7,
+        "web": 5,
+        "webTasks": 8,
+        "mac": 2,
+        "macTasks": 7,
+        "usd": 7.84,
+        "usdPerFinished": 1.12,
+        "results": [
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false
+        ]
+      },
+      {
+        "tool": "Claude computer use",
+        "toolId": "claude-cu",
+        "model": "Opus 5.5",
+        "modelId": "claude-opus-5-5",
+        "tasks": 15,
+        "finished": 10,
+        "web": 7,
+        "webTasks": 8,
+        "mac": 3,
+        "macTasks": 7,
+        "usd": 14.4664,
+        "usdPerFinished": 1.4466,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "DeepSeek V4 Pro",
+        "modelId": "deepseek-v4-pro",
+        "tasks": 15,
+        "finished": 8,
+        "web": 4,
+        "webTasks": 8,
+        "mac": 4,
+        "macTasks": 7,
+        "usd": 5.1059,
+        "usdPerFinished": 0.6382,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          false,
+          false,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "Sonnet 5.5",
+        "modelId": "claude-sonnet-5-5",
+        "tasks": 15,
+        "finished": 8,
+        "web": 4,
+        "webTasks": 8,
+        "mac": 4,
+        "macTasks": 7,
+        "usd": 10.8711,
+        "usdPerFinished": 1.3589,
+        "results": [
+          false,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "Opus 5.5",
+        "modelId": "claude-opus-5-5",
+        "tasks": 15,
+        "finished": 8,
+        "web": 6,
+        "webTasks": 8,
+        "mac": 2,
+        "macTasks": 7,
+        "usd": 22.9082,
+        "usdPerFinished": 2.8635,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "gpt-6.1-sol",
+        "modelId": "gpt-6.1-sol",
+        "tasks": 15,
+        "finished": 11,
+        "web": 8,
+        "webTasks": 8,
+        "mac": 3,
+        "macTasks": 7,
+        "usd": 1.862,
+        "usdPerFinished": 0.1693,
+        "results": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "agent-desktop",
+        "toolId": "agent-desktop",
+        "model": "glm-5.3",
+        "modelId": "glm-5.3",
+        "tasks": 15,
+        "finished": 9,
+        "web": 6,
+        "webTasks": 8,
+        "mac": 3,
+        "macTasks": 7,
+        "usd": 2.033,
+        "usdPerFinished": 0.2259,
+        "results": [
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "tool": "hand",
+        "toolId": "hand",
+        "model": "DeepSeek V4 Pro",
+        "modelId": "deepseek-v4-pro",
+        "tasks": 15,
+        "finished": 10,
+        "web": 5,
+        "webTasks": 8,
+        "mac": 5,
+        "macTasks": 7,
+        "usd": 0.565,
+        "usdPerFinished": 0.0565,
+        "results": [
+          false,
+          true,
+          true,
+          false,
+          true,
+          true,
+          false,
+          true,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true
+        ]
+      }
+    ]
   }
 }

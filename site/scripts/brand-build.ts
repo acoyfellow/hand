@@ -1,14 +1,15 @@
 import { writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const origin = process.argv[2] ?? 'http://127.0.0.1:8799';
-const out = 'site/public/brand';
+const out = fileURLToPath(new URL('../public/brand', import.meta.url));
 
 const browser = await chromium.launch();
 const page = await browser.newPage();
 await page.goto(`${origin}/brand/`);
-const files = await page.evaluate(async () => {
-  const mark = await import('/brand/mark.js');
+const files = await page.evaluate(async (moduleUrl) => {
+  const mark = await import(moduleUrl);
   const base = mark.DEFAULT_MARK;
   const favicon = { ...base, weight: base.weight * 1.25, fingers: Math.min(base.fingers, 3) };
   return {
@@ -17,7 +18,7 @@ const files = await page.evaluate(async () => {
     mark: mark.markSvg(base),
     markLight: mark.markSvg(base, { ink: mark.COLORS.nightInk }),
   };
-});
+}, `${origin}/brand/mark.js`);
 writeFileSync(`${out}/icon.svg`, `${files.icon}\n`);
 writeFileSync(`${out}/favicon.svg`, `${files.favicon}\n`);
 writeFileSync(`${out}/mark.svg`, `${files.mark}\n`);

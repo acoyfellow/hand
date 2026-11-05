@@ -162,6 +162,121 @@ function miniwob() {
   return { run: 'public-1', ...(JSON.parse(readFileSync(path, 'utf8')) as Record<string, unknown>) };
 }
 
+const DESK_MODEL_LABEL: Record<string, string> = {
+  'claude-opus-5-5': 'Opus 5.5',
+  'claude-sonnet-5-5': 'Sonnet 5.5',
+  'gpt-6.1-sol': 'gpt-6.1-sol',
+  'glm-5.3': 'glm-5.3',
+  'deepseek-v4-pro': 'DeepSeek V4 Pro',
+};
+
+const DESK_TOOL_LABEL: Record<string, string> = {
+  hand: 'hand',
+  'agent-desktop': 'agent-desktop',
+  'claude-cu': 'Claude computer use',
+  'codex-cu': 'Codex computer use',
+  cua: 'cua',
+};
+
+interface GridEpisode {
+  readonly cell: string;
+  readonly entrant: string;
+  readonly model: string;
+  readonly task: string;
+  readonly kind: string;
+  readonly success: boolean;
+  readonly usd: number;
+}
+
+const isGridFile = (file: string) => file.startsWith('grid-') && file.endsWith('.jsonl');
+
+const jsonLines = <T>(path: string): T[] =>
+  readFileSync(path, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line) as T);
+
+const macFirstOrder = (a: string, b: string) => Number(a.startsWith('mac')) - Number(b.startsWith('mac')) || a.localeCompare(b);
+
+function desk4() {
+  const dir = join(RUNS, 'desk-4');
+  if (!existsSync(join(dir, 'grid.summary.json'))) return undefined;
+  const episodes = readdirSync(dir)
+    .filter(isGridFile)
+    .flatMap((file) => jsonLines<GridEpisode>(join(dir, file)));
+  const tasks = [...new Set(episodes.map((episode) => episode.task))].sort(macFirstOrder);
+  const cells = [...new Set(episodes.map((episode) => episode.cell))].map((cell) => {
+    const mine = episodes.filter((episode) => episode.cell === cell);
+    const first = mine[0] as GridEpisode;
+    const finished = mine.filter((episode) => episode.success).length;
+    const usd = mine.reduce((sum, episode) => sum + episode.usd, 0);
+    const web = mine.filter((episode) => episode.kind === 'pwa');
+    const mac = mine.filter((episode) => episode.kind !== 'pwa');
+    return {
+      tool: DESK_TOOL_LABEL[first.entrant] ?? first.entrant,
+      toolId: first.entrant,
+      model: DESK_MODEL_LABEL[first.model] ?? first.model,
+      modelId: first.model,
+      tasks: mine.length,
+      finished,
+      web: web.filter((episode) => episode.success).length,
+      webTasks: web.length,
+      mac: mac.filter((episode) => episode.success).length,
+      macTasks: mac.length,
+      usd: Number(usd.toFixed(4)),
+      usdPerFinished: finished ? Number((usd / finished).toFixed(4)) : 0,
+      results: tasks.map((task) => mine.find((episode) => episode.task === task)?.success ?? null),
+    };
+  });
+  return {
+    run: 'desk-4',
+    tasks,
+    episodes: episodes.length,
+    usd: Number(episodes.reduce((sum, episode) => sum + episode.usd, 0).toFixed(2)),
+    models: Object.keys(DESK_MODEL_LABEL)
+      .filter((model) => cells.some((cell) => cell.modelId === model))
+      .map((id) => ({ id, label: DESK_MODEL_LABEL[id] ?? id })),
+    cells,
+  };
+}
+
+interface Desk3Summary {
+  readonly entrant: string;
+  readonly installed: boolean;
+  readonly reason?: string;
+  readonly tasks: number;
+  readonly finished: number;
+  readonly usd: number;
+}
+
+const DESK3_MODEL: Record<string, string> = { hand: 'kimi-k2.6', 'agent-desktop': 'kimi-k2.6', 'claude-cu': 'Sonnet 4.6' };
+
+function desk3() {
+  const path = join(RUNS, 'desk-3', 'desk.summary.json');
+  if (!existsSync(path)) return undefined;
+  const summary = JSON.parse(readFileSync(path, 'utf8')) as Record<string, Desk3Summary>;
+  const episodes = jsonLines<{ entrant: string; task: string; success: boolean }>(join(RUNS, 'desk-3', 'desk.jsonl'));
+  return {
+    run: 'desk-3',
+    rows: Object.values(summary)
+      .map((row) => {
+        const mac = episodes.filter((episode) => episode.entrant === row.entrant && episode.task.startsWith('mac'));
+        return {
+          tool: DESK_TOOL_LABEL[row.entrant] ?? row.entrant,
+          model: DESK3_MODEL[row.entrant] ?? '',
+          installed: row.installed,
+          reason: row.reason ?? '',
+          tasks: row.tasks,
+          finished: row.finished,
+          mac: mac.filter((episode) => episode.success).length,
+          macTasks: mac.length,
+          usd: Number(row.usd.toFixed(2)),
+        };
+      })
+      .sort((a, b) => Number(b.installed) - Number(a.installed) || b.finished - a.finished),
+  };
+}
+
 const headToHead = labRows().sort((a, b) => b.finished - a.finished || b.finishedPerDollar - a.finishedPerDollar);
 const rows = scoreboard().sort((a, b) => b.finished - a.finished || a.usdPerTask - b.usdPerTask);
 const data = {
@@ -173,6 +288,8 @@ const data = {
   scoreboard: rows,
   tests: tests(),
   miniwob: miniwob(),
+  desk3: desk3(),
+  desk4: desk4(),
 };
 writeFileSync(OUT, `${JSON.stringify(data, null, 2)}\n`);
 console.log(`lab: ${competitors.length} entrants, ${rows.length} scored rows -> ${OUT}`);

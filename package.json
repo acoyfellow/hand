@@ -27,7 +27,13 @@
     "gate": "bun bench/gate.ts",
     "bench:mock:reference": "DO_MOCK=1 DO_RUN=reference DO_SCREENS=2 DO_PER_SCREEN=2 DO_T3_PER_SCREEN=1 DO_TASKS=mail-archive DO_REPEATS=2 DO_ARMS=vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot bun bench/run-all.ts",
     "writers": "bun bench/writer-eval.ts",
-    "brand": "bun site/brand-build.ts"
+    "site:install": "cd site && bun install",
+    "site:dev": "cd site && bun run dev",
+    "site:build": "cd site && bun run build",
+    "site:a11y": "cd site && bun run a11y",
+    "site:shots": "cd site && bun run shots",
+    "site:deploy": "cd site && bun run deploy",
+    "brand": "cd site && bun run brand"
   },
   "dependencies": {
     "effect": "4.0.0"
@@ -35,18 +41,13 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@browserbasehq/stagehand": "^4.3.0",
-    "@foldkit/vite-plugin": "0.26.1",
     "@playwright/mcp": "^0.0.84",
-    "@tailwindcss/vite": "^4",
     "@types/bun": "^1.3.14",
     "@types/node": "^22.10.0",
     "agent-browser": "0.41.1",
     "agent-desktop": "1.0.2",
-    "foldkit": "0.166.0",
     "playwright": "^1.56.0",
-    "tailwindcss": "^4",
-    "typescript": "^5.9.3",
-    "vite": "8.3.3"
+    "typescript": "^5.9.3"
   },
   "exports": {
     "./clef": "./src/clef.ts",

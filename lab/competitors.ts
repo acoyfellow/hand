@@ -29,7 +29,7 @@ export const COMPETITORS: readonly Competitor[] = [
     platforms: ['macOS', 'browser'],
     ships: 'TypeScript library and MCP server',
     strength: 'A small model picks the control, says how sure it is, asks when unsure, blocks risky clicks and checks the result.',
-    gap: 'No Windows or Linux yet. No scored real-Mac task set yet.',
+    gap: 'No Windows or Linux yet. Lost to Claude computer use on desk-3 (its own model, 40 vs 33 of 50).',
     adapter: 'measured',
   },
   {
@@ -230,7 +230,9 @@ export const COMPETITORS: readonly Competitor[] = [
 ];
 
 export const BENCHMARKS = [
-  { id: 'hand-30', name: 'hand 30 tasks', repo: 'acoyfellow/hand', status: 'running', note: 'Our own app: settings, mail, files, shop, chat. Truth read from app state.' },
+  { id: 'desk-4', name: 'hand desk-4: same model, different tool', repo: 'acoyfellow/hand', status: 'measured', note: '15 Mac tasks (8 web apps, 7 native) on five models, three tools, one macOS VM. 180 runs.' },
+  { id: 'desk-3', name: "hand desk-3: each maker's model", repo: 'acoyfellow/hand', status: 'measured', note: '50 Mac tasks (30 web apps, 20 native), five tools. Codex and cua could not be installed.' },
+  { id: 'hand-30', name: 'hand 30 tasks', repo: 'acoyfellow/hand', status: 'measured', note: 'Our own app: settings, mail, files, shop, chat. Truth read from app state.' },
   { id: 'miniwob', name: 'MiniWoB++ (BrowserGym, 125 tasks)', repo: 'Farama-Foundation/miniwob-plusplus', status: 'run: public-1', note: 'Small public web tasks with their own reward. hand 62/125 vs screenshot agent 61/125 at half the cost; missed our 3x cost bar.' },
   { id: 'webarena', name: 'WebArena', repo: 'web-arena-x/webarena', status: 'blocked', note: 'Needs about 180 GB of site images; the image host did not answer.' },
   { id: 'osworld', name: 'OSWorld', repo: 'xlang-ai/OSWorld', status: 'not started', note: 'Real desktop tasks in VMs; the main public desktop score.' },
