@@ -54,6 +54,49 @@ const Test = Schema.Struct({
   metrics: Schema.Record(Schema.String, Schema.Unknown),
 });
 
+const Desk4Cell = Schema.Struct({
+  tool: Schema.String,
+  toolId: Schema.String,
+  model: Schema.String,
+  modelId: Schema.String,
+  tasks: Schema.Number,
+  finished: Schema.Number,
+  web: Schema.Number,
+  webTasks: Schema.Number,
+  mac: Schema.Number,
+  macTasks: Schema.Number,
+  usd: Schema.Number,
+  usdPerFinished: Schema.Number,
+  results: Schema.Array(Schema.NullOr(Schema.Boolean)),
+});
+
+const Desk4 = Schema.Struct({
+  run: Schema.String,
+  tasks: Schema.Array(Schema.String),
+  episodes: Schema.Number,
+  usd: Schema.Number,
+  models: Schema.Array(Schema.Struct({ id: Schema.String, label: Schema.String })),
+  cells: Schema.Array(Desk4Cell),
+});
+
+const Desk3Row = Schema.Struct({
+  tool: Schema.String,
+  model: Schema.String,
+  installed: Schema.Boolean,
+  reason: Schema.String,
+  tasks: Schema.Number,
+  finished: Schema.Number,
+  mac: Schema.Number,
+  macTasks: Schema.Number,
+  usd: Schema.Number,
+});
+
+const Desk3 = Schema.Struct({ run: Schema.String, rows: Schema.Array(Desk3Row) });
+
+export type Desk4Data = typeof Desk4.Type;
+export type Desk3Data = typeof Desk3.Type;
+export type Desk4CellData = typeof Desk4Cell.Type;
+
 const LabData = Schema.Struct({
   generatedAt: Schema.String,
   planner: Schema.String,
@@ -63,6 +106,8 @@ const LabData = Schema.Struct({
   benchmarks: Schema.Array(Benchmark),
   tests: Schema.Array(Test),
   miniwob: Schema.optionalKey(Miniwob),
+  desk3: Schema.optionalKey(Desk3),
+  desk4: Schema.optionalKey(Desk4),
 });
 
 export type LabData = typeof LabData.Type;

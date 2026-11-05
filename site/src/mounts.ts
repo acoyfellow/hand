@@ -123,3 +123,45 @@ export const MarkArt = Mount.define('MarkArt', {
       return Message.CompletedMount();
     }),
 });
+
+const sortTableBy = (table: HTMLTableElement, column: number, direction: 1 | -1) => {
+  const body = table.tBodies[0];
+  if (!body) return;
+  const read = (row: HTMLTableRowElement) => {
+    const raw = row.cells[column]?.getAttribute('data-sortvalue') ?? '';
+    const number = Number(raw);
+    return raw !== '' && Number.isFinite(number) ? number : raw.toLowerCase();
+  };
+  const rows = [...body.rows].sort((a, b) => {
+    const x = read(a);
+    const y = read(b);
+    return (x > y ? 1 : x < y ? -1 : 0) * direction;
+  });
+  body.append(...rows);
+  const heads = table.tHead?.rows[0]?.cells ?? [];
+  for (const [index, head] of [...heads].entries()) {
+    if (index === column) head.setAttribute('aria-sort', direction === 1 ? 'ascending' : 'descending');
+    else head.removeAttribute('aria-sort');
+  }
+};
+
+export const SortableTable = Mount.define('SortableTable', {
+  messages: [Message.CompletedMount],
+  execute: ({ element }) =>
+    runUntilUnmount(() => {
+      const table = element.querySelector('table');
+      if (!table) return () => undefined;
+      let current = { column: 0, direction: 1 as 1 | -1 };
+      const onClick = (event: Event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-sortcolumn]');
+        if (!button) return;
+        const column = Number(button.getAttribute('data-sortcolumn'));
+        const firstDirection: 1 | -1 = button.getAttribute('data-sortdescending') === 'true' ? -1 : 1;
+        const direction: 1 | -1 = current.column === column ? (current.direction === 1 ? -1 : 1) : firstDirection;
+        current = { column, direction };
+        sortTableBy(table, column, direction);
+      };
+      table.addEventListener('click', onClick);
+      return () => table.removeEventListener('click', onClick);
+    }),
+});

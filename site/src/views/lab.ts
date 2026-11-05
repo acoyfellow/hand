@@ -1,5 +1,6 @@
 import type { Html } from 'foldkit/html';
 import { LAB_DATA } from '../lab-data.ts';
+import { desk3Section, desk4Section } from './desk.ts';
 import { type Child, type H, scrollRegion } from './kit.ts';
 
 const money = (usd: number) => (usd < 0.01 ? `$${usd.toFixed(4)}` : `$${usd.toFixed(3)}`);
@@ -71,11 +72,11 @@ const headToHead = (h: H): Html => {
   const leader = rows[0];
   return section(
     h,
-    1,
+    3,
     'head-to-head',
-    'Head to head',
+    'Head to head, browser only',
     [
-      `Same 30 tasks, three repeats each, and the same planner model (${LAB_DATA.planner}) driving every tool. Only the tool changes. A task counts only when the app's own state says it is done. Best first.`,
+      `Browser only, not the desktop. Same 30 tasks, three repeats each, and the same planner model (${LAB_DATA.planner}) driving every tool. Only the tool changes. A task counts only when the app's own state says it is done. Best first.`,
     ],
     [
       table(
@@ -114,7 +115,7 @@ const headToHead = (h: H): Html => {
         ? [
             h.p(
               [h.Class('mt-2.5 text-[13px] text-dim')],
-              ['Run ', h.a([h.Href(runUrl(leader.run))], [leader.run]), ', contract in CONTRACT.md there. agent-desktop needs a desktop task set and is next.'],
+              ['Run ', h.a([h.Href(runUrl(leader.run))], [leader.run]), ', contract in CONTRACT.md there.'],
             ),
           ]
         : []),
@@ -131,7 +132,7 @@ const miniwob = (h: H): Html | undefined => {
   ];
   return section(
     h,
-    2,
+    4,
     'miniwob',
     'Public benchmark: MiniWoB++',
     ["All 125 MiniWoB++ tasks, scored by MiniWoB's own reward, never the agent's claim. hand against the same planner looking at a screenshot every step."],
@@ -180,7 +181,7 @@ const brief = (metrics: Record<string, unknown>) =>
 const tests = (h: H): Html =>
   section(
     h,
-    3,
+    5,
     'tests',
     'Every test, pass or fail',
     ['Each test had its pass bar written down before it ran. Failures stay here. They are the hill to climb.'],
@@ -209,7 +210,7 @@ const frontier = (h: H): Html => {
   const best = LAB_DATA.scoreboard[0];
   return section(
     h,
-    4,
+    6,
     'frontier',
     'Against a frontier model',
     ['hand with a small planner against Claude Opus doing everything itself, on the same 30 tasks.'],
@@ -247,7 +248,7 @@ const frontier = (h: H): Html => {
 const landscape = (h: H): Html =>
   section(
     h,
-    5,
+    7,
     'landscape',
     'Landscape',
     ['How each one sees the screen, and who decides where to click. That second column is most of the cost.'],
@@ -294,7 +295,7 @@ const landscape = (h: H): Html =>
 const benchmarks = (h: H): Html =>
   section(
     h,
-    6,
+    8,
     'benchmarks',
     'Benchmarks',
     ['Where the scoreboard is going. Public sets first, so anyone can check the numbers.'],
@@ -335,6 +336,8 @@ export const labMain = (h: H): readonly Child[] => [
       h.p([h.Class('m-0 font-mono text-xs text-dim')], [`updated ${LAB_DATA.generatedAt}`]),
     ],
   ),
+  ...(LAB_DATA.desk4 ? [desk4Section(h, LAB_DATA.desk4, 1)] : []),
+  ...(LAB_DATA.desk3 ? [desk3Section(h, LAB_DATA.desk3, 2)] : []),
   headToHead(h),
   ...(LAB_DATA.miniwob ? [miniwob(h) as Html] : []),
   tests(h),

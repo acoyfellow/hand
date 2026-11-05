@@ -86,6 +86,20 @@ const results = (h: H): Html =>
           ),
         ),
       ),
+      h.p(
+        [h.Class(`mt-8 mb-0 text-center text-[1.05rem] leading-[1.45] text-balance`)],
+        [
+          'On a real Mac, with every tool on the same five models, hand finished the most tasks on ',
+          h.strong([h.Class('font-[650]')], ['every model']),
+          ', and cost the least on every model too. ',
+          h.a([h.Href('/lab/#desk-4')], ['See the benchmark']),
+          '.',
+        ],
+      ),
+      h.p(
+        [h.Class(`mt-2 mb-0 text-center text-[0.85rem] text-balance ${DIM}`)],
+        ["With each maker's own model, Claude computer use finished more (40 to hand's 33 of 50). Losses stay on the lab page."],
+      ),
     ],
   );
 
@@ -172,7 +186,7 @@ const untested = (h: H): Html =>
       h.h2([h.Id('untested'), h.Class(H2)], ['Not tested yet']),
       h.ul(
         [h.Class(`pl-[1.1rem] ${DIM}`)],
-        ['Apps with unlabelled icons or canvas UIs.', 'A scored set of real Mac tasks.', 'Windows and Linux.'].map((item) => h.li([h.Class('my-1.5')], [item])),
+        ['Apps with unlabelled icons or canvas UIs.', 'More than one attempt per Mac task, and more than one macOS version.', 'Windows and Linux.'].map((item) => h.li([h.Class('my-1.5')], [item])),
       ),
     ],
   );
