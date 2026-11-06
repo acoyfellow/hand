@@ -145,4 +145,53 @@ export const agentDesktopWith = (model?: string): DeskEntrant => ({
 
 export const agentDesktop = agentDesktopWith();
 
+const CUA_DRIVER = '$HOME/.local/bin/cua-driver';
+const shellQuote = (text: string) => `'${text.replace(/'/g, `'\\''`)}'`;
+
+const cuaGuide = async (box: Vm) => {
+  const raw = await box.run(`${CUA_DRIVER} call get_guide '{"topic":"overview"}' 2>&1 | head -c 30000`);
+  try {
+    const parsed = JSON.parse(raw) as { content?: string; text?: string };
+    return parsed.content ?? parsed.text ?? raw;
+  } catch {
+    return raw;
+  }
+};
+
+let cachedCuaGuide = '';
+
+export const cuaDriverWith = (model?: string): DeskEntrant => ({
+  id: 'cua',
+  label: model ? `cua (${model})` : 'cua (Cua Driver)',
+  install: async (box) => {
+    const out = await box.run(`${CUA_DRIVER} call check_permissions '{}' 2>&1 | head -c 600`).catch((error: Error) => error.message);
+    if (out.includes('daemon is not running')) return { ok: false, reason: 'the CuaDriver daemon is not running in the VM (open -a CuaDriver --args serve)' };
+    const granted = /"accessibility":\s*true/.test(out) && /"screen_recording":\s*true/.test(out);
+    return granted ? { ok: true } : { ok: false, reason: 'macOS Accessibility and Screen Recording were not granted to CuaDriver in the VM. macOS accepts that grant only from a human click in System Settings.' };
+  },
+  run: async (box, task, limits) => {
+    cachedCuaGuide ||= await cuaGuide(box);
+    const tools: Tool[] = [
+      {
+        type: 'function',
+        function: {
+          name: 'cua',
+          description: 'Call one Cua Driver tool. Pass its name (for example list_apps, get_window_state, click, type_text, hotkey) and its arguments as a JSON object string.',
+          parameters: { type: 'object', properties: { tool: { type: 'string' }, args: { type: 'string' } }, required: ['tool'] },
+        },
+      },
+    ];
+    const call = async (_name: string, args: Record<string, unknown>) => {
+      const tool = String(args.tool ?? '').replace(/[^a-z_]/g, '');
+      const json = typeof args.args === 'string' && args.args.trim() ? args.args : '{}';
+      const child = Bun.spawn(['ssh', ...box.sshOptions, `ax@${box.host}`, `${CUA_DRIVER} call ${tool} ${shellQuote(json)} 2>&1 | head -c 12000`], { stdout: 'pipe', stderr: 'pipe' });
+      return (await new Response(child.stdout).text()) || '(no output)';
+    };
+    const system = `${SYSTEM}\n\nYou control the Mac with Cua Driver. Its makers' guide follows.\n\n${cachedCuaGuide}`;
+    return plannerLoop(tools, call, () => 0, task, limits, system, model);
+  },
+});
+
+export const cuaDriver = cuaDriverWith();
+
 

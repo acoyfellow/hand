@@ -4,6 +4,7 @@ import { transport } from '../../bench/lib.ts';
 import type { Tool } from '../../src/llm.ts';
 import { callTool, DEFAULT_HAND, makeSession, TOOLS } from '../../src/mcp.ts';
 import { plannerLoop } from './entrants.ts';
+import { DESK_ROSTER } from './roster.ts';
 import { DESK_TASKS } from './suite.ts';
 import { vm } from './vm.ts';
 
@@ -14,6 +15,17 @@ const task = DESK_TASKS.find((candidate) => candidate.id === taskId);
 if (!task) throw new Error(`no desk task ${taskId}`);
 
 await task.prepare(box);
+const entrantId = process.env.DESK_ENTRANT ?? 'hand';
+if (entrantId !== 'hand') {
+  const entrant = DESK_ROSTER[entrantId];
+  if (!entrant) throw new Error(`no desk entrant ${entrantId}`);
+  const started = Date.now();
+  const run = await entrant.run(box, task.text, { maxTurns: 30, deadline: Date.now() + 4 * 60_000 });
+  const passed = await task.passed(box).catch(() => false);
+  for (const turn of run.trace.slice(-12)) console.log(`  ${turn.tool} ${JSON.stringify(turn.args).slice(0, 100)}`);
+  console.log(`\n${entrantId} ${taskId}: ${passed ? 'PASS' : 'FAIL'} in ${((Date.now() - started) / 1000).toFixed(1)} s, ${run.turns} turns, $${run.usd.toFixed(4)}${run.error ? ` (${run.error})` : ''}`);
+  process.exit(0);
+}
 const session = makeSession(transport(), join(homedir(), '.do', 'vm', 'ax-remote'), DEFAULT_HAND);
 const used = new Set<string>();
 const startedAt = Date.now();
