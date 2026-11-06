@@ -1,3 +1,5 @@
+export {};
+
 const base = process.argv[2] ?? 'https://hand.coey.dev';
 
 const REQUIRED = [
