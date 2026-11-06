@@ -16,3 +16,4 @@ bench/external/
 .wrangler/
 lab/py/.venv/
 .playwright-mcp/
+dist/

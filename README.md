@@ -78,6 +78,16 @@ screen ──► device lists controls ──► Clef: "which one?" + probabilit
 bun add github:acoyfellow/hand
 ```
 
+The Mac helper and the cursor app are also on the [releases page](https://github.com/acoyfellow/hand/releases/latest), built for Apple silicon:
+
+```bash
+curl -LO https://github.com/acoyfellow/hand/releases/download/v0.1.0/hand-ax-0.1.0-macos-arm64.tar.gz
+tar -xzf hand-ax-0.1.0-macos-arm64.tar.gz && xattr -d com.apple.quarantine ax
+./ax apps
+```
+
+They are not signed with an Apple Developer ID yet, so macOS blocks them until you remove the quarantine flag as above, or right-click the app and choose Open. Building from source (`swiftc -O native/ax.swift -o native/ax`) gives the same binary.
+
 hand reads a Cloudflare AI Gateway account, gateway name and token the same way as [odds](https://github.com/acoyfellow/odds). See `src/credentials.ts`.
 
 ## Use
