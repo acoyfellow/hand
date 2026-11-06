@@ -151,6 +151,7 @@ type McpReply = { id?: number; result?: { content?: { type?: string; text?: stri
 
 export interface CuaSession {
   readonly call: (tool: string, args: Record<string, unknown>) => Promise<string>;
+  readonly listTools: () => Promise<unknown>;
   readonly instructions: string;
   readonly close: () => void;
 }
@@ -200,6 +201,7 @@ export const openCuaSession = async (box: Vm): Promise<CuaSession> => {
       : (reply.result?.content ?? []).map((part) => (part.type === 'text' || part.text ? (part.text ?? '') : `[${part.type}]`)).join('\n') || '(no output)';
   return {
     instructions: hello.result?.instructions ?? '',
+    listTools: async () => (await request("tools/list", {}, 30_000)).result,
     call: async (tool, args) => textOf(await request('tools/call', { name: tool, arguments: args })).slice(0, 12_000),
     close: () => {
       child.kill();

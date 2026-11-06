@@ -60,3 +60,26 @@ describe('stale refs', () => {
     expect(await hand.type('hunter2', 'e1')).toStartWith('STALE_REF: [e1] was textbox "Name" and is now textbox "Password"');
   });
 });
+
+describe('text fields whose label is their own text', () => {
+  test('an id stays valid after its own text changes, when the device gives a stable key', async () => {
+    const before = { ...control('e1', 'textbox', 'Todo Weather in Lisbon'), ref: 'body-key' };
+    const after = { ...control('e1', 'textbox', 'Todo Weather in Lisbon — 16°C'), ref: 'body-key' };
+    const screen = deviceShowing([[before], [after]]);
+    const hand = handOn(screen.device);
+    await hand.outline();
+    screen.advance();
+    expect(await hand.type('x', 'e1')).not.toStartWith('STALE_REF');
+  });
+
+  test('a different stable key is still stale', async () => {
+    const screen = deviceShowing([
+      [{ ...control('e1', 'textbox', 'Name'), ref: 'a' } as Candidate],
+      [{ ...control('e1', 'textbox', 'Password'), ref: 'b' } as Candidate],
+    ]);
+    const hand = handOn(screen.device);
+    await hand.outline();
+    screen.advance();
+    expect(await hand.type('hunter2', 'e1')).toStartWith('STALE_REF');
+  });
+});

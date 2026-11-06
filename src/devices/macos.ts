@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
-import type { Device } from '../hand.ts';
+import type { Device, ElementState, TextEditResult } from '../hand.ts';
 import { type Box, type Candidate, inside } from '../perceive.ts';
 
 const run = promisify(execFile);
@@ -289,6 +289,34 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       const key = await helper<AxOutcome>('key', appArg, 'return').catch(() => ({ ok: false, detail: 'key failed' }));
       lastActions.push(`return key: ${key.detail}`);
       return key.ok;
+    },
+    insertAfter: async (c, anchor, text) => {
+      const target = c as MacosCandidate;
+      return helper<TextEditResult>('insert-after', appArg, target.path, anchor, text, '--ref', target.ref).catch(
+        (error: Error): TextEditResult => ({ ok: false, detail: error.message, code: 'HELPER_FAILED', before: '', after: '' }),
+      );
+    },
+    selectText: async (c, from, through) => {
+      const target = c as MacosCandidate;
+      return helper<TextEditResult>('select-text', appArg, target.path, from, through, '--ref', target.ref).catch(
+        (error: Error): TextEditResult => ({ ok: false, detail: error.message, code: 'HELPER_FAILED', before: '', after: '' }),
+      );
+    },
+    setChecked: async (c, wanted) => {
+      const outcome = await onTarget(wanted ? 'check' : 'uncheck', c as MacosCandidate);
+      lastActions.push(`${wanted ? 'check' : 'uncheck'}: ${outcome.detail}`);
+      return outcome;
+    },
+    state: async (c) => helper<ElementState>('state', appArg, (c as MacosCandidate).path, '--ref', (c as MacosCandidate).ref),
+    gesture: async (action, c, to) => {
+      if (!opts.allowMouse) return { ok: false, detail: 'mouse gestures are off unless the device is headed (HAND_HEADED=1 for the MCP server)' };
+      const from = { x: c.x + c.w / 2, y: c.y + c.h / 2 };
+      const outcome =
+        action === 'drag' && to
+          ? await helper<AxOutcome>('drag', String(from.x), String(from.y), String(to.x + to.w / 2), String(to.y + to.h / 2))
+          : await helper<AxOutcome>(action === 'double_click' ? 'doubleclick' : 'rightclick', String(from.x), String(from.y));
+      lastActions.push(`${action} ${c.role} "${c.name}": ${outcome.detail}`);
+      return outcome;
     },
     settle: () => new Promise((resolve) => setTimeout(resolve, 150)),
   };

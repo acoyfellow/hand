@@ -52,10 +52,17 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'type',
     description:
-      'Type text into a text field of the app, described in plain words (for example "the document body"). The app must be frontmost. By default the text replaces everything in the field. Set mode to "insert" to type at the cursor instead and keep the rest, for example to add to the end of one line of a note: put the cursor there first (click the line, then key cmd+right).',
+      'Type text into a text field of the app, by its [id] from outline (fastest) or described in plain words. By default the text replaces everything in the field. To add to one line of a longer text (a note, a document), pass after with text from that line: hand puts the text at the end of that line, checks nothing else changed, and leaves the cursor there (so key cmd+shift+u then ticks that checklist item in Notes). Set mode to "insert" to type wherever the cursor already is.',
     inputSchema: {
       type: 'object',
-      properties: { app, agent, text: { type: 'string' }, into: { type: 'string' }, mode: { type: 'string', enum: ['replace', 'insert'] } },
+      properties: {
+        app,
+        agent,
+        text: { type: 'string' },
+        into: { type: 'string' },
+        after: { type: 'string' },
+        mode: { type: 'string', enum: ['replace', 'insert'] },
+      },
       required: ['app', 'text', 'into'],
     },
   },
@@ -68,7 +75,7 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'steps',
     description:
-      'Run several actions in a row in one call, when you already know what comes next: for example click the search field, type a query, press return. Each step is one of act, type or key, with the same fields as that tool. Every step still gets its own pick and check. It stops at the first step that fails, is refused or is unsure, and returns what happened at every step.',
+      'Run several actions in a row in one call, when you already know what comes next: for example type into a field, press return, choose a menu item. Each step is one of act, type, key, menu, check or select_text, with the same fields as that tool. Steps that name an [id] skip the model and run at once. It stops at the first step that fails, is refused or is unsure, and returns what happened at every step.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -79,11 +86,16 @@ export const TOOLS: readonly McpTool[] = [
           items: {
             type: 'object',
             properties: {
-              tool: { type: 'string', enum: ['act', 'type', 'key'] },
+              tool: { type: 'string', enum: ['act', 'type', 'key', 'menu', 'check', 'select_text'] },
               intent: { type: 'string' },
               text: { type: 'string' },
               into: { type: 'string' },
+              after: { type: 'string' },
               key: { type: 'string' },
+              path: { type: 'array', items: { type: 'string' } },
+              on: { type: 'boolean' },
+              from: { type: 'string' },
+              through: { type: 'string' },
             },
             required: ['tool'],
           },
@@ -91,6 +103,66 @@ export const TOOLS: readonly McpTool[] = [
       },
       required: ['app', 'steps'],
     },
+  },
+  {
+    name: 'menu',
+    description:
+      'Choose a command from the app\'s menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.',
+    inputSchema: { type: 'object', properties: { app, agent, path: { type: 'array', items: { type: 'string' } } }, required: ['app', 'path'] },
+  },
+  {
+    name: 'check',
+    description:
+      'Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back.',
+    inputSchema: { type: 'object', properties: { app, agent, into: { type: 'string' }, on: { type: 'boolean' } }, required: ['app', 'into'] },
+  },
+  {
+    name: 'select_text',
+    description:
+      'Select text inside a text field, from the first occurrence of "from" through the end of "through" (or just "from"). Use it before a menu command that works on the selection, for example select two lines then menu ["Format", "Checklist"].',
+    inputSchema: {
+      type: 'object',
+      properties: { app, agent, into: { type: 'string' }, from: { type: 'string' }, through: { type: 'string' } },
+      required: ['app', 'into', 'from'],
+    },
+  },
+  {
+    name: 'expect',
+    description:
+      "Check a control's real state without changing anything: checked, enabled, an exact value, or a value that contains some text. Answers satisfied, unsatisfied or unknown (unknown never means success). Use it to prove a step worked before you call done.",
+    inputSchema: {
+      type: 'object',
+      properties: {
+        app,
+        into: { type: 'string' },
+        checked: { type: 'boolean' },
+        enabled: { type: 'boolean' },
+        value: { type: 'string' },
+        contains: { type: 'string' },
+      },
+      required: ['app', 'into'],
+    },
+  },
+  {
+    name: 'set_value',
+    description:
+      'Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.',
+    inputSchema: { type: 'object', properties: { app, agent, into: { type: 'string' }, value: { type: 'string' } }, required: ['app', 'into', 'value'] },
+  },
+  {
+    name: 'pointer',
+    description:
+      'Mouse gestures on a control by its [id] (or plain words): double_click (open a file or folder in Finder), right_click (context menu), or drag onto another control given as to (move a file into a folder). Needs headed mode.',
+    inputSchema: {
+      type: 'object',
+      properties: { app, agent, action: { type: 'string', enum: ['double_click', 'right_click', 'drag'] }, into: { type: 'string' }, to: { type: 'string' } },
+      required: ['app', 'action', 'into'],
+    },
+  },
+  {
+    name: 'clipboard',
+    description: 'Read the clipboard, or write text to it with text set. Use it to copy between apps without selecting and pressing keys.',
+    inputSchema: { type: 'object', properties: { text: { type: 'string' } }, required: [] },
   },
   {
     name: 'look',
@@ -126,14 +198,15 @@ const str = (args: Record<string, unknown>, key: string): string => {
   return value;
 };
 
-const STOP = /^(UNSURE|BLOCKED|STALE_REF|No text fields)|did nothing|failed/;
+const STOP = /^(UNSURE|BLOCKED|STALE_REF|EDIT FAILED|FAILED|No text fields|No matching)|did nothing|failed|not found|greyed out/i;
+const STEP_TOOLS = ['act', 'type', 'key', 'menu', 'check', 'select_text'];
 
 async function runSteps(session: Session, args: Record<string, unknown>): Promise<ToolReply> {
   const steps = Array.isArray(args.steps) ? (args.steps as Record<string, unknown>[]) : [];
   const lines: string[] = [];
   for (const [index, step] of steps.entries()) {
     const tool = typeof step.tool === 'string' ? step.tool : '';
-    if (!['act', 'type', 'key'].includes(tool)) {
+    if (!STEP_TOOLS.includes(tool)) {
       lines.push(`${index + 1}. ${tool || '?'}: not a step tool; stopped.`);
       return text(lines.join('\n'), true);
     }
@@ -166,6 +239,21 @@ export async function callTool(session: Session, name: string, args: Record<stri
     const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
     return text(outcome.detail, !outcome.ok);
   }
+  if (name === 'menu') {
+    const path = Array.isArray(args.path) ? args.path.map(String) : [];
+    if (path.length < 2) return text('path needs a menu and an item, for example ["File", "New Folder"]', true);
+    const { stdout } = await run(session.helper, ['menu', str(args, 'app'), ...path]).catch((error: { stdout?: string }) => ({
+      stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
+    }));
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    return text(outcome.detail, !outcome.ok);
+  }
+  if (name === 'clipboard') {
+    const write = typeof args.text === 'string';
+    const { stdout } = await run(session.helper, write ? ['clipboard', 'write', String(args.text)] : ['clipboard']);
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    return text(write ? outcome.detail : `Clipboard: ${JSON.stringify(outcome.detail)}`, !outcome.ok);
+  }
   if (name === 'activate') {
     const { stdout } = await run(session.helper, ['activate', str(args, 'app')]);
     const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
@@ -188,7 +276,26 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'outline') return text(await hand.outline());
   const target = (key: string) => (typeof args.id === 'string' && args.id ? args.id : str(args, key));
   if (name === 'act') return withReceipts(await hand.act(target('intent'), args.confirm === true));
+  if (name === 'type' && typeof args.after === 'string' && args.after !== '')
+    return withReceipts(await hand.typeAfter(str(args, 'text'), target('into'), args.after));
   if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into'), args.mode === 'insert' ? 'insert' : 'replace'));
+  if (name === 'check') return withReceipts(await hand.setChecked(target('into'), args.on !== false));
+  if (name === 'set_value') return withReceipts(await hand.select(str(args, 'value'), target('into')));
+  if (name === 'pointer') {
+    const action = str(args, 'action');
+    if (!['double_click', 'right_click', 'drag'].includes(action)) return text('action must be double_click, right_click or drag', true);
+    return text(await hand.pointer(action as 'double_click' | 'right_click' | 'drag', target('into'), typeof args.to === 'string' ? args.to : undefined));
+  }
+  if (name === 'select_text') return text(await hand.selectText(target('into'), str(args, 'from'), typeof args.through === 'string' ? args.through : ''));
+  if (name === 'expect')
+    return text(
+      await hand.expect(target('into'), {
+        ...(typeof args.checked === 'boolean' ? { checked: args.checked } : {}),
+        ...(typeof args.enabled === 'boolean' ? { enabled: args.enabled } : {}),
+        ...(typeof args.value === 'string' ? { value: args.value } : {}),
+        ...(typeof args.contains === 'string' ? { contains: args.contains } : {}),
+      }),
+    );
   if (name === 'look') return text(await hand.look(str(args, 'question')));
   return text(`unknown tool ${name}`, true);
 }

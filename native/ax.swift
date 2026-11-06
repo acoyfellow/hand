@@ -319,7 +319,8 @@ let keyCodes: [String: CGKeyCode] = [
     "return": 36, "enter": 36, "tab": 48, "escape": 53, "esc": 53, "space": 49, "down": 125, "up": 126, "left": 123, "right": 124,
     "delete": 51, "backspace": 51, "a": 0, "s": 1, "d": 2, "f": 3, "h": 4, "g": 5, "z": 6, "x": 7, "c": 8, "v": 9, "b": 11, "q": 12,
     "w": 13, "e": 14, "r": 15, "y": 16, "t": 17, "o": 31, "u": 32, "i": 34, "p": 35, "l": 37, "j": 38, "k": 40, "n": 45, "m": 46,
-    ",": 43, ".": 47, "/": 44,
+    ",": 43, ".": 47, "/": 44, "end": 119, "home": 115, "pageup": 116, "pagedown": 121, "forwarddelete": 117,
+    "0": 29, "1": 18, "2": 19, "3": 20, "4": 21, "5": 23, "6": 22, "7": 26, "8": 28, "9": 25,
 ]
 
 let modifierFlags: [String: CGEventFlags] = ["cmd": .maskCommand, "command": .maskCommand, "shift": .maskShift, "option": .maskAlternate, "alt": .maskAlternate, "ctrl": .maskControl, "control": .maskControl]
@@ -482,6 +483,162 @@ func frontWindowIndex(_ app: NSRunningApplication) -> Int? {
 func confirm(_ element: AXUIElement) -> Outcome {
     let result = AXUIElementPerformAction(element, kAXConfirmAction as CFString)
     return Outcome(ok: result == .success, detail: "AXConfirm \(result.rawValue)")
+}
+
+
+func selectRange(_ element: AXUIElement, location: Int, length: Int) -> Bool {
+    var range = CFRange(location: location, length: length)
+    guard let value = AXValueCreate(.cfRange, &range) else { return false }
+    return AXUIElementSetAttributeValue(element, kAXSelectedTextRangeAttribute as CFString, value) == .success
+}
+
+func selectedRange(_ element: AXUIElement) -> CFRange? {
+    guard let value: AXValue = attribute(element, kAXSelectedTextRangeAttribute) else { return nil }
+    var range = CFRange(location: 0, length: 0)
+    return AXValueGetValue(value, .cfRange, &range) ? range : nil
+}
+
+struct TextEdit: Encodable {
+    let ok: Bool
+    let detail: String
+    let code: String?
+    let before: String
+    let after: String
+    let at: Int
+}
+
+func insertAfter(_ element: AXUIElement, anchor: String, text: String, app: NSRunningApplication) -> TextEdit {
+    let before: String = attribute(element, kAXValueAttribute) ?? ""
+    let whole = before as NSString
+    let found = whole.range(of: anchor)
+    guard found.location != NSNotFound else {
+        return TextEdit(ok: false, detail: "\"\(anchor)\" is not in the field", code: "ANCHOR_NOT_FOUND", before: before, after: before, at: -1)
+    }
+    if whole.range(of: anchor, options: [], range: NSRange(location: found.location + 1, length: whole.length - found.location - 1)).location != NSNotFound {
+        return TextEdit(ok: false, detail: "\"\(anchor)\" appears more than once; give more of the line", code: "ANCHOR_AMBIGUOUS", before: before, after: before, at: -1)
+    }
+    let lineEnd = whole.lineRange(for: NSRange(location: found.location, length: 0))
+    let contentsEnd: Int = {
+        var end = 0
+        whole.getLineStart(nil, end: nil, contentsEnd: &end, for: lineEnd)
+        return end
+    }()
+    let at = max(found.location + found.length, contentsEnd)
+    AXUIElementSetAttributeValue(element, kAXFocusedAttribute as CFString, kCFBooleanTrue)
+    usleep(80000)
+    guard selectRange(element, location: at, length: 0) else {
+        return TextEdit(ok: false, detail: "this field does not let hand place the cursor", code: "NO_CARET", before: before, after: before, at: at)
+    }
+    let written = AXUIElementSetAttributeValue(element, kAXSelectedTextAttribute as CFString, text as CFString)
+    usleep(120000)
+    var after: String = attribute(element, kAXValueAttribute) ?? ""
+    let expected = whole.replacingCharacters(in: NSRange(location: at, length: 0), with: text)
+    if after != expected, headed {
+        if written == .success, after != before { return TextEdit(ok: false, detail: "wrote text but the field is not what was expected", code: "EDIT_MISMATCH", before: before, after: after, at: at) }
+        bringToFront(app)
+        AXUIElementSetAttributeValue(element, kAXFocusedAttribute as CFString, kCFBooleanTrue)
+        _ = selectRange(element, location: at, length: 0)
+        usleep(80000)
+        let current = selectedRange(element)
+        guard let current, current.location == at, current.length == 0 else {
+            return TextEdit(ok: false, detail: "could not confirm the cursor position before typing", code: "NO_CARET", before: before, after: after, at: at)
+        }
+        _ = typeText(text, to: app)
+        usleep(200000)
+        after = attribute(element, kAXValueAttribute) ?? ""
+    }
+    let ok = after == expected
+    return TextEdit(ok: ok, detail: ok ? "inserted \(text.count) characters after \"\(anchor)\"; the rest of the field is unchanged" : "the field changed in an unexpected way", code: ok ? nil : "EDIT_MISMATCH", before: before, after: after, at: at)
+}
+
+func selectText(_ element: AXUIElement, from first: String, through last: String) -> TextEdit {
+    let value: String = attribute(element, kAXValueAttribute) ?? ""
+    let whole = value as NSString
+    let start = whole.range(of: first)
+    guard start.location != NSNotFound else { return TextEdit(ok: false, detail: "\"\(first)\" is not in the field", code: "ANCHOR_NOT_FOUND", before: value, after: value, at: -1) }
+    let tail = NSRange(location: start.location, length: whole.length - start.location)
+    let end = last.isEmpty ? start : whole.range(of: last, options: [], range: tail)
+    guard end.location != NSNotFound else { return TextEdit(ok: false, detail: "\"\(last)\" is not after \"\(first)\"", code: "ANCHOR_NOT_FOUND", before: value, after: value, at: -1) }
+    let length = end.location + end.length - start.location
+    AXUIElementSetAttributeValue(element, kAXFocusedAttribute as CFString, kCFBooleanTrue)
+    usleep(80000)
+    guard selectRange(element, location: start.location, length: length), let now = selectedRange(element), now.location == start.location, now.length == length else {
+        return TextEdit(ok: false, detail: "could not select the text", code: "NO_CARET", before: value, after: value, at: start.location)
+    }
+    return TextEdit(ok: true, detail: "selected \(length) characters from \"\(first)\"\(last.isEmpty ? "" : " through \"\(last)\"")", code: nil, before: value, after: value, at: start.location)
+}
+
+struct ElementState: Encodable {
+    let role: String
+    let name: String
+    let value: String?
+    let checked: Bool?
+    let enabled: Bool?
+    let focused: Bool?
+    let selected: Bool?
+}
+
+func state(of element: AXUIElement) -> ElementState {
+    let role: String = attribute(element, kAXRoleAttribute) ?? ""
+    let raw: CFTypeRef? = attribute(element, kAXValueAttribute)
+    let number = raw.flatMap { $0 as? NSNumber }
+    let text = raw.flatMap { $0 as? String }
+    let toggles = ["AXCheckBox", "AXSwitch", "AXRadioButton", "AXToggle"].contains(role)
+    return ElementState(
+        role: role,
+        name: label(element),
+        value: text ?? number?.stringValue,
+        checked: toggles ? number.map { $0.intValue == 1 } : nil,
+        enabled: attribute(element, kAXEnabledAttribute),
+        focused: attribute(element, kAXFocusedAttribute),
+        selected: attribute(element, kAXSelectedAttribute)
+    )
+}
+
+func setChecked(_ element: AXUIElement, to wanted: Bool) -> Outcome {
+    let now = state(of: element)
+    guard let checked = now.checked else { return refused("NOT_A_TOGGLE", "\(now.role) \"\(now.name)\" has no on/off state") }
+    if checked == wanted { return Outcome(ok: true, detail: "already \(wanted ? "on" : "off"); did nothing", delivery: .verified, retrySafe: true) }
+    let pressed = AXUIElementPerformAction(element, kAXPressAction as CFString)
+    for _ in 0..<20 {
+        usleep(50000)
+        if state(of: element).checked == wanted { return Outcome(ok: true, detail: "turned \(wanted ? "on" : "off"); read back \(wanted ? "on" : "off")", delivery: .verified, retrySafe: true) }
+    }
+    return Outcome(ok: false, detail: "pressed (AXPress \(pressed.rawValue)) but it still reads \(checked ? "on" : "off")", code: "NOT_VERIFIED", delivery: .unverified, retrySafe: true)
+}
+
+func menuItem(_ app: NSRunningApplication, path: [String]) -> (AXUIElement?, String) {
+    let root = AXUIElementCreateApplication(app.processIdentifier)
+    guard let bar: AXUIElement = attribute(root, kAXMenuBarAttribute) else { return (nil, "no menu bar") }
+    var level = bar
+    for (depth, wanted) in path.enumerated() {
+        let options = children(level).flatMap { child -> [AXUIElement] in
+            let role: String = attribute(child, kAXRoleAttribute) ?? ""
+            return role == "AXMenu" ? children(child) : [child]
+        }
+        let titles = options.map { (attribute($0, kAXTitleAttribute) as String?) ?? "" }
+        let normalise = { (text: String) in text.replacingOccurrences(of: "…", with: "...").trimmingCharacters(in: .whitespaces).lowercased() }
+        guard let index = titles.firstIndex(where: { normalise($0) == normalise(wanted) }) else {
+            let known = titles.filter { !$0.isEmpty }.prefix(30).joined(separator: ", ")
+            return (nil, "no \"\(wanted)\" in \(depth == 0 ? "the menu bar" : path[depth - 1]); it has: \(known)")
+        }
+        level = options[index]
+        if depth < path.count - 1 {
+            let submenu = children(level).first { (attribute($0, kAXRoleAttribute) as String?) == "AXMenu" }
+            if submenu == nil || children(submenu!).isEmpty {
+                AXUIElementPerformAction(level, kAXPressAction as CFString)
+                usleep(150000)
+            }
+        }
+    }
+    return (level, "")
+}
+
+func elementAt(x: Double, y: Double, in app: NSRunningApplication) -> AXUIElement? {
+    let root = AXUIElementCreateApplication(app.processIdentifier)
+    var hit: AXUIElement?
+    guard AXUIElementCopyElementAtPosition(root, Float(x), Float(y), &hit) == .success else { return nil }
+    return hit
 }
 
 func emit<T: Encodable>(_ value: T) {
@@ -682,6 +839,61 @@ case "drag":
     needsHeaded("drag")
     let lease = acting()
     finish(dragFrom(x: x, y: y, toX: toX, toY: toY), lease: lease)
+case "insert-after":
+    let found = app(1, usage: "usage: ax insert-after <app> <path> <anchor> <text>")
+    guard args.count >= 5 else { fail("usage: ax insert-after <app> <path> <anchor> <text>", code: 64) }
+    let element = target(found, args[2])
+    let lease = acting()
+    showCursor(on: element, label: "type")
+    let edit = insertAfter(element, anchor: args[3], text: args[4], app: found)
+    _ = lease
+    emit(edit)
+    exit(edit.ok ? 0 : 1)
+case "select-text":
+    let found = app(1, usage: "usage: ax select-text <app> <path> <from> [<through>]")
+    guard args.count >= 4 else { fail("usage: ax select-text <app> <path> <from> [<through>]", code: 64) }
+    let element = target(found, args[2])
+    let lease = acting()
+    if headed { bringToFront(found) }
+    let picked = selectText(element, from: args[3], through: args.count > 4 ? args[4] : "")
+    _ = lease
+    emit(picked)
+    exit(picked.ok ? 0 : 1)
+case "state":
+    let found = app(1, usage: "usage: ax state <app> <path>")
+    guard args.count >= 3 else { fail("usage: ax state <app> <path>", code: 64) }
+    emit(state(of: target(found, args[2])))
+case "check", "uncheck":
+    let found = app(1, usage: "usage: ax \(command) <app> <path>")
+    guard args.count >= 3 else { fail("usage: ax \(command) <app> <path>", code: 64) }
+    let element = target(found, args[2])
+    let lease = acting()
+    showCursor(on: element, label: command)
+    finish(setChecked(element, to: command == "check"), lease: lease)
+case "menu":
+    let found = app(1, usage: "usage: ax menu <app> <Menu> <Item> [<Sub item>...]")
+    guard args.count >= 4 else { fail("usage: ax menu <app> <Menu> <Item> [<Sub item>...]", code: 64) }
+    let lease = acting()
+    let (item, problem) = menuItem(found, path: Array(args[2...]))
+    guard let item else { finish(refused("MENU_NOT_FOUND", problem), lease: lease) }
+    let enabled: Bool = attribute(item, kAXEnabledAttribute) ?? true
+    guard enabled else { finish(refused("MENU_DISABLED", "\(args[2...].joined(separator: " > ")) is greyed out right now"), lease: lease) }
+    let result = AXUIElementPerformAction(item, kAXPressAction as CFString)
+    finish(Outcome(ok: result == .success, detail: "chose \(args[2...].joined(separator: " > ")) (AXPress \(result.rawValue))", delivery: result == .success ? .unverified : .notDelivered), lease: lease)
+case "clipboard":
+    let board = NSPasteboard.general
+    if args.count >= 3, args[1] == "write" {
+        board.clearContents()
+        board.setString(args[2], forType: .string)
+        emit(Outcome(ok: board.string(forType: .string) == args[2], detail: "clipboard holds \(args[2].count) characters", delivery: .verified))
+    } else {
+        emit(Outcome(ok: true, detail: board.string(forType: .string) ?? ""))
+    }
+case "point":
+    let found = app(1, usage: "usage: ax point <app> <x> <y>")
+    guard args.count >= 4, let x = Double(args[2]), let y = Double(args[3]) else { fail("usage: ax point <app> <x> <y>", code: 64) }
+    guard let hit = elementAt(x: x, y: y, in: found) else { fail("nothing at that point", code: 3) }
+    emit(state(of: hit))
 case "scroll":
     guard args.count >= 5, let x = Double(args[1]), let y = Double(args[2]), let dy = Int32(args[3]), let dx = Int32(args[4]) else { fail("usage: ax scroll <x> <y> <dy> <dx> --headed", code: 64) }
     needsHeaded("scroll")

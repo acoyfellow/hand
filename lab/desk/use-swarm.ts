@@ -14,7 +14,7 @@ const outDir = join(import.meta.dir, '..', '..', 'bench', 'runs', 'demo-use');
 const maxSeconds = Number(process.env.DEMO_MAX_SECONDS ?? 150);
 const windowId = process.env.DEMO_WINDOW;
 const box = vm(host);
-const clean = readFileSync(join(homedir(), '.do', 'vm', 'remote', 'use-clean.sh'), 'utf8');
+const stage = ['use-stage.sh', 'use-layout.sh'].map((file) => readFileSync(join(homedir(), '.do', 'vm', 'remote', file), 'utf8')).join('\n');
 const startedAt = Date.now();
 const clock = () => `${((Date.now() - startedAt) / 1000).toFixed(1).padStart(6)} s`;
 
@@ -69,7 +69,7 @@ const checkNote = (body: string) => {
 };
 
 mkdirSync(outDir, { recursive: true });
-console.log(await box.run(clean));
+console.log(await box.run(stage));
 const rawOut = join(outDir, 'raw.mov');
 const recorder = windowId ? Bun.spawn(['screencapture', '-v', '-x', '-o', `-l${windowId}`, rawOut], { stdout: 'ignore', stderr: 'ignore' }) : undefined;
 await Bun.sleep(1200);
@@ -80,7 +80,7 @@ const answerFor = (agent: string) => new Promise<string>((resolve) => waiters.se
 
 const writer = agentRun(
   'ada',
-  `Open Notes and make a new note. First line: Todo. Then a checklist with these items: ${TODOS.map((todo) => `"${todo.item}"`).join(' and ')}. When the note is written, call done.`,
+  `In Notes, which is already open and in front, make a new note with cmd+n. Type the title Todo with type mode "insert", press return, start a checklist with shift+cmd+l, then type ${TODOS.map((todo) => `"${todo.item}"`).join(', press return, then ')} the same way. Use steps to send these in one or two calls. When the note is written, call done.`,
   SYSTEM('ada', 'When the note is written, call done.'),
   handTools,
 );
@@ -102,7 +102,7 @@ const crossOffs = TODOS.map(async (todo) => {
   if (!answer) return { agent: 'ada', item: todo.item, skipped: true };
   return agentRun(
     'ada',
-    `In Notes, in the note called Todo, find the checklist item "${todo.item}". Type " — ${answer}" at the end of that line, then check that item off. Do not change the other item. Then call done.`,
+    `In Notes, in the note called Todo, click the checklist item "${todo.item}", press cmd+right to go to the end of that line, type " — ${answer}" with type mode "insert", then press shift+cmd+u to tick it. Use steps to send these in one call. Do not change the other item. Then call done.`,
     SYSTEM('ada', 'Stay in Notes.'),
     handTools,
   );
