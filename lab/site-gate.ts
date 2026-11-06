@@ -1,34 +1,27 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const dist = join(import.meta.dir, '..', 'site', 'dist', 'client');
+const page = join(import.meta.dir, '..', 'site', 'dist', 'client', 'lab', 'index.html');
 const fail = (reason: string): never => {
   console.error(`site-gate FAIL: ${reason}`);
   process.exit(1);
 };
 
-const lab = join(dist, 'lab', 'index.html');
-const home = join(dist, 'index.html');
-if (!existsSync(lab) || !existsSync(home)) fail('built pages missing; build the site first');
-const labHtml = readFileSync(lab, 'utf8');
-const homeHtml = readFileSync(home, 'utf8');
+if (!existsSync(page)) fail('site/dist/client/lab/index.html missing; build the site first');
+const html = readFileSync(page, 'utf8');
 const data = JSON.parse(readFileSync(join(import.meta.dir, '..', 'site', 'public', 'lab', 'data.json'), 'utf8')) as {
-  desk4?: { cells: { toolId: string }[] };
-  tests: unknown[];
+  desk3?: { rows: { tool: string; installed: boolean }[] };
+  desk4?: { cells: unknown[]; episodes: number };
 };
 
-for (const id of ['desk-4', 'tests']) if (!labHtml.includes(`id="${id}"`)) fail(`lab section ${id} missing`);
-const handRows = (data.desk4?.cells ?? []).filter((cell) => cell.toolId === 'hand').length;
-const tableBody = labHtml.split('data-hand-results="desk4"')[1]?.split('</table>')[0] ?? '';
-const shown = (tableBody.match(/<tr/g) ?? []).length - 1;
-if (handRows === 0 || shown !== handRows) fail(`hand results table shows ${shown} rows, data has ${handRows}`);
-const testRows = (labHtml.split('id="tests"')[1]?.split('</table>')[0]?.match(/<tr/g) ?? []).length - 1;
-if (testRows !== data.tests.length) fail(`tests table shows ${testRows} rows, data has ${data.tests.length}`);
-if (!/>fail</.test(labHtml)) fail('failed tests must stay visible on the lab page');
-const rivals = /Claude computer use|agent-desktop|browser-use|Head to head|Landscape|competitor/i;
-for (const [name, html] of [['home', homeHtml], ['lab', labHtml]] as const) {
-  const visible = html.replace(/<script[\s\S]*?<\/script>/g, '');
-  const hit = visible.match(rivals);
-  if (hit) fail(`${name} page still names a rival: "${hit[0]}"`);
-}
-console.log(`site-gate PASS: lab shows hand on ${handRows} models and ${testRows} tests (failures kept); no rival named on home or lab`);
+for (const id of ['desk-4', 'desk-3']) if (!html.includes(`id="${id}"`)) fail(`section ${id} missing`);
+for (const chart of ['finished', 'cost']) if (!html.includes(`data-chart="${chart}"`)) fail(`slope chart ${chart} missing`);
+if (!data.desk4 || data.desk4.cells.length !== 12) fail(`desk-4 needs 12 cells, has ${data.desk4?.cells.length ?? 0}`);
+const sortableBody = html.split('data-sortable="desk4"')[1]?.split('</table>')[0] ?? '';
+const rows = (sortableBody.match(/<tr/g) ?? []).length - 1;
+if (rows !== 12) fail(`desk-4 table shows ${rows} rows, expected 12`);
+const notInstalled = (data.desk3?.rows ?? []).filter((row) => !row.installed);
+if (notInstalled.length < 2) fail('desk-3 must list codex and cua as not installed');
+if ((html.match(/Not installed\./g) ?? []).length < 2) fail('desk-3 table does not show the not-installed reasons');
+if (!html.includes('Head to head, browser only')) fail('head-to-head is not labelled browser only');
+console.log(`site-gate PASS: desk-4 12 rows and 2 charts, desk-3 ${data.desk3?.rows.length} tools (${notInstalled.length} not installed), head-to-head labelled`);
