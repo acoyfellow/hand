@@ -16,7 +16,7 @@ const PWA = 'http://127.0.0.1:8787';
 const WEB_TASKS = [...TASKS, ...HARD_TASKS.slice(0, 30 - TASKS.length)];
 
 const openPwa = (screen: string, seed: number) =>
-  `curl -s -X POST ${PWA}/reset >/dev/null; open -na "Google Chrome" --args --app="${PWA}/app?screen=${screen}&seed=${seed}" --user-data-dir=$HOME/.desk-chrome --no-first-run --window-size=1280,800 --window-position=0,30`;
+  `curl -s -X POST ${PWA}/reset >/dev/null; open -na "Google Chrome" --args --app="${PWA}/app?screen=${screen}&seed=${seed}" --user-data-dir=$HOME/.desk-chrome --no-first-run ${process.env.DESK_PWA_QUIET === '1' ? "--no-default-browser-check --disable-infobars --disable-component-update --simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT' " : ''}--window-size=${process.env.DESK_PWA_WINDOW ?? '1280,800'} --window-position=0,30`;
 
 const pwaState = async (box: Vm) => {
   const body = await box.run(`curl -s ${PWA}/state`);

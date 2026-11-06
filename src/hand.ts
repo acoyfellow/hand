@@ -92,6 +92,8 @@ const isRef = (text: string) => refOf(text) !== undefined;
 export class Hand {
   readonly steps: Step[] = [];
   private warned = new Set<string>();
+  private pressIgnored = false;
+  private injectionByText = new Map<string, { p: number; costUsd: number }>();
   private outlined = new Map<string, string>();
   constructor(
     private readonly t: Transport,
@@ -122,8 +124,10 @@ export class Hand {
     return this.log({ tool: 'outline', args: {}, result: `${cands.length} controls on screen:\n${lines}${reading}`, costUsd: 0, ms: performance.now() - t0 });
   }
 
-  private async injectionNote(shot: string): Promise<{ note: string; cost: number }> {
-    const r = await injection(this.t, this.opts.model, shot);
+  private async injectionNote(shot: string, screenText = ''): Promise<{ note: string; cost: number }> {
+    const seen = screenText ? this.injectionByText.get(screenText) : undefined;
+    const r = seen ? { ...seen, costUsd: 0 } : await injection(this.t, this.opts.model, shot);
+    if (screenText && !seen) this.injectionByText.set(screenText, r);
     const key = shot.slice(-64);
     if (r.p >= this.opts.injectionTau && !this.warned.has(key)) {
       this.warned.add(key);
@@ -174,16 +178,19 @@ export class Hand {
     const byRef = named ? cands.find((c) => c.id === named) : undefined;
     const earlyRisk = byRef ? risky(this.t, this.opts.model, before, describe(byRef)) : undefined;
     let chose: Awaited<ReturnType<Hand['choose']>>;
-    let inj: { note: string; cost: number };
+    const injecting = this.injectionNote(before, textBefore);
+    injecting.catch(() => undefined);
     try {
-      [inj, chose] = await Promise.all([this.injectionNote(before), this.choose(intent, cands, before)]);
+      chose = await this.choose(intent, cands, before);
     } catch (error) {
       if (!(error instanceof StaleRef)) throw error;
       return this.log({ tool: 'act', args: { intent, confirm }, result: error.message, costUsd: 0, ms: performance.now() - t0 });
     }
     const { pick, chosen, top } = chose;
-    cost += inj.cost + pick.costUsd;
     const what = chosen ? describe(chosen) : `point (${Math.round(pick.point.x)}, ${Math.round(pick.point.y)})`;
+    const risking = earlyRisk ?? risky(this.t, this.opts.model, before, what);
+    const inj = await injecting;
+    cost += inj.cost + pick.costUsd;
     if (shouldAsk(pick, this.opts.tau, this.opts.minMargin ?? 0)) {
       return this.log({
         tool: 'act',
@@ -194,7 +201,7 @@ export class Hand {
         ms: performance.now() - t0,
       });
     }
-    const rk = await (earlyRisk ?? risky(this.t, this.opts.model, before, what));
+    const rk = await risking;
     cost += rk.costUsd;
     if (rk.p >= this.opts.riskTau && !confirm) {
       return this.log({
@@ -210,7 +217,9 @@ export class Hand {
       });
     }
     await this.d.show?.({ ...pick.point, label: chosen ? describe(chosen) : intent, p: pick.p });
-    if (chosen && this.d.press) await this.d.press(chosen);
+    const mouseFirst = Boolean(chosen && this.pressIgnored && this.d.pointerClick);
+    if (chosen && mouseFirst && this.d.pointerClick) await this.d.pointerClick(chosen);
+    else if (chosen && this.d.press) await this.d.press(chosen);
     else await this.d.click(pick.point);
     await this.d.settle();
     let achieved: number | undefined;
@@ -218,11 +227,19 @@ export class Hand {
     if (this.opts.verify) {
       const [candsAfter, textAfter] = await Promise.all([this.d.candidates(), this.screenText()]);
       let change = describeChange(cands, candsAfter, textBefore, textAfter);
-      if (!change && chosen && this.d.press && this.d.pointerClick && (await this.d.pointerClick(chosen))) {
+      if (!change) {
+        await this.d.settle();
+        const [candsLater, textLater] = await Promise.all([this.d.candidates(), this.screenText()]);
+        change = describeChange(cands, candsLater, textBefore, textLater);
+      }
+      if (!change && !mouseFirst && chosen && this.d.press && this.d.pointerClick && (await this.d.pointerClick(chosen))) {
         await this.d.settle();
         const [candsRetry, textRetry] = await Promise.all([this.d.candidates(), this.screenText()]);
         const retried = describeChange(cands, candsRetry, textBefore, textRetry);
-        if (retried) change = `${retried} (the accessibility press did nothing, so hand clicked it with the mouse)`;
+        if (retried) {
+          this.pressIgnored = true;
+          change = `${retried} (the accessibility press did nothing, so hand clicked it with the mouse)`;
+        }
       }
       if (change) {
         achieved = 1;

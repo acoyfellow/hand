@@ -34,6 +34,32 @@ describe('hand mcp', () => {
     expect(missing.result.content[0]?.text).toContain('into is required');
   });
 
+  test('steps runs actions in order and stops at the first refusal', async () => {
+    const ran = (await call('steps', {
+      app: 'TextEdit',
+      steps: [
+        { tool: 'act', intent: 'the New button' },
+        { tool: 'type', text: 'hello', into: 'the body' },
+        { tool: 'act', intent: 'Delete account' },
+        { tool: 'act', intent: 'never reached' },
+      ],
+    })) as { result: { content: { text: string }[] } };
+    const body = ran.result.content[0]?.text ?? '';
+    expect(body).toContain('1. act: Clicked the New button');
+    expect(body).toContain('2. type: Typed "hello" into the body');
+    expect(body).toContain('3. act: BLOCKED');
+    expect(body).toContain('Stopped after step 3 of 4.');
+    expect(body).not.toContain('never reached');
+  });
+
+  test('steps refuses a tool that is not a step', async () => {
+    const ran = (await call('steps', { app: 'TextEdit', steps: [{ tool: 'look', question: 'x' }] })) as {
+      result: { isError: boolean; content: { text: string }[] };
+    };
+    expect(ran.result.isError).toBe(true);
+    expect(ran.result.content[0]?.text).toContain('not a step tool');
+  });
+
   test('notifications get no reply', async () => {
     expect(await handle(session, { jsonrpc: '2.0', method: 'notifications/initialized' })).toBeUndefined();
   });

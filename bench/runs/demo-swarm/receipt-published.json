@@ -1,0 +1,207 @@
+{
+  "host": "192.168.64.9",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-11-05T21:53:39.345Z",
+  "recordSeconds": 100,
+  "recording": {
+    "from": "host",
+    "window": "do · sandbox-1",
+    "file": "raw.mov"
+  },
+  "results": [
+    {
+      "agent": "ada",
+      "task": "pwa-chat-attach-send",
+      "text": "In the Workbench app: Open the chat with Lena Fischer, attach a file, and send \"see you at 3\".",
+      "hint": "The Workbench app is the small Chrome window. Open the conversation, click Attach file, type the message into the Message box, then click Send message. If a Chrome bar about updates appears, ignore it.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 10,
+      "usd": 0.02707157,
+      "finishedAtMs": 59196,
+      "events": [
+        {
+          "atMs": 11977,
+          "tool": "act",
+          "result": "Clicked button \"Conversation with Lena Fischer\" (p=0.88). The click went through, but the screen shows no clear change (p=0.03). Some actions leave no visible trace; move on unless the next step depen"
+        },
+        {
+          "atMs": 16645,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: button \"Conversation with Lena Fischer\" (0.51); button \"Attach file\" (0.34); button \"Chat\" (0.03). Say more precisely what to click."
+        },
+        {
+          "atMs": 22694,
+          "tool": "act",
+          "result": "Clicked button \"Attach file\" (p=0.97). Changed: new text: \"Choose a file to attach\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Attach file\": deli"
+        },
+        {
+          "atMs": 27920,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: button \"Attach file\" (0.60); button \"Files\" (0.09); menubaritem \"File\" (0.06). Say more precisely what to click."
+        },
+        {
+          "atMs": 30494,
+          "tool": "outline",
+          "result": "31 controls on screen:\n- [e1] button \"Mail\"\n- [e2] button \"Settings\"\n- [e3] button \"Files\"\n- [e4] button \"Shop\"\n- [e5] button \"Dashboard\"\n- [e6] button \"Chat\"\n- [e7] button \"People\"\n- [e8] button \"Edi"
+        },
+        {
+          "atMs": 37369,
+          "tool": "act",
+          "result": "Clicked button \"Conversation with Lena Fischer\" (p=0.97). Changed: new text: \"Chat with\", \"Lena Fischer\", \"See you then\", \"Chat with Lena Fischer\". (the accessibility press did nothing, so hand clicke"
+        },
+        {
+          "atMs": 45391,
+          "tool": "act",
+          "result": "Clicked button \"Attach file\" (p=0.87). Changed: new text: \"Choose a file to attach\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Attach file\": deli"
+        },
+        {
+          "atMs": 51317,
+          "tool": "type",
+          "result": "Typed into textbox \"Message\" (p=0.99).\nReceipts:\nset textbox \"Message\": delivered_unverified via semantic_api (NOT_VERIFIED)\nfocus textbox \"Message\": delivered_unverified via semantic_api"
+        },
+        {
+          "atMs": 57719,
+          "tool": "act",
+          "result": "Clicked button \"Send message\" (p=0.95). Changed: new text: \"Message sent\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Send message\": delivered_unv"
+        }
+      ]
+    },
+    {
+      "agent": "bix",
+      "task": "mac-settings-dark",
+      "text": "In System Settings, switch the appearance to Dark.",
+      "hint": "Use the System Settings app. Open Appearance in its sidebar and choose Dark. Do not touch other settings.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 20,
+      "usd": 0.09624673,
+      "finishedAtMs": 87332,
+      "events": [
+        {
+          "atMs": 3219,
+          "tool": "activate",
+          "result": "activate System Settings"
+        },
+        {
+          "atMs": 5250,
+          "tool": "outline",
+          "result": "52 controls on screen:\n- [e1] row \"Sign in, with your Apple Account\"\n- [e2] row \"Wi‑Fi\"\n- [e3] row \"Bluetooth\"\n- [e4] row \"Network\"\n- [e5] row \"Energy\"\n- [e6] row \"General\"\n- [e7] row \"Accessibility\"\n"
+        },
+        {
+          "atMs": 16877,
+          "tool": "act",
+          "result": "Clicked row \"Appearance\" (p=0.93). The click went through, but the screen shows no clear change (p=0.07). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npre"
+        },
+        {
+          "atMs": 18748,
+          "tool": "outline",
+          "result": "52 controls on screen:\n- [e1] row \"Sign in, with your Apple Account\"\n- [e2] row \"Wi‑Fi\"\n- [e3] row \"Bluetooth\"\n- [e4] row \"Network\"\n- [e5] row \"Energy\"\n- [e6] row \"General\"\n- [e7] row \"Accessibility\"\n"
+        },
+        {
+          "atMs": 28403,
+          "tool": "act",
+          "result": "Clicked row \"Appearance\" (p=0.92). The click went through, but the screen shows no clear change (p=0.11). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npre"
+        },
+        {
+          "atMs": 34183,
+          "tool": "act",
+          "result": "Clicked menubaritem \"View\" (p=0.88). Changed: new controls: menuitem \"Back\", menuitem \"Forward\", menuitem \"Search\", menuitem \"About\", menuitem \"Accessibility\", menuitem \"AirDrop & Continuity\" (+39 mor"
+        },
+        {
+          "atMs": 36794,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: menuitem \"Appearance\" (0.57); menubaritem \"View\" (0.30); menubaritem \"System Settings\" (0.02). Say more precisely what to click."
+        },
+        {
+          "atMs": 38848,
+          "tool": "outline",
+          "result": "53 controls on screen:\n- [e1] row \"Sign in, with your Apple Account\"\n- [e2] row \"Wi‑Fi\"\n- [e3] row \"Bluetooth\"\n- [e4] row \"Network\"\n- [e5] row \"Energy\"\n- [e6] row \"General\"\n- [e7] row \"Accessibility\"\n"
+        },
+        {
+          "atMs": 43735,
+          "tool": "act",
+          "result": "Clicked menubaritem \"View\" (p=0.93). Changed: new controls: menuitem \"Back\", menuitem \"Forward\", menuitem \"Search\", menuitem \"About\", menuitem \"Accessibility\", menuitem \"AirDrop & Continuity\" (+38 mor"
+        },
+        {
+          "atMs": 51752,
+          "tool": "act",
+          "result": "Clicked row \"Appearance\" (p=0.90). The click went through, but the screen shows no clear change (p=0.06). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npre"
+        },
+        {
+          "atMs": 55795,
+          "tool": "type",
+          "result": "Typed into textbox \"Search\" (p=0.98).\nReceipts:\nset textbox \"Search\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 57611,
+          "tool": "outline",
+          "result": "37 controls on screen:\n- [e1] row \"Appearance\"\n- [e2] row \"Accent color\"\n- [e3] row \"Button, menu, and window look\"\n- [e4] row \"Highlight color\"\n- [e5] row \"Accessibility\"\n- [e6] row \"Appearance (Keyb"
+        },
+        {
+          "atMs": 60099,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: row \"Appearance\" (0.54); row \"Appearance (Switch Control)\" (0.07); row \"Appearance (Keyboard)\" (0.06). Say more precisely what to click."
+        },
+        {
+          "atMs": 67009,
+          "tool": "act",
+          "result": "Clicked row \"Appearance\" (p=1.00). The click went through, but the screen shows no clear change (p=0.05). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npre"
+        },
+        {
+          "atMs": 69208,
+          "tool": "key",
+          "result": "pressed down in System Settings"
+        },
+        {
+          "atMs": 71037,
+          "tool": "key",
+          "result": "pressed return in System Settings"
+        },
+        {
+          "atMs": 72858,
+          "tool": "outline",
+          "result": "51 controls on screen:\n- [e1] row \"Appearance\"\n- [e2] row \"Accent color\"\n- [e3] row \"Button, menu, and window look\"\n- [e4] row \"Highlight color\"\n- [e5] row \"Accessibility\"\n- [e6] row \"Appearance (Keyb"
+        },
+        {
+          "atMs": 81620,
+          "tool": "act",
+          "result": "Clicked button \"Dark\" (p=1.00). The click went through, but the screen shows no clear change (p=0.04). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npress "
+        },
+        {
+          "atMs": 85828,
+          "tool": "look",
+          "result": "p(yes)=0.59"
+        }
+      ]
+    },
+    {
+      "agent": "cyd",
+      "task": "mac-textedit-edit-line",
+      "text": "Open \"list.txt\" from the \"desk\" folder on the Desktop in TextEdit, change \"apples\" to \"pears\", and save.",
+      "hint": "list.txt is already open in TextEdit. Set its text box to the edited text, then press cmd+s to save. Do not use the Open dialog.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 4,
+      "usd": 0.0057662500000000005,
+      "finishedAtMs": 11310,
+      "events": [
+        {
+          "atMs": 3184,
+          "tool": "outline",
+          "result": "11 controls on screen:\n- [e1] textbox \"milk apples bread\"\n- [e3] button \"this button also has an action to zoom the window\"\n- [e5] button \"document actions\"\n- [e6] menubaritem \"Apple\"\n- [e7] menubarit"
+        },
+        {
+          "atMs": 6865,
+          "tool": "type",
+          "result": "Typed into textbox \"milk apples bread\" (p=1.00).\nReceipts:\nset textbox \"milk apples bread\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 9713,
+          "tool": "key",
+          "result": "pressed cmd+s in TextEdit"
+        }
+      ]
+    }
+  ]
+}

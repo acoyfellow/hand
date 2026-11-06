@@ -1,0 +1,162 @@
+{
+  "host": "192.168.64.9",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-11-05T23:00:10.160Z",
+  "recordSeconds": 130,
+  "recording": {
+    "from": "host",
+    "window": "do · sandbox-1",
+    "file": "raw.mov"
+  },
+  "results": [
+    {
+      "agent": "ada",
+      "task": "pwa-chat-attach-send",
+      "text": "In the Workbench app: Open the chat with Lena Fischer, attach a file, and send \"see you at 3\".",
+      "hint": "The Workbench app is the small Chrome window. Open the conversation, click Attach file, type the message into the Message box, then click Send message. If a Chrome bar about updates appears, ignore it.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 8,
+      "usd": 0.016609560000000002,
+      "finishedAtMs": 41656,
+      "events": [
+        {
+          "atMs": 2970,
+          "tool": "apps",
+          "result": "In front: System Settings\nGoogle Chrome\nCalendar\nTerminal\nReminders\nInstall Command Line Developer Tools\nFinder (windows: desk)\nGoogle Chrome (windows: Workbench)\nTextEdit (windows: list.txt)\nSystem S"
+        },
+        {
+          "atMs": 5552,
+          "tool": "activate",
+          "result": "activate Google Chrome"
+        },
+        {
+          "atMs": 7416,
+          "tool": "outline",
+          "result": "31 controls on screen:\n- [e1] button \"Mail\"\n- [e2] button \"Settings\"\n- [e3] button \"Files\"\n- [e4] button \"Shop\"\n- [e5] button \"Dashboard\"\n- [e6] button \"Chat\"\n- [e7] button \"People\"\n- [e8] button \"Edi"
+        },
+        {
+          "atMs": 16569,
+          "tool": "act",
+          "result": "Clicked button \"Conversation with Lena Fischer\" (p=0.97). Changed: new text: \"Chat with\", \"Lena Fischer\", \"See you then\", \"Chat with Lena Fischer\". (the accessibility press did nothing, so hand clicke"
+        },
+        {
+          "atMs": 25875,
+          "tool": "act",
+          "result": "Clicked button \"Attach file\" (p=0.96). Changed: new text: \"Choose a file to attach\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Attach file\": deli"
+        },
+        {
+          "atMs": 31717,
+          "tool": "type",
+          "result": "Typed into textbox \"Message\" (p=0.99).\nReceipts:\nset textbox \"Message\": delivered_unverified via semantic_api (NOT_VERIFIED)\nfocus textbox \"Message\": delivered_unverified via semantic_api"
+        },
+        {
+          "atMs": 39989,
+          "tool": "act",
+          "result": "Clicked button \"Send message\" (p=0.94). Changed: new text: \"Message sent\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Send message\": delivered_unv"
+        }
+      ]
+    },
+    {
+      "agent": "bix",
+      "task": "mac-settings-dark",
+      "text": "In System Settings, switch the appearance to Dark.",
+      "hint": "Use the System Settings app. Open Appearance in its sidebar and choose Dark. Do not touch other settings.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 13,
+      "usd": 0.04621307000000001,
+      "finishedAtMs": 73203,
+      "events": [
+        {
+          "atMs": 2956,
+          "tool": "activate",
+          "result": "activate System Settings"
+        },
+        {
+          "atMs": 5098,
+          "tool": "outline",
+          "result": "52 controls on screen:\n- [e1] row \"Sign in, with your Apple Account\"\n- [e2] row \"Wi‑Fi\"\n- [e3] row \"Bluetooth\"\n- [e4] row \"Network\"\n- [e5] row \"Energy\"\n- [e6] row \"General\"\n- [e7] row \"Accessibility\"\n"
+        },
+        {
+          "atMs": 13226,
+          "tool": "act",
+          "result": "Clicked row \"Appearance\" (p=0.94). Changed: new text: \"Liquid Glass\", \"Choose your preferred look for Liquid Glass.\", \"Theme\", \"Color\", \"Multicolor\", \"Text highlight color\"; new controls: button \"Auto"
+        },
+        {
+          "atMs": 25333,
+          "tool": "act",
+          "result": "Clicked button \"Dark\" (p=0.84). The click went through, but the screen shows no clear change (p=0.05). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npress "
+        },
+        {
+          "atMs": 29155,
+          "tool": "look",
+          "result": "p(yes)=0.01"
+        },
+        {
+          "atMs": 31171,
+          "tool": "outline",
+          "result": "66 controls on screen:\n- [e1] row \"Sign in, with your Apple Account\"\n- [e2] row \"Wi‑Fi\"\n- [e3] row \"Bluetooth\"\n- [e4] row \"Network\"\n- [e5] row \"Energy\"\n- [e6] row \"General\"\n- [e7] row \"Accessibility\"\n"
+        },
+        {
+          "atMs": 35508,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: button \"Dark\" (0.54); row \"Appearance\" (0.14); button \"Dark\" (0.10). Say more precisely what to click."
+        },
+        {
+          "atMs": 47642,
+          "tool": "act",
+          "result": "Clicked button \"Dark\" (p=1.00). The click went through, but the screen shows no clear change (p=0.27). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npress "
+        },
+        {
+          "atMs": 53704,
+          "tool": "look",
+          "result": "p(yes)=0.27"
+        },
+        {
+          "atMs": 65456,
+          "tool": "act",
+          "result": "Clicked button \"Dark\" (p=0.73). The click went through, but the screen shows no clear change (p=0.04). Some actions leave no visible trace; move on unless the next step depends on it.\nReceipts:\npress "
+        },
+        {
+          "atMs": 67277,
+          "tool": "key",
+          "result": "pressed space in System Settings"
+        },
+        {
+          "atMs": 71645,
+          "tool": "look",
+          "result": "p(yes)=0.87"
+        }
+      ]
+    },
+    {
+      "agent": "cyd",
+      "task": "mac-textedit-edit-line",
+      "text": "Open \"list.txt\" from the \"desk\" folder on the Desktop in TextEdit, change \"apples\" to \"pears\", and save.",
+      "hint": "list.txt is already open in TextEdit. Set its text box to the edited text, then press cmd+s to save. Do not use the Open dialog.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 4,
+      "usd": 0.005716249999999999,
+      "finishedAtMs": 10244,
+      "events": [
+        {
+          "atMs": 3024,
+          "tool": "outline",
+          "result": "11 controls on screen:\n- [e1] textbox \"milk apples bread\"\n- [e3] button \"this button also has an action to zoom the window\"\n- [e5] button \"document actions\"\n- [e6] menubaritem \"Apple\"\n- [e7] menubarit"
+        },
+        {
+          "atMs": 7214,
+          "tool": "type",
+          "result": "Typed into textbox \"milk apples bread\" (p=1.00).\nReceipts:\nset textbox \"milk apples bread\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 8912,
+          "tool": "key",
+          "result": "pressed cmd+s in TextEdit"
+        }
+      ]
+    }
+  ]
+}

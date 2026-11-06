@@ -243,6 +243,6 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       lastActions.push(`return key: ${key.detail}`);
       return key.ok;
     },
-    settle: () => new Promise((resolve) => setTimeout(resolve, 400)),
+    settle: () => new Promise((resolve) => setTimeout(resolve, 150)),
   };
 }

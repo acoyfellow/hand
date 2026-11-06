@@ -63,8 +63,35 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'key',
     description:
-      'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command.',
+      'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.',
     inputSchema: { type: 'object', properties: { app, key: { type: 'string' } }, required: ['app', 'key'] },
+  },
+  {
+    name: 'steps',
+    description:
+      'Run several actions in a row in one call, when you already know what comes next: for example click the search field, type a query, press return. Each step is one of act, type or key, with the same fields as that tool. Every step still gets its own pick and check. It stops at the first step that fails, is refused or is unsure, and returns what happened at every step.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        app,
+        agent,
+        steps: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              tool: { type: 'string', enum: ['act', 'type', 'key'] },
+              intent: { type: 'string' },
+              text: { type: 'string' },
+              into: { type: 'string' },
+              key: { type: 'string' },
+            },
+            required: ['tool'],
+          },
+        },
+      },
+      required: ['app', 'steps'],
+    },
   },
   {
     name: 'look',
@@ -91,7 +118,8 @@ export interface Session {
   receipts(app: string, agent?: string): readonly Receipt[];
 }
 
-const text = (body: string, isError = false) => ({ content: [{ type: 'text', text: body }], isError });
+type ToolReply = { content: { type: 'text'; text: string }[]; isError: boolean };
+const text = (body: string, isError = false): ToolReply => ({ content: [{ type: 'text', text: body }], isError });
 
 const str = (args: Record<string, unknown>, key: string): string => {
   const value = args[key];
@@ -99,7 +127,34 @@ const str = (args: Record<string, unknown>, key: string): string => {
   return value;
 };
 
-export async function callTool(session: Session, name: string, args: Record<string, unknown>) {
+const STOP = /^(UNSURE|BLOCKED|STALE_REF|No text fields)|did nothing|failed/;
+
+async function runSteps(session: Session, args: Record<string, unknown>): Promise<ToolReply> {
+  const steps = Array.isArray(args.steps) ? (args.steps as Record<string, unknown>[]) : [];
+  const lines: string[] = [];
+  for (const [index, step] of steps.entries()) {
+    const tool = typeof step.tool === 'string' ? step.tool : '';
+    if (!['act', 'type', 'key'].includes(tool)) {
+      lines.push(`${index + 1}. ${tool || '?'}: not a step tool; stopped.`);
+      return text(lines.join('\n'), true);
+    }
+    const result: ToolReply = await callTool(session, tool, { ...step, app: args.app, agent: args.agent });
+    const body =
+      result.content
+        .map((part) => part.text)
+        .join('\n')
+        .split('\nReceipts:')[0] ?? '';
+    lines.push(`${index + 1}. ${tool}: ${body}`);
+    if (result.isError || STOP.test(body)) {
+      lines.push(`Stopped after step ${index + 1} of ${steps.length}.`);
+      return text(lines.join('\n'), result.isError === true);
+    }
+  }
+  return text(lines.join('\n'));
+}
+
+export async function callTool(session: Session, name: string, args: Record<string, unknown>): Promise<ToolReply> {
+  if (name === 'steps') return runSteps(session, args);
   if (name === 'apps') {
     const [apps, front] = await Promise.all([run(session.helper, ['apps']), run(session.helper, ['front'])]);
     return text([`In front: ${JSON.parse(front.stdout) as string}`, ...(JSON.parse(apps.stdout) as string[])].join('\n'));
