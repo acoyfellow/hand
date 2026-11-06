@@ -27,9 +27,9 @@ const hero = (h: H, model: Model): Html =>
       ),
       h.p([h.Class(`mx-auto mb-9 max-w-[30rem] text-[1.15rem] text-balance ${DIM}`)], ['A small model picks the button. hand clicks it and checks it worked.']),
       h.div(
-        [h.Class('mx-auto mb-6 flex max-w-[26rem] items-center gap-2 rounded-[10px] bg-raise py-1.5 pr-1.5 pl-4 text-left font-mono text-[0.9rem]')],
+        [h.Class('mx-auto mb-6 flex max-w-[30rem] items-center gap-2 rounded-[10px] bg-raise py-1.5 pr-1.5 pl-4 text-left font-mono text-[0.8rem] sm:text-[0.9rem]')],
         [
-          h.code([h.Class('min-w-0 flex-1 overflow-x-auto whitespace-nowrap')], [INSTALL_COMMAND]),
+          h.code([h.Class('min-w-0 flex-1 break-all')], [INSTALL_COMMAND]),
           h.button(
             [
               h.Type('button'),
