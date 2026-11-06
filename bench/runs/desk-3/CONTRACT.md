@@ -62,3 +62,11 @@ If an entrant cannot be installed or started in the VM, its row records `install
 - Codex computer use runs screen-only (`codex exec -s read-only`): its shell cannot change files, so it is judged on computer use like every other entrant. Jordan did not choose between screen-only and shell-allowed; this is the driver's default, recorded here.
 - Codex Computer Use and CuaDriver need macOS Accessibility and Screen Recording, which macOS grants only from a human click in System Settings. Synthetic clicks from the host and from inside the VM are ignored, and the TCC database is protected by SIP. If neither is granted when the scored run starts, both rows record `installed: false` with that reason. They can be run later from the same snapshot and added.
 - Every smoke run is kept in this folder (`smoke-*.jsonl`) and is never scored.
+
+## Addendum, 2026-11-06, cua added later
+
+- CuaDriver's permissions were granted by Jordan on sandbox-1, and cua was run on the same 50 tasks, the same VM snapshot, 30 turns and 4 minutes per task, after the other three entrants.
+- cua ships a driver, not a model. Its planner was gpt-6.1-sol, the model hand used to finish 15/15 in desk-4. The planner gets one tool that calls any Cua Driver tool, and cua's own guide (its MCP server instructions plus `get_guide` overview, 13,678 characters) as instructions.
+- The first attempt was stopped after 3 tasks and its 3 rows were removed, because 2 of them failed in our adapter, not in cua: one crashed before cua took a turn, and the adapter passed arguments through the shell, which broke on control characters. It also opened a new SSH connection per call. The adapter now keeps one `cua-driver mcp` session per task, as cua's own clients do. Those 3 removed rows cost $3.51 and are kept in `/tmp/desk3-backup.jsonl` on the run host, not scored.
+- Result: 36/50 finished (11/20 Mac apps), $4.15, median 58 s, 5 false "done" claims, no harness errors.
+- Codex computer use is still not run: its tool returns `bootstrapTimedOut` on sandbox-1 and `procNotFound` on sandbox-2 after permissions were granted.

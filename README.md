@@ -196,12 +196,12 @@ Inside a macOS virtual machine, on 50 tasks: 30 in web apps running in Chrome an
 | tool | model | finished | Mac apps only | cost |
 |---|---|---|---|---|
 | Claude computer use | claude-sonnet-4-6 | **40/50** | **14/20** | $11.32 |
+| cua | gpt-6.1-sol | 36/50 | 11/20 | $4.15 |
 | hand | kimi-k2.6 | 33/50 | 9/20 | **$2.79** |
 | agent-desktop | kimi-k2.6 | 30/50 | 12/20 | $11.41 |
 | Codex computer use | | not run | | |
-| cua | | not run | | |
 
-Codex computer use and cua are listed as not run: see [`bench/runs/finish-1/STATUS.md`](bench/runs/finish-1/STATUS.md) for why.
+cua ships a driver without a model, so it used gpt-6.1-sol, and it ran after the others on the same VM snapshot (see the contract addendum). Codex computer use is listed as not run: its tool fails to start in the VM even with permissions granted ([`bench/runs/finish-1/STATUS.md`](bench/runs/finish-1/STATUS.md)).
 
 ### Same model, different tool
 

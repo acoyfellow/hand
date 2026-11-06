@@ -146,25 +146,91 @@ export const agentDesktopWith = (model?: string): DeskEntrant => ({
 export const agentDesktop = agentDesktopWith();
 
 const CUA_DRIVER = '$HOME/.local/bin/cua-driver';
-const shellQuote = (text: string) => `'${text.replace(/'/g, `'\\''`)}'`;
 
-const CUA_GUIDE_REQUESTS = [
-  { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'hand-desk', version: '0' } } },
-  { jsonrpc: '2.0', method: 'notifications/initialized' },
-  { jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'get_guide', arguments: { topic: 'overview' } } },
-]
-  .map((message) => JSON.stringify(message))
-  .join('\n');
+type McpReply = { id?: number; result?: { content?: { type?: string; text?: string }[]; isError?: boolean; instructions?: string }; error?: { message?: string } };
+
+export interface CuaSession {
+  readonly call: (tool: string, args: Record<string, unknown>) => Promise<string>;
+  readonly instructions: string;
+  readonly close: () => void;
+}
+
+export const openCuaSession = async (box: Vm): Promise<CuaSession> => {
+  const child = Bun.spawn(['ssh', ...box.sshOptions, `ax@${box.host}`, `${CUA_DRIVER} mcp`], { stdin: 'pipe', stdout: 'pipe', stderr: 'ignore' });
+  const waiting = new Map<number, (reply: McpReply) => void>();
+  let nextId = 1;
+  const reading = (async () => {
+    const decoder = new TextDecoder();
+    let buffer = '';
+    const reader = child.stdout.getReader();
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let newline = buffer.indexOf('\n');
+      while (newline !== -1) {
+        const line = buffer.slice(0, newline).trim();
+        buffer = buffer.slice(newline + 1);
+        newline = buffer.indexOf('\n');
+        if (!line.startsWith('{')) continue;
+        const reply = JSON.parse(line) as McpReply;
+        if (typeof reply.id === 'number') waiting.get(reply.id)?.(reply);
+      }
+    }
+  })();
+  const request = (method: string, params: Record<string, unknown>, timeoutMs = 60_000) =>
+    new Promise<McpReply>((resolve, reject) => {
+      const id = nextId++;
+      const timer = setTimeout(() => {
+        waiting.delete(id);
+        reject(new Error(`cua-driver ${method} timed out after ${timeoutMs / 1000} s`));
+      }, timeoutMs);
+      waiting.set(id, (reply) => {
+        clearTimeout(timer);
+        waiting.delete(id);
+        resolve(reply);
+      });
+      child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id, method, params })}\n`);
+    });
+  const hello = await request('initialize', { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'hand-desk', version: '0' } }, 30_000);
+  child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' })}\n`);
+  const textOf = (reply: McpReply) =>
+    reply.error
+      ? `error: ${reply.error.message ?? 'unknown'}`
+      : (reply.result?.content ?? []).map((part) => (part.type === 'text' || part.text ? (part.text ?? '') : `[${part.type}]`)).join('\n') || '(no output)';
+  return {
+    instructions: hello.result?.instructions ?? '',
+    call: async (tool, args) => textOf(await request('tools/call', { name: tool, arguments: args })).slice(0, 12_000),
+    close: () => {
+      child.kill();
+      void reading.catch(() => undefined);
+    },
+  };
+};
 
 export const cuaGuideText = async (box: Vm) => {
-  const raw = await box.run(`printf '%s\\n' ${shellQuote(CUA_GUIDE_REQUESTS)} | perl -e 'alarm 20; exec @ARGV' ${CUA_DRIVER} mcp 2>&1 | tail -1`);
-  const reply = JSON.parse(raw) as { result?: { content?: { text?: string }[] } };
-  const guide = reply.result?.content?.map((part) => part.text ?? '').join('\n') ?? '';
-  if (guide.length < 1000) throw new Error(`Cua Driver guide came back too short (${guide.length} chars)`);
-  return guide;
+  const session = await openCuaSession(box);
+  try {
+    const guide = await session.call('get_guide', { topic: 'overview' });
+    if (guide.length < 1000) throw new Error(`Cua Driver guide came back too short (${guide.length} chars)`);
+    return [session.instructions, guide].filter(Boolean).join('\n\n');
+  } finally {
+    session.close();
+  }
 };
 
 let cachedCuaGuide = '';
+
+const parseCuaArgs = (raw: unknown): Record<string, unknown> | string => {
+  if (raw && typeof raw === 'object') return raw as Record<string, unknown>;
+  if (typeof raw !== 'string' || !raw.trim()) return {};
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    return parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : 'args must be a JSON object';
+  } catch (error) {
+    return `args is not valid JSON: ${(error as Error).message}`;
+  }
+};
 
 export const cuaDriverWith = (model?: string): DeskEntrant => ({
   id: 'cua',
@@ -187,14 +253,19 @@ export const cuaDriverWith = (model?: string): DeskEntrant => ({
         },
       },
     ];
+    const session = await openCuaSession(box);
     const call = async (_name: string, args: Record<string, unknown>) => {
       const tool = String(args.tool ?? '').replace(/[^a-z_]/g, '');
-      const json = typeof args.args === 'string' && args.args.trim() ? args.args : '{}';
-      const child = Bun.spawn(['ssh', ...box.sshOptions, `ax@${box.host}`, `${CUA_DRIVER} call ${tool} ${shellQuote(json)} 2>&1 | head -c 12000`], { stdout: 'pipe', stderr: 'pipe' });
-      return (await new Response(child.stdout).text()) || '(no output)';
+      const parsed = parseCuaArgs(args.args);
+      if (typeof parsed === 'string') return `error: ${parsed}`;
+      return session.call(tool, parsed).catch((error: Error) => `error: ${error.message}`);
     };
     const system = `${SYSTEM}\n\nYou control the Mac with Cua Driver. Its makers' guide follows.\n\n${cachedCuaGuide}`;
-    return plannerLoop(tools, call, () => 0, task, limits, system, model);
+    try {
+      return await plannerLoop(tools, call, () => 0, task, limits, system, model);
+    } finally {
+      session.close();
+    }
   },
 });
 

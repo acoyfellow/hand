@@ -15,3 +15,10 @@ Proof for each item, newest first. "Waiting on Jordan" lines say the exact click
    - Codex: **waiting on Jordan.** In the sandbox-1 VM window: System Settings → Privacy & Security → Screen & System Audio Recording → click **+** → choose Codex Computer Use → turn it on. Then the same under Accessibility. Its install probe still returns procNotFound.
 
 Spend so far in this loop: under $1 of model calls (one Finder run $0.08, the insert and tick checks, the parallel take $0.23 before the loop).
+
+## 2026-11-06: cua desk-3 scored
+
+- Adapter fixed to keep one `cua-driver mcp` session per task (lab/desk/entrants.ts `openCuaSession`). The first attempt was stopped after 3 tasks because 2 failed in our adapter; those rows were removed.
+- Full run: **36/50 finished** (11/20 Mac apps), **$4.15**, median 58 s, 5 false "done" claims, 0 harness errors. `bun lab/desk-gate.ts desk-3` passes: 5 entrants, 200 episodes, $29.67.
+- Live on hand.coey.dev/lab (version 221f54d5).
+- Codex computer use: still not run. After Jordan granted permissions, its tool returns `bootstrapTimedOut` on sandbox-1 (also after restarting Codex Computer Use) and `procNotFound` on sandbox-2.
