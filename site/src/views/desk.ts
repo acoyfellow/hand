@@ -281,11 +281,6 @@ const taskGrid = (h: H, data: Desk4Data): Html => {
 const runUrl = (run: string) => `https://github.com/acoyfellow/hand/tree/main/bench/runs/${run}`;
 
 export const desk4Section = (h: H, data: Desk4Data, index: number): Html => {
-  const wins = data.models.filter((model) => {
-    const mine = data.cells.filter((cell) => cell.modelId === model.id);
-    const hand = mine.find((cell) => cell.toolId === 'hand');
-    return hand && mine.every((cell) => cell === hand || cell.finished < hand.finished);
-  }).length;
   return h.section(
     [h.AriaLabelledBy('desk-4')],
     [
@@ -293,7 +288,7 @@ export const desk4Section = (h: H, data: Desk4Data, index: number): Html => {
       h.p(
         [h.Class('m-0 mb-3.5 max-w-[48rem] text-sm text-dim text-pretty')],
         [
-          `Every tool runs on the same models, so the only thing that changes is the tool. 15 tasks inside a macOS virtual machine: 8 in web apps in Chrome, 7 in native Mac apps (Finder, Notes, TextEdit, Calendar, System Settings). One attempt each. A task counts only when the app's own state shows it is done. hand finished the most tasks on ${wins} of ${data.models.length} models. Claude computer use only works with Claude models.`,
+          `Every tool runs on the same models, so the only thing that changes is the tool. 15 tasks inside a macOS virtual machine: 8 in web apps in Chrome, 7 in native Mac apps (Finder, Notes, TextEdit, Calendar, System Settings). One attempt each. A task counts only when the app's own state shows it is done.`,
         ],
       ),
       h.div([h.Class('grid gap-4 lg:grid-cols-2')], [slopeChart(h, data, FINISHED), slopeChart(h, data, COST)]),
@@ -323,7 +318,7 @@ export const desk3Section = (h: H, data: Desk3Data, index: number): Html =>
       h.h2([h.Id('desk-3'), h.Class('mt-11 mb-1.5 text-[19px] font-semibold')], [h.span([h.Class('mr-2 font-medium text-dim')], [String(index)]), "On a real Mac, each maker's model"]),
       h.p(
         [h.Class('m-0 mb-3.5 max-w-[48rem] text-sm text-dim text-pretty')],
-        ['50 tasks in the same macOS virtual machine, 30 in web apps and 20 in native Mac apps. Each tool used the model its maker recommends, so this mixes the tool and the model. Claude computer use finished the most. Tools that could not be installed are listed with the reason, not left out.'],
+        ['50 tasks in the same macOS virtual machine, 30 in web apps and 20 in native Mac apps. Each tool used the model its maker recommends, so this mixes the tool and the model. Tools that could not be installed are listed with the reason, not left out.'],
       ),
       scrollRegion(h, "On a real Mac, each maker's model", [
         h.table(

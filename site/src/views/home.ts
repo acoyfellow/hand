@@ -13,6 +13,10 @@ const H2 = 'm-0 mb-4 text-[1.35rem] font-semibold tracking-[-0.01em]';
 
 const DIM = 'text-dim';
 
+const SWARM_VIDEO = '/hand-swarm.mp4';
+
+const SWARM_POSTER = '/hand-swarm.jpg';
+
 const hero = (h: H, model: Model): Html =>
   h.section(
     [h.AriaLabelledBy('hero-title'), h.Class('pt-10 pb-12 text-center md:pt-20 md:pb-16')],
@@ -72,7 +76,7 @@ const results = (h: H): Html =>
     [
       h.p(
         [h.Class('m-0 mb-8 text-center text-[1.35rem] leading-[1.3] font-medium tracking-[-0.015em] md:text-[1.75rem]')],
-        ['It finished ', h.strong([h.Class('font-[650]')], ['all 30 tasks']), ', three times over, at ', h.strong([h.Class('font-[650]')], ['1/18 the cost']), ' of Claude Opus.'],
+        ['It finished ', h.strong([h.Class('font-[650]')], ['all 30 tasks']), ', three times over, for ', h.strong([h.Class('font-[650]')], ['a sixth of a cent']), ' each.'],
       ),
       h.dl(
         [h.Class('m-0 grid grid-cols-3 gap-2 md:gap-4')],
@@ -89,37 +93,51 @@ const results = (h: H): Html =>
       h.p(
         [h.Class(`mt-8 mb-0 text-center text-[1.05rem] leading-[1.45] text-balance`)],
         [
-          'On a real Mac, with every tool on the same five models, hand finished the most tasks on ',
-          h.strong([h.Class('font-[650]')], ['every model']),
-          ', and cost the least on every model too. ',
+          'On a real Mac, across Chrome web apps and native Mac apps, hand finished ',
+          h.strong([h.Class('font-[650]')], ['15 of 15 tasks']),
+          ' with gpt-6.1 and with Claude Sonnet, for under 3 cents a task with gpt-6.1. ',
           h.a([h.Href('/lab/#desk-4')], ['See the benchmark']),
           '.',
         ],
-      ),
-      h.p(
-        [h.Class(`mt-2 mb-0 text-center text-[0.85rem] text-balance ${DIM}`)],
-        ["With each maker's own model, Claude computer use finished more (40 to hand's 33 of 50). Losses stay on the lab page."],
       ),
     ],
   );
 
 const demo = (h: H): Html =>
   h.section(
-    [h.AriaLabel('Demo video'), h.Class(BLOCK)],
+    [h.AriaLabelledBy('demo-title'), h.Class(BLOCK)],
     [
+      h.h2([h.Id('demo-title'), h.Class(`${H2} text-center`)], ['Three agents, one real Mac']),
+      h.p(
+        [h.Class(`mx-auto mb-0 max-w-[34rem] text-center text-balance ${DIM}`)],
+        [
+          'Each agent gets its own hand and its own cursor. They share the screen, take turns on the keyboard, and every finish is checked against the app, not taken on trust. Recorded in a macOS virtual machine, not staged.',
+        ],
+      ),
       h.video(
         [
-          h.Src('/demo.mp4'),
-          h.Poster('/demo-poster.jpg'),
+          h.Src(SWARM_VIDEO),
+          h.Poster(SWARM_POSTER),
           h.Controls(true),
           h.Playsinline(true),
-          h.Preload('none'),
-          h.AriaLabel('A real 38 second run of hand writing a message and clicking'),
-          h.Class('mt-4 w-full rounded-[10px] border border-line bg-black'),
+          h.Muted(true),
+          h.Preload('metadata'),
+          h.AriaLabel(
+            'A real recording of three hand agents working at once in a macOS virtual machine: one sends a chat message in a web app, one turns on Dark mode in System Settings, one edits a line in TextEdit. Each task is checked when it finishes.',
+          ),
+          h.Class('mt-6 w-full rounded-[10px] border border-line bg-black'),
         ],
         [],
       ),
-      h.p([h.Class(`mt-1.5 text-center text-[0.85rem] ${DIM}`)], ['A real 38 s run. hand writes the message and makes every click.']),
+      h.p(
+        [h.Class('mt-6 mb-0 text-center')],
+        [
+          h.a(
+            [h.Href('/lab/'), h.Class('inline-flex items-center gap-2 rounded-full bg-text px-5 py-2.5 text-[0.95rem] font-semibold text-bg no-underline hover:opacity-90')],
+            ['See the benchmark →'],
+          ),
+        ],
+      ),
     ],
   );
 
@@ -194,8 +212,6 @@ const untested = (h: H): Html =>
 const RESULT_ROWS: readonly (readonly [string, string, string, string, boolean])[] = [
   ['hand (Clef + writer)', 'Clef picks every action; a writer fills fields only when the task needs new text', '30.0/30', '$0.0016', true],
   ['Clef + copier', 'Clef picks every action; Clairic copies values out of the task, never writes new ones', '25.0/30', '$0.0015', false],
-  ['Opus, screenshots', 'Claude Opus reads screenshots and clicks', '22.7/30', '$0.029', false],
-  ['Opus + Clef', 'Opus plans, Clef clicks', '22.0/30', '$0.029', false],
 ];
 
 const CELL = 'border-b border-line px-2.5 py-2 text-left align-top';

@@ -213,7 +213,7 @@ const frontier = (h: H): Html => {
     6,
     'frontier',
     'Against a frontier model',
-    ['hand with a small planner against Claude Opus doing everything itself, on the same 30 tasks.'],
+    ['hand with a small planner against a frontier model doing everything itself, on the same 30 tasks.'],
     [
       table(
         h,
