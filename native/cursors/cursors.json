@@ -2,81 +2,81 @@
   "hand": {
     "accent": "#2E9BF0",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
-  },
-  "ada": {
-    "accent": "#8B5CF6",
-    "hotspot": [
-      30,
-      19
-    ],
-    "size": 60
-  },
-  "bix": {
-    "accent": "#16A34A",
-    "hotspot": [
-      30,
-      19
-    ],
-    "size": 60
-  },
-  "cyd": {
-    "accent": "#F38020",
-    "hotspot": [
-      30,
-      19
-    ],
-    "size": 60
+    "size": 112
   },
   "claude": {
     "accent": "#E5484D",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
+    "size": 112
   },
   "codex": {
     "accent": "#EC4899",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
+    "size": 112
   },
   "agent-desktop": {
     "accent": "#8B5CF6",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
+    "size": 112
   },
   "cua": {
     "accent": "#EAB308",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
+    "size": 112
   },
   "default": {
     "accent": "#EC4899",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
+    "size": 112
+  },
+  "ada": {
+    "accent": "#8B5CF6",
+    "hotspot": [
+      56,
+      35
+    ],
+    "size": 112
+  },
+  "bix": {
+    "accent": "#16A34A",
+    "hotspot": [
+      56,
+      35
+    ],
+    "size": 112
+  },
+  "cyd": {
+    "accent": "#F38020",
+    "hotspot": [
+      56,
+      35
+    ],
+    "size": 112
   },
   "fallback": {
     "accent": "#2E9BF0",
     "hotspot": [
-      30,
-      19
+      56,
+      35
     ],
-    "size": 60
+    "size": 112
   }
 }

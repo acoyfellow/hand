@@ -4,9 +4,9 @@ import { chromium } from 'playwright';
 import { accentOf, agent, COLORS, cursorSvg, DEFAULT_MARK } from '../site/public/brand/mark.js';
 
 const out = join(import.meta.dir, 'cursors');
-const SIZE = 30;
+const SIZE = 56;
 const SCALE = 2;
-const HOTSPOT = [15, 4];
+const HOTSPOT = [28, 7];
 const agents = (process.argv[2] ?? 'hand,claude,codex,agent-desktop,cua,default').split(',');
 
 mkdirSync(out, { recursive: true });

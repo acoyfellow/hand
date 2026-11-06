@@ -32,7 +32,6 @@ func lookName(for agent: String) -> String {
 
 final class AgentCursor {
     let window: NSWindow
-    let label: NSTextField
     let color: NSColor
     let hotspot: NSPoint
     let side: CGFloat
@@ -43,7 +42,7 @@ final class AgentCursor {
         color = accentColor(hex: look.accent)
         hotspot = NSPoint(x: look.hotspot[0], y: look.hotspot[1])
         side = look.size
-        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 260, height: look.size), styleMask: .borderless, backing: .buffered, defer: false)
+        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: look.size, height: look.size), styleMask: .borderless, backing: .buffered, defer: false)
         window.isOpaque = false
         window.backgroundColor = .clear
         window.hasShadow = false
@@ -56,16 +55,6 @@ final class AgentCursor {
         image.image = NSImage(contentsOf: cursorDirectory.appendingPathComponent("\(name).png"))
         image.imageScaling = .scaleProportionallyUpOrDown
         root.addSubview(image)
-        label = NSTextField(labelWithString: agent)
-        label.font = .systemFont(ofSize: 11, weight: .semibold)
-        label.textColor = .white
-        label.drawsBackground = true
-        label.backgroundColor = color
-        label.isBezeled = false
-        label.wantsLayer = true
-        label.layer?.cornerRadius = 8
-        label.frame = NSRect(x: look.size - 8, y: 4, width: 190, height: 18)
-        root.addSubview(label)
         window.contentView = root
         window.alphaValue = 0
         window.orderFrontRegardless()
@@ -76,8 +65,6 @@ final class AgentCursor {
     var clock: Timer?
 
     func move(to point: NSPoint, text: String, ripple: Bool) {
-        label.stringValue = " \(text) "
-        label.sizeToFit()
         let target = origin(for: point)
         let start = window.alphaValue == 0 ? NSPoint(x: target.x + 140, y: target.y - 90) : window.frame.origin
         if window.alphaValue == 0 {
