@@ -42,7 +42,7 @@ const hero = (h: H, model: Model): Html =>
           h.span([h.Class('sr-only'), h.AriaLive('polite')], [model.copied ? 'Install command copied' : '']),
         ],
       ),
-      h.p([h.Class('m-0 font-mono text-[0.85rem]')], [h.a([h.Href('#mcp'), h.Class(DIM)], ['Use with an AI agent'])]),
+      h.p([h.Class('m-0 font-mono text-[0.85rem]')], [h.a([h.Href('/docs/'), h.Class(DIM)], ['Set up in 5 minutes'])]),
       h.figure(
         [h.Class('relative mx-auto mt-8 mb-0 max-w-[760px]')],
         [
@@ -193,7 +193,7 @@ const code = (h: H): Html =>
         'Library example',
         `${K('await')} hand.${F('act')}(${S("'switch to the termlab tab'")});\n${K('await')} hand.${F('type')}(${S("'coey.dev'")}, ${S("'the address bar'")});\n${K('await')} hand.${F('look')}(${S("'Is coey.dev open?'")});`,
       ),
-      h.p([h.Class(DIM)], [h.a([h.Href(`${GITHUB}#use`)], ['Full setup in the README']), '.']),
+      h.p([h.Class(DIM)], [h.a([h.Href('/docs/')], ['Full setup in the docs']), '.']),
     ],
   );
 

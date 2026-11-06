@@ -1,9 +1,10 @@
-export const PAGES = ['home', 'lab', 'brand', 'brandLab', 'notFound'] as const;
+export const PAGES = ['home', 'docs', 'lab', 'brand', 'brandLab', 'notFound'] as const;
 
 export type Page = (typeof PAGES)[number];
 
 export const PAGE_PATHS: Record<Page, string> = {
   home: '/',
+  docs: '/docs/',
   lab: '/lab/',
   brand: '/brand/',
   brandLab: '/brand/lab/',
@@ -22,6 +23,11 @@ export const PAGE_META: Record<Page, PageMeta> = {
     description:
       'A computer-use library. The device lists what can be clicked, Clef picks one with a probability, and a writer model is called only when a task needs new text.',
     canonical: 'https://hand.coey.dev/',
+  },
+  docs: {
+    title: 'hand docs · set up hand on your Mac',
+    description: 'Install hand, add Cloudflare credentials, check everything with hand doctor, and give it to your AI agent over MCP.',
+    canonical: 'https://hand.coey.dev/docs/',
   },
   lab: {
     title: 'hand lab · computer-use tools, measured',
