@@ -16,7 +16,7 @@ import { isChoiceKey, isNumericKey, type MarkOptions } from './mark-options.ts';
 import { Message } from './message.ts';
 import type { Flags, MarkLab, Model } from './model.ts';
 
-export const INSTALL_COMMAND = 'bun add github:acoyfellow/hand';
+export const INSTALL_COMMAND = 'bun add github:acoyfellow/hand#release';
 
 export const DEFAULT_SWARM_SEEDS = ['ada', 'bix', 'cyd', 'dot'];
 

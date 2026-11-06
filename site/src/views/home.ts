@@ -173,13 +173,13 @@ const mcp = (h: H): Html =>
     [
       h.h2([h.Id('mcp-title'), h.Class(H2)], ['Use it with an AI agent']),
       h.p([h.Class(DIM)], ['Works with Claude, Pi or any MCP client, on a Mac.']),
-      codeBlock(h, 'Install commands', `${F('bun')} add github:acoyfellow/hand\n${F('swiftc')} -O node_modules/hand/native/ax.swift -o node_modules/hand/native/ax`),
+      codeBlock(h, 'Install commands', `${F('bun')} add github:acoyfellow/hand#release\n${F('bunx')} hand doctor   ${C('# checks credentials and permissions, builds the helper')}`),
       codeBlock(
         h,
         'MCP configuration',
-        `{\n  ${S('"mcpServers"')}: {\n    ${S('"hand"')}: {\n      ${S('"command"')}: ${S('"bun"')},\n      ${S('"args"')}: [${S('"node_modules/hand/src/mcp.ts"')}]\n    }\n  }\n}`,
+        `{\n  ${S('"mcpServers"')}: {\n    ${S('"hand"')}: {\n      ${S('"command"')}: ${S('"bunx"')},\n      ${S('"args"')}: [${S('"hand"')}, ${S('"mcp"')}],\n      ${S('"env"')}: { ${S('"HAND_HEADED"')}: ${S('"1"')} }\n    }\n  }\n}`,
       ),
-      h.p([h.Class(DIM)], ['It never moves your mouse, and it reads back what it typed.']),
+      h.p([h.Class(DIM)], ['It reads back what it typed. Without HAND_HEADED it only uses accessibility actions and never touches your mouse or keyboard.']),
     ],
   );
 
