@@ -6,12 +6,12 @@ import { auc, mean, pct, quantile, ROOT } from './lib.ts';
 const runs = join(ROOT, 'bench', 'runs');
 const dir = process.argv[2]
   ? join(runs, process.argv[2])
-  : process.env.DO_RUN
-    ? join(runs, `${process.env.DO_RUN}${process.env.DO_MOCK === '1' ? '-mock' : ''}`)
+  : process.env.HAND_RUN
+    ? join(runs, `${process.env.HAND_RUN}${process.env.HAND_MOCK === '1' ? '-mock' : ''}`)
     : join(
         runs,
         readdirSync(runs)
-          .filter((d) => !d.endsWith('-mock') || process.env.DO_MOCK === '1')
+          .filter((d) => !d.endsWith('-mock') || process.env.HAND_MOCK === '1')
           .sort()
           .at(-1) as string,
       );

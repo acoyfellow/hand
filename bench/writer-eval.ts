@@ -80,11 +80,11 @@ export function reportTable(summary: Record<string, WriterSummary>): string {
 }
 
 if (import.meta.main) {
-  const run = process.env.DO_RUN ?? 'writer-dev';
-  const writers = (process.env.DO_WRITERS ?? 'kimi-k2.6,glm-5.3-flash').split(',');
-  const prompt = (process.env.DO_WRITER_PROMPT ?? 'plain') as WriterPrompt;
+  const run = process.env.HAND_RUN ?? 'writer-dev';
+  const writers = (process.env.HAND_WRITERS ?? 'kimi-k2.6,glm-5.3-flash').split(',');
+  const prompt = (process.env.HAND_WRITER_PROMPT ?? 'plain') as WriterPrompt;
   const t = transport();
-  const perWriter = Number(process.env.DO_WRITER_CONCURRENCY ?? 4);
+  const perWriter = Number(process.env.HAND_WRITER_CONCURRENCY ?? 4);
   const results: CaseResult[] = [];
   const evaluate = async ({ writer, c }: { writer: string; c: WriterCase }) => {
     const write = writerFromSpec(t, writer, { prompt });

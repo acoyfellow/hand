@@ -18,17 +18,17 @@ import { type JudgeResult, judge, type Requirement, rubric } from './judge.ts';
 import { close, DEFAULT_WRITER, hud, jsonl, open, pool, RECORD_DIR, recordingLog, runDir, type ScreenSpec, THINKING, transport } from './lib.ts';
 import { TASKS as BASE_TASKS, HARD_TASKS, INJ_TASKS, type Task } from './tasks.ts';
 
-const ARMS = (process.env.DO_ARMS ?? 'vision,baton,pilot').split(',');
-const REPEATS = Number(process.env.DO_REPEATS ?? 1);
-const PLANNER = (process.env.DO_PLANNER ?? 'kimi-k2.6') as LlmModel;
-const MODEL = (process.env.DO_T4_MODEL ?? 'clef') as ClefModel;
-const METHOD = (process.env.DO_T4_METHOD ?? 'hybrid') as Method;
-const TAU = Number(process.env.DO_TAU ?? 0.5);
-const ONLY = process.env.DO_TASKS?.split(',');
-const TASKS = process.env.DO_TASK_SET === 'hard' ? HARD_TASKS : process.env.DO_TASK_SET === 'all' ? [...BASE_TASKS, ...HARD_TASKS] : BASE_TASKS;
+const ARMS = (process.env.HAND_ARMS ?? 'vision,baton,pilot').split(',');
+const REPEATS = Number(process.env.HAND_REPEATS ?? 1);
+const PLANNER = (process.env.HAND_PLANNER ?? 'kimi-k2.6') as LlmModel;
+const MODEL = (process.env.HAND_T4_MODEL ?? 'clef') as ClefModel;
+const METHOD = (process.env.HAND_T4_METHOD ?? 'hybrid') as Method;
+const TAU = Number(process.env.HAND_TAU ?? 0.5);
+const ONLY = process.env.HAND_TASKS?.split(',');
+const TASKS = process.env.HAND_TASK_SET === 'hard' ? HARD_TASKS : process.env.HAND_TASK_SET === 'all' ? [...BASE_TASKS, ...HARD_TASKS] : BASE_TASKS;
 const MAX_STEPS = 15;
-const JUDGE = process.env.DO_JUDGE === '1';
-const FAULT = process.env.DO_FAULT;
+const JUDGE = process.env.HAND_JUDGE === '1';
+const FAULT = process.env.HAND_FAULT;
 const TRACKED_KEYS = ['screen', 'mail', 'settings', 'files', 'shop', 'dash', 'chat', 'people', 'editor'];
 const snapshotState = (keys: string[]) => {
   const state = (window as unknown as { __state: Record<string, unknown> }).__state;
@@ -58,8 +58,8 @@ const judgeSafely = async (page: Page, session: CDPSession, text: string, requir
     return undefined;
   }
 };
-const WRITER_SPEC = process.env.DO_WRITER ?? DEFAULT_WRITER;
-const WRITER_PROMPT = (process.env.DO_WRITER_PROMPT ?? 'plain') as WriterPrompt;
+const WRITER_SPEC = process.env.HAND_WRITER ?? DEFAULT_WRITER;
+const WRITER_PROMPT = (process.env.HAND_WRITER_PROMPT ?? 'plain') as WriterPrompt;
 const VIEW = { width: 1280, height: 800 };
 const out = runDir('t4');
 const t = transport();
@@ -530,7 +530,7 @@ const jobs = [...TASKS.map((b) => ({ b, inj: false })), ...TASKS.filter((b) => I
   (j) => !ONLY || ONLY.includes(j.b.id),
 );
 const runs = Array.from({ length: REPEATS }, (_, repeat) => ARMS.flatMap((arm) => jobs.map((j) => ({ arm, repeat, ...j })))).flat();
-await pool(runs, Number(process.env.DO_T4_CONC ?? 40), async ({ arm: armSpec, repeat, b, inj }) => {
+await pool(runs, Number(process.env.HAND_T4_CONC ?? 40), async ({ arm: armSpec, repeat, b, inj }) => {
   const [arm, planner = PLANNER] = armSpec.split(':') as [string, LlmModel?];
   const spec: ScreenSpec = { screen: b.screen, seed: b.seed, theme: 'light', density: 'comfortable', accent: 0, inj };
   const page = await open(spec);

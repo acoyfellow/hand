@@ -1,6 +1,6 @@
 import { Effect } from 'effect';
 
-process.env.DO_SKIP_CACHE = '1';
+process.env.HAND_SKIP_CACHE = '1';
 import { chat, firstJson, type LlmModel, type Msg } from '../src/llm.ts';
 import { close, jsonl, open, pool, runDir, specUrl, type ScreenSpec, THINKING, transport, writeJson } from '../bench/lib.ts';
 import { TASKS as BASE_TASKS, HARD_TASKS, type Task } from '../bench/tasks.ts';

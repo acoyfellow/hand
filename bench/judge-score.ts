@@ -80,7 +80,7 @@ if (import.meta.main) {
   const report = { runs, scored, separate, winner: winner?.name ?? null };
   writeFileSync(`bench/runs/${runs[0]}/judge-score.json`, `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({ winner: report.winner, scored }, null, 2));
-  if (process.env.DO_RECORD_LEAD === '1' && !winner) {
+  if (process.env.HAND_RECORD_LEAD === '1' && !winner) {
     const best = [...scored].sort((a, b) => b.metrics.catchRate - a.metrics.catchRate)[0];
     const round = (value: number) => Number(value.toFixed(4));
     writeLead(runs[0] as string, 'done-check', false, {

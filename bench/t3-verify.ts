@@ -7,10 +7,10 @@ import { screenshot } from './browser.ts';
 import { intentsFor, type Target } from './intents.ts';
 import { close, jsonl, open, pool, runDir, type ScreenSpec, specKey, specs, transport } from './lib.ts';
 
-const MODELS = (process.env.DO_MODELS ?? 'clef,clef-flash,clef-omni').split(',') as ClefModel[];
-const PER_SCREEN = Number(process.env.DO_T3_PER_SCREEN ?? 4);
-const LIMIT = Number(process.env.DO_SCREENS ?? 999);
-const CONC = Number(process.env.DO_CONC ?? 32);
+const MODELS = (process.env.HAND_MODELS ?? 'clef,clef-flash,clef-omni').split(',') as ClefModel[];
+const PER_SCREEN = Number(process.env.HAND_T3_PER_SCREEN ?? 4);
+const LIMIT = Number(process.env.HAND_SCREENS ?? 999);
+const CONC = Number(process.env.HAND_CONC ?? 32);
 const out = runDir('t3');
 const t = transport();
 

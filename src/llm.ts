@@ -76,7 +76,7 @@ export const LLM_MODELS = {
     systemRole: true,
   },
 } as const;
-export const ANTHROPIC_EFFORT = (process.env.DO_EFFORT ?? 'low') as 'low' | 'medium' | 'high';
+export const ANTHROPIC_EFFORT = (process.env.HAND_EFFORT ?? 'low') as 'low' | 'medium' | 'high';
 export type LlmModel = keyof typeof LLM_MODELS;
 export type CoordinateSystem = 'pixels' | 'normalized1000';
 

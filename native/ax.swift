@@ -369,11 +369,11 @@ func typeText(_ text: String, to app: NSRunningApplication) -> Outcome {
         return Outcome(ok: false, detail: "refused: \(app.localizedName ?? "?") is not the frontmost app")
     }
     let pid = app.processIdentifier
-    if ProcessInfo.processInfo.environment["DO_KEYS_UNICODE_EVENTS"] == nil {
+    if ProcessInfo.processInfo.environment["HAND_KEYS_UNICODE_EVENTS"] == nil {
         return typeThroughSystemEvents(text, pid: pid, name: app.localizedName ?? "?")
     }
     let source = CGEventSource(stateID: .hidSystemState)
-    let toSession = ProcessInfo.processInfo.environment["DO_KEYS_TO_PID"] == nil
+    let toSession = ProcessInfo.processInfo.environment["HAND_KEYS_TO_PID"] == nil
     for scalar in text.utf16 {
         guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else {
             return Outcome(ok: false, detail: "refused mid-typing: \(app.localizedName ?? "?") stopped being the frontmost app")
@@ -495,7 +495,15 @@ func fail(_ message: String, code: Int32) -> Never {
     exit(code)
 }
 
-guard AXIsProcessTrusted() else { fail("Accessibility permission is not granted for this process.", code: 2) }
+if CommandLine.arguments.dropFirst().first == "permissions" {
+    let report = ["accessibility": AXIsProcessTrusted(), "screenRecording": CGPreflightScreenCaptureAccess()]
+    FileHandle.standardOutput.write(try! JSONEncoder().encode(report))
+    exit(0)
+}
+
+guard AXIsProcessTrusted() else {
+    fail("Accessibility permission is not granted. Open System Settings > Privacy & Security > Accessibility and turn on the app that runs hand (your terminal or agent app). Run `hand doctor` to check.", code: 2)
+}
 
 let rawArgs = Array(CommandLine.arguments.dropFirst())
 let headed = rawArgs.contains("--headed")
@@ -566,7 +574,7 @@ func target(_ app: NSRunningApplication, _ pathText: String) -> AXUIElement {
 }
 
 func needsHeaded(_ what: String) {
-    if !headed { finish(refused("POLICY_DENIED", "\(what) uses physical input (keystrokes or the mouse) and is off unless --headed is passed"), lease: nil) }
+    if !headed { finish(refused("POLICY_DENIED", "\(what) uses physical input (keystrokes or the mouse) and is off unless --headed is passed (HAND_HEADED=1 for the MCP server)"), lease: nil) }
 }
 
 func acting() -> InteractionLease {

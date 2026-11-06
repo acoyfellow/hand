@@ -66,7 +66,7 @@ export function gatewayTransport(cfg: { accountId: string; gateway: string; toke
       headers: {
         authorization: `Bearer ${cfg.token}`,
         'content-type': 'application/json',
-        ...(process.env.DO_SKIP_CACHE === '1' ? { 'cf-aig-skip-cache': 'true' } : {}),
+        ...(process.env.HAND_SKIP_CACHE === '1' ? { 'cf-aig-skip-cache': 'true' } : {}),
       },
       body: JSON.stringify(body),
       signal,

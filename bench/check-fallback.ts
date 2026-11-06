@@ -23,7 +23,7 @@ else {
 const benchManifest = readJson<Manifest>('bench/runs/bench-6/manifest.json');
 const arm = readJson<T4Run>('bench/runs/bench-6/summary.json').t4[ARM];
 if (benchManifest.mock) failures.push('bench-6 is a mock run');
-if (benchManifest.settings?.DO_WRITER !== WRITER) failures.push(`bench-6 ran with DO_WRITER=${benchManifest.settings?.DO_WRITER}, need ${WRITER}`);
+if (benchManifest.settings?.HAND_WRITER !== WRITER) failures.push(`bench-6 ran with HAND_WRITER=${benchManifest.settings?.HAND_WRITER}, need ${WRITER}`);
 if (!arm) failures.push(`bench-6 has no ${ARM}`);
 else if (arm.successes.length < 3 || arm.successes.some((s) => s < arm.n))
   failures.push(`bench-6 ${ARM}: ${arm.successes.join(', ')} of ${arm.n}, need ${arm.n} in all 3 repeats`);

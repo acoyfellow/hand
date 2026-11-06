@@ -9,8 +9,8 @@ interface Pick {
 }
 
 const TAU = 0.5;
-const MIN_MARGIN = Number(process.env.DO_MIN_MARGIN ?? 0);
-const MIN_SEED = Number(process.env.DO_MIN_SEED ?? 0);
+const MIN_MARGIN = Number(process.env.HAND_MIN_MARGIN ?? 0);
+const MIN_SEED = Number(process.env.HAND_MIN_SEED ?? 0);
 const asks = (pick: Pick) => pick.p < TAU || (pick.margin ?? pick.p) < MIN_MARGIN;
 const seedOf = (screen: string) => Number(/-s(\d+)-/.exec(screen)?.[1] ?? 0);
 const BINS: readonly [number, number][] = [

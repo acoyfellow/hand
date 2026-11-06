@@ -7,10 +7,10 @@ import { axCandidates, cdp, groundTruthId, screenshot } from './browser.ts';
 import type { Target } from './intents.ts';
 import { close, jsonl, open, pool, runDir, specKey, specs, transport } from './lib.ts';
 
-const MODELS = (process.env.DO_MODELS ?? 'clef,clef-flash,clef-omni').split(',') as ClefModel[];
-const LIMIT = Number(process.env.DO_SCREENS ?? 999);
-const BENIGN_PER_SCREEN = Number(process.env.DO_T5_BENIGN ?? 8);
-const CONC = Number(process.env.DO_CONC ?? 32);
+const MODELS = (process.env.HAND_MODELS ?? 'clef,clef-flash,clef-omni').split(',') as ClefModel[];
+const LIMIT = Number(process.env.HAND_SCREENS ?? 999);
+const BENIGN_PER_SCREEN = Number(process.env.HAND_T5_BENIGN ?? 8);
+const CONC = Number(process.env.HAND_CONC ?? 32);
 const out = runDir('t5');
 const t = transport();
 

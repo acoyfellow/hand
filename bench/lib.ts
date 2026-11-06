@@ -26,7 +26,7 @@ export const specUrl = (s: ScreenSpec) =>
 export const SCREENS = ['mail', 'settings', 'files', 'shop', 'dashboard', 'chat', 'people', 'editor'];
 
 /** 3 variants per screen: light/comfortable, dark/compact, light/compact with a different accent. */
-export function specs(extraRounds = Number(process.env.DO_EXTRA_SEEDS ?? 0)): ScreenSpec[] {
+export function specs(extraRounds = Number(process.env.HAND_EXTRA_SEEDS ?? 0)): ScreenSpec[] {
   const out: ScreenSpec[] = [];
   for (let round = 0; round <= extraRounds; round++) {
     const offset = round * 100;
@@ -52,7 +52,7 @@ export async function close() {
 }
 
 /** Retina-like capture: 1280x800 CSS px at 2x, like a MacBook screen. */
-export const RECORD_DIR = process.env.DO_RECORD;
+export const RECORD_DIR = process.env.HAND_RECORD;
 const CLICK_LOG_SCRIPT = `
 window.__doClicks = window.__doClicks || [];
 addEventListener('pointerdown', (event) => { window.__doClicks.push({ at: Date.now(), x: event.clientX, y: event.clientY }); }, true);
@@ -93,9 +93,9 @@ export async function hud(page: Page, lines: Omit<HudEvent, 'atMs'>) {
   hudEvents.set(page, events);
 }
 
-export const MOCK = process.env.DO_MOCK === '1';
+export const MOCK = process.env.HAND_MOCK === '1';
 export const DEFAULT_WRITER = 'glm-5.3-flash>kimi-k2.6';
-export const THINKING = process.env.DO_THINKING === '1';
+export const THINKING = process.env.HAND_THINKING === '1';
 export function limited(inner: Transport, n: number): Transport {
   let active = 0;
   const waiting: (() => void)[] = [];
@@ -121,7 +121,7 @@ export function limited(inner: Transport, n: number): Transport {
   };
 }
 
-export const IN_FLIGHT = Number(process.env.DO_CONCURRENCY ?? 24);
+export const IN_FLIGHT = Number(process.env.HAND_CONCURRENCY ?? 24);
 export function transport(): Transport {
   if (MOCK) return limited(mockTransport(), IN_FLIGHT);
   const cfg = readConfig();
@@ -129,8 +129,8 @@ export function transport(): Transport {
 }
 
 export function runDir(test: string): string {
-  const id = process.env.DO_RUN ?? new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  process.env.DO_RUN = id;
+  const id = process.env.HAND_RUN ?? new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  process.env.HAND_RUN = id;
   const dir = join(ROOT, 'bench', 'runs', `${id}${MOCK ? '-mock' : ''}`);
   mkdirSync(dir, { recursive: true });
   rmSync(join(dir, `${test}.jsonl`), { force: true });

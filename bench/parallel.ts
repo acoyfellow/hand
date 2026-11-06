@@ -12,13 +12,13 @@ import { TASKS, type Task } from './tasks.ts';
 
 const AGENTS = ['a1', 'a2', 'a3'];
 const TASK_IDS = (
-  process.env.DO_TASKS ??
+  process.env.HAND_TASKS ??
   'mail-archive,mail-spam,settings-notify,settings-lang,files-folder,shop-two,dash-billing-refresh,chat-send,people-sort-page,cross-dark'
 ).split(',');
-const PLANNER = (process.env.DO_PLANNER ?? 'kimi-k2.6') as LlmModel;
+const PLANNER = (process.env.HAND_PLANNER ?? 'kimi-k2.6') as LlmModel;
 const MAX_TURNS = 12;
 const out = runDir('parallel');
-const run = process.env.DO_RUN as string;
+const run = process.env.HAND_RUN as string;
 const t = transport();
 
 const EVENT_LOG = `(() => {
@@ -189,4 +189,4 @@ const metrics = {
 writeFileSync(`${out}.summary.json`, `${JSON.stringify(metrics, null, 2)}\n`);
 const pass = metrics.runs === AGENTS.length * TASK_IDS.length && metrics.lostActions === 0 && metrics.crossedActions === 0 && metrics.successes >= 28;
 console.log(JSON.stringify({ pass, ...metrics }));
-if (process.env.DO_RECORD_LEAD === '1') writeLead(run, 'parallel-agents', pass, metrics);
+if (process.env.HAND_RECORD_LEAD === '1') writeLead(run, 'parallel-agents', pass, metrics);

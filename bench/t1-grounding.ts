@@ -10,13 +10,13 @@ import { axCandidates, cdp, groundTruthId, marked, playwrightScreen, screenshot,
 import { type Intent, intentsFor } from './intents.ts';
 import { close, jsonl, MOCK, open, pool, runDir, specKey, specs, THINKING, transport } from './lib.ts';
 
-const MODELS = (process.env.DO_MODELS ?? 'clef,clef-flash,clef-omni').split(',') as ClefModel[];
-const METHODS = (process.env.DO_METHODS ?? 'ax_text,ax_image,marks,hybrid,grid').split(',') as Method[];
-const BASELINES = (process.env.DO_BASELINES ?? 'kimi-k2.6:xy,qwen3.8-27b:xy,kimi-k2.6:marks').split(',').filter(Boolean);
-const PER_SCREEN = Number(process.env.DO_PER_SCREEN ?? 7);
-const LIMIT = Number(process.env.DO_SCREENS ?? 999);
-const CONC = Number(process.env.DO_CONC ?? 32);
-const SCREEN_CONC = Number(process.env.DO_SCREEN_CONC ?? 8);
+const MODELS = (process.env.HAND_MODELS ?? 'clef,clef-flash,clef-omni').split(',') as ClefModel[];
+const METHODS = (process.env.HAND_METHODS ?? 'ax_text,ax_image,marks,hybrid,grid').split(',') as Method[];
+const BASELINES = (process.env.HAND_BASELINES ?? 'kimi-k2.6:xy,qwen3.8-27b:xy,kimi-k2.6:marks').split(',').filter(Boolean);
+const PER_SCREEN = Number(process.env.HAND_PER_SCREEN ?? 7);
+const LIMIT = Number(process.env.HAND_SCREENS ?? 999);
+const CONC = Number(process.env.HAND_CONC ?? 32);
+const SCREEN_CONC = Number(process.env.HAND_SCREEN_CONC ?? 8);
 
 const out = runDir('t1');
 const t = transport();

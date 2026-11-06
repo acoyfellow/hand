@@ -1,13 +1,11 @@
 import { execFile } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
 import { createInterface } from 'node:readline';
-import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
 import { readConfig, readToken } from './credentials.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
 import { Hand, type HandOptions } from './hand.ts';
+import { helperOrBuild } from './helper.ts';
 
 const run = promisify(execFile);
 
@@ -196,10 +194,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
 }
 
 export function defaultHelper(): string {
-  const here = dirname(fileURLToPath(import.meta.url));
-  const candidate = process.env.DO_AX_HELPER ?? join(here, '..', 'native', 'ax');
-  if (!existsSync(candidate)) throw new Error(`accessibility helper not found at ${candidate}; build it with swiftc -O native/ax.swift -o native/ax`);
-  return candidate;
+  return helperOrBuild();
 }
 
 export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND, notify: (event: ActionEvent) => void = () => {}): Session {
@@ -283,7 +278,7 @@ export function serve(session: () => Session): void {
   });
 }
 
-if (import.meta.main) {
+export function startServer(): void {
   let cached: Session | undefined;
   serve(() => {
     cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper(), DEFAULT_HAND, (event) =>
@@ -294,3 +289,5 @@ if (import.meta.main) {
     return cached;
   });
 }
+
+if (import.meta.main) startServer();

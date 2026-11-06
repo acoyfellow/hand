@@ -82,7 +82,7 @@ export async function anthropicMessages(
 ): Promise<AnthropicReply> {
   const cfg = readConfig();
   const token = readToken();
-  const gateway = process.env.DO_ANTHROPIC_GATEWAY ?? 'my-ax';
+  const gateway = process.env.HAND_ANTHROPIC_GATEWAY ?? 'my-ax';
   const converted = toAnthropicMessages(messages);
   const body = {
     model,
@@ -101,7 +101,7 @@ export async function anthropicMessages(
       'cf-aig-authorization': `Bearer ${token}`,
       'content-type': 'application/json',
       'anthropic-version': '2023-06-01',
-      ...(process.env.DO_SKIP_CACHE === '1' ? { 'cf-aig-skip-cache': 'true' } : {}),
+      ...(process.env.HAND_SKIP_CACHE === '1' ? { 'cf-aig-skip-cache': 'true' } : {}),
     },
     body: JSON.stringify(body),
     signal,

@@ -16,12 +16,12 @@ const BROWSERGYM_BASE = join(EXTERNAL, 'BrowserGym', 'browsergym', 'miniwob', 's
 const METADATA = join(EXTERNAL, 'BrowserGym', 'browsergym', 'experiments', 'src', 'browsergym', 'experiments', 'benchmark', 'metadata', 'miniwob.csv');
 const VIEWPORT = { width: 332, height: 214 };
 const MAX_STEPS = 10;
-const PLANNER = (process.env.DO_PLANNER ?? 'kimi-k2.6') as LlmModel;
-const ARMS = (process.env.DO_ARMS ?? 'do,vision').split(',');
-const LIMIT = Number(process.env.DO_LIMIT ?? 999);
-const CONCURRENCY = Number(process.env.DO_PUBLIC_CONC ?? 8);
+const PLANNER = (process.env.HAND_PLANNER ?? 'kimi-k2.6') as LlmModel;
+const ARMS = (process.env.HAND_ARMS ?? 'do,vision').split(',');
+const LIMIT = Number(process.env.HAND_LIMIT ?? 999);
+const CONCURRENCY = Number(process.env.HAND_PUBLIC_CONC ?? 8);
 const out = runDir('public');
-const run = process.env.DO_RUN as string;
+const run = process.env.HAND_RUN as string;
 const t = transport();
 
 export const TASK_NAMES = readFileSync(METADATA, 'utf8')
@@ -260,7 +260,7 @@ writeJson(`${out}.summary.json`, summary);
 console.log(JSON.stringify(summary, null, 2));
 const doArmResult = summary.do;
 const visionResult = summary.vision;
-if (process.env.DO_RECORD_LEAD === '1' && doArmResult && visionResult) {
+if (process.env.HAND_RECORD_LEAD === '1' && doArmResult && visionResult) {
   const pass =
     doArmResult.tasks === TASK_NAMES.length &&
     visionResult.tasks === TASK_NAMES.length &&

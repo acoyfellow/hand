@@ -159,7 +159,9 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
 
   const renameInFinder = async (target: MacosCandidate, newName: string): Promise<void> => {
     if (!opts.headed)
-      throw new Error(`renaming "${target.name}" in Finder needs keystrokes (select, return, type, return), which are off unless the device is headed`);
+      throw new Error(
+        `renaming "${target.name}" in Finder needs keystrokes (select, return, type, return), which are off unless the device is headed (HAND_HEADED=1 for the MCP server)`,
+      );
     const row = await helper<AxOutcome>('click', String(target.x + Math.min(target.w / 2, 40)), String(target.y + target.h / 2));
     lastActions.push(`select ${target.name}: ${row.detail}`);
     for (const step of [
@@ -201,7 +203,8 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     press: async (c) => {
       const target = c as MacosCandidate;
       if (await press(target)) return;
-      if (!opts.allowMouse) throw new Error(`${target.role} "${target.name}" has no accessibility press action and mouse input is off`);
+      if (!opts.allowMouse)
+        throw new Error(`${target.role} "${target.name}" has no accessibility press action and mouse input is off (HAND_HEADED=1 for the MCP server)`);
       const p = { x: target.x + target.w / 2, y: target.y + target.h / 2 };
       const outcome = await helper<AxOutcome>('click', String(p.x), String(p.y));
       lastActions.push(`mouse ${outcome.detail}`);
@@ -216,7 +219,10 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     click: async (p) => {
       const target = smallestContaining(last, p);
       if (target && (await press(target))) return;
-      if (!opts.allowMouse) throw new Error(`no accessibility action for the control at ${Math.round(p.x)},${Math.round(p.y)} and mouse input is off`);
+      if (!opts.allowMouse)
+        throw new Error(
+          `no accessibility action for the control at ${Math.round(p.x)},${Math.round(p.y)} and mouse input is off (HAND_HEADED=1 for the MCP server)`,
+        );
       const outcome = await helper<AxOutcome>('click', String(p.x), String(p.y));
       lastActions.push(`mouse ${outcome.detail}`);
     },
@@ -238,7 +244,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
         );
       if (!opts.headed)
         throw new Error(
-          `could not set ${target.role} "${target.name}" through accessibility (${set.detail}), and keystrokes are off unless the device is headed`,
+          `could not set ${target.role} "${target.name}" through accessibility (${set.detail}), and keystrokes are off unless the device is headed (HAND_HEADED=1 for the MCP server)`,
         );
       const focused = await onTarget('focus', target);
       lastActions.push(`focus ${target.role} "${target.name}": ${focused.detail}`);
@@ -258,7 +264,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     insertAtCursor: async (c, text) => {
       const target = c as MacosCandidate;
       if (appArg === '-') throw new Error('typing needs a named app so keystrokes go only to it');
-      if (!opts.headed) throw new Error('typing at the cursor uses keystrokes, which are off unless the device is headed');
+      if (!opts.headed) throw new Error('typing at the cursor uses keystrokes, which are off unless the device is headed (HAND_HEADED=1 for the MCP server)');
       const readBack = async () => (await helper<AxOutcome>('value', appArg, target.path).catch(() => ({ ok: false, detail: '' }))).detail;
       const typed = await helper<AxOutcome>('type', appArg, text);
       lastActions.push(`insert at cursor: ${typed.detail}`);

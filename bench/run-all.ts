@@ -4,10 +4,10 @@ import { CLEF_MODELS } from '../src/clef.ts';
 import { LLM_MODELS } from '../src/llm.ts';
 import { DEFAULT_WRITER } from './lib.ts';
 
-const id = process.env.DO_RUN ?? new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-const mock = process.env.DO_MOCK === '1';
-const totalInFlight = Number(process.env.DO_CONCURRENCY ?? 160);
-const env: Record<string, string | undefined> = { ...process.env, DO_RUN: id };
+const id = process.env.HAND_RUN ?? new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+const mock = process.env.HAND_MOCK === '1';
+const totalInFlight = Number(process.env.HAND_CONCURRENCY ?? 160);
+const env: Record<string, string | undefined> = { ...process.env, HAND_RUN: id };
 const startedAt = performance.now();
 const timings: Record<string, number> = {};
 
@@ -40,8 +40,8 @@ const runPrefixed = (file: string) =>
   });
 
 if (!mock) runSync('bench/probe.ts');
-const tests = (process.env.DO_ONLY_TESTS ?? 't1-grounding,t3-verify,t5-safety,t4-e2e').split(',').map((t) => `bench/${t}.ts`);
-env.DO_CONCURRENCY = String(Math.max(1, Math.floor(totalInFlight / tests.length)));
+const tests = (process.env.HAND_ONLY_TESTS ?? 't1-grounding,t3-verify,t5-safety,t4-e2e').split(',').map((t) => `bench/${t}.ts`);
+env.HAND_CONCURRENCY = String(Math.max(1, Math.floor(totalInFlight / tests.length)));
 const codes = await Promise.all(tests.map(runPrefixed));
 if (codes.some((code) => code !== 0)) {
   console.log(`tests failed: ${tests.filter((_, i) => codes[i] !== 0).join(', ')}`);
@@ -51,8 +51,8 @@ runSync('bench/report.ts');
 const dir = `bench/runs/${id}${mock ? '-mock' : ''}`;
 const git = (args: string) => execSync(`git ${args}`, { encoding: 'utf8' }).trim();
 const settings = Object.fromEntries(
-  Object.entries({ ...((env.DO_ARMS ?? '').includes('relay') ? { DO_WRITER: DEFAULT_WRITER } : {}), ...env })
-    .filter(([key]) => key.startsWith('DO_') && !['DO_RUN', 'DO_CONCURRENCY', 'DO_RECORD'].includes(key))
+  Object.entries({ ...((env.HAND_ARMS ?? '').includes('relay') ? { HAND_WRITER: DEFAULT_WRITER } : {}), ...env })
+    .filter(([key]) => key.startsWith('DO_') && !['HAND_RUN', 'HAND_CONCURRENCY', 'HAND_RECORD'].includes(key))
     .sort(),
 );
 const manifest = {
@@ -69,6 +69,6 @@ const manifest = {
 writeFileSync(`${dir}/manifest.json`, `${JSON.stringify(manifest, null, 2)}\n`);
 writeFileSync(
   `${dir}/timing.json`,
-  `${JSON.stringify({ run: id, wallMs: Math.round(performance.now() - startedAt), stepsMs: timings, totalInFlight, perTestInFlight: Number(env.DO_CONCURRENCY) }, null, 2)}\n`,
+  `${JSON.stringify({ run: id, wallMs: Math.round(performance.now() - startedAt), stepsMs: timings, totalInFlight, perTestInFlight: Number(env.HAND_CONCURRENCY) }, null, 2)}\n`,
 );
 console.log(`\nrun ${id} complete: ${dir}/REPORT.md (wall ${((performance.now() - startedAt) / 60000).toFixed(1)} min)`);

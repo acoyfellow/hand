@@ -21,11 +21,11 @@
     "evals": "bun bench/run-all.ts",
     "report": "bun bench/report.ts",
     "smoke": "bun bench/smoke.ts",
-    "bench": "DO_REPEATS=${DO_REPEATS:-3} DO_ARMS=${DO_ARMS:-vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot} DO_SKIP_CACHE=${DO_SKIP_CACHE:-1} bun bench/run-all.ts",
-    "bench:mock": "DO_MOCK=1 DO_RUN=${DO_RUN:-check} DO_SCREENS=2 DO_PER_SCREEN=2 DO_T3_PER_SCREEN=1 DO_TASKS=mail-archive DO_REPEATS=2 DO_ARMS=vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot bun bench/run-all.ts && python3 bench/compare-runs.py reference-mock check-mock",
+    "bench": "HAND_REPEATS=${HAND_REPEATS:-3} HAND_ARMS=${HAND_ARMS:-vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot} HAND_SKIP_CACHE=${HAND_SKIP_CACHE:-1} bun bench/run-all.ts",
+    "bench:mock": "HAND_MOCK=1 HAND_RUN=${HAND_RUN:-check} HAND_SCREENS=2 HAND_PER_SCREEN=2 HAND_T3_PER_SCREEN=1 HAND_TASKS=mail-archive HAND_REPEATS=2 HAND_ARMS=vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot bun bench/run-all.ts && python3 bench/compare-runs.py reference-mock check-mock",
     "bench:verify": "bun bench/verify.ts",
     "gate": "bun bench/gate.ts",
-    "bench:mock:reference": "DO_MOCK=1 DO_RUN=reference DO_SCREENS=2 DO_PER_SCREEN=2 DO_T3_PER_SCREEN=1 DO_TASKS=mail-archive DO_REPEATS=2 DO_ARMS=vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot bun bench/run-all.ts",
+    "bench:mock:reference": "HAND_MOCK=1 HAND_RUN=reference HAND_SCREENS=2 HAND_PER_SCREEN=2 HAND_T3_PER_SCREEN=1 HAND_TASKS=mail-archive HAND_REPEATS=2 HAND_ARMS=vision:kimi-k2.6,vision:qwen3.8-27b,baton:kimi-k2.6,pilot bun bench/run-all.ts",
     "writers": "bun bench/writer-eval.ts",
     "site:install": "cd site && bun install",
     "site:dev": "cd site && bun run dev",
@@ -61,7 +61,12 @@
     "./credentials": "./src/credentials.ts",
     "./writer": "./src/writer.ts",
     "./devices/macos": "./src/devices/macos.ts",
-    "./devices/browser": "./src/devices/browser.ts"
+    "./devices/browser": "./src/devices/browser.ts",
+    "./mcp": "./src/mcp.ts",
+    "./helper": "./src/helper.ts"
+  },
+  "bin": {
+    "hand": "./src/cli.ts"
   },
   "files": [
     "src",

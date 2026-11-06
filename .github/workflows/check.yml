@@ -17,6 +17,10 @@ jobs:
       - run: bun run check
       - name: Build the accessibility helper
         run: swiftc -O native/ax.swift -o native/ax
+      - name: Install as a new user would, from the packed library
+        run: |
+          npm pack --silent --pack-destination "$RUNNER_TEMP" > "$RUNNER_TEMP/name.txt"
+          sh scripts/fresh-install.sh "$RUNNER_TEMP/$(cat "$RUNNER_TEMP/name.txt")"
 
   site:
     runs-on: ubuntu-latest

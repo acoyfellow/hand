@@ -148,14 +148,20 @@ export const agentDesktop = agentDesktopWith();
 const CUA_DRIVER = '$HOME/.local/bin/cua-driver';
 const shellQuote = (text: string) => `'${text.replace(/'/g, `'\\''`)}'`;
 
-const cuaGuide = async (box: Vm) => {
-  const raw = await box.run(`${CUA_DRIVER} call get_guide '{"topic":"overview"}' 2>&1 | head -c 30000`);
-  try {
-    const parsed = JSON.parse(raw) as { content?: string; text?: string };
-    return parsed.content ?? parsed.text ?? raw;
-  } catch {
-    return raw;
-  }
+const CUA_GUIDE_REQUESTS = [
+  { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'hand-desk', version: '0' } } },
+  { jsonrpc: '2.0', method: 'notifications/initialized' },
+  { jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'get_guide', arguments: { topic: 'overview' } } },
+]
+  .map((message) => JSON.stringify(message))
+  .join('\n');
+
+export const cuaGuideText = async (box: Vm) => {
+  const raw = await box.run(`printf '%s\\n' ${shellQuote(CUA_GUIDE_REQUESTS)} | perl -e 'alarm 20; exec @ARGV' ${CUA_DRIVER} mcp 2>&1 | tail -1`);
+  const reply = JSON.parse(raw) as { result?: { content?: { text?: string }[] } };
+  const guide = reply.result?.content?.map((part) => part.text ?? '').join('\n') ?? '';
+  if (guide.length < 1000) throw new Error(`Cua Driver guide came back too short (${guide.length} chars)`);
+  return guide;
 };
 
 let cachedCuaGuide = '';
@@ -170,7 +176,7 @@ export const cuaDriverWith = (model?: string): DeskEntrant => ({
     return granted ? { ok: true } : { ok: false, reason: 'macOS Accessibility and Screen Recording were not granted to CuaDriver in the VM. macOS accepts that grant only from a human click in System Settings.' };
   },
   run: async (box, task, limits) => {
-    cachedCuaGuide ||= await cuaGuide(box);
+    cachedCuaGuide ||= await cuaGuideText(box);
     const tools: Tool[] = [
       {
         type: 'function',

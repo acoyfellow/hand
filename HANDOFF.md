@@ -19,7 +19,7 @@ You DO, not plan. Report with receipts: commands, exit codes, run directories, S
   - `bench/judge.ts`: `rubric()` and `judge()`.
   - `bench/judge-report.ts`
   - `bench/runs/judge-1/`
-- Modified: `bench/t4-e2e.ts`, behind `DO_JUDGE=1`.
+- Modified: `bench/t4-e2e.ts`, behind `HAND_JUDGE=1`.
 - judge-1 results (280 samples, the start and end of each task):
   - **Whole-task question (screenshot):** 94.3% accurate, 4% false pass. Caught **2/8** false "done" claims.
   - **Checklist (screenshot + accessibility state):** 77.9% accurate, 1.3% false pass. Caught **6/8**. Abstains 2.9%.
@@ -40,7 +40,7 @@ Make the judge useful enough to ship in `src/` as a done-check that `Hand` can r
 5. Feedback test: show the verdict to the agent before it says done. Arms: real verdict, placebo, none. Measure false "done" claims.
 
 ## Rules
-- Bench: `bun bench/t4-e2e.ts`, run with `DO_JUDGE=1`, `DO_TASK_SET=hard|all`, `DO_TASKS=a,b`. Reports go in `bench/runs/<name>/`. Lint with Biome (`bun x biome check`).
+- Bench: `bun bench/t4-e2e.ts`, run with `HAND_JUDGE=1`, `HAND_TASK_SET=hard|all`, `HAND_TASKS=a,b`. Reports go in `bench/runs/<name>/`. Lint with Biome (`bun x biome check`).
 - Run long jobs with nohup (`# frugal:allow-long`). No sleep loops; use `loops_task` and delete it when it finishes.
 - Never: push or deploy without Jordan's OK, mock, use `--no-verify`, add source comments, or use the npm `do` package (install with `bun add github:acoyfellow/hand`).
 - Stay in cmux workspace:37 (JORDAN). Check with `cmux identify --json`, not `$CMUX_WORKSPACE_ID`.
