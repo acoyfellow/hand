@@ -250,7 +250,7 @@ interface Desk3Summary {
   readonly usd: number;
 }
 
-const DESK3_MODEL: Record<string, string> = { hand: 'kimi-k2.6', 'agent-desktop': 'kimi-k2.6', 'claude-cu': 'Sonnet 4.6' };
+const DESK3_MODEL: Record<string, string> = { hand: 'kimi-k2.6', 'agent-desktop': 'kimi-k2.6', 'claude-cu': 'Sonnet 4.6', cua: 'gpt-6.1-sol' };
 
 function desk3() {
   const path = join(RUNS, 'desk-3', 'desk.summary.json');

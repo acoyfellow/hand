@@ -30,10 +30,9 @@
   },
   "cua": {
     "entrant": "cua",
-    "installed": false,
-    "reason": "CuaDriver was not granted macOS Accessibility and Screen Recording in the VM: with its daemon started, check_permissions returns permissions_pending. macOS accepts that grant only from a human click in System Settings; synthetic clicks and TCC writes are blocked by SIP.",
-    "tasks": 0,
-    "finished": 0,
-    "usd": 0
+    "installed": true,
+    "tasks": 50,
+    "finished": 36,
+    "usd": 4.1491
   }
 }
