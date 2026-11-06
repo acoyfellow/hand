@@ -21,7 +21,8 @@ const sortableBody = html.split('data-sortable="desk4"')[1]?.split('</table>')[0
 const rows = (sortableBody.match(/<tr/g) ?? []).length - 1;
 if (rows !== 12) fail(`desk-4 table shows ${rows} rows, expected 12`);
 const notInstalled = (data.desk3?.rows ?? []).filter((row) => !row.installed);
-if (notInstalled.length < 2) fail('desk-3 must list codex and cua as not installed');
-if ((html.match(/Not installed\./g) ?? []).length < 2) fail('desk-3 table does not show the not-installed reasons');
+const installedCount = (data.desk3?.rows ?? []).length - notInstalled.length;
+if (installedCount < 4) fail('desk-3 must show hand, cua, Claude computer use and agent-desktop');
+if ((html.match(/Not installed\./g) ?? []).length < notInstalled.length) fail('desk-3 table does not show every not-installed reason');
 if (!html.includes('Head to head, browser only')) fail('head-to-head is not labelled browser only');
 console.log(`site-gate PASS: desk-4 12 rows and 2 charts, desk-3 ${data.desk3?.rows.length} tools (${notInstalled.length} not installed), head-to-head labelled`);
