@@ -1,0 +1,36 @@
+{
+  "name": "hand",
+  "version": "0.1.0",
+  "description": "Clef steers computer use. Code lists what can be clicked, Clef picks with a probability, code acts, Clef checks.",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "effect": "4.0.0"
+  },
+  "exports": {
+    "./clef": "./src/clef.ts",
+    "./clairic": "./src/clairic.ts",
+    "./hand": "./src/hand.ts",
+    "./steer": "./src/steer.ts",
+    "./cursor.js": "./src/cursor.js",
+    "./perceive": "./src/perceive.ts",
+    "./llm": "./src/llm.ts",
+    "./anthropic": "./src/anthropic.ts",
+    "./credentials": "./src/credentials.ts",
+    "./writer": "./src/writer.ts",
+    "./devices/macos": "./src/devices/macos.ts",
+    "./devices/browser": "./src/devices/browser.ts",
+    "./mcp": "./src/mcp.ts",
+    "./helper": "./src/helper.ts"
+  },
+  "bin": {
+    "hand": "./src/cli.ts"
+  },
+  "files": [
+    "src",
+    "native/ax.swift",
+    "README.md",
+    "LICENSE",
+    "llms.txt"
+  ]
+}
