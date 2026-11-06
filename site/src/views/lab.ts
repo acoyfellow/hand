@@ -1,6 +1,6 @@
 import type { Html } from 'foldkit/html';
 import { LAB_DATA } from '../lab-data.ts';
-import { desk3Section, desk4Section } from './desk.ts';
+import { handOnMac } from './hand-results.ts';
 import { type Child, type H, scrollRegion } from './kit.ts';
 
 const money = (usd: number) => (usd < 0.01 ? `$${usd.toFixed(4)}` : `$${usd.toFixed(3)}`);
@@ -67,110 +67,6 @@ const section = (h: H, index: number, id: string, title: string, lede: readonly 
 
 const bold = (h: H, content: Child) => h.strong([h.Class('font-semibold')], [content]);
 
-const headToHead = (h: H): Html => {
-  const rows = LAB_DATA.headToHead;
-  const leader = rows[0];
-  return section(
-    h,
-    3,
-    'head-to-head',
-    'Head to head, browser only',
-    [
-      `Browser only, not the desktop. Same 30 tasks, three repeats each, and the same planner model (${LAB_DATA.planner}) driving every tool. Only the tool changes. A task counts only when the app's own state says it is done. Best first.`,
-    ],
-    [
-      table(
-        h,
-        'Head to head',
-        [
-          { label: 'Tool' },
-          { label: 'Finished', numeric: true },
-          { label: 'Cost per task', numeric: true },
-          { label: 'Tasks per $1', numeric: true },
-          { label: 'Median time', numeric: true, wide: true },
-          { label: 'Planner tokens', numeric: true, wide: true },
-          { label: 'Unasked deletes', numeric: true, wide: true },
-          { label: 'False "done"', numeric: true, wide: true },
-        ],
-        rows.length
-          ? rows.map((row) =>
-              bodyRow(
-                h,
-                [
-                  { content: [bold(h, row.arm)], header: true },
-                  { content: [`${row.finished}/${row.tasks}`], numeric: true },
-                  { content: [money(row.usdPerTask)], numeric: true },
-                  { content: [row.finishedPerDollar.toLocaleString('en-US')], numeric: true },
-                  { content: [`${row.medianSeconds} s`], numeric: true, wide: true },
-                  { content: [row.tokensPerTask.toLocaleString('en-US')], numeric: true, wide: true },
-                  { content: [String(row.danger)], numeric: true, wide: true },
-                  { content: [String(row.falseDone)], numeric: true, wide: true },
-                ],
-                row === leader,
-              ),
-            )
-          : [h.tr([], [h.td([h.Colspan(8), h.Class(TD)], ['Running.'])])],
-      ),
-      ...(leader
-        ? [
-            h.p(
-              [h.Class('mt-2.5 text-[13px] text-dim')],
-              ['Run ', h.a([h.Href(runUrl(leader.run))], [leader.run]), ', contract in CONTRACT.md there.'],
-            ),
-          ]
-        : []),
-    ],
-  );
-};
-
-const miniwob = (h: H): Html | undefined => {
-  const result = LAB_DATA.miniwob;
-  if (!result) return undefined;
-  const arms = [
-    { name: 'hand', arm: result.do },
-    { name: 'Same planner, screenshot every step', arm: result.vision },
-  ];
-  return section(
-    h,
-    4,
-    'miniwob',
-    'Public benchmark: MiniWoB++',
-    ["All 125 MiniWoB++ tasks, scored by MiniWoB's own reward, never the agent's claim. hand against the same planner looking at a screenshot every step."],
-    [
-      table(
-        h,
-        'MiniWoB++',
-        [
-          { label: 'Setup' },
-          { label: 'Solved', numeric: true },
-          { label: 'Cost per task', numeric: true },
-          { label: 'Solved per $1', numeric: true },
-          { label: 'Median time', numeric: true, wide: true },
-          { label: 'Errors', numeric: true, wide: true },
-        ],
-        arms.map(({ name, arm }, index) =>
-          bodyRow(
-            h,
-            [
-              { content: [bold(h, name)], header: true },
-              { content: [`${arm.solved}/${arm.tasks}`], numeric: true },
-              { content: [money(arm.usdPerTask)], numeric: true },
-              { content: [String(Math.round(arm.solvedPerDollar))], numeric: true },
-              { content: [`${arm.medianSeconds.toFixed(1)} s`], numeric: true, wide: true },
-              { content: [String(arm.errors)], numeric: true, wide: true },
-            ],
-            index === 0,
-          ),
-        ),
-      ),
-      h.p(
-        [h.Class('mt-2.5 text-[13px] text-dim')],
-        ['Same success, half the cost. Our bar was 3x the value, so this counts as a ', bold(h, 'fail'), '. Both solve about half the set. Run ', h.a([h.Href(runUrl(result.run))], [result.run]), '.'],
-      ),
-    ],
-  );
-};
-
 const brief = (metrics: Record<string, unknown>) =>
   Object.entries(metrics)
     .filter(([key]) => key !== 'benchmark' && key !== 'arm')
@@ -181,10 +77,10 @@ const brief = (metrics: Record<string, unknown>) =>
 const tests = (h: H): Html =>
   section(
     h,
-    5,
+    2,
     'tests',
     'Every test, pass or fail',
-    ['Each test had its pass bar written down before it ran. Failures stay here. They are the hill to climb.'],
+    ['Each test had its pass bar written down before it ran. Failures stay here: they are what hand works on next.'],
     [
       table(
         h,
@@ -206,119 +102,6 @@ const tests = (h: H): Html =>
     ],
   );
 
-const frontier = (h: H): Html => {
-  const best = LAB_DATA.scoreboard[0];
-  return section(
-    h,
-    6,
-    'frontier',
-    'Against a frontier model',
-    ['hand with a small planner against Claude Opus doing everything itself, on the same 30 tasks.'],
-    [
-      table(
-        h,
-        'Against a frontier model',
-        [
-          { label: 'Setup' },
-          { label: 'Finished', numeric: true },
-          { label: 'Cost per task', numeric: true },
-          { label: 'Tasks per $1', numeric: true },
-          { label: 'Median time', numeric: true, wide: true },
-          { label: 'Run', wide: true },
-        ],
-        LAB_DATA.scoreboard.map((row) =>
-          bodyRow(
-            h,
-            [
-              { content: [bold(h, row.arm)], header: true },
-              { content: [`${row.finished}/${row.tasks}`], numeric: true },
-              { content: [money(row.usdPerTask)], numeric: true },
-              { content: [row.finishedPerDollar.toLocaleString('en-US')], numeric: true },
-              { content: [`${row.medianSeconds} s`], numeric: true, wide: true },
-              { content: [h.a([h.Href(runUrl(row.run))], [row.run])], wide: true },
-            ],
-            row === best,
-          ),
-        ),
-      ),
-    ],
-  );
-};
-
-const landscape = (h: H): Html =>
-  section(
-    h,
-    7,
-    'landscape',
-    'Landscape',
-    ['How each one sees the screen, and who decides where to click. That second column is most of the cost.'],
-    [
-      table(
-        h,
-        'Landscape',
-        [
-          { label: 'Tool' },
-          { label: 'Who decides' },
-          { label: 'Sees', wide: true },
-          { label: 'Runs on', wide: true },
-          { label: 'Strength' },
-          { label: 'Gap' },
-          { label: 'Stars', numeric: true, wide: true },
-          { label: 'In the lab' },
-        ],
-        LAB_DATA.competitors.map((competitor) =>
-          bodyRow(
-            h,
-            [
-              {
-                content: [
-                  bold(h, h.a([h.Href(competitor.repo ? `https://github.com/${competitor.repo}` : competitor.url)], [competitor.name])),
-                  h.small([h.Class('block text-xs text-dim')], [competitor.ships]),
-                ],
-                header: true,
-              },
-              { content: [tag(h, competitor.brain)] },
-              { content: [competitor.sees], wide: true },
-              { content: [competitor.platforms.join(', ')], wide: true },
-              { content: [competitor.strength] },
-              { content: [competitor.gap] },
-              { content: [competitor.stars ? competitor.stars.toLocaleString('en-US') : ''], numeric: true, wide: true },
-              { content: competitor.adapter === 'none' ? [] : [tag(h, competitor.adapter)] },
-            ],
-            competitor.id === 'hand',
-          ),
-        ),
-      ),
-    ],
-  );
-
-const benchmarks = (h: H): Html =>
-  section(
-    h,
-    8,
-    'benchmarks',
-    'Benchmarks',
-    ['Where the scoreboard is going. Public sets first, so anyone can check the numbers.'],
-    [
-      table(
-        h,
-        'Benchmarks',
-        [{ label: 'Benchmark' }, { label: 'Status' }, { label: 'What it is' }],
-        LAB_DATA.benchmarks.map((benchmark) =>
-          bodyRow(
-            h,
-            [
-              { content: [bold(h, h.a([h.Href(`https://github.com/${benchmark.repo}`)], [benchmark.name]))], header: true },
-              { content: [tag(h, benchmark.status)] },
-              { content: [benchmark.note] },
-            ],
-            false,
-          ),
-        ),
-      ),
-    ],
-  );
-
 export const labMain = (h: H): readonly Child[] => [
   h.div(
     [h.Class('mb-7 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-5')],
@@ -326,22 +109,16 @@ export const labMain = (h: H): readonly Child[] => [
       h.div(
         [],
         [
-          h.h1([h.Class('m-0 text-[clamp(28px,6vw,42px)] leading-tight font-semibold tracking-[-0.035em]')], ['Computer-use tools, measured']),
+          h.h1([h.Class('m-0 text-[clamp(28px,6vw,42px)] leading-tight font-semibold tracking-[-0.035em]')], ['hand, measured']),
           h.p(
             [h.Class('mt-2 mb-0 max-w-[44rem] text-dim text-balance')],
-            ['Every tool that lets an AI agent click and type, side by side. Who decides where to click, what it costs, and how many tasks it finishes on the same tests.'],
+            ['Every number hand has, from real runs. A task counts only when the app shows it is done. Each test had its pass bar written down before it ran, and the failures stay on this page.'],
           ),
         ],
       ),
       h.p([h.Class('m-0 font-mono text-xs text-dim')], [`updated ${LAB_DATA.generatedAt}`]),
     ],
   ),
-  ...(LAB_DATA.desk4 ? [desk4Section(h, LAB_DATA.desk4, 1)] : []),
-  ...(LAB_DATA.desk3 ? [desk3Section(h, LAB_DATA.desk3, 2)] : []),
-  headToHead(h),
-  ...(LAB_DATA.miniwob ? [miniwob(h) as Html] : []),
+  ...(LAB_DATA.desk4 ? [handOnMac(h, LAB_DATA.desk4, 1)] : []),
   tests(h),
-  frontier(h),
-  landscape(h),
-  benchmarks(h),
 ];
