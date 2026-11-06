@@ -93,6 +93,9 @@ export function toCandidate(node: AxNode, index: number): MacosCandidate {
   };
 }
 
+export const isFinderFileName = (app: string, c: { role: string; name: string; path: string }) =>
+  app === 'Finder' && c.role === 'textbox' && c.name !== '' && c.path.split('.').length >= 7;
+
 export function keepUseful(cands: MacosCandidate[]): MacosCandidate[] {
   const seen = new Set<string>();
   return cands.filter((c) => {
@@ -154,6 +157,28 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     }
   };
 
+  const renameInFinder = async (target: MacosCandidate, newName: string): Promise<void> => {
+    if (!opts.headed)
+      throw new Error(`renaming "${target.name}" in Finder needs keystrokes (select, return, type, return), which are off unless the device is headed`);
+    const row = await helper<AxOutcome>('click', String(target.x + Math.min(target.w / 2, 40)), String(target.y + target.h / 2));
+    lastActions.push(`select ${target.name}: ${row.detail}`);
+    for (const step of [
+      ['key', 'return'],
+      ['key', 'cmd+a'],
+      ['type', newName],
+      ['key', 'return'],
+    ] as const) {
+      const outcome = await helper<AxOutcome>(step[0], appArg, step[1]);
+      lastActions.push(`${step[0]} ${step[1]}: ${outcome.detail}`);
+      if (!outcome.ok) throw new Error(`could not rename "${target.name}" in Finder: ${outcome.detail}`);
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const after = (await helper<{ candidates: AxNode[] }>('snapshot', appArg)).candidates.map((node) => node.name);
+    if (!after.includes(newName)) throw new Error(`pressed return after typing "${newName}" but Finder does not list a file with that name`);
+    lastActions.push(`Finder now lists "${newName}"`);
+  };
+
   const press = async (c: MacosCandidate): Promise<boolean> => {
     const outcome = await onTarget('press', c);
     lastActions.push(`press ${c.role} "${c.name}": ${outcome.detail}`);
@@ -198,6 +223,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     typeInto: async (c, text) => {
       const target = c as MacosCandidate;
       if (appArg === '-') throw new Error('typing needs a named app so keystrokes go only to it');
+      if (isFinderFileName(appArg, target)) return renameInFinder(target, text);
       const readBack = async () => (await helper<AxOutcome>('value', appArg, target.path).catch(() => ({ ok: false, detail: '' }))).detail;
       const set = await onTarget('set', target, text);
       if (set.code === 'STALE_REF') throw new Error(`${target.role} "${target.name}" changed since the snapshot (STALE_REF); take a new outline`);
