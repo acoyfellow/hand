@@ -229,6 +229,21 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       }
       lastActions.push('read back: field contains the typed text');
     },
+    insertAtCursor: async (c, text) => {
+      const target = c as MacosCandidate;
+      if (appArg === '-') throw new Error('typing needs a named app so keystrokes go only to it');
+      if (!opts.headed) throw new Error('typing at the cursor uses keystrokes, which are off unless the device is headed');
+      const readBack = async () => (await helper<AxOutcome>('value', appArg, target.path).catch(() => ({ ok: false, detail: '' }))).detail;
+      const typed = await helper<AxOutcome>('type', appArg, text);
+      lastActions.push(`insert at cursor: ${typed.detail}`);
+      if (!typed.ok) throw new Error(`could not type at the cursor: ${typed.detail}`);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      if (!(await readBack()).includes(text)) {
+        lastActions.push('read back: inserted text missing');
+        throw new Error(`typed at the cursor in ${target.role} "${target.name}" but the field does not contain the text afterwards`);
+      }
+      lastActions.push('read back: field contains the inserted text');
+    },
     setValue: async (c, value) => {
       const target = c as MacosCandidate;
       const outcome = await onTarget('set', target, value);

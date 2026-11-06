@@ -12,6 +12,7 @@ export interface Device extends Screen {
   press?(c: Candidate): Promise<void>;
   pointerClick?(c: Candidate): Promise<boolean>;
   typeInto(c: Candidate, text: string): Promise<void>;
+  insertAtCursor?(c: Candidate, text: string): Promise<void>;
   setValue(c: Candidate, value: string): Promise<boolean>;
   settle(): Promise<void>;
   show?(target: { x: number; y: number; label: string; p?: number }): Promise<void>;
@@ -267,8 +268,16 @@ export class Hand {
     });
   }
 
-  async type(text: string, into: string): Promise<string> {
+  async type(text: string, into: string, mode: 'replace' | 'insert' = 'replace'): Promise<string> {
     const t0 = performance.now();
+    if (mode === 'insert' && !this.d.insertAtCursor)
+      return this.log({
+        tool: 'type',
+        args: { text, into },
+        result: 'This device cannot type at the cursor; use the default replace mode.',
+        costUsd: 0,
+        ms: performance.now() - t0,
+      });
     const fields = (await this.d.candidates()).filter((c) => TEXT_ROLES.has(c.role));
     if (!fields.length) return this.log({ tool: 'type', args: { text, into }, result: 'No text fields on screen.', costUsd: 0, ms: performance.now() - t0 });
     const shot = await this.d.screenshot();
@@ -290,12 +299,13 @@ export class Hand {
         ms: performance.now() - t0,
       });
     await this.d.show?.({ ...center(chosen), label: `type "${text.slice(0, 40)}"`, p: pick.p });
-    await this.d.typeInto(chosen, text);
+    if (mode === 'insert' && this.d.insertAtCursor) await this.d.insertAtCursor(chosen, text);
+    else await this.d.typeInto(chosen, text);
     await this.d.settle();
     return this.log({
       tool: 'type',
       args: { text, into },
-      result: `Typed into ${describe(chosen)} (p=${fmt(pick.p)}).`,
+      result: `${mode === 'insert' ? 'Inserted at the cursor in' : 'Typed into'} ${describe(chosen)} (p=${fmt(pick.p)}).`,
       clicked: describe(chosen),
       p: pick.p,
       costUsd: pick.costUsd,

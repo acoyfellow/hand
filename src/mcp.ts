@@ -53,10 +53,11 @@ export const TOOLS: readonly McpTool[] = [
   },
   {
     name: 'type',
-    description: 'Type text into a text field of the app, described in plain words (for example "the document body"). The app must be frontmost.',
+    description:
+      'Type text into a text field of the app, described in plain words (for example "the document body"). The app must be frontmost. By default the text replaces everything in the field. Set mode to "insert" to type at the cursor instead and keep the rest, for example to add to the end of one line of a note: put the cursor there first (click the line, then key cmd+right).',
     inputSchema: {
       type: 'object',
-      properties: { app, agent, text: { type: 'string' }, into: { type: 'string' } },
+      properties: { app, agent, text: { type: 'string' }, into: { type: 'string' }, mode: { type: 'string', enum: ['replace', 'insert'] } },
       required: ['app', 'text', 'into'],
     },
   },
@@ -189,7 +190,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'outline') return text(await hand.outline());
   const target = (key: string) => (typeof args.id === 'string' && args.id ? args.id : str(args, key));
   if (name === 'act') return withReceipts(await hand.act(target('intent'), args.confirm === true));
-  if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into')));
+  if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into'), args.mode === 'insert' ? 'insert' : 'replace'));
   if (name === 'look') return text(await hand.look(str(args, 'question')));
   return text(`unknown tool ${name}`, true);
 }
