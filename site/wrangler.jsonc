@@ -1,0 +1,15 @@
+{
+  "account_id": "bfcb6ac5b3ceaf42a09607f6f7925823",
+  "name": "hand-site",
+  "compatibility_date": "2026-10-01",
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "run_worker_first": ["/*.mp4"],
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "workers_dev": false,
+  "routes": [{ "pattern": "hand.coey.dev", "custom_domain": true }]
+}

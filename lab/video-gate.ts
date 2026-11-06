@@ -37,6 +37,11 @@ if (videoSource) {
   const probe = Bun.spawnSync(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', '-'], { stdin: bytes });
   durationSeconds = Number(probe.stdout.toString().trim());
   expect(durationSeconds >= MIN_SECONDS && durationSeconds <= MAX_SECONDS, `video is ${durationSeconds.toFixed(1)} s, expected ${MIN_SECONDS}-${MAX_SECONDS} s`);
+  const partial = await fetch(videoUrl, { headers: { range: 'bytes=0-1' } });
+  expect(
+    partial.status === 206 && partial.headers.get('content-range') === `bytes 0-1/${bytes.byteLength}`,
+    `video does not answer byte ranges (status ${partial.status}); Safari will not play it`,
+  );
 }
 
 const receipt = JSON.parse(readFileSync(RECEIPT, 'utf8')) as { results: readonly AgentResult[] };
