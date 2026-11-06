@@ -7,6 +7,30 @@
     ],
     "size": 60
   },
+  "ada": {
+    "accent": "#8B5CF6",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "bix": {
+    "accent": "#16A34A",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
+  "cyd": {
+    "accent": "#F38020",
+    "hotspot": [
+      30,
+      19
+    ],
+    "size": 60
+  },
   "claude": {
     "accent": "#E5484D",
     "hotspot": [

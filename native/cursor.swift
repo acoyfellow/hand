@@ -1,6 +1,7 @@
 import AppKit
 
 let socketPath = ProcessInfo.processInfo.environment["HAND_CURSOR_SOCKET"] ?? "/tmp/hand-cursor.sock"
+let hideAfterSeconds = Double(ProcessInfo.processInfo.environment["HAND_CURSOR_HIDE_AFTER"] ?? "") ?? 6
 let captureSharing: NSWindow.SharingType = ProcessInfo.processInfo.environment["HAND_CURSOR_IN_CAPTURE"] == "1" ? .readOnly : .none
 
 struct CursorCommand: Decodable {
@@ -70,24 +71,83 @@ final class AgentCursor {
         window.orderFrontRegardless()
     }
 
+    var glide: Glide?
+    var rest = NSPoint.zero
+    var clock: Timer?
+
     func move(to point: NSPoint, text: String, ripple: Bool) {
         label.stringValue = " \(text) "
         label.sizeToFit()
-        let screenHeight = NSScreen.screens.first?.frame.height ?? 0
-        let origin = NSPoint(x: point.x - hotspot.x, y: screenHeight - point.y - (side - hotspot.y))
+        let target = origin(for: point)
+        let start = window.alphaValue == 0 ? NSPoint(x: target.x + 140, y: target.y - 90) : window.frame.origin
         if window.alphaValue == 0 {
-            window.setFrameOrigin(NSPoint(x: origin.x + 40, y: origin.y - 40))
+            window.setFrameOrigin(start)
+            NSAnimationContext.runAnimationGroup { $0.duration = 0.25; window.animator().alphaValue = 1 }
         }
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.42
-            context.timingFunction = CAMediaTimingFunction(controlPoints: 0.3, 0.7, 0.2, 1)
-            window.animator().setFrameOrigin(origin)
-            window.animator().alphaValue = 1
-        } completionHandler: {
-            if ripple { Ripple.show(at: point, color: self.color) }
+        glide = Glide(from: start, to: target, startedAt: CACurrentMediaTime(), ripple: ripple ? point : nil)
+        rest = target
+        startClock()
+    }
+
+    func origin(for point: NSPoint) -> NSPoint {
+        let screenHeight = NSScreen.screens.first?.frame.height ?? 0
+        return NSPoint(x: point.x - hotspot.x, y: screenHeight - point.y - (side - hotspot.y))
+    }
+
+    func startClock() {
+        guard clock == nil else { return }
+        let timer = Timer(timeInterval: 1.0 / 60.0, repeats: true) { [weak self] _ in self?.tick() }
+        RunLoop.main.add(timer, forMode: .common)
+        clock = timer
+    }
+
+    func tick() {
+        let now = CACurrentMediaTime()
+        if let active = glide {
+            let progress = active.progress(at: now)
+            window.setFrameOrigin(active.point(at: progress))
+            if progress >= 1 {
+                if let spot = active.ripple { Ripple.show(at: spot, color: color) }
+                glide = nil
+            }
+            return
         }
+        window.setFrameOrigin(rest)
+        clock?.invalidate()
+        clock = nil
     }
 }
+
+struct Glide {
+    let from: NSPoint
+    let to: NSPoint
+    let startedAt: CFTimeInterval
+    let ripple: NSPoint?
+
+    var duration: CFTimeInterval {
+        let distance = hypot(to.x - from.x, to.y - from.y)
+        return min(0.42, max(0.18, 0.12 + Double(distance) / 2600))
+    }
+
+    func progress(at now: CFTimeInterval) -> CGFloat {
+        CGFloat(min(1, max(0, (now - startedAt) / duration)))
+    }
+
+    func point(at progress: CGFloat) -> NSPoint {
+        let eased = progress < 0.5 ? 4 * progress * progress * progress : 1 - pow(-2 * progress + 2, 3) / 2
+        let dx = to.x - from.x
+        let dy = to.y - from.y
+        let bend = min(90, hypot(dx, dy) * 0.18)
+        let control = NSPoint(x: (from.x + to.x) / 2 - dy / max(hypot(dx, dy), 1) * bend, y: (from.y + to.y) / 2 + dx / max(hypot(dx, dy), 1) * bend)
+        let inverse = 1 - eased
+        return NSPoint(
+            x: inverse * inverse * from.x + 2 * inverse * eased * control.x + eased * eased * to.x,
+            y: inverse * inverse * from.y + 2 * inverse * eased * control.y + eased * eased * to.y
+        )
+    }
+}
+
+
 
 enum Ripple {
     static func show(at point: NSPoint, color: NSColor) {
@@ -137,7 +197,7 @@ final class CursorServer {
         hideTimers[command.agent]?.cancel()
         let hide = DispatchWorkItem { cursor.window.animator().alphaValue = 0 }
         hideTimers[command.agent] = hide
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6, execute: hide)
+        DispatchQueue.main.asyncAfter(deadline: .now() + hideAfterSeconds, execute: hide)
     }
 
     func listen() {

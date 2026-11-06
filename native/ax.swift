@@ -245,7 +245,7 @@ func showCursor(at point: CGPoint, label: String, click: Bool) {
     _ = data.withUnsafeBytes { bytes in
         withUnsafePointer(to: &address) { $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { sendto(fd, bytes.baseAddress, data.count, 0, $0, socklen_t(MemoryLayout<sockaddr_un>.size)) } }
     }
-    usleep(450000)
+    usleep(UInt32(ProcessInfo.processInfo.environment["HAND_CURSOR_WAIT_MS"].flatMap { Int($0) } ?? 0) * 1000)
 }
 
 func showCursor(on element: AXUIElement, label: String) {
@@ -324,6 +324,26 @@ let keyCodes: [String: CGKeyCode] = [
 
 let modifierFlags: [String: CGEventFlags] = ["cmd": .maskCommand, "command": .maskCommand, "shift": .maskShift, "option": .maskAlternate, "alt": .maskAlternate, "ctrl": .maskControl, "control": .maskControl]
 
+func bringToFront(_ app: NSRunningApplication) {
+    guard NSWorkspace.shared.frontmostApplication?.processIdentifier != app.processIdentifier else { return }
+    app.activate()
+    if waitForFront(app, polls: 6) { return }
+    let script = Process()
+    script.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
+    script.arguments = ["-e", "tell application \"System Events\" to set frontmost of (first process whose unix id is \(app.processIdentifier)) to true"]
+    try? script.run()
+    script.waitUntilExit()
+    _ = waitForFront(app, polls: 20)
+}
+
+func waitForFront(_ app: NSRunningApplication, polls: Int) -> Bool {
+    for _ in 0..<polls {
+        if NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier { return true }
+        usleep(25000)
+    }
+    return false
+}
+
 func pressKey(_ chord: String, to app: NSRunningApplication) -> Outcome {
     let parts = chord.split(separator: "+").map { String($0) }
     let name = parts.last ?? chord
@@ -348,8 +368,11 @@ func typeText(_ text: String, to app: NSRunningApplication) -> Outcome {
     guard NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier else {
         return Outcome(ok: false, detail: "refused: \(app.localizedName ?? "?") is not the frontmost app")
     }
-    let source = CGEventSource(stateID: .hidSystemState)
     let pid = app.processIdentifier
+    if ProcessInfo.processInfo.environment["DO_KEYS_UNICODE_EVENTS"] == nil {
+        return typeThroughSystemEvents(text, pid: pid, name: app.localizedName ?? "?")
+    }
+    let source = CGEventSource(stateID: .hidSystemState)
     let toSession = ProcessInfo.processInfo.environment["DO_KEYS_TO_PID"] == nil
     for scalar in text.utf16 {
         guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else {
@@ -359,11 +382,85 @@ func typeText(_ text: String, to app: NSRunningApplication) -> Outcome {
         for down in [true, false] {
             let event = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: down)
             event?.keyboardSetUnicodeString(stringLength: 1, unicodeString: &unit)
-            if toSession { event?.post(tap: .cgSessionEventTap) } else { event?.postToPid(pid) }
+            if toSession { event?.post(tap: .cghidEventTap) } else { event?.postToPid(pid) }
             usleep(8000)
         }
     }
     return Outcome(ok: true, detail: "typed \(text.count) characters to \(toSession ? "the session, frontmost pid" : "pid") \(pid)")
+}
+
+enum TypedRun {
+    case plain(String)
+    case unicode(String)
+    case newline
+}
+
+func typedRuns(_ text: String) -> [TypedRun] {
+    var runs: [TypedRun] = []
+    for character in text {
+        if character == "\n" { runs.append(.newline); continue }
+        let isPlain = character.unicodeScalars.allSatisfy { $0.value >= 0x20 && $0.value < 0x7F }
+        switch (runs.last, isPlain) {
+        case let (.plain(current)?, true): runs[runs.count - 1] = .plain(current + String(character))
+        case let (.unicode(current)?, false): runs[runs.count - 1] = .unicode(current + String(character))
+        case (_, true): runs.append(.plain(String(character)))
+        case (_, false): runs.append(.unicode(String(character)))
+        }
+    }
+    return runs
+}
+
+func typeThroughSystemEvents(_ text: String, pid: pid_t, name: String) -> Outcome {
+    for run in typedRuns(text) {
+        switch run {
+        case let .plain(chunk):
+            let quoted = chunk.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
+            let failure = runSystemEvents("keystroke \"\(quoted)\"")
+            if let failure { return Outcome(ok: false, detail: failure) }
+        case .newline:
+            if let failure = runSystemEvents("key code 36") { return Outcome(ok: false, detail: failure) }
+        case let .unicode(chunk):
+            if let failure = pasteKeepingClipboard(chunk) { return Outcome(ok: false, detail: failure) }
+        }
+        guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else {
+            return Outcome(ok: false, detail: "refused mid-typing: \(name) stopped being the frontmost app")
+        }
+    }
+    return Outcome(ok: true, detail: "typed \(text.count) characters through System Events into \(name) (pid \(pid))")
+}
+
+func pasteKeepingClipboard(_ text: String) -> String? {
+    let board = NSPasteboard.general
+    let saved = board.pasteboardItems?.compactMap { item -> [(NSPasteboard.PasteboardType, Data)]? in
+        item.types.compactMap { type in item.data(forType: type).map { (type, $0) } }
+    } ?? []
+    board.clearContents()
+    board.setString(text, forType: .string)
+    let failure = runSystemEvents("keystroke \"v\" using command down")
+    usleep(150000)
+    board.clearContents()
+    let restored = saved.map { pairs -> NSPasteboardItem in
+        let item = NSPasteboardItem()
+        for (type, data) in pairs { item.setData(data, forType: type) }
+        return item
+    }
+    if !restored.isEmpty { board.writeObjects(restored) }
+    return failure
+}
+
+func runSystemEvents(_ statement: String) -> String? {
+    let script = Process()
+    script.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
+    script.arguments = ["-e", "tell application \"System Events\" to \(statement)"]
+    let errors = Pipe()
+    script.standardError = errors
+    do { try script.run() } catch { return "could not start System Events typing: \(error)" }
+    script.waitUntilExit()
+    guard script.terminationStatus == 0 else {
+        let message = String(data: errors.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+        return "System Events typing failed: \(message.trimmingCharacters(in: .whitespacesAndNewlines))"
+    }
+    return nil
 }
 
 func focus(_ element: AXUIElement) -> Outcome {
@@ -516,6 +613,7 @@ case "press", "set":
     guard args.count >= 3 else { fail("usage: ax \(command) <app> <path> [text]", code: 64) }
     let element = target(found, args[2])
     let lease = acting()
+    if headed { bringToFront(found) }
     showCursor(on: element, label: command == "press" ? "press" : "type")
     finish(command == "press" ? press(element) : setValue(element, args.count > 3 ? args[3] : ""), lease: lease, after: command == "set" ? element : nil)
 case "confirm":
@@ -544,6 +642,7 @@ case "type":
     guard args.count >= 3 else { fail("usage: ax type <app> <text> --headed", code: 64) }
     needsHeaded("type")
     let lease = acting()
+    bringToFront(found)
     var outcome = typeText(args[2], to: found)
     outcome.mechanism = .physical
     if outcome.detail.hasPrefix("refused") { outcome = refused("NOT_FRONTMOST", outcome.detail) }
@@ -553,6 +652,7 @@ case "key":
     guard args.count >= 3 else { fail("usage: ax key <app> <name> --headed", code: 64) }
     needsHeaded("key")
     let lease = acting()
+    bringToFront(found)
     var outcome = pressKey(args[2], to: found)
     outcome.mechanism = .physical
     if outcome.detail.hasPrefix("refused") { outcome = refused("NOT_FRONTMOST", outcome.detail) }
