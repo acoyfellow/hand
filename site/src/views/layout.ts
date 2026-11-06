@@ -43,6 +43,7 @@ export const header = (h: H, page: Page): Html =>
       h.nav(
         [h.AriaLabel('Main'), h.Class('ml-auto flex items-center gap-[1.1rem] text-[0.85rem]')],
         [
+          h.a([h.Href('/docs/'), h.Class(NAV_LINK), ...(page === 'docs' ? [h.AriaCurrent('page')] : [])], ['Docs']),
           h.a([h.Href('/lab/'), h.Class(NAV_LINK), ...(page === 'lab' ? [h.AriaCurrent('page')] : [])], ['Benchmarks']),
           h.a([h.Href(GITHUB), h.Class(NAV_LINK)], [githubIcon(h), 'GitHub']),
         ],
@@ -153,7 +154,7 @@ export const footer = (h: H): Html =>
           ),
           h.p(
             [h.Class('m-0 font-mono text-[11px] tracking-[0.04em]')],
-            ['hand · MIT · ', h.a([h.Href(GITHUB), h.Class(FOOT_LINK)], ['source']), ' · ', h.a([h.Href('/lab/'), h.Class(FOOT_LINK)], ['lab'])],
+            ['hand · MIT · ', h.a([h.Href(GITHUB), h.Class(FOOT_LINK)], ['source']), ' · ', h.a([h.Href('/docs/'), h.Class(FOOT_LINK)], ['docs']), ' · ', h.a([h.Href('/lab/'), h.Class(FOOT_LINK)], ['lab'])],
           ),
         ],
       ),
