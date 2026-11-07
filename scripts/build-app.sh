@@ -8,7 +8,7 @@ identity="${HAND_SIGN_IDENTITY:--}"
 rm -rf "$app" "$out/hand.dmg" "$out/dmg"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources/bin" "$out/dmg"
 
-xcrun swiftc -O -parse-as-library "$root/native/app/HandApp.swift" -o "$app/Contents/MacOS/hand-setup"
+xcrun swiftc -O -parse-as-library "$root/native/app/HandApp.swift" "$root/native/app/SignIn.swift" -o "$app/Contents/MacOS/hand-setup"
 xcrun swiftc -O "$root/native/ax.swift" -o "$app/Contents/Resources/bin/ax"
 xcrun swiftc -O "$root/native/cursor.swift" -o "$app/Contents/Resources/bin/hand-cursor"
 cp -R "$root/native/cursors" "$app/Contents/Resources/bin/cursors"

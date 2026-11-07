@@ -2,7 +2,8 @@ import { execFile } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
-import { readConfig, readToken } from './credentials.ts';
+import { findToken, readConfig, readToken } from './credentials.ts';
+import { signedInConfig } from './grant.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
 import { Hand, type HandOptions } from './hand.ts';
 import { helperOrBuild } from './helper.ts';
@@ -398,10 +399,18 @@ export function serve(session: () => Session): void {
   });
 }
 
+export const credentialsForServer = () => {
+  if (process.env.HAND_TOKEN || !findToken()) {
+    const signedIn = signedInConfig();
+    if (signedIn && !process.env.HAND_TOKEN) return signedIn;
+  }
+  return { ...readConfig(), token: readToken() };
+};
+
 export function startServer(): void {
   let cached: Session | undefined;
   serve(() => {
-    cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper(), DEFAULT_HAND, (event) =>
+    cached ??= makeSession(gatewayTransport(credentialsForServer()), defaultHelper(), DEFAULT_HAND, (event) =>
       process.stdout.write(
         `${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/message', params: { level: 'info', logger: 'hand.action', data: event } })}\n`,
       ),

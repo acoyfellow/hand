@@ -60,13 +60,18 @@ function fromFile(path: string): string | undefined {
   }
 }
 
-export function readToken(env: NodeJS.ProcessEnv = process.env): string {
-  const token =
+export function findToken(env: NodeJS.ProcessEnv = process.env): string | undefined {
+  return (
     env.HAND_TOKEN?.trim() ||
     fromKeychain(KEYCHAIN_SERVICE) ||
     fromFile(TOKEN_FILE) ||
     fromKeychain(SHARED_KEYCHAIN_SERVICE) ||
-    fromFile(join(SHARED_DIR, 'token'));
+    fromFile(join(SHARED_DIR, 'token'))
+  );
+}
+
+export function readToken(env: NodeJS.ProcessEnv = process.env): string {
+  const token = findToken(env);
   if (!token) {
     throw new Error(
       `No Cloudflare API token. Set HAND_TOKEN, or store it with: security add-generic-password -a "$USER" -s ${KEYCHAIN_SERVICE} -w. Run \`hand doctor\` for every step.`,

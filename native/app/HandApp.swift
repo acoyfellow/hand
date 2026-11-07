@@ -57,6 +57,19 @@ func cloudflare(_ path: String, token: String) async throws -> [String: Any] {
     return (try JSONSerialization.jsonObject(with: data) as? [String: Any]) ?? [:]
 }
 
+func savedAccountName() -> String? {
+    UserDefaults.standard.string(forKey: "accountName")
+}
+
+func cloudflareAccounts(_ token: String) async throws -> [Account] {
+    let list = try await cloudflare("/accounts?per_page=50", token: token)
+    let rows = (list["result"] as? [[String: Any]]) ?? []
+    return rows.compactMap { row in
+        guard let id = row["id"] as? String else { return nil }
+        return Account(id: id, name: (row["name"] as? String) ?? id)
+    }
+}
+
 func accounts(for token: String) async throws -> [Account] {
     let verify = try await cloudflare("/user/tokens/verify", token: token)
     guard verify["success"] as? Bool == true else {
@@ -106,10 +119,14 @@ final class Setup: ObservableObject {
     @Published var accessibility = false
     @Published var screen = false
     @Published var copied = UserDefaults.standard.bool(forKey: "copiedConfig")
+    @Published var oauthReady = false
+    @Published var showTokenPaste = false
+    @Published var signedInTokens: OAuthTokens?
     private var timer: Timer?
 
     init() {
-        if let id = savedAccountId(), savedToken() != nil { check = .saved(id) }
+        if let grant = savedGrant() { check = .saved(savedAccountName() ?? grant.accountId) } else if let id = savedAccountId(), savedToken() != nil { check = .saved(id) }
+        Task { @MainActor in self.oauthReady = await signInReady() }
         refresh()
         timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { [weak self] _ in self?.refresh() }
     }
@@ -148,6 +165,43 @@ final class Setup: ObservableObject {
         } catch {
             check = .failed(error.localizedDescription)
         }
+    }
+
+    @MainActor
+    func signIn() async {
+        check = .checking
+        do {
+            let tokens = try await LoopbackSignIn().run()
+            NSApp.activate(ignoringOtherApps: true)
+            let found = try await cloudflareAccounts(tokens.access_token)
+            if found.isEmpty { check = .failed("That sign-in cannot see any Cloudflare account."); return }
+            if found.count == 1 { finishSignIn(tokens, found[0]) } else { signedInTokens = tokens; choices = found; check = .idle }
+        } catch {
+            NSApp.activate(ignoringOtherApps: true)
+            check = .failed(error.localizedDescription)
+        }
+    }
+
+    @MainActor
+    func finishSignIn(_ tokens: OAuthTokens, _ account: Account) {
+        let grant = Grant(accessToken: tokens.access_token, refreshToken: tokens.refresh_token, expiresAt: Date().timeIntervalSince1970 * 1000 + (tokens.expires_in ?? 3600) * 1000, accountId: account.id)
+        guard saveGrant(grant) else { check = .failed("Could not save the sign-in in your Keychain."); return }
+        UserDefaults.standard.set(account.name, forKey: "accountName")
+        signedInTokens = nil
+        choices = []
+        check = .saved(account.name)
+    }
+
+    @MainActor
+    func signOut() async {
+        if let grant = savedGrant() { await revokeGrant(grant) }
+        forgetGrant()
+        check = .idle
+    }
+
+    @MainActor
+    func pick(_ account: Account) {
+        if let tokens = signedInTokens { finishSignIn(tokens, account) } else { finish(token.trimmingCharacters(in: .whitespacesAndNewlines), account) }
     }
 
     func copy(_ text: String) {
@@ -204,21 +258,28 @@ struct ContentView: View {
                 Card {
                     StepHeader(number: 1, title: "Connect Cloudflare", done: setup.cloudflareDone)
                     if case let .saved(name) = setup.check {
-                        Text("Connected to \(name). The token is in your Keychain.").foregroundColor(.secondary)
-                        Button("Use a different token") { setup.check = .idle }.buttonStyle(.link)
+                        Text("Connected to \(name). Your sign-in is in your Keychain.").foregroundColor(.secondary)
+                        Button("Sign out") { Task { await setup.signOut() } }.buttonStyle(.link)
                     } else {
-                        Text("hand picks what to click with a small model on Cloudflare Workers AI, billed to your account (about a cent per task).").foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
-                        Button { NSWorkspace.shared.open(tokenURL) } label: { Label("Create a token on Cloudflare", systemImage: "arrow.up.right.square") }
-                        HStack {
-                            SecureField("Paste the token here", text: $setup.token).textFieldStyle(.roundedBorder).onSubmit { Task { await setup.verify() } }
-                            Button("Connect") { Task { await setup.verify() } }.keyboardShortcut(.defaultAction).disabled(setup.token.isEmpty || setup.check == .checking)
+                        Text("hand picks what to click with a small model on Cloudflare Workers AI, billed to your own account (about a cent per task).").foregroundColor(.secondary).fixedSize(horizontal: false, vertical: true)
+                        if setup.oauthReady {
+                            Button { Task { await setup.signIn() } } label: { Label("Sign in with Cloudflare", systemImage: "person.crop.circle.badge.checkmark").padding(.horizontal, 6).padding(.vertical, 3) }
+                                .buttonStyle(.borderedProminent).controlSize(.large).disabled(setup.check == .checking)
+                            Button(setup.showTokenPaste ? "Hide token option" : "Use an API token instead") { setup.showTokenPaste.toggle() }.buttonStyle(.link).font(.callout)
+                        }
+                        if !setup.oauthReady || setup.showTokenPaste {
+                            Button { NSWorkspace.shared.open(tokenURL) } label: { Label("Create a token on Cloudflare", systemImage: "arrow.up.right.square") }
+                            HStack {
+                                SecureField("Paste the token here", text: $setup.token).textFieldStyle(.roundedBorder).onSubmit { Task { await setup.verify() } }
+                                Button("Connect") { Task { await setup.verify() } }.disabled(setup.token.isEmpty || setup.check == .checking)
+                            }
                         }
                         if setup.check == .checking { ProgressView().controlSize(.small) }
                         if case let .failed(message) = setup.check { Text(message).foregroundColor(.red).font(.callout) }
                         if !setup.choices.isEmpty {
                             Text("Which account should hand use?").font(.callout)
                             ForEach(setup.choices) { account in
-                                Button(account.name) { setup.finish(setup.token.trimmingCharacters(in: .whitespacesAndNewlines), account) }
+                                Button(account.name) { setup.pick(account) }
                             }
                         }
                     }
