@@ -22,7 +22,7 @@ const TOC: readonly (readonly [string, string])[] = [
   ['quickstart', 'Quickstart'],
   ['headed', 'Headed or headless'],
   ['tools', 'MCP tools'],
-  ['library', 'Use it from code'],
+  ['code', 'Use it from code'],
   ['settings', 'Settings'],
   ['helper', 'The macOS helper'],
   ['trouble', 'When something fails'],
@@ -48,7 +48,22 @@ const quickstart = (h: H): Html =>
     [h.AriaLabelledBy('quickstart'), h.Class(SECTION)],
     [
       h.h2([h.Id('quickstart'), h.Class(H2)], ['Quickstart']),
-      h.p([h.Class(P)], ['You need a Mac, ', h.a([h.Href('https://bun.sh')], ['Bun']), ' and a Cloudflare account. About five minutes.']),
+      h.p([h.Class(P)], ['The quickest way is the Mac app. It needs a Mac on macOS 13 or later and a Cloudflare account.']),
+      step(h, 1, 'Download and open', [
+        h.p([h.Class(P)], [
+          h.a([h.Href('https://github.com/acoyfellow/hand/releases/latest/download/hand.dmg')], ['Download hand.dmg']),
+          ', open it and drag hand into Applications. hand is not signed by Apple yet, so the first time, right-click hand and choose Open.',
+        ]),
+      ]),
+      step(h, 2, 'Connect Cloudflare', [
+        h.p([h.Class(P)], ['Click "Create a token on Cloudflare". The token page opens with the right permissions ticked; create it and paste it into hand. hand finds your account and keeps the token in your Keychain.']),
+      ]),
+      step(h, 3, 'Allow hand to use apps', [h.p([h.Class(P)], ['Click "Open Settings" and turn on hand under Accessibility. Screen Recording is optional.'])]),
+      step(h, 4, 'Connect your agent', [
+        h.p([h.Class(P)], ['Click "Copy MCP config" and paste it into the MCP settings of any agent that supports MCP. Restart the agent and ask it to do something on your Mac.']),
+      ]),
+      h.h2([h.Id('cli'), h.Class(`${H2} mt-12`)], ['From the command line']),
+      h.p([h.Class(P)], ['For your own agent or scripts. You need a Mac, ', h.a([h.Href('https://bun.sh')], ['Bun']), ' and a Cloudflare account. About five minutes.']),
       step(h, 1, 'Install', [
         codeBlock(h, 'Install', `${F('bun')} add github:acoyfellow/hand#release`),
         h.p([h.Class(P)], ['The ', code(h, 'release'), ' branch holds only the library, about 220 KB.']),
@@ -195,9 +210,9 @@ const tools = (h: H): Html =>
 
 const library = (h: H): Html =>
   h.section(
-    [h.AriaLabelledBy('library'), h.Class(SECTION)],
+    [h.AriaLabelledBy('code'), h.Class(SECTION)],
     [
-      h.h2([h.Id('library'), h.Class(H2)], ['Use it from code']),
+      h.h2([h.Id('code'), h.Class(H2)], ['Use it from code']),
       codeBlock(
         h,
         'Library example',

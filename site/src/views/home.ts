@@ -13,6 +13,8 @@ const H2 = 'm-0 mb-4 text-[1.35rem] font-semibold tracking-[-0.01em]';
 
 const DIM = 'text-dim';
 
+const DMG_URL = 'https://github.com/acoyfellow/hand/releases/latest/download/hand.dmg';
+
 const SWARM_VIDEO = '/hand-use.mp4';
 
 const SWARM_POSTER = '/hand-use.jpg';
@@ -26,6 +28,15 @@ const hero = (h: H, model: Model): Html =>
         ['Let your AI agent use a computer without guessing where to click.'],
       ),
       h.p([h.Class(`mx-auto mb-9 max-w-[30rem] text-[1.15rem] text-balance ${DIM}`)], ['A small model picks the button. hand clicks it and checks it worked.']),
+      h.a(
+        [
+          h.Href(DMG_URL),
+          h.Class('mx-auto mb-3 inline-flex items-center gap-2.5 rounded-full bg-text px-7 py-3.5 text-[1.05rem] font-semibold text-bg no-underline shadow-sm hover:opacity-90'),
+        ],
+        ['Download for Mac'],
+      ),
+      h.p([h.Class(`m-0 mb-8 text-[0.85rem] ${DIM}`)], ['macOS 13 or later · Apple silicon · free, you pay Cloudflare about a cent per task']),
+      h.p([h.Class(`m-0 mb-2 text-[0.8rem] ${DIM}`)], ['Building your own agent? Use the library:']),
       h.div(
         [h.Class('mx-auto mb-6 flex max-w-[30rem] items-center gap-2 rounded-[10px] bg-raise py-1.5 pr-1.5 pl-4 text-left font-mono text-[0.8rem] sm:text-[0.9rem]')],
         [
