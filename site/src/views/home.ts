@@ -13,9 +13,9 @@ const H2 = 'm-0 mb-4 text-[1.35rem] font-semibold tracking-[-0.01em]';
 
 const DIM = 'text-dim';
 
-const SWARM_VIDEO = '/hand-swarm.mp4';
+const SWARM_VIDEO = '/hand-use.mp4';
 
-const SWARM_POSTER = '/hand-swarm.jpg';
+const SWARM_POSTER = '/hand-use.jpg';
 
 const hero = (h: H, model: Model): Html =>
   h.section(
@@ -107,11 +107,11 @@ const demo = (h: H): Html =>
   h.section(
     [h.AriaLabelledBy('demo-title'), h.Class(BLOCK)],
     [
-      h.h2([h.Id('demo-title'), h.Class(`${H2} text-center`)], ['Three agents, one real Mac']),
+      h.h2([h.Id('demo-title'), h.Class(`${H2} text-center`)], ['Three agents clear a todo list']),
       h.p(
         [h.Class(`mx-auto mb-0 max-w-[34rem] text-center text-balance ${DIM}`)],
         [
-          'Each agent gets its own hand and its own cursor. They share the screen, take turns on the keyboard, and every finish is checked against the app, not taken on trust. Recorded in a macOS virtual machine, not staged.',
+          'One agent writes a checklist in Notes. Two more look up the answers in Safari and Chrome at the same time. The first fills each answer in and ticks it off. Real time, in a macOS virtual machine, and the ticks are read back from Notes itself.',
         ],
       ),
       h.video(
@@ -123,7 +123,7 @@ const demo = (h: H): Html =>
           h.Muted(true),
           h.Preload('metadata'),
           h.AriaLabel(
-            'A real recording of three hand agents working at once in a macOS virtual machine: one sends a chat message in a web app, one turns on Dark mode in System Settings, one edits a line in TextEdit. Each task is checked when it finishes.',
+            'A real-time recording of three hand agents in a macOS virtual machine: one writes a todo checklist in Notes, two look up the weather in Lisbon and the population of Portugal in Safari and Chrome, and the first fills in both answers and ticks both items.',
           ),
           h.Class('mt-6 w-full rounded-[10px] border border-line bg-black'),
         ],

@@ -2,15 +2,14 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const SITE = process.env.HAND_SITE_URL ?? 'https://hand.coey.dev';
-const RECEIPT = process.env.DEMO_RECEIPT ?? join(import.meta.dir, '..', '..', 'do', 'bench', 'runs', 'demo-swarm', 'receipt-published.json');
+const RECEIPT = process.env.DEMO_RECEIPT ?? join(import.meta.dir, '..', '..', 'do', 'bench', 'runs', 'demo-use', 'receipt-published.json');
 const MIN_SECONDS = 30;
-const MAX_SECONDS = 60;
+const MAX_SECONDS = 90;
 const MIN_AGENTS = 3;
 
-interface AgentResult {
-  readonly agent: string;
-  readonly task: string;
-  readonly passed: boolean;
+interface UseReceipt {
+  readonly events: readonly { readonly agent: string }[];
+  readonly note: { readonly reasons: readonly string[]; readonly ticks: readonly { readonly item: string; readonly checked: boolean }[] };
 }
 
 const failures: string[] = [];
@@ -44,13 +43,14 @@ if (videoSource) {
   );
 }
 
-const receipt = JSON.parse(readFileSync(RECEIPT, 'utf8')) as { results: readonly AgentResult[] };
-const agents = new Set(receipt.results.map((result) => result.agent));
+const receipt = JSON.parse(readFileSync(RECEIPT, 'utf8')) as UseReceipt;
+const agents = new Set(receipt.events.map((event) => event.agent));
 expect(agents.size >= MIN_AGENTS, `only ${agents.size} agents in the receipt`);
-for (const result of receipt.results) expect(result.passed, `${result.agent} failed its checker on ${result.task}`);
+expect(receipt.note.reasons.length === 0, `the note check failed: ${receipt.note.reasons.join('; ')}`);
+for (const tick of receipt.note.ticks) expect(tick.checked, `"${tick.item}" is not ticked`);
 
 if (failures.length) {
   console.error(`video-gate FAIL:\n  ${failures.join('\n  ')}`);
   process.exit(1);
 }
-console.log(`video-gate PASS: ${videoSource} is ${durationSeconds.toFixed(1)} s, ${agents.size} agents all passed their checkers, /lab CTA present, Relay video gone`);
+console.log(`video-gate PASS: ${videoSource} is ${durationSeconds.toFixed(1)} s, ${agents.size} agents, note correct and every item ticked, /lab CTA present, Relay video gone`);
