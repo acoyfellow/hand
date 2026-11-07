@@ -10,7 +10,7 @@ const CLOUDFLARE = {
   revoke: 'https://dash.cloudflare.com/oauth2/revoke',
 } as const;
 
-export const SCOPES = ['offline_access', 'user-details.read', 'ai.read'] as const;
+export const SCOPES = ['offline_access', 'user-details.read', 'account-settings.read', 'ai.read'] as const;
 
 const FLOW_COOKIE = '__Host-hand-flow';
 const FLOW_SECONDS = 600;
