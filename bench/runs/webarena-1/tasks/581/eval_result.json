@@ -1,0 +1,76 @@
+{
+  "task_id": 581,
+  "intent_template_id": 7,
+  "sites": ["reddit"],
+  "task_revision": 2,
+  "status": "success",
+  "score": 1.0,
+  "evaluators_results": [
+    {
+      "evaluator_name": "AgentResponseEvaluator",
+      "status": "success",
+      "score": 1.0,
+      "actual": "{\n  \"task_type\": \"MUTATE\",\n  \"status\": \"SUCCESS\",\n  \"retrieved_data\": null,\n  \"error_details\": null\n}\n",
+      "actual_normalized": {"retrieved_data": null, "task_type": "mutate", "status": "success"},
+      "expected": {"task_type": "mutate", "status": "success", "retrieved_data": null},
+      "assertions": null,
+      "error_msg": null,
+      "should_not_exist": null
+    },
+    {
+      "evaluator_name": "NetworkEventEvaluator",
+      "status": "success",
+      "score": 1.0,
+      "actual": [
+        {
+          "url": "http://localhost:9999/create_forum",
+          "post_data": {
+            "forum[name]": "cmu_lti",
+            "forum[title]": "cmu_lti",
+            "forum[description]": "Language Technologies Institute at Carnegie Mellon University",
+            "forum[sidebar]": "**announcement**, paper, **alumni**",
+            "forum[tags]": "",
+            "forum[email]": "",
+            "forum[_token]": "466.olLwA2uuSSR6ETwnTgjzjHGN-qMBEBWMvt1FvLj0y1E.kGWXazzDcUBPdlgQHU-bvzfiotZiUXTq_bUaysi4pz_AZ7hIBcQNaldadQ"
+          },
+          "response_status": 302,
+          "http_method": "POST"
+        }
+      ],
+      "actual_normalized": [
+        {
+          "url": {"base_url": "__REDDIT__/create_forum", "query_params": {}},
+          "post_data": {
+            "forum[name]": "cmu_lti",
+            "forum[title]": "cmu_lti",
+            "forum[description]": "language technologies institute at carnegie mellon university",
+            "forum[sidebar]": "**announcement**, paper, **alumni**"
+          },
+          "response_status": 302,
+          "http_method": "POST",
+          "response_content": null,
+          "response_cookies": null
+        }
+      ],
+      "expected": {
+        "url": {"base_url": "__REDDIT__/create_forum", "query_params": {}},
+        "post_data": {
+          "forum[name]": "cmu_lti",
+          "forum[title]": "cmu_lti",
+          "forum[description]": "language technologies institute at carnegie mellon university",
+          "forum[sidebar]": "**announcement**, paper, **alumni**"
+        },
+        "response_status": 302,
+        "http_method": "POST",
+        "response_content": null,
+        "response_cookies": null
+      },
+      "assertions": null,
+      "error_msg": null,
+      "should_not_exist": false
+    }
+  ],
+  "webarena_verified_version": "1.2.3",
+  "webarena_verified_evaluator_checksum": "35c3385b1db4b3378657589f95f50defd4234bd36e5b93d44733fd561b01db4e",
+  "webarena_verified_data_checksum": "d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30"
+}

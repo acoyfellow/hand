@@ -1,0 +1,6 @@
+{
+  "task_type": "MUTATE",
+  "status": "UNKNOWN_ERROR",
+  "retrieved_data": null,
+  "error_details": "Could not complete posting: the submission form remained unchanged after entering the requested title, selecting books, and attempting submission. No successful post was confirmed."
+}

@@ -21,3 +21,4 @@ dist/
 .guardrail/
 *.mov
 bench/runs/demo-swarm/takes/
+bench/runs/*/tasks/*/network.har

@@ -1,0 +1,73 @@
+{
+  "task_id": 634,
+  "intent_template_id": 15,
+  "sites": ["reddit"],
+  "task_revision": 2,
+  "status": "success",
+  "score": 1.0,
+  "evaluators_results": [
+    {
+      "evaluator_name": "AgentResponseEvaluator",
+      "status": "success",
+      "score": 1.0,
+      "actual": "{\n  \"task_type\": \"MUTATE\",\n  \"status\": \"SUCCESS\",\n  \"retrieved_data\": null,\n  \"error_details\": null\n}\n",
+      "actual_normalized": {"retrieved_data": null, "task_type": "mutate", "status": "success"},
+      "expected": {"task_type": "mutate", "status": "success", "retrieved_data": null},
+      "assertions": null,
+      "error_msg": null,
+      "should_not_exist": null
+    },
+    {
+      "evaluator_name": "NetworkEventEvaluator",
+      "status": "success",
+      "score": 1.0,
+      "actual": [
+        {
+          "url": "http://localhost:9999/submit",
+          "post_data": {
+            "submission[mediaType]": "url",
+            "submission[title]": "used iphone recommendations?",
+            "submission[body]": "Hey, looking for good used iphone under $1000, any suggestions?",
+            "submission[forum]": "10052",
+            "submission[userFlag]": "none",
+            "submission[_token]": "d37e.I1OGQMn-Uwjy1HprO6we4paWJotGkQauZYXT0aer2cI.bivuC4CsKkqcmz8GVsUztqa7ROchplLxKdC6sJbnqLhqBd4kqLJjW5C8CQ"
+          },
+          "response_status": 302,
+          "http_method": "POST"
+        }
+      ],
+      "actual_normalized": [
+        {
+          "url": {"base_url": "__REDDIT__/submit", "query_params": {}},
+          "post_data": {
+            "submission[title]": "used iphone recommendations?",
+            "submission[body]": "hey, looking for good used iphone under $1000, any suggestions?",
+            "submission[forum]": "10052"
+          },
+          "response_status": 302,
+          "http_method": "POST",
+          "response_content": null,
+          "response_cookies": null
+        }
+      ],
+      "expected": {
+        "url": {"base_url": "__REDDIT__/submit", "query_params": {}},
+        "post_data": {
+          "submission[title]": "used iphone recommendations?",
+          "submission[body]": "hey, looking for good used iphone under $1000, any suggestions?",
+          "submission[forum]": "10052"
+        },
+        "response_status": 302,
+        "http_method": "POST",
+        "response_content": null,
+        "response_cookies": null
+      },
+      "assertions": null,
+      "error_msg": null,
+      "should_not_exist": false
+    }
+  ],
+  "webarena_verified_version": "1.2.3",
+  "webarena_verified_evaluator_checksum": "35c3385b1db4b3378657589f95f50defd4234bd36e5b93d44733fd561b01db4e",
+  "webarena_verified_data_checksum": "d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30"
+}

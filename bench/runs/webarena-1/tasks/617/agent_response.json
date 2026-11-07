@@ -1,0 +1,6 @@
+{
+  "task_type": "NAVIGATE",
+  "status": "UNKNOWN_ERROR",
+  "retrieved_data": null,
+  "error_details": "no answer within the turn limit"
+}

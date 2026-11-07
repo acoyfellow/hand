@@ -1,0 +1,22 @@
+30 WebArena-Verified hard tasks on reddit, planner gpt-6.1-sol
+task 409: claimed in 14 s, 4 turns, $0.009
+task 581: claimed in 32 s, 12 turns, $0.024
+task 596: gave up in 3 s, 0 turns, $0.000 (goto: Target page, context or browser has been closed
+Call log:
+[2m  - navigating to "http://localhost:9999/", waiting until "domcontentloaded"[22m
+)
+task 597: gave up in 13 s, 5 turns, $0.006
+task 410: claimed in 58 s, 17 turns, $0.085
+task 598: claimed in 49 s, 14 turns, $0.051
+task 610: gave up in 69 s, 30 turns, $0.170
+task 584: gave up in 330 s, 0 turns, $0.000 (task hung past its time limit and was abandoned)
+task 603: gave up in 330 s, 0 turns, $0.000 (task hung past its time limit and was abandoned)
+task 617: gave up in 61 s, 30 turns, $0.235
+task 618: gave up in 76 s, 30 turns, $0.229
+task 625: claimed in 32 s, 15 turns, $0.053
+task 615: gave up in 330 s, 0 turns, $0.000 (task hung past its time limit and was abandoned)
+task 634: claimed in 31 s, 14 turns, $0.049
+task 636: claimed in 40 s, 16 turns, $0.065
+task 638: gave up in 22 s, 9 turns, $0.030
+task 644: gave up in 27 s, 12 turns, $0.038
+task 645: gave up in 54 s, 21 turns, $0.092
