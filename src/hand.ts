@@ -17,6 +17,65 @@ export interface Device extends Screen {
   settle(): Promise<void>;
   show?(target: { x: number; y: number; label: string; p?: number }): Promise<void>;
   text?(): Promise<string>;
+  insertAfter?(c: Candidate, anchor: string, text: string): Promise<TextEditResult>;
+  selectText?(c: Candidate, from: string, through: string): Promise<TextEditResult>;
+  setChecked?(c: Candidate, wanted: boolean): Promise<{ ok: boolean; detail: string }>;
+  state?(c: Candidate): Promise<ElementState>;
+  tickLine?(c: Candidate, line: string, wanted: boolean): Promise<{ ok: boolean; detail: string; code?: string }>;
+  gesture?(action: 'double_click' | 'right_click' | 'drag', c: Candidate, to?: Candidate): Promise<{ ok: boolean; detail: string }>;
+}
+
+export interface TextEditResult {
+  readonly ok: boolean;
+  readonly detail: string;
+  readonly code?: string;
+  readonly before: string;
+  readonly after: string;
+}
+
+export interface ElementState {
+  readonly role: string;
+  readonly name: string;
+  readonly value?: string | null;
+  readonly checked?: boolean | null;
+  readonly enabled?: boolean | null;
+  readonly focused?: boolean | null;
+  readonly selected?: boolean | null;
+}
+
+export interface Expectation {
+  readonly checked?: boolean;
+  readonly value?: string;
+  readonly contains?: string;
+  readonly enabled?: boolean;
+}
+
+export function judge(state: ElementState, want: Expectation): { verdict: 'satisfied' | 'unsatisfied' | 'unknown'; reasons: string[] } {
+  const reasons: string[] = [];
+  let unknown = false;
+  const compare = (name: string, actual: unknown, wanted: unknown, ok: boolean) => {
+    if (actual === undefined || actual === null) {
+      unknown = true;
+      reasons.push(`${name}: cannot be read`);
+    } else if (!ok) reasons.push(`${name}: is ${JSON.stringify(actual)}, wanted ${JSON.stringify(wanted)}`);
+  };
+  if (want.checked !== undefined) compare('checked', state.checked, want.checked, state.checked === want.checked);
+  if (want.enabled !== undefined) compare('enabled', state.enabled, want.enabled, state.enabled === want.enabled);
+  if (want.value !== undefined) compare('value', state.value, want.value, state.value === want.value);
+  if (want.contains !== undefined)
+    compare('value', state.value, `contains ${want.contains}`, typeof state.value === 'string' && state.value.includes(want.contains));
+  const failed = reasons.some((reason) => !reason.endsWith('cannot be read'));
+  return { verdict: failed ? 'unsatisfied' : unknown ? 'unknown' : 'satisfied', reasons };
+}
+
+export function editGuard(before: string, after: string, anchor: string, inserted: string): string | undefined {
+  const at = before.indexOf(anchor);
+  if (at < 0) return `"${anchor}" was not in the field`;
+  const lineEnd = before.indexOf('\n', at + anchor.length);
+  const cut = lineEnd < 0 ? before.length : lineEnd;
+  const expected = before.slice(0, cut) + inserted + before.slice(cut);
+  if (after === expected) return undefined;
+  return `the field should read ${JSON.stringify(expected.slice(0, 200))} but reads ${JSON.stringify(after.slice(0, 200))}`;
 }
 
 export interface HandOptions {
@@ -45,6 +104,8 @@ export interface Step {
 }
 
 const TEXT_ROLES = new Set(['textbox', 'searchbox', 'combobox', 'spinbutton']);
+const TOGGLE_ROLES = new Set(['checkbox', 'switch', 'radio', 'toggle']);
+const ALL_ROLES = { has: () => true } as unknown as Set<string>;
 const fmt = (p: number) => p.toFixed(2);
 const lineSet = (text: string) =>
   new Set(
@@ -89,6 +150,10 @@ export class StaleRef extends Error {
 const refOf = (text: string) =>
   /^\s*(?:(?:click|press|select|open|choose|toggle)\s+)?(?:the\s+)?(?:control\s+|element\s+|id\s+)?\[?(e\d+)\]?\s*$/i.exec(text)?.[1];
 const isRef = (text: string) => refOf(text) !== undefined;
+const stableKeyOf = (c: Candidate) => {
+  const ref = (c as Candidate & { ref?: unknown }).ref;
+  return typeof ref === 'string' && ref !== '' ? ref : undefined;
+};
 
 export class Hand {
   readonly steps: Step[] = [];
@@ -96,6 +161,7 @@ export class Hand {
   private pressIgnored = false;
   private injectionByText = new Map<string, { p: number; costUsd: number }>();
   private outlined = new Map<string, string>();
+  private outlinedAt = new Map<string, string>();
   constructor(
     private readonly t: Transport,
     private readonly d: Device,
@@ -119,6 +185,7 @@ export class Hand {
     const t0 = performance.now();
     const cands = await this.d.candidates();
     this.outlined = new Map(cands.map((c) => [c.id, describe(c)]));
+    this.outlinedAt = new Map(cands.flatMap((c) => (stableKeyOf(c) ? [[c.id, stableKeyOf(c) as string] as const] : [])));
     const lines = cands.map((c) => `- [${c.id}] ${describe(c)}`).join('\n');
     const text = this.d.text ? (await this.d.text()).trim() : '';
     const reading = text ? `\n\nText on screen:\n${text}` : '';
@@ -140,7 +207,13 @@ export class Hand {
   private async choose(intent: string, cands: Candidate[], shot: string) {
     const named = refOf(intent);
     const byRef = named ? cands.find((c) => c.id === named) : undefined;
-    if (named && (!byRef || (this.outlined.has(named) && this.outlined.get(named) !== describe(byRef))))
+    const sameControl = (now: Candidate) => {
+      const was = this.outlined.get(now.id);
+      if (was === describe(now)) return true;
+      const stable = this.outlinedAt.get(now.id);
+      return TEXT_ROLES.has(now.role) && stable !== undefined && stable === stableKeyOf(now);
+    };
+    if (named && (!byRef || (this.outlined.has(named) && !sameControl(byRef))))
       throw new StaleRef(named, this.outlined.get(named), byRef ? describe(byRef) : undefined);
     if (byRef) {
       const pick = {
@@ -245,6 +318,8 @@ export class Hand {
       if (change) {
         achieved = 1;
         tail = ` Changed: ${change}`;
+      } else if (byRef) {
+        tail = ' No change in the controls or text. For a check box use the check tool; use expect to read a state.';
       } else {
         const v = await verify(this.t, this.opts.model, intent, await this.d.screenshot(), before);
         cost += v.costUsd;
@@ -268,6 +343,182 @@ export class Hand {
     });
   }
 
+  private async field(into: string, roles: Set<string>, tool: string, args: Record<string, unknown>, t0: number) {
+    const fields = (await this.d.candidates()).filter((c) => roles.has(c.role));
+    if (!fields.length) return { refusal: this.log({ tool, args, result: 'No matching controls on screen.', costUsd: 0, ms: performance.now() - t0 }) };
+    try {
+      const chose = await this.choose(
+        isRef(into) ? into : `${tool === 'type' ? 'Type into' : 'The control:'} ${into}`,
+        fields,
+        isRef(into) ? '' : await this.d.screenshot(),
+      );
+      if (!chose.chosen || shouldAsk(chose.pick, this.opts.tau, this.opts.minMargin ?? 0))
+        return {
+          refusal: this.log({
+            tool,
+            args,
+            result: `UNSURE which control. Best guesses: ${chose.top.join('; ')}.`,
+            p: chose.pick.p,
+            costUsd: chose.pick.costUsd,
+            ms: performance.now() - t0,
+          }),
+        };
+      return { chosen: chose.chosen, p: chose.pick.p, costUsd: chose.pick.costUsd };
+    } catch (error) {
+      if (!(error instanceof StaleRef)) throw error;
+      return { refusal: this.log({ tool, args, result: error.message, costUsd: 0, ms: performance.now() - t0 }) };
+    }
+  }
+
+  async typeAfter(text: string, into: string, after: string): Promise<string> {
+    const t0 = performance.now();
+    const args = { text, into, after };
+    if (!this.d.insertAfter)
+      return this.log({ tool: 'type', args, result: 'This device cannot place the cursor after text.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, TEXT_ROLES, 'type', args, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    await this.d.show?.({ ...center(found.chosen), label: `type "${text.slice(0, 40)}"`, p: found.p });
+    const edited = await this.d.insertAfter(found.chosen, after, text);
+    const problem = edited.ok ? editGuard(edited.before, edited.after, after, text) : edited.detail;
+    return this.log({
+      tool: 'type',
+      args,
+      result: problem
+        ? `EDIT FAILED in ${describe(found.chosen)}: ${problem}${edited.code ? ` (${edited.code})` : ''}. Nothing else was typed.`
+        : `Inserted "${text}" after "${after}" in ${describe(found.chosen)}. Checked: the rest of the field is unchanged.`,
+      clicked: describe(found.chosen),
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
+  async selectText(into: string, from: string, through: string): Promise<string> {
+    const t0 = performance.now();
+    const args = { into, from, through };
+    if (!this.d.selectText) return this.log({ tool: 'select_text', args, result: 'This device cannot select text.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, TEXT_ROLES, 'select_text', args, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    const picked = await this.d.selectText(found.chosen, from, through);
+    return this.log({
+      tool: 'select_text',
+      args,
+      result: picked.ok ? `${picked.detail} in ${describe(found.chosen)}.` : `FAILED: ${picked.detail}`,
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
+  async tickLine(into: string, line: string, wanted: boolean): Promise<string> {
+    const t0 = performance.now();
+    const tool = wanted ? 'check' : 'uncheck';
+    const args = { into, line };
+    if (!this.d.tickLine) return this.log({ tool, args, result: 'This device cannot tick checklist lines.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, TEXT_ROLES, tool, args, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    const outcome = await this.d.tickLine(found.chosen, line, wanted);
+    return this.log({
+      tool,
+      args,
+      result: outcome.ok ? `${outcome.detail}.` : `FAILED: ${outcome.detail}${outcome.code ? ` (${outcome.code})` : ''}.`,
+      clicked: describe(found.chosen),
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
+  async setChecked(into: string, wanted: boolean): Promise<string> {
+    const t0 = performance.now();
+    const tool = wanted ? 'check' : 'uncheck';
+    if (!this.d.setChecked) return this.log({ tool, args: { into }, result: 'This device cannot read check boxes.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, TOGGLE_ROLES, tool, { into }, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    await this.d.show?.({ ...center(found.chosen), label: tool, p: found.p });
+    const outcome = await this.d.setChecked(found.chosen, wanted);
+    return this.log({
+      tool,
+      args: { into },
+      result: `${describe(found.chosen)}: ${outcome.detail}.`,
+      clicked: describe(found.chosen),
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
+  async pointer(action: 'double_click' | 'right_click' | 'drag', into: string, to?: string): Promise<string> {
+    const t0 = performance.now();
+    const args = { action, into, to };
+    if (!this.d.gesture) return this.log({ tool: 'pointer', args, result: 'This device cannot do mouse gestures.', costUsd: 0, ms: performance.now() - t0 });
+    if (action === 'drag' && !to)
+      return this.log({ tool: 'pointer', args, result: 'drag needs to: the control to drop onto.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, ALL_ROLES, 'pointer', args, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    const dropOn = to ? await this.field(to, ALL_ROLES, 'pointer', args, t0) : undefined;
+    if (dropOn && 'refusal' in dropOn) return dropOn.refusal ?? '';
+    const shot = await this.d.screenshot();
+    const rk = await risky(
+      this.t,
+      this.opts.model,
+      shot,
+      `${action.replace('_', ' ')} ${describe(found.chosen)}${dropOn?.chosen ? ` onto ${describe(dropOn.chosen)}` : ''}`,
+    );
+    if (rk.p >= this.opts.riskTau)
+      return this.log({
+        tool: 'pointer',
+        args,
+        result: `BLOCKED: that gesture looks destructive (p=${fmt(rk.p)}). Did not do it.`,
+        blocked: true,
+        risky: rk.p,
+        costUsd: rk.costUsd,
+        ms: performance.now() - t0,
+      });
+    await this.d.show?.({ ...center(found.chosen), label: action.replace('_', ' '), p: found.p });
+    const before = await this.d.candidates();
+    const textBefore = await this.screenText();
+    const outcome = await this.d.gesture(action, found.chosen, dropOn?.chosen);
+    await this.d.settle();
+    const change = describeChange(before, await this.d.candidates(), textBefore, await this.screenText());
+    return this.log({
+      tool: 'pointer',
+      args,
+      result: outcome.ok
+        ? `${action.replace('_', ' ')} on ${describe(found.chosen)}.${change ? ` Changed: ${change}` : ' No change in the controls or text.'}`
+        : `FAILED: ${outcome.detail}`,
+      clicked: describe(found.chosen),
+      p: found.p,
+      risky: rk.p,
+      costUsd: found.costUsd + rk.costUsd + (dropOn?.costUsd ?? 0),
+      ms: performance.now() - t0,
+    });
+  }
+
+  async expect(into: string, want: Expectation): Promise<string> {
+    const t0 = performance.now();
+    if (!this.d.state)
+      return this.log({
+        tool: 'expect',
+        args: { into, ...want },
+        result: 'unknown: this device cannot read control state.',
+        costUsd: 0,
+        ms: performance.now() - t0,
+      });
+    const found = await this.field(into, ALL_ROLES, 'expect', { into, ...want }, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    const state = await this.d.state(found.chosen);
+    const { verdict, reasons } = judge(state, want);
+    return this.log({
+      tool: 'expect',
+      args: { into, ...want },
+      result: `${verdict}: ${describe(found.chosen)}${reasons.length ? ` (${reasons.join('; ')})` : ''}.`,
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
   async type(text: string, into: string, mode: 'replace' | 'insert' = 'replace'): Promise<string> {
     const t0 = performance.now();
     if (mode === 'insert' && !this.d.insertAtCursor)
@@ -280,7 +531,7 @@ export class Hand {
       });
     const fields = (await this.d.candidates()).filter((c) => TEXT_ROLES.has(c.role));
     if (!fields.length) return this.log({ tool: 'type', args: { text, into }, result: 'No text fields on screen.', costUsd: 0, ms: performance.now() - t0 });
-    const shot = await this.d.screenshot();
+    const shot = isRef(into) ? '' : await this.d.screenshot();
     let chose: Awaited<ReturnType<Hand['choose']>>;
     try {
       chose = await this.choose(isRef(into) ? into : `Type into ${into}`, fields, shot);
