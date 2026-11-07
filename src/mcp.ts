@@ -6,7 +6,7 @@ import { readConfig, readToken } from './credentials.ts';
 import { signedInConfig } from './grant.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
 import { Hand, type HandOptions } from './hand.ts';
-import { helperOrBuild } from './helper.ts';
+import { helperOrBuild, startCursorOverlay } from './helper.ts';
 
 const run = promisify(execFile);
 
@@ -315,7 +315,9 @@ export async function callTool(session: Session, name: string, args: Record<stri
 }
 
 export function defaultHelper(): string {
-  return helperOrBuild();
+  const helper = helperOrBuild();
+  startCursorOverlay(helper);
+  return helper;
 }
 
 export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND, notify: (event: ActionEvent) => void = () => {}): Session {
