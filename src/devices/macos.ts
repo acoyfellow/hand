@@ -310,7 +310,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     state: async (c) => helper<ElementState>('state', appArg, (c as MacosCandidate).path, '--ref', (c as MacosCandidate).ref),
     gesture: async (action, c, to) => {
       if (!opts.allowMouse) return { ok: false, detail: 'mouse gestures are off unless the device is headed (HAND_HEADED=1 for the MCP server)' };
-      const from = { x: c.x + c.w / 2, y: c.y + c.h / 2 };
+      const from = grabPoint(c);
       const outcome =
         action === 'drag' && to
           ? await helper<AxOutcome>('drag', String(from.x), String(from.y), String(to.x + to.w / 2), String(to.y + to.h / 2))
@@ -320,4 +320,9 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
     },
     settle: () => new Promise((resolve) => setTimeout(resolve, 150)),
   };
+}
+
+export function grabPoint(c: { role: string; x: number; y: number; w: number; h: number }): { x: number; y: number } {
+  const wideRow = (c.role === 'row' || c.role === 'cell') && c.w > 160;
+  return wideRow ? { x: c.x + Math.min(60, c.w / 4), y: c.y + c.h / 2 } : { x: c.x + c.w / 2, y: c.y + c.h / 2 };
 }

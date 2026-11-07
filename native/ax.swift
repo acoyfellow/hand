@@ -297,12 +297,14 @@ func dragFrom(x: Double, y: Double, toX: Double, toY: Double) -> Outcome {
     CGEvent(mouseEventSource: source, mouseType: .mouseMoved, mouseCursorPosition: start, mouseButton: .left)?.post(tap: .cghidEventTap)
     usleep(40000)
     CGEvent(mouseEventSource: source, mouseType: .leftMouseDown, mouseCursorPosition: start, mouseButton: .left)?.post(tap: .cghidEventTap)
-    for step in 1...12 {
-        let t = Double(step) / 12
+    usleep(250000)
+    for step in 1...24 {
+        let t = Double(step) / 24
         let point = CGPoint(x: x + (toX - x) * t, y: y + (toY - y) * t)
         CGEvent(mouseEventSource: source, mouseType: .leftMouseDragged, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
         usleep(25000)
     }
+    usleep(300000)
     CGEvent(mouseEventSource: source, mouseType: .leftMouseUp, mouseCursorPosition: end, mouseButton: .left)?.post(tap: .cghidEventTap)
     return Outcome(ok: true, detail: "dragged to \(Int(toX)),\(Int(toY))", mechanism: .physical)
 }
@@ -320,7 +322,7 @@ let keyCodes: [String: CGKeyCode] = [
     "delete": 51, "backspace": 51, "a": 0, "s": 1, "d": 2, "f": 3, "h": 4, "g": 5, "z": 6, "x": 7, "c": 8, "v": 9, "b": 11, "q": 12,
     "w": 13, "e": 14, "r": 15, "y": 16, "t": 17, "o": 31, "u": 32, "i": 34, "p": 35, "l": 37, "j": 38, "k": 40, "n": 45, "m": 46,
     ",": 43, ".": 47, "/": 44, "end": 119, "home": 115, "pageup": 116, "pagedown": 121, "forwarddelete": 117,
-    "0": 29, "1": 18, "2": 19, "3": 20, "4": 21, "5": 23, "6": 22, "7": 26, "8": 28, "9": 25,
+    "[": 33, "]": 30, "-": 27, "=": 24, ";": 41, "'": 39, "0": 29, "1": 18, "2": 19, "3": 20, "4": 21, "5": 23, "6": 22, "7": 26, "8": 28, "9": 25,
 ]
 
 let modifierFlags: [String: CGEventFlags] = ["cmd": .maskCommand, "command": .maskCommand, "shift": .maskShift, "option": .maskAlternate, "alt": .maskAlternate, "ctrl": .maskControl, "control": .maskControl]
@@ -477,7 +479,10 @@ func frontWindowIndex(_ app: NSRunningApplication) -> Int? {
     let root = AXUIElementCreateApplication(app.processIdentifier)
     let windows: [AXUIElement] = attribute(root, kAXWindowsAttribute) ?? []
     guard let focused: AXUIElement = attribute(root, kAXFocusedWindowAttribute) else { return windows.isEmpty ? nil : 0 }
-    return windows.firstIndex { CFEqual($0, focused) }
+    if let exact = windows.firstIndex(where: { CFEqual($0, focused) }) { return exact }
+    let owner: AXUIElement? = attribute(focused, kAXParentAttribute)
+    if let owner, let parent = windows.firstIndex(where: { CFEqual($0, owner) }) { return parent }
+    return windows.isEmpty ? nil : 0
 }
 
 func confirm(_ element: AXUIElement) -> Outcome {

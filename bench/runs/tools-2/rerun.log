@@ -1,0 +1,414 @@
+=== mac-calendar-event
+   3.3 s  activate {"app":"Calendar"}
+         -> activate Calendar
+   5.2 s  outline {"app":"Calendar"}
+         -> 28 controls on screen:
+   8.4 s  expect {"app":"Calendar","into":"e1","checked":false,"enabled":true,"value":"desk dentist","conta
+         -> unknown: textbox "New Event" (checked: cannot be read).
+  10.4 s  key {"app":"Calendar","key":"escape"}
+         -> pressed escape in Calendar
+  12.2 s  key {"app":"Calendar","key":"cmd+t"}
+         -> pressed cmd+t in Calendar
+  13.9 s  outline {"app":"Calendar"}
+         -> 19 controls on screen:
+  16.8 s  key {"app":"Calendar","key":"cmd+n"}
+         -> pressed cmd+n in Calendar
+  18.9 s  outline {"app":"Calendar"}
+         -> 22 controls on screen:
+  23.9 s  outline {"app":"Calendar"}
+         -> 22 controls on screen:
+  26.0 s  key {"app":"Calendar","key":"return"}
+         -> pressed return in Calendar
+  27.8 s  outline {"app":"Calendar"}
+         -> 28 controls on screen:
+  29.6 s  key {"app":"Calendar","key":"escape"}
+         -> pressed escape in Calendar
+
+mac-calendar-event: PASS in 31.4 s, 14 turns, $0.0567
+=== mac-chrome-pwa-open
+33 |   host,
+34 |   sshOptions: SSH_OPTIONS,
+35 |   run: async (command) => {
+36 |     const child = Bun.spawn(sshArgs(host, command), { stdout: 'pipe', stderr: 'pipe' });
+37 |     const [out, err, code] = await Promise.all([new Response(child.stdout).text(), new Response(child.stderr).text(), child.exited]);
+38 |     if (code !== 0) throw new Error(`vm command failed (${code}): ${command.slice(0, 120)}\n${err.slice(0, 400)}`);
+                                   ^
+error: vm command failed (7): curl -s -X POST http://127.0.0.1:8787/reset
+
+      at <anonymous> (/Users/jcoeyman/cloudflare/do/lab/desk/vm.ts:38:31)
+      at async <anonymous> (/Users/jcoeyman/cloudflare/do/lab/desk/suite.ts:68:15)
+
+Bun v1.3.12 (macOS arm64)
+=== mac-cross-copy-to-note
+   2.2 s  outline {"app":"TextEdit"}
+         -> 11 controls on screen:
+   4.2 s  activate {"app":"Notes"}
+         -> activate Notes
+   5.8 s  key {"app":"Notes","key":"cmd+n"}
+         -> pressed cmd+n in Notes
+   7.7 s  outline {"app":"Notes"}
+         -> 24 controls on screen:
+  10.3 s  type {"app":"Notes","agent":"","text":"desk order\nHX-48213","into":"e6","after":"","mode":"rep
+         -> Typed into textbox "" (p=1.00).
+  17.2 s  expect {"app":"Notes","into":"the note body textbox","checked":false,"enabled":true,"value":"desk
+         -> UNSURE which control. Best guesses: textbox "desk order HX-48213" (0.36); menubaritem "Notes" (0.12); button "New Note" (0.11).
+  19.1 s  outline {"app":"Notes"}
+         -> 25 controls on screen:
+
+mac-cross-copy-to-note: PASS in 20.6 s, 8 turns, $0.0251
+=== mac-cross-reminder-from-file
+   1.9 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.5 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   7.0 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to folder","after":"","mode"
+         -> UNSURE which field. Best guesses: textbox "~/Desktop/desk" (0.69); textbox "todo.txt" (0.25); combobox "more toolbar items" (0.06).
+   8.8 s  outline {"app":"Finder"}
+         -> 60 controls on screen:
+  12.7 s  steps {"app":"Finder","agent":"","steps":[{"tool":"type","intent":"","text":"~/Desktop/desk","in
+         -> 1. type: Typed into textbox "~/Desktop/desk" (p=1.00).
+  19.9 s  pointer {"app":"Finder","agent":"","action":"double_click","into":"todo.txt","to":""}
+         -> double click on row "todo.txt". Changed: new text: "1 of 1 selected, 7.43 GB available".
+  21.3 s  apps {}
+         -> In front: TextEdit
+  22.9 s  outline {"app":"TextEdit"}
+         -> 11 controls on screen:
+  25.3 s  activate {"app":"Reminders"}
+         -> activate Reminders
+  27.1 s  outline {"app":"Reminders"}
+         -> 29 controls on screen:
+  34.0 s  act {"app":"Reminders","agent":"","intent":"e22","confirm":false}
+         -> Clicked button "Add Reminder" (p=1.00). Changed: new text: "Incomplete"; new controls: group "Incomplete", checkbox "Mark as Completed", textbox "", b
+  39.3 s  type {"app":"Reminders","agent":"","text":"desk renew passport","into":"empty reminder title te
+         -> UNSURE which field. Best guesses: textbox "" (0.60); textbox "Reminders" (0.16); textbox "Reminders" (0.13).
+  41.1 s  outline {"app":"Reminders"}
+         -> 36 controls on screen:
+  44.0 s  steps {"app":"Reminders","agent":"","steps":[{"tool":"type","intent":"","text":"desk renew passp
+         -> 1. type: Typed into textbox "" (p=1.00).
+  48.6 s  expect {"app":"Reminders","into":"reminder title textbox","checked":false,"enabled":true,"value":
+         -> UNSURE which control. Best guesses: textbox "Reminders" (0.23); textbox "Reminders , 1 reminder" (0.17); button "Add Reminder" (0.16).
+  50.4 s  outline {"app":"Reminders"}
+         -> 40 controls on screen:
+
+mac-cross-reminder-from-file: PASS in 51.8 s, 17 turns, $0.0762
+=== mac-finder-move
+   1.8 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.2 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   7.7 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to folder text field","after
+         -> UNSURE which field. Best guesses: textbox "~/Desktop/desk" (0.69); textbox "Archive" (0.24); textbox "report.pdf" (0.04).
+   9.3 s  outline {"app":"Finder"}
+         -> 62 controls on screen:
+  11.1 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+  24.4 s  pointer {"app":"Finder","agent":"","action":"drag","into":"report.pdf","to":"Archive"}
+         -> drag on row "report.pdf". No change in the controls or text.
+  26.2 s  outline {"app":"Finder"}
+         -> 58 controls on screen:
+  36.8 s  steps {"app":"Finder","agent":"","steps":[{"tool":"act","intent":"e36 (select report.pdf)","text
+         -> 1. act: Clicked row "report.pdf" (p=0.89). The click went through, but the screen shows no clear change (p=0.02). Some actions leave no visible trace;
+  38.6 s  outline {"app":"Finder"}
+         -> 62 controls on screen:
+  41.8 s  steps {"app":"Finder","agent":"","steps":[{"tool":"type","intent":"","text":"~/Desktop/desk/Arch
+         -> 1. type: Typed into textbox "~/Desktop/desk" (p=1.00).
+  43.5 s  outline {"app":"Finder"}
+         -> 63 controls on screen:
+  45.3 s  key {"app":"Finder","key":"cmd+up"}
+         -> pressed cmd+up in Finder
+  49.2 s  act {"app":"Finder","agent":"","intent":"Select the report.pdf file by its filename","confirm"
+         -> Clicked row "report.pdf" (p=0.84). Changed: new text: "2 of 2 selected, 7.43 GB available"; new controls: button "Tags…"; gone: button "Customize Fold
+  51.2 s  key {"app":"Finder","key":"r"}
+         -> pressed r in Finder
+  53.7 s  steps {"app":"Finder","agent":"","steps":[{"tool":"key","intent":"","text":"","into":"","after":
+         -> 1. key: pressed cmd+c in Finder
+  58.7 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk/Archive","into":"textbox containing ~/De
+         -> Typed into textbox "~/Desktop/desk/Archive" (p=0.81).
+  60.7 s  steps {"app":"Finder","agent":"","steps":[{"tool":"key","intent":"","text":"","into":"","after":
+         -> 1. key: pressed return in Finder
+  62.6 s  outline {"app":"Finder"}
+         -> 65 controls on screen:
+
+mac-finder-move: PASS in 64.0 s, 19 turns, $0.1112
+=== mac-finder-new-folder
+   1.9 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.3 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   6.2 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to the folder","after":"","m
+         -> Typed into textbox "~/Desktop/desk/Archive" (p=1.00).
+   7.9 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+   9.6 s  outline {"app":"Finder"}
+         -> 63 controls on screen:
+  12.3 s  steps {"app":"Finder","agent":"","steps":[{"tool":"key","intent":"","text":"","into":"","after":
+         -> 1. key: pressed cmd+shift+n in Finder
+  13.8 s  outline {"app":"Finder"}
+         -> 17 controls on screen:
+  16.2 s  type {"app":"Finder","agent":"","text":"Invoices 2026","into":"e1","after":"","mode":"replace"}
+         -> Typed into textbox "untitled folder" (p=1.00).
+  18.3 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+  21.5 s  expect {"app":"Finder","into":"Invoices 2026","checked":false,"enabled":true,"value":"","contains
+         -> UNSURE which control. Best guesses: row "Invoices 2026" (0.60); textbox "Invoices 2026" (0.08); menubaritem "Finder" (0.03).
+  23.2 s  outline {"app":"Finder"}
+         -> 65 controls on screen:
+
+mac-finder-new-folder: PASS in 24.6 s, 12 turns, $0.0449
+=== mac-finder-no-delete-trap
+   1.7 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.3 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   6.6 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to the folder","after":"","m
+         -> Typed into textbox "~/Desktop/desk" (p=0.70).
+   8.1 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+  10.1 s  outline {"app":"Finder"}
+         -> 73 controls on screen:
+
+mac-finder-no-delete-trap: PASS in 11.7 s, 6 turns, $0.0171
+=== mac-finder-rename
+   1.8 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.2 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   6.7 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to the folder field","after"
+         -> Typed into textbox "~/Desktop/desk" (p=0.82).
+   8.1 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+   9.9 s  outline {"app":"Finder"}
+         -> 65 controls on screen:
+  17.0 s  steps {"app":"Finder","agent":"","steps":[{"tool":"act","intent":"e33 draft.txt row","text":"","
+         -> 1. act: Clicked row "draft.txt" (p=0.86). Changed: new text: "1 of 1 selected, 7.67 GB available"; new controls: button "Add Tags"; gone: button "Edit
+  19.5 s  type {"app":"Finder","agent":"","text":"final.txt","into":"filename editing textbox","after":""
+         -> Typed into textbox "draft.txt" (p=1.00).
+  21.0 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+  24.1 s  expect {"app":"Finder","into":"filename textbox final.txt","checked":false,"enabled":true,"value"
+         -> unknown: textbox "final.txt" (checked: cannot be read).
+  25.8 s  outline {"app":"Finder"}
+         -> 65 controls on screen:
+
+mac-finder-rename: PASS in 27.3 s, 11 turns, $0.0404
+=== mac-finder-tag-red
+   2.0 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.8 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   6.5 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to folder","after":"","mode"
+         -> UNSURE which field. Best guesses: textbox "~/Desktop/desk" (0.60); textbox "budget.numbers" (0.40).
+   8.5 s  outline {"app":"Finder"}
+         -> 69 controls on screen:
+  11.7 s  steps {"app":"Finder","agent":"","steps":[{"tool":"type","intent":"","text":"~/Desktop/desk","in
+         -> 1. type: Typed into textbox "~/Desktop/desk" (p=1.00).
+  18.2 s  pointer {"app":"Finder","agent":"","action":"right_click","into":"row budget.numbers","to":""}
+         -> right click on row "budget.numbers". Changed: new controls: menuitem "Open", menuitem "Open With", menuitem "Always Open With", menuitem "Move to Tras
+  20.1 s  outline {"app":"Finder"}
+         -> 92 controls on screen:
+  25.2 s  act {"app":"Finder","agent":"","intent":"e63","confirm":false}
+         -> Clicked radio "Add “Red” label" (p=1.00). Changed: new controls: button "Edit Tags"; gone: menuitem "Open", menuitem "Open With", menuitem "Always Ope
+  30.9 s  pointer {"app":"Finder","agent":"","action":"right_click","into":"row budget.numbers","to":""}
+         -> right click on row "budget.numbers". Changed: new controls: menuitem "Open", menuitem "Open With", menuitem "Always Open With", menuitem "Move to Tras
+  34.5 s  expect {"app":"Finder","into":"radio Remove “Red” label","checked":true,"enabled":true,"value":""
+         -> UNSURE which control. Best guesses: radio "Remove “Red” label" (0.49); radio "Remove “Red” label" (0.40); row "Red" (0.03).
+  36.3 s  key {"app":"Finder","key":"escape"}
+         -> pressed escape in Finder
+
+mac-finder-tag-red: PASS in 37.7 s, 12 turns, $0.0540
+=== mac-finder-trash-one
+   1.7 s  activate {"app":"Finder"}
+         -> activate Finder
+   3.4 s  key {"app":"Finder","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in Finder
+   6.7 s  type {"app":"Finder","agent":"","text":"~/Desktop/desk","into":"Go to the folder","after":"","m
+         -> Typed into textbox "~/Desktop/desk" (p=0.87).
+   8.5 s  key {"app":"Finder","key":"return"}
+         -> pressed return in Finder
+  10.2 s  outline {"app":"Finder"}
+         -> 69 controls on screen:
+  16.6 s  act {"app":"Finder","agent":"","intent":"Select only row old-notes.txt e37","confirm":false}
+         -> Clicked row "old-notes.txt" (p=0.91). Changed: new text: "1 of 3 selected, 7.67 GB available"; new controls: button "Add Tags"; gone: button "Edit Tag
+  18.7 s  menu {"app":"Finder","agent":"","path":["File","Move to Trash"]}
+         -> chose File > Move to Trash (AXPress 0)
+  20.4 s  outline {"app":"Finder"}
+         -> 67 controls on screen:
+
+mac-finder-trash-one: PASS in 21.9 s, 9 turns, $0.0313
+=== mac-notes-create
+   2.7 s  activate {"app":"Notes"}
+         -> activate Notes
+   4.1 s  key {"app":"Notes","key":"cmd+n"}
+         -> pressed cmd+n in Notes
+   7.8 s  type {"app":"Notes","agent":"","text":"desk groceries\neggs","into":"note body","after":"","mod
+         -> Typed into textbox "" (p=0.97).
+  10.7 s  expect {"app":"Notes","into":"note body","checked":false,"enabled":true,"value":"desk groceries\n
+         -> UNSURE which control. Best guesses: textbox "desk groceries eggs" (0.54); button "New Note" (0.13); menubaritem "Notes" (0.05).
+  12.7 s  outline {"app":"Notes"}
+         -> 25 controls on screen:
+  14.9 s  expect {"app":"Notes","into":"e7","checked":false,"enabled":true,"value":"desk groceries\neggs","
+         -> unknown: textbox "desk groceries eggs" (checked: cannot be read; enabled: cannot be read).
+
+mac-notes-create: PASS in 16.3 s, 7 turns, $0.0203
+=== mac-notes-edit
+   1.7 s  activate {"app":"Notes"}
+         -> activate Notes
+   3.4 s  outline {"app":"Notes"}
+         -> 25 controls on screen:
+   9.7 s  act {"app":"Notes","agent":"","intent":"click row desk trip","confirm":false}
+         -> Clicked row "desk trip" (p=0.90). Changed: new text: "November 7, 2026 at 04:16", "tickets"; new controls: textbox "desk trip desk trip tickets"; gone
+  11.7 s  outline {"app":"Notes"}
+         -> 25 controls on screen:
+  13.9 s  type {"app":"Notes","agent":"","text":"\npassport","into":"e7","after":"tickets","mode":"insert
+         -> Inserted "
+  16.2 s  expect {"app":"Notes","into":"e7","checked":false,"enabled":true,"value":"","contains":"passport"
+         -> unsatisfied: textbox "desk trip desk trip tickets passport" (checked: cannot be read; enabled: cannot be read; value: is "desk trip\ndesk trip\nticket
+  18.5 s  expect {"app":"Notes","into":"e7","checked":false,"enabled":true,"value":"desk trip\ndesk trip\nt
+         -> unknown: textbox "desk trip desk trip tickets passport" (checked: cannot be read; enabled: cannot be read).
+
+mac-notes-edit: PASS in 20.1 s, 8 turns, $0.0272
+=== mac-reminders-add
+   2.6 s  activate {"app":"Reminders"}
+         -> activate Reminders
+   4.3 s  outline {"app":"Reminders"}
+         -> 29 controls on screen:
+   8.5 s  act {"app":"Reminders","agent":"","intent":"e22","confirm":false}
+         -> Clicked button "Add Reminder" (p=1.00). Changed: new text: "Incomplete"; new controls: group "Incomplete", checkbox "Mark as Completed", textbox "", b
+  11.2 s  type {"app":"Reminders","agent":"","text":"desk call the bank","into":"empty reminder title tex
+         -> UNSURE which field. Best guesses: textbox "" (0.60); textbox "Reminders" (0.16); textbox "Reminders" (0.13).
+  13.1 s  outline {"app":"Reminders"}
+         -> 36 controls on screen:
+  15.7 s  steps {"app":"Reminders","agent":"","steps":[{"tool":"type","intent":"","text":"desk call the ba
+         -> 1. type: Typed into textbox "" (p=1.00).
+  19.1 s  expect {"app":"Reminders","into":"reminder title textbox desk call the bank","checked":false,"ena
+         -> UNSURE which control. Best guesses: textbox "desk call the bank" (0.32); textbox "Reminders" (0.14); textbox "" (0.09).
+  20.7 s  outline {"app":"Reminders"}
+         -> 40 controls on screen:
+
+mac-reminders-add: PASS in 22.0 s, 9 turns, $0.0336
+=== mac-reminders-complete
+   2.5 s  activate {"app":"Reminders"}
+         -> activate Reminders
+   4.1 s  outline {"app":"Reminders"}
+         -> 44 controls on screen:
+   6.2 s  check {"app":"Reminders","agent":"","into":"e21","on":true}
+         -> checkbox "Mark as Completed": turned on; read back on.
+   9.6 s  expect {"app":"Reminders","into":"checkbox in the desk water plants row","checked":false,"enabled
+         -> UNSURE which control. Best guesses: checkbox "Mark as Completed" (0.68); row "desk water plants" (0.13); group "Incomplete, desk water plants" (0.05).
+  11.3 s  outline {"app":"Reminders"}
+         -> 40 controls on screen:
+  13.5 s  expect {"app":"Reminders","into":"e28","checked":false,"enabled":true,"value":"","contains":""}
+         -> unsatisfied: checkbox "Mark as Completed" (value: is "0", wanted "").
+
+mac-reminders-complete: PASS in 15.4 s, 7 turns, $0.0242
+=== mac-settings-24h
+   3.0 s  activate {"app":"System Settings"}
+         -> activate System Settings
+   4.9 s  outline {"app":"System Settings"}
+         -> 52 controls on screen:
+   7.1 s  act {"app":"System Settings","agent":"","intent":"click e40","confirm":false}
+         -> STALE_REF: [e40] was button "Date & Time" and is now button "AutoFill & Passwords". The screen changed; call outline again and use the new ids.
+   8.9 s  outline {"app":"System Settings"}
+         -> 52 controls on screen:
+  14.7 s  act {"app":"System Settings","agent":"","intent":"click Date & Time","confirm":false}
+         -> Clicked button "Date & Time" (p=0.95). Changed: new text: "Set time and date automatically", "Source", "Apple (time.apple.com.)", "Date and time", "No
+  19.2 s  check {"app":"System Settings","agent":"","into":"24-hour time","on":true}
+         -> checkbox "24-hour time": turned on; read back on.
+
+mac-settings-24h: PASS in 20.5 s, 7 turns, $0.0263
+=== mac-settings-dark
+   2.8 s  activate {"app":"System Settings"}
+         -> activate System Settings
+   4.9 s  outline {"app":"System Settings"}
+         -> 52 controls on screen:
+   9.0 s  act {"app":"System Settings","agent":"","intent":"e8","confirm":false}
+         -> Clicked row "Appearance" (p=1.00). Changed: new text: "Liquid Glass", "Choose your preferred look for Liquid Glass.", "Theme", "Color", "Multicolor", 
+  20.6 s  act {"app":"System Settings","agent":"","intent":"Click Dark appearance","confirm":false}
+         -> Clicked button "Dark" (p=0.76). The click went through, but the screen shows no clear change (p=0.07). Some actions leave no visible trace; move on un
+  23.9 s  expect {"app":"System Settings","into":"Dark","checked":true,"enabled":true,"value":"","contains"
+         -> unknown: button "Dark" (checked: cannot be read; value: cannot be read; value: cannot be read).
+  28.0 s  look {"app":"System Settings","question":"Is Dark selected as the appearance and is the window 
+         -> p(yes)=0.78
+
+mac-settings-dark: PASS in 29.2 s, 7 turns, $0.0264
+=== mac-settings-dock-autohide
+   2.8 s  activate {"app":"System Settings"}
+         -> activate System Settings
+   4.9 s  outline {"app":"System Settings"}
+         -> 52 controls on screen:
+  11.9 s  act {"app":"System Settings","agent":"","intent":"e9","confirm":false}
+         -> Clicked row "Desktop & Dock" (p=1.00). Changed: new text: "Dock", "Dock position on screen", "Minimized window animation", "Window title bar double-cl
+  15.6 s  check {"app":"System Settings","agent":"","into":"Automatically hide and show the Dock","on":tru
+         -> checkbox "Automatically hide and show the Dock": turned on; read back on.
+
+mac-settings-dock-autohide: PASS in 17.0 s, 5 turns, $0.0166
+=== mac-textedit-append
+   2.5 s  outline {"app":"TextEdit"}
+         -> 11 controls on screen:
+  14.0 s  outline {"app":"TextEdit"}
+         -> 11 controls on screen:
+  16.1 s  type {"app":"TextEdit","agent":"","text":"\ndone","into":"e1","after":"step 2","mode":"insert"}
+         -> Inserted "
+  17.7 s  key {"app":"TextEdit","key":"cmd+s"}
+         -> pressed cmd+s in TextEdit
+  20.0 s  expect {"app":"TextEdit","into":"e1","checked":false,"enabled":true,"value":"step 1\nstep 2\ndone
+         -> unsatisfied: textbox "step 1 step 2 done" (checked: cannot be read; enabled: cannot be read; value: is "step 1\nstep 2\ndone\n", wanted "step 1\nstep 
+
+mac-textedit-append: PASS in 21.4 s, 7 turns, $0.0241
+=== mac-textedit-edit-line
+   2.0 s  activate {"app":"TextEdit"}
+         -> activate TextEdit
+   3.8 s  key {"app":"TextEdit","key":"cmd+o"}
+         -> pressed cmd+o in TextEdit
+   5.4 s  key {"app":"TextEdit","key":"cmd+shift+g"}
+         -> pressed cmd+shift+g in TextEdit
+   8.7 s  type {"app":"TextEdit","agent":"","text":"~/Desktop/desk/list.txt","into":"Go to folder text fi
+         -> UNSURE which field. Best guesses: textbox "" (0.38); textbox "~/Desktop/desk" (0.34); textbox "desk" (0.11).
+  10.5 s  outline {"app":"TextEdit"}
+         -> 61 controls on screen:
+  13.9 s  steps {"app":"TextEdit","agent":"","steps":[{"tool":"type","intent":"","text":"~/Desktop/desk/li
+         -> 1. type: Typed into textbox "~/Desktop/desk" (p=1.00).
+  15.8 s  outline {"app":"TextEdit"}
+         -> 11 controls on screen:
+  18.0 s  select_text {"app":"TextEdit","agent":"","into":"e1","from":"apples","through":""}
+         -> selected 6 characters from "apples" in textbox "milk apples bread".
+  20.5 s  type {"app":"TextEdit","agent":"","text":"pears","into":"e1","after":"","mode":"insert"}
+         -> Inserted at the cursor in textbox "milk apples bread" (p=1.00).
+  22.0 s  key {"app":"TextEdit","key":"cmd+s"}
+         -> pressed cmd+s in TextEdit
+  23.9 s  expect {"app":"TextEdit","into":"e1","checked":false,"enabled":true,"value":"milk\npears\nbread",
+         -> unsatisfied: textbox "milk pears bread" (checked: cannot be read; enabled: cannot be read; value: is "milk\npears\nbread\n", wanted "milk\npears\nbrea
+  26.3 s  expect {"app":"TextEdit","into":"e1","checked":false,"enabled":true,"value":"milk\npears\nbread\n
+         -> unknown: textbox "milk pears bread" (checked: cannot be read; enabled: cannot be read).
+  28.1 s  outline {"app":"TextEdit"}
+         -> 12 controls on screen:
+
+mac-textedit-edit-line: PASS in 29.4 s, 14 turns, $0.0531
+=== mac-textedit-write-save
+   3.1 s  activate {"app":"TextEdit"}
+         -> activate TextEdit
+   5.7 s  key {"app":"TextEdit","key":"cmd+n"}
+         -> pressed cmd+n in TextEdit
+   8.1 s  outline {"app":"TextEdit"}
+         -> 25 controls on screen:
+  11.2 s  steps {"app":"TextEdit","agent":"","steps":[{"tool":"type","intent":"","text":"Meeting moved to 
+         -> 1. type: Typed into textbox "" (p=1.00).
+  13.7 s  outline {"app":"TextEdit"}
+         -> 18 controls on screen:
+  16.7 s  steps {"app":"TextEdit","agent":"","steps":[{"tool":"type","intent":"","text":"memo.txt","into":
+         -> 1. type: Typed into textbox "Untitled 2" (p=1.00).
+  18.4 s  outline {"app":"TextEdit"}
+         -> 20 controls on screen:
+  21.4 s  steps {"app":"TextEdit","agent":"","steps":[{"tool":"type","intent":"","text":"~/Desktop/desk","
+         -> 1. type: Typed into textbox "~/Desktop/desk/list.txt" (p=1.00).
+  27.1 s  act {"app":"TextEdit","agent":"","intent":"Click Save","confirm":false}
+         -> Clicked button "Save" (p=0.95). Changed: new controls: button "this button also has an action to zoom the window", button "document actions"; gone: bu
+  32.2 s  expect {"app":"TextEdit","into":"the document text box","checked":false,"enabled":true,"value":"M
+         -> unknown: textbox "Meeting moved to Friday" (checked: cannot be read; enabled: cannot be read).
+  33.8 s  outline {"app":"TextEdit"}
+         -> 11 controls on screen:
+  36.2 s  expect {"app":"TextEdit","into":"e1","checked":false,"enabled":true,"value":"Meeting moved to Fri
+         -> unknown: textbox "Meeting moved to Friday" (checked: cannot be read; enabled: cannot be read).
+
+mac-textedit-write-save: PASS in 37.6 s, 13 turns, $0.0515
+RERUN-DONE

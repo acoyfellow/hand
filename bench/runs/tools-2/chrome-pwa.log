@@ -1,0 +1,18 @@
+  10.3 s  apps {}
+         -> In front: TextEdit
+  12.6 s  activate {"app":"Google Chrome"}
+         -> activate Google Chrome
+  14.5 s  outline {"app":"Google Chrome"}
+         -> 23 controls on screen:
+  18.2 s  steps {"app":"Google Chrome","agent":"","steps":[{"tool":"key","intent":"","text":"","into":"","
+         -> 1. key: pressed cmd+l in Google Chrome
+  20.2 s  outline {"app":"Google Chrome"}
+         -> 27 controls on screen:
+  22.4 s  menu {"app":"Google Chrome","agent":"","path":["History"]}
+         -> path needs a menu and an item, for example ["File", "New Folder"]
+  24.8 s  key {"app":"Google Chrome","key":"cmd+y"}
+         -> pressed cmd+y in Google Chrome
+  26.6 s  outline {"app":"Google Chrome"}
+         -> 37 controls on screen:
+
+mac-chrome-pwa-open: FAIL in 28.4 s, 10 turns, $0.0345
