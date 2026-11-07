@@ -35,23 +35,48 @@ func challenge(of verifier: String) -> String {
 }
 
 func saveGrant(_ grant: Grant) -> Bool {
-    guard let data = try? JSONEncoder().encode(grant) else { return false }
-    let base: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: grantService, kSecAttrAccount as String: NSUserName()]
-    SecItemDelete(base as CFDictionary)
-    var item = base
-    item[kSecValueData as String] = data
-    return SecItemAdd(item as CFDictionary, nil) == errSecSuccess
+    guard let data = try? JSONEncoder().encode(grant), let text = String(data: data, encoding: .utf8) else { return false }
+    return keychainWrite(service: grantService, secret: text)
+}
+
+func keychainWrite(service: String, secret: String) -> Bool {
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/security")
+    process.arguments = ["add-generic-password", "-U", "-a", NSUserName(), "-s", service, "-w", secret]
+    process.standardOutput = FileHandle.nullDevice
+    process.standardError = FileHandle.nullDevice
+    guard (try? process.run()) != nil else { return false }
+    process.waitUntilExit()
+    return process.terminationStatus == 0
+}
+
+func keychainRead(service: String) -> String? {
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/security")
+    process.arguments = ["find-generic-password", "-a", NSUserName(), "-s", service, "-w"]
+    let pipe = Pipe()
+    process.standardOutput = pipe
+    process.standardError = FileHandle.nullDevice
+    guard (try? process.run()) != nil else { return nil }
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    process.waitUntilExit()
+    guard process.terminationStatus == 0 else { return nil }
+    return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
 }
 
 func savedGrant() -> Grant? {
-    let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: grantService, kSecAttrAccount as String: NSUserName(), kSecReturnData as String: true]
-    var out: CFTypeRef?
-    guard SecItemCopyMatching(query as CFDictionary, &out) == errSecSuccess, let data = out as? Data else { return nil }
-    return try? JSONDecoder().decode(Grant.self, from: data)
+    guard let text = keychainRead(service: grantService) else { return nil }
+    return try? JSONDecoder().decode(Grant.self, from: Data(text.utf8))
 }
 
 func forgetGrant() {
-    SecItemDelete([kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: grantService, kSecAttrAccount as String: NSUserName()] as CFDictionary)
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/security")
+    process.arguments = ["delete-generic-password", "-a", NSUserName(), "-s", grantService]
+    process.standardOutput = FileHandle.nullDevice
+    process.standardError = FileHandle.nullDevice
+    try? process.run()
+    process.waitUntilExit()
 }
 
 func signInReady() async -> Bool {

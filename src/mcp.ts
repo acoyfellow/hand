@@ -2,7 +2,7 @@ import { execFile } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
-import { findToken, readConfig, readToken } from './credentials.ts';
+import { readConfig, readToken } from './credentials.ts';
 import { signedInConfig } from './grant.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
 import { Hand, type HandOptions } from './hand.ts';
@@ -400,11 +400,8 @@ export function serve(session: () => Session): void {
 }
 
 export const credentialsForServer = () => {
-  if (process.env.HAND_TOKEN || !findToken()) {
-    const signedIn = signedInConfig();
-    if (signedIn && !process.env.HAND_TOKEN) return signedIn;
-  }
-  return { ...readConfig(), token: readToken() };
+  const signedIn = process.env.HAND_TOKEN ? undefined : signedInConfig();
+  return signedIn ?? { ...readConfig(), token: readToken() };
 };
 
 export function startServer(): void {

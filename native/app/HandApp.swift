@@ -24,19 +24,11 @@ enum TokenCheck: Equatable {
 }
 
 func saveToken(_ token: String) -> Bool {
-    let account = NSUserName()
-    let base: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: keychainService, kSecAttrAccount as String: account]
-    SecItemDelete(base as CFDictionary)
-    var item = base
-    item[kSecValueData as String] = Data(token.utf8)
-    return SecItemAdd(item as CFDictionary, nil) == errSecSuccess
+    keychainWrite(service: keychainService, secret: token)
 }
 
 func savedToken() -> String? {
-    let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: keychainService, kSecAttrAccount as String: NSUserName(), kSecReturnData as String: true]
-    var out: CFTypeRef?
-    guard SecItemCopyMatching(query as CFDictionary, &out) == errSecSuccess, let data = out as? Data else { return nil }
-    return String(data: data, encoding: .utf8)
+    keychainRead(service: keychainService)
 }
 
 func savedAccountId() -> String? {
