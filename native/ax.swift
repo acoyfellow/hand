@@ -612,6 +612,84 @@ func setChecked(_ element: AXUIElement, to wanted: Bool) -> Outcome {
     return Outcome(ok: false, detail: "pressed (AXPress \(pressed.rawValue)) but it still reads \(checked ? "on" : "off")", code: "NOT_VERIFIED", delivery: .unverified, retrySafe: true)
 }
 
+struct TextLine: Encodable {
+    let index: Int
+    let text: String
+    let location: Int
+    let length: Int
+    let checklist: Bool
+    let checked: Bool?
+}
+
+func attributedText(_ element: AXUIElement) -> NSAttributedString? {
+    let count: Int = attribute(element, kAXNumberOfCharactersAttribute) ?? ((attribute(element, kAXValueAttribute) as String?)?.utf16.count ?? 0)
+    var range = CFRange(location: 0, length: count)
+    guard let value = AXValueCreate(.cfRange, &range) else { return nil }
+    var out: CFTypeRef?
+    guard AXUIElementCopyParameterizedAttributeValue(element, kAXAttributedStringForRangeParameterizedAttribute as CFString, value, &out) == .success else { return nil }
+    return out as? NSAttributedString
+}
+
+func listPrefix(_ text: NSAttributedString, at location: Int) -> String {
+    guard location < text.length else { return "" }
+    let raw = text.attribute(NSAttributedString.Key("AXListItemPrefix"), at: location, effectiveRange: nil)
+    if let attributed = raw as? NSAttributedString { return attributed.string.lowercased() }
+    return (raw as? String)?.lowercased() ?? ""
+}
+
+func textLines(_ element: AXUIElement) -> [TextLine] {
+    let value: String = attribute(element, kAXValueAttribute) ?? ""
+    let attributed = attributedText(element)
+    let whole = value as NSString
+    var lines: [TextLine] = []
+    whole.enumerateSubstrings(in: NSRange(location: 0, length: whole.length), options: [.byParagraphs]) { line, range, _, _ in
+        let prefix = attributed.map { listPrefix($0, at: range.location) } ?? ""
+        let checklist = prefix.contains("checklist")
+        let checked: Bool? = checklist ? !prefix.contains("incomplete") : nil
+        lines.append(TextLine(index: lines.count, text: line ?? "", location: range.location, length: range.length, checklist: checklist, checked: checked))
+    }
+    return lines
+}
+
+func lineMatching(_ element: AXUIElement, _ anchor: String) -> (TextLine?, String?) {
+    let matches = textLines(element).filter { $0.text.contains(anchor) }
+    if matches.isEmpty { return (nil, "ANCHOR_NOT_FOUND") }
+    if matches.count > 1 { return (nil, "ANCHOR_AMBIGUOUS") }
+    return (matches[0], nil)
+}
+
+struct TickResult: Encodable {
+    let ok: Bool
+    let detail: String
+    let code: String?
+    let line: TextLine?
+}
+
+func tickLine(_ app: NSRunningApplication, _ element: AXUIElement, anchor: String, wanted: Bool) -> TickResult {
+    let (found, problem) = lineMatching(element, anchor)
+    guard let line = found else { return TickResult(ok: false, detail: problem == "ANCHOR_AMBIGUOUS" ? "more than one line has \"\(anchor)\"" : "no line has \"\(anchor)\"", code: problem, line: nil) }
+    guard line.checklist else { return TickResult(ok: false, detail: "the line \"\(line.text)\" is not a checklist item", code: "NOT_CHECKLIST", line: line) }
+    if line.checked == wanted { return TickResult(ok: true, detail: "\"\(line.text)\" is already \(wanted ? "ticked" : "unticked"); did nothing", code: nil, line: line) }
+    bringToFront(app)
+    AXUIElementSetAttributeValue(element, kAXFocusedAttribute as CFString, kCFBooleanTrue)
+    usleep(80000)
+    for _ in 0..<3 {
+        guard selectRange(element, location: line.location + line.length, length: 0) else { return TickResult(ok: false, detail: "could not put the cursor on that line", code: "NO_CARET", line: line) }
+        usleep(250000)
+        let (item, missing) = menuItem(app, path: ["Format", wanted ? "Mark as Checked" : "Mark as Unchecked"])
+        guard let item else { return TickResult(ok: false, detail: missing, code: "MENU_NOT_FOUND", line: line) }
+        AXUIElementPerformAction(item, kAXPressAction as CFString)
+        for _ in 0..<8 {
+            usleep(100000)
+            if let now = lineMatching(element, anchor).0, now.checked == wanted {
+                return TickResult(ok: true, detail: "\(wanted ? "ticked" : "unticked") \"\(now.text)\"; read back \(wanted ? "ticked" : "unticked")", code: nil, line: now)
+            }
+        }
+    }
+    let after = lineMatching(element, anchor).0
+    return TickResult(ok: false, detail: "chose the menu item but the line still reads \(after?.checked == true ? "ticked" : "unticked")", code: "NOT_CHANGED", line: after)
+}
+
 func menuItem(_ app: NSRunningApplication, path: [String]) -> (AXUIElement?, String) {
     let root = AXUIElementCreateApplication(app.processIdentifier)
     guard let bar: AXUIElement = attribute(root, kAXMenuBarAttribute) else { return (nil, "no menu bar") }
@@ -864,6 +942,20 @@ case "select-text":
     _ = lease
     emit(picked)
     exit(picked.ok ? 0 : 1)
+case "lines":
+    let found = app(1, usage: "usage: ax lines <app> <path>")
+    guard args.count >= 3 else { fail("usage: ax lines <app> <path>", code: 64) }
+    emit(textLines(target(found, args[2])))
+case "tick", "untick":
+    let found = app(1, usage: "usage: ax tick <app> <path> <line text>")
+    guard args.count >= 4 else { fail("usage: ax tick <app> <path> <line text>", code: 64) }
+    let element = target(found, args[2])
+    let lease = acting()
+    showCursor(on: element, label: args[0])
+    let ticked = tickLine(found, element, anchor: args[3], wanted: args[0] == "tick")
+    _ = lease
+    emit(ticked)
+    exit(ticked.ok ? 0 : 1)
 case "state":
     let found = app(1, usage: "usage: ax state <app> <path>")
     guard args.count >= 3 else { fail("usage: ax state <app> <path>", code: 64) }

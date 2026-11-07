@@ -8,7 +8,7 @@ import { plannerLoop } from './entrants.ts';
 import { isTicked, vmShot } from './tick-check.ts';
 import { vm } from './vm.ts';
 
-const host = process.env.DESK_VM_HOST ?? '192.168.64.9';
+const host = process.env.DESK_VM_HOST ?? '192.168.64.10';
 const model = process.env.DEMO_MODEL ?? 'gpt-6.1-sol';
 const outDir = join(import.meta.dir, '..', '..', 'bench', 'runs', 'demo-use');
 const maxSeconds = Number(process.env.DEMO_MAX_SECONDS ?? 150);
@@ -80,7 +80,7 @@ const answerFor = (agent: string) => new Promise<string>((resolve) => waiters.se
 
 const writer = agentRun(
   'ada',
-  `In Notes, which is already open and in front, make a new note with cmd+n. Type the title Todo with type mode "insert", press return, start a checklist with shift+cmd+l, then type ${TODOS.map((todo) => `"${todo.item}"`).join(', press return, then ')} the same way. Use steps to send these in one or two calls. When the note is written, call done.`,
+  `In Notes, which is already open and in front, make a new note titled Todo with a checklist of two items: ${TODOS.map((todo) => `"${todo.item}"`).join(' and ')}. When the note is written, call done.`,
   SYSTEM('ada', 'When the note is written, call done.'),
   handTools,
 );
@@ -102,7 +102,7 @@ const crossOffs = TODOS.map(async (todo) => {
   if (!answer) return { agent: 'ada', item: todo.item, skipped: true };
   return agentRun(
     'ada',
-    `In Notes, in the note called Todo, click the checklist item "${todo.item}", press cmd+right to go to the end of that line, type " — ${answer}" with type mode "insert", then press shift+cmd+u to tick it. Use steps to send these in one call. Do not change the other item. Then call done.`,
+    `In Notes, in the note called Todo, add " — ${answer}" to the end of the checklist item "${todo.item}" and tick that item. Leave the other item alone. Then call done.`,
     SYSTEM('ada', 'Stay in Notes.'),
     handTools,
   );

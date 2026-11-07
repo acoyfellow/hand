@@ -1,0 +1,120 @@
+{
+  "host": "192.168.64.9",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-11-05T21:15:18.212Z",
+  "recordSeconds": 5,
+  "results": [
+    {
+      "agent": "cyd",
+      "task": "mac-textedit-edit-line",
+      "text": "Open \"list.txt\" from the \"desk\" folder on the Desktop in TextEdit, change \"apples\" to \"pears\", and save.",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 22,
+      "usd": 0.05951844,
+      "finishedAtMs": 64438,
+      "events": [
+        {
+          "atMs": 3791,
+          "tool": "activate",
+          "result": "activate TextEdit"
+        },
+        {
+          "atMs": 6013,
+          "tool": "key",
+          "result": "pressed cmd+o in TextEdit"
+        },
+        {
+          "atMs": 8137,
+          "tool": "key",
+          "result": "pressed cmd+shift+g in TextEdit"
+        },
+        {
+          "atMs": 10169,
+          "tool": "type",
+          "result": "No text fields on screen."
+        },
+        {
+          "atMs": 12272,
+          "tool": "outline",
+          "result": "8 controls on screen:\n- [e1] menubaritem \"Apple\"\n- [e2] menubaritem \"TextEdit\"\n- [e3] menubaritem \"File\"\n- [e4] menubaritem \"Edit\"\n- [e5] menubaritem \"Format\"\n- [e6] menubaritem \"View\"\n- [e7] menubari"
+        },
+        {
+          "atMs": 17434,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: menubaritem \"File\" (0.70); menubaritem \"TextEdit\" (0.15); menubaritem \"Edit\" (0.04). Say more precisely what to click."
+        },
+        {
+          "atMs": 19319,
+          "tool": "key",
+          "result": "pressed cmd+a in TextEdit"
+        },
+        {
+          "atMs": 21504,
+          "tool": "type",
+          "result": "No text fields on screen."
+        },
+        {
+          "atMs": 23078,
+          "tool": "key",
+          "result": "pressed escape in TextEdit"
+        },
+        {
+          "atMs": 25028,
+          "tool": "outline",
+          "result": "55 controls on screen:\n- [e1] row \"Recents\"\n- [e2] image \"clock\"\n- [e3] row \"Shared\"\n- [e4] image \"Shared Folder\"\n- [e5] row \"Favorites\"\n- [e6] row \"TextEdit\"\n- [e7] image \"move\"\n- [e8] row \"Applicati"
+        },
+        {
+          "atMs": 28022,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: textbox \"list.txt\" (0.69); button \"Open\" (0.18); menubaritem \"File\" (0.01). Say more precisely what to click."
+        },
+        {
+          "atMs": 33616,
+          "tool": "act",
+          "result": "Clicked textbox \"list.txt\" (p=1.00). Changed: new text: \"milk\", \"apples\", \"bread\", \"Plain Text Document - 18 bytes\", \"Information\", \"Created\"; new controls: textbox \"milk apples bread\", textbox \"tag e"
+        },
+        {
+          "atMs": 42606,
+          "tool": "act",
+          "result": "Clicked button \"Open\" (p=0.85). Changed: new controls: button \"this button also has an action to zoom the window\", button \"document actions\"; gone: row \"Recents\", image \"clock\", row \"Shared\", image \"S"
+        },
+        {
+          "atMs": 44335,
+          "tool": "key",
+          "result": "pressed cmd+f in TextEdit"
+        },
+        {
+          "atMs": 48424,
+          "tool": "type",
+          "result": "Typed into textbox \"Find\" (p=0.99).\nReceipts:\nset textbox \"Find\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 50127,
+          "tool": "key",
+          "result": "pressed escape in TextEdit"
+        },
+        {
+          "atMs": 53582,
+          "tool": "type",
+          "result": "Typed into textbox \"milk apples bread\" (p=1.00).\nReceipts:\nset textbox \"milk apples bread\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 55783,
+          "tool": "outline",
+          "result": "11 controls on screen:\n- [e1] textbox \"pears\"\n- [e3] button \"this button also has an action to zoom the window\"\n- [e5] button \"Edited\"\n- [e6] menubaritem \"Apple\"\n- [e7] menubaritem \"TextEdit\"\n- [e8] m"
+        },
+        {
+          "atMs": 60485,
+          "tool": "outline",
+          "result": "11 controls on screen:\n- [e1] textbox \"milk pears bread\"\n- [e3] button \"this button also has an action to zoom the window\"\n- [e5] button \"Edited\"\n- [e6] menubaritem \"Apple\"\n- [e7] menubaritem \"TextEdi"
+        },
+        {
+          "atMs": 63168,
+          "tool": "key",
+          "result": "pressed cmd+s in TextEdit"
+        }
+      ]
+    }
+  ]
+}

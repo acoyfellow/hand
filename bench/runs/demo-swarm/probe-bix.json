@@ -1,0 +1,130 @@
+{
+  "host": "192.168.64.9",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-11-05T21:13:26.103Z",
+  "recordSeconds": 5,
+  "results": [
+    {
+      "agent": "bix",
+      "task": "mac-finder-rename",
+      "text": "In Finder, rename the file \"draft.txt\" in the \"desk\" folder on the Desktop to \"final.txt\".",
+      "passed": true,
+      "claimedDone": true,
+      "turns": 23,
+      "usd": 0.1047105,
+      "finishedAtMs": 75858,
+      "events": [
+        {
+          "atMs": 3132,
+          "tool": "activate",
+          "result": "activate Finder"
+        },
+        {
+          "atMs": 4852,
+          "tool": "key",
+          "result": "pressed cmd+shift+g in Finder"
+        },
+        {
+          "atMs": 8040,
+          "tool": "type",
+          "result": "Typed into textbox \"~/Desktop/desk\" (p=1.00).\nReceipts:\nset textbox \"~/Desktop/desk\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 9741,
+          "tool": "key",
+          "result": "pressed return in Finder"
+        },
+        {
+          "atMs": 12075,
+          "tool": "outline",
+          "result": "89 controls on screen:\n- [e1] row \"Recents\"\n- [e2] image \"clock\"\n- [e3] row \"Shared\"\n- [e4] image \"Shared Folder\"\n- [e5] row \"Favorites\"\n- [e6] row \"Applications\"\n- [e7] row \"Desktop\"\n- [e8] row \"Docu"
+        },
+        {
+          "atMs": 13823,
+          "tool": "key",
+          "result": "pressed return in Finder"
+        },
+        {
+          "atMs": 15891,
+          "tool": "outline",
+          "result": "89 controls on screen:\n- [e1] row \"Recents\"\n- [e2] image \"clock\"\n- [e3] row \"Shared\"\n- [e4] image \"Shared Folder\"\n- [e5] row \"Favorites\"\n- [e6] row \"Applications\"\n- [e7] row \"Desktop\"\n- [e8] row \"Docu"
+        },
+        {
+          "atMs": 21142,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: menubaritem \"Go\" (0.47); textbox \"~/Desktop/desk\" (0.21); menubaritem \"File\" (0.07). Say more precisely what to click."
+        },
+        {
+          "atMs": 23997,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: textbox \"~/Desktop/desk\" (0.66); row \"Desktop\" (0.14); menubaritem \"Go\" (0.04). Say more precisely what to click."
+        },
+        {
+          "atMs": 26486,
+          "tool": "key",
+          "result": "pressed escape in Finder"
+        },
+        {
+          "atMs": 32190,
+          "tool": "act",
+          "result": "Clicked row \"Desktop\" (p=0.93). Changed: new text: \"1 item, 7.81 GB available\"; new controls: image \"desk\"; gone: image \"smb-migrate-preferences\", image \"smb-sync-preferences\", image \"smcDiagnose\", im"
+        },
+        {
+          "atMs": 36744,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: image \"desk\" (0.57); textbox \"~/Desktop/desk\" (0.08); row \"Desktop\" (0.04). Say more precisely what to click."
+        },
+        {
+          "atMs": 43928,
+          "tool": "act",
+          "result": "Clicked image \"desk\" (p=0.84). Changed: new text: \"1 of 1 selected, 7.81 GB available\"; new controls: button \"Add Tags\", button \"Customize Folder…\"; gone: button \"Edit Tags\", button \"Tags…\". (the acce"
+        },
+        {
+          "atMs": 45797,
+          "tool": "key",
+          "result": "pressed cmd+down in Finder"
+        },
+        {
+          "atMs": 47716,
+          "tool": "outline",
+          "result": "60 controls on screen:\n- [e1] row \"Recents\"\n- [e2] image \"clock\"\n- [e3] row \"Shared\"\n- [e4] image \"Shared Folder\"\n- [e5] row \"Favorites\"\n- [e6] row \"Applications\"\n- [e7] row \"Desktop\"\n- [e8] row \"Docu"
+        },
+        {
+          "atMs": 55364,
+          "tool": "act",
+          "result": "Clicked image \"draft.txt\" (p=0.83). Changed: new text: \"1 of 1 selected, 7.81 GB available\"; new controls: button \"Add Tags\"; gone: button \"Edit Tags\". (the accessibility press did nothing, so hand cl"
+        },
+        {
+          "atMs": 56970,
+          "tool": "key",
+          "result": "pressed return in Finder"
+        },
+        {
+          "atMs": 61219,
+          "tool": "type",
+          "result": "Typed into textbox \"draft.txt\" (p=0.88).\nReceipts:\nset textbox \"draft.txt\": delivered_verified via semantic_api"
+        },
+        {
+          "atMs": 63054,
+          "tool": "key",
+          "result": "pressed return in Finder"
+        },
+        {
+          "atMs": 68255,
+          "tool": "look",
+          "result": "p(yes)=0.02"
+        },
+        {
+          "atMs": 71860,
+          "tool": "act",
+          "result": "UNSURE, did not click. Best guesses: image \"final.txt\" (0.39); image \"document\" (0.09); textbox \"~/Desktop/desk\" (0.08). Say more precisely what to click."
+        },
+        {
+          "atMs": 74052,
+          "tool": "outline",
+          "result": "60 controls on screen:\n- [e1] row \"Recents\"\n- [e2] image \"clock\"\n- [e3] row \"Shared\"\n- [e4] image \"Shared Folder\"\n- [e5] row \"Favorites\"\n- [e6] row \"Applications\"\n- [e7] row \"Desktop\"\n- [e8] row \"Docu"
+        }
+      ]
+    }
+  ]
+}

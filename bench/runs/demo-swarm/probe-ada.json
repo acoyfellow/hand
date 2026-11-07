@@ -1,0 +1,65 @@
+{
+  "host": "192.168.64.9",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-11-05T21:19:03.086Z",
+  "recordSeconds": 5,
+  "results": [
+    {
+      "agent": "ada",
+      "task": "pwa-chat-attach-send",
+      "text": "In the Workbench app: Open the chat with Lena Fischer, attach a file, and send \"see you at 3\".",
+      "passed": true,
+      "claimedDone": false,
+      "turns": 10,
+      "usd": 0.0279385,
+      "finishedAtMs": 49642,
+      "events": [
+        {
+          "atMs": 3611,
+          "tool": "apps",
+          "result": "In front: Google Chrome\nGoogle Chrome\nNotes\nCalendar\nTerminal\nReminders\nFinder\nInstall Command Line Developer Tools\nGoogle Chrome (windows: Workbench)"
+        },
+        {
+          "atMs": 11588,
+          "tool": "outline",
+          "result": "31 controls on screen:\n- [e1] button \"Mail\"\n- [e2] button \"Settings\"\n- [e3] button \"Files\"\n- [e4] button \"Shop\"\n- [e5] button \"Dashboard\"\n- [e6] button \"Chat\"\n- [e7] button \"People\"\n- [e8] button \"Edi"
+        },
+        {
+          "atMs": 19165,
+          "tool": "act",
+          "result": "Clicked button \"Conversation with Lena Fischer\" (p=0.97). Changed: new text: \"Chat with\", \"Chloe Martin\", \"Lunch?\", \"Chat with Chloe Martin\", \"Google Chrome may not be able to keep itself updated\"; ne"
+        },
+        {
+          "atMs": 21321,
+          "tool": "outline",
+          "result": "34 controls on screen:\n- [e1] button \"Mail\"\n- [e2] button \"Settings\"\n- [e3] button \"Files\"\n- [e4] button \"Shop\"\n- [e5] button \"Dashboard\"\n- [e6] button \"Chat\"\n- [e7] button \"People\"\n- [e8] button \"Edi"
+        },
+        {
+          "atMs": 26781,
+          "tool": "act",
+          "result": "Clicked button \"Conversation with Lena Fischer\" (p=0.97). Changed: new text: \"Lena Fischer\", \"See you then\", \"Chat with Lena Fischer\". (the accessibility press did nothing, so hand clicked it with the"
+        },
+        {
+          "atMs": 32386,
+          "tool": "act",
+          "result": "Clicked button \"Attach file\" (p=0.95). Changed: new text: \"Choose a file to attach\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Attach file\": deli"
+        },
+        {
+          "atMs": 34081,
+          "tool": "outline",
+          "result": "34 controls on screen:\n- [e1] button \"Mail\"\n- [e2] button \"Settings\"\n- [e3] button \"Files\"\n- [e4] button \"Shop\"\n- [e5] button \"Dashboard\"\n- [e6] button \"Chat\"\n- [e7] button \"People\"\n- [e8] button \"Edi"
+        },
+        {
+          "atMs": 39865,
+          "tool": "type",
+          "result": "Typed into textbox \"Message\" (p=0.99).\nReceipts:\nset textbox \"Message\": delivered_unverified via semantic_api (NOT_VERIFIED)\nfocus textbox \"Message\": delivered_unverified via semantic_api"
+        },
+        {
+          "atMs": 47238,
+          "tool": "act",
+          "result": "Clicked button \"Send message\" (p=0.94). Changed: new text: \"Message sent\". (the accessibility press did nothing, so hand clicked it with the mouse)\nReceipts:\npress button \"Send message\": delivered_unv"
+        }
+      ]
+    }
+  ]
+}

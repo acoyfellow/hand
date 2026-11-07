@@ -17,3 +17,7 @@ bench/external/
 lab/py/.venv/
 .playwright-mcp/
 dist/
+.pi/
+.guardrail/
+*.mov
+bench/runs/demo-swarm/takes/

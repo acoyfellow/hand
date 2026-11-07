@@ -21,6 +21,7 @@ export interface Device extends Screen {
   selectText?(c: Candidate, from: string, through: string): Promise<TextEditResult>;
   setChecked?(c: Candidate, wanted: boolean): Promise<{ ok: boolean; detail: string }>;
   state?(c: Candidate): Promise<ElementState>;
+  tickLine?(c: Candidate, line: string, wanted: boolean): Promise<{ ok: boolean; detail: string; code?: string }>;
   gesture?(action: 'double_click' | 'right_click' | 'drag', c: Candidate, to?: Candidate): Promise<{ ok: boolean; detail: string }>;
 }
 
@@ -403,6 +404,25 @@ export class Hand {
       tool: 'select_text',
       args,
       result: picked.ok ? `${picked.detail} in ${describe(found.chosen)}.` : `FAILED: ${picked.detail}`,
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
+  async tickLine(into: string, line: string, wanted: boolean): Promise<string> {
+    const t0 = performance.now();
+    const tool = wanted ? 'check' : 'uncheck';
+    const args = { into, line };
+    if (!this.d.tickLine) return this.log({ tool, args, result: 'This device cannot tick checklist lines.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, TEXT_ROLES, tool, args, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    const outcome = await this.d.tickLine(found.chosen, line, wanted);
+    return this.log({
+      tool,
+      args,
+      result: outcome.ok ? `${outcome.detail}.` : `FAILED: ${outcome.detail}${outcome.code ? ` (${outcome.code})` : ''}.`,
+      clicked: describe(found.chosen),
       p: found.p,
       costUsd: found.costUsd,
       ms: performance.now() - t0,

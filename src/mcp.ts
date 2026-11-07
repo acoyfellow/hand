@@ -52,7 +52,7 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'type',
     description:
-      'Type text into a text field of the app, by its [id] from outline (fastest) or described in plain words. By default the text replaces everything in the field. To add to one line of a longer text (a note, a document), pass after with text from that line: hand puts the text at the end of that line, checks nothing else changed, and leaves the cursor there (so key cmd+shift+u then ticks that checklist item in Notes). Set mode to "insert" to type wherever the cursor already is.',
+      'Type text into a text field of the app, by its [id] from outline (fastest) or described in plain words. By default the text replaces everything in the field. To add to one line of a longer text (a note, a document), pass after with text from that line: hand puts the text at the end of that line, checks nothing else changed,. To tick a checklist item afterwards, use check with line. Set mode to "insert" to type wherever the cursor already is.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -94,6 +94,7 @@ export const TOOLS: readonly McpTool[] = [
               key: { type: 'string' },
               path: { type: 'array', items: { type: 'string' } },
               on: { type: 'boolean' },
+              line: { type: 'string' },
               from: { type: 'string' },
               through: { type: 'string' },
             },
@@ -113,8 +114,12 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'check',
     description:
-      'Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back.',
-    inputSchema: { type: 'object', properties: { app, agent, into: { type: 'string' }, on: { type: 'boolean' } }, required: ['app', 'into'] },
+      'Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back. For a checklist item inside a text (a Notes checklist), pass the text field as into and line with text from that item: hand ticks that line and reads it back.',
+    inputSchema: {
+      type: 'object',
+      properties: { app, agent, into: { type: 'string' }, on: { type: 'boolean' }, line: { type: 'string' } },
+      required: ['app', 'into'],
+    },
   },
   {
     name: 'select_text',
@@ -279,6 +284,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'type' && typeof args.after === 'string' && args.after !== '')
     return withReceipts(await hand.typeAfter(str(args, 'text'), target('into'), args.after));
   if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into'), args.mode === 'insert' ? 'insert' : 'replace'));
+  if (name === 'check' && typeof args.line === 'string' && args.line !== '') return text(await hand.tickLine(target('into'), args.line, args.on !== false));
   if (name === 'check') return withReceipts(await hand.setChecked(target('into'), args.on !== false));
   if (name === 'set_value') return withReceipts(await hand.select(str(args, 'value'), target('into')));
   if (name === 'pointer') {

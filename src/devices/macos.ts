@@ -308,6 +308,12 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       return outcome;
     },
     state: async (c) => helper<ElementState>('state', appArg, (c as MacosCandidate).path, '--ref', (c as MacosCandidate).ref),
+    tickLine: async (c, line, wanted) => {
+      const target = c as MacosCandidate;
+      return helper<{ ok: boolean; detail: string; code?: string }>(wanted ? 'tick' : 'untick', appArg, target.path, line, '--ref', target.ref).catch(
+        (error: Error) => ({ ok: false, detail: error.message, code: 'HELPER_FAILED' }),
+      );
+    },
     gesture: async (action, c, to) => {
       if (!opts.allowMouse) return { ok: false, detail: 'mouse gestures are off unless the device is headed (HAND_HEADED=1 for the MCP server)' };
       const from = grabPoint(c);

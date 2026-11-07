@@ -116,3 +116,22 @@ describe('hand tools on exact ids', () => {
     expect(await handOn(device).expect('e2', { checked: true })).toStartWith('unsatisfied');
   });
 });
+
+describe('checklist lines', () => {
+  test('check with a line ticks through the device and reports its read-back', async () => {
+    const asked: string[] = [];
+    const device = deviceWith({
+      tickLine: async (_c, line, wanted) => {
+        asked.push(`${line}:${wanted}`);
+        return { ok: true, detail: `ticked "${line}"; read back ticked` };
+      },
+    });
+    expect(await handOn(device).tickLine('e1', 'Weather in Lisbon', true)).toContain('read back ticked');
+    expect(asked).toEqual(['Weather in Lisbon:true']);
+  });
+
+  test('a line that is not a checklist item is reported, not faked', async () => {
+    const device = deviceWith({ tickLine: async () => ({ ok: false, detail: 'the line "Todo" is not a checklist item', code: 'NOT_CHECKLIST' }) });
+    expect(await handOn(device).tickLine('e1', 'Todo', true)).toStartWith('FAILED');
+  });
+});

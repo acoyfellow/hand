@@ -1,0 +1,403 @@
+{
+  "host": "192.168.64.10",
+  "model": "gpt-6.1-sol",
+  "startedAt": "2026-11-07T12:29:44.897Z",
+  "finishedAtMs": 55768,
+  "todos": [
+    {
+      "agent": "bix",
+      "item": "Weather in Lisbon",
+      "app": "Safari",
+      "ask": "Find the current weather in Lisbon. Answer with the temperature and one or two words, like \"18°C, sunny\"."
+    },
+    {
+      "agent": "cyd",
+      "item": "Population of Portugal",
+      "app": "Google Chrome",
+      "ask": "Find the population of Portugal. Answer with the number, like \"10.4 million\"."
+    }
+  ],
+  "answers": {
+    "bix": "18°C, cloudy",
+    "cyd": "11.4 million"
+  },
+  "noteWritten": {
+    "agent": "ada",
+    "request": "In Notes, which is already open and in front, make a new note titled Todo with a checklist of two items: \"Weather in Lisbon\" and \"Population of Portugal\". When the note is written, call done.",
+    "claimedDone": true,
+    "turns": 7,
+    "usd": 0.0237402,
+    "finishedAtMs": 28854
+  },
+  "helperRuns": [
+    {
+      "agent": "bix",
+      "request": "Find the current weather in Lisbon. Answer with the temperature and one or two words, like \"18°C, sunny\". Use Safari. Search the web from its address bar. When you have the answer, call report with it, then done.",
+      "claimedDone": true,
+      "turns": 7,
+      "usd": 0.0269875,
+      "finishedAtMs": 46284
+    },
+    {
+      "agent": "cyd",
+      "request": "Find the population of Portugal. Answer with the number, like \"10.4 million\". Use Google Chrome. Search the web from its address bar. When you have the answer, call report with it, then done.",
+      "claimedDone": true,
+      "turns": 8,
+      "usd": 0.030442499999999997,
+      "finishedAtMs": 49389
+    }
+  ],
+  "crossRuns": [
+    {
+      "agent": "ada",
+      "request": "In Notes, in the note called Todo, add \" — 18°C, cloudy\" to the end of the checklist item \"Weather in Lisbon\" and tick that item. Leave the other item alone. Then call done.",
+      "claimedDone": true,
+      "turns": 3,
+      "usd": 0.00947,
+      "finishedAtMs": 52688
+    },
+    {
+      "agent": "ada",
+      "request": "In Notes, in the note called Todo, add \" — 11.4 million\" to the end of the checklist item \"Population of Portugal\" and tick that item. Leave the other item alone. Then call done.",
+      "claimedDone": true,
+      "turns": 3,
+      "usd": 0.0095225,
+      "finishedAtMs": 55768
+    }
+  ],
+  "note": {
+    "plaintext": "Todo\nWeather in Lisbon — 18°C, cloudy\nPopulation of Portugal — 11.4 million\n\n",
+    "reasons": [],
+    "ticks": [
+      {
+        "item": "Weather in Lisbon",
+        "p": 0.9897,
+        "checked": true
+      },
+      {
+        "item": "Population of Portugal",
+        "p": 0.9917,
+        "checked": true
+      }
+    ],
+    "tickCheck": "Notes does not expose checklist state to scripts, so ticks are read from a screenshot by Clef"
+  },
+  "events": [
+    {
+      "atMs": 11702,
+      "agent": "ada",
+      "tool": "key",
+      "args": {
+        "app": "Notes",
+        "key": "cmd+n"
+      },
+      "result": "pressed cmd+n in Notes"
+    },
+    {
+      "atMs": 15458,
+      "agent": "ada",
+      "tool": "type",
+      "args": {
+        "app": "Notes",
+        "agent": "ada",
+        "text": "Todo",
+        "into": "note body",
+        "after": "",
+        "mode": "insert"
+      },
+      "result": "Inserted at the cursor in textbox \"\" (p=0.98)."
+    },
+    {
+      "atMs": 19135,
+      "agent": "ada",
+      "tool": "steps",
+      "args": {
+        "app": "Notes",
+        "agent": "ada",
+        "steps": [
+          {
+            "tool": "key",
+            "intent": "",
+            "text": "",
+            "into": "",
+            "after": "",
+            "key": "return",
+            "path": [],
+            "on": false,
+            "line": "",
+            "from": "",
+            "through": ""
+          },
+          {
+            "tool": "key",
+            "intent": "",
+            "text": "",
+            "into": "",
+            "after": "",
+            "key": "cmd+shift+l",
+            "path": [],
+            "on": false,
+            "line": "",
+            "from": "",
+            "through": ""
+          },
+          {
+            "tool": "type",
+            "intent": "",
+            "text": "Weather in Lisbon\nPopulation of Portugal",
+            "into": "note body",
+            "after": "",
+            "key": "",
+            "path": [],
+            "on": false,
+            "line": "",
+            "from": "",
+            "through": ""
+          }
+        ]
+      },
+      "result": "1. key: pressed return in Notes\n2. key: pressed cmd+shift+l in Notes\n3. type: Typed into textbox \"Todo\" (p=0.99)."
+    },
+    {
+      "atMs": 21254,
+      "agent": "ada",
+      "tool": "outline",
+      "args": {
+        "app": "Notes"
+      },
+      "result": "18 controls on screen:\n- [e1] row \"Today\"\n- [e2] row \"Weather in Lisbon\"\n- [e3] cell \"Weather in Lisbon\"\n- [e4] textbox \"Weather in Lisbon Population of Portugal\"\n- [e5] button \"Folders\"\n- [e6] button \"View Options\"\n- [e7] button \"New Note\"\n- [e8] button \"Search\"\n- [e9] combobox \"more toolbar items\""
+    },
+    {
+      "atMs": 24244,
+      "agent": "ada",
+      "tool": "type",
+      "args": {
+        "app": "Notes",
+        "agent": "ada",
+        "text": "Todo\nWeather in Lisbon\nPopulation of Portugal",
+        "into": "e4",
+        "after": "",
+        "mode": "replace"
+      },
+      "result": "Typed into textbox \"Weather in Lisbon Population of Portugal\" (p=1.00).\nReceipts:\nset textbox \"Weather in Lisbon Population of Portugal\": delivered_verified via semantic_api"
+    },
+    {
+      "atMs": 27561,
+      "agent": "ada",
+      "tool": "steps",
+      "args": {
+        "app": "Notes",
+        "agent": "ada",
+        "steps": [
+          {
+            "tool": "select_text",
+            "intent": "",
+            "text": "",
+            "into": "note body",
+            "after": "",
+            "key": "",
+            "path": [],
+            "on": false,
+            "line": "",
+            "from": "Weather in Lisbon",
+            "through": "Population of Portugal"
+          },
+          {
+            "tool": "menu",
+            "intent": "",
+            "text": "",
+            "into": "",
+            "after": "",
+            "key": "",
+            "path": [
+              "Format",
+              "Checklist"
+            ],
+            "on": false,
+            "line": "",
+            "from": "",
+            "through": ""
+          }
+        ]
+      },
+      "result": "1. select_text: selected 40 characters from \"Weather in Lisbon\" through \"Population of Portugal\" in textbox \"Todo Weather in Lisbon Population of Portugal\".\n2. menu: chose Format > Checklist (AXPress 0)"
+    },
+    {
+      "atMs": 31363,
+      "agent": "bix",
+      "tool": "activate",
+      "args": {
+        "app": "Safari"
+      },
+      "result": "activate Safari"
+    },
+    {
+      "atMs": 31528,
+      "agent": "cyd",
+      "tool": "activate",
+      "args": {
+        "app": "Google Chrome"
+      },
+      "result": "activate Google Chrome"
+    },
+    {
+      "atMs": 40407,
+      "agent": "bix",
+      "tool": "key",
+      "args": {
+        "app": "Safari",
+        "key": "return"
+      },
+      "result": "pressed return in Safari"
+    },
+    {
+      "atMs": 41433,
+      "agent": "cyd",
+      "tool": "outline",
+      "args": {
+        "app": "Google Chrome"
+      },
+      "result": "25 controls on screen:\n- [e1] button \"Back\"\n- [e2] button \"Forward\"\n- [e3] button \"Reload\"\n- [e4] textbox \"Address and search bar\"\n- [e5] button \"You\"\n- [e6] combobox \"Chrome\"\n- [e7] button \"Set up automatic updates\"\n- [e8] button \"Don't ask again\"\n- [e9] button \"Close\"\n- [e10] combobox \"Tab search\""
+    },
+    {
+      "atMs": 42581,
+      "agent": "bix",
+      "tool": "outline",
+      "args": {
+        "app": "Safari"
+      },
+      "result": "104 controls on screen:\n- [e1] link \"Skip to main content\"\n- [e2] link \"Accessibility help\"\n- [e3] link \"Go to Google home\"\n- [e4] image \"Go to Google home\"\n- [e5] combobox \"Search\"\n- [e6] button \"Clear\"\n- [e7] button \"Settings\"\n- [e8] button \"Share\"\n- [e9] button \"Google apps\"\n- [e10] link \"Sign in"
+    },
+    {
+      "atMs": 43671,
+      "agent": "cyd",
+      "tool": "key",
+      "args": {
+        "app": "Google Chrome",
+        "key": "return"
+      },
+      "result": "pressed return in Google Chrome"
+    },
+    {
+      "atMs": 44264,
+      "agent": "bix",
+      "tool": "report",
+      "args": {
+        "answer": "18°C, cloudy"
+      },
+      "result": "18°C, cloudy"
+    },
+    {
+      "atMs": 45869,
+      "agent": "cyd",
+      "tool": "outline",
+      "args": {
+        "app": "Google Chrome"
+      },
+      "result": "41 controls on screen:\n- [e1] button \"Back\"\n- [e2] button \"Forward\"\n- [e3] button \"Reload\"\n- [e4] combobox \"View site information\"\n- [e5] textbox \"Address and search bar\"\n- [e6] button \"Bookmark this tab\"\n- [e7] button \"You\"\n- [e8] combobox \"Chrome\"\n- [e9] link \"Skip to main content\"\n- [e10] link \"A"
+    },
+    {
+      "atMs": 46577,
+      "agent": "ada",
+      "tool": "outline",
+      "args": {
+        "app": "Notes"
+      },
+      "result": "18 controls on screen:\n- [e1] row \"Today\"\n- [e2] row \"Todo\"\n- [e3] cell \"Todo\"\n- [e4] textbox \"Todo Weather in Lisbon Population of Portugal\"\n- [e5] button \"Folders\"\n- [e6] button \"View Options\"\n- [e7] button \"New Note\"\n- [e8] button \"Search\"\n- [e9] combobox \"more toolbar items\"\n- [e11] button \"this"
+    },
+    {
+      "atMs": 47694,
+      "agent": "cyd",
+      "tool": "report",
+      "args": {
+        "answer": "11.4 million"
+      },
+      "result": "11.4 million"
+    },
+    {
+      "atMs": 49985,
+      "agent": "ada",
+      "tool": "outline",
+      "args": {
+        "app": "Notes"
+      },
+      "result": "18 controls on screen:\n- [e1] row \"Today\"\n- [e2] row \"Todo\"\n- [e3] cell \"Todo\"\n- [e4] textbox \"Todo Weather in Lisbon — 18°C, cloudy Population of Portugal\"\n- [e5] button \"Folders\"\n- [e6] button \"View Options\"\n- [e7] button \"New Note\"\n- [e8] button \"Search\"\n- [e9] combobox \"more toolbar items\"\n- [e1"
+    },
+    {
+      "atMs": 50976,
+      "agent": "ada",
+      "tool": "steps",
+      "args": {
+        "app": "Notes",
+        "agent": "ada",
+        "steps": [
+          {
+            "tool": "type",
+            "intent": "",
+            "text": " — 18°C, cloudy",
+            "into": "e4",
+            "after": "Weather in Lisbon",
+            "key": "",
+            "path": [],
+            "on": false,
+            "line": "",
+            "from": "",
+            "through": ""
+          },
+          {
+            "tool": "check",
+            "intent": "",
+            "text": "",
+            "into": "e4",
+            "after": "",
+            "key": "",
+            "path": [],
+            "on": true,
+            "line": "Weather in Lisbon — 18°C, cloudy",
+            "from": "",
+            "through": ""
+          }
+        ]
+      },
+      "result": "1. type: Inserted \" — 18°C, cloudy\" after \"Weather in Lisbon\" in textbox \"Todo Weather in Lisbon Population of Portugal\". Checked: the rest of the field is unchanged.\n2. check: ticked \"Weather in Lisbon — 18°C, cloudy\"; read back ticked."
+    },
+    {
+      "atMs": 53987,
+      "agent": "ada",
+      "tool": "steps",
+      "args": {
+        "app": "Notes",
+        "agent": "ada",
+        "steps": [
+          {
+            "tool": "type",
+            "intent": "",
+            "text": " — 11.4 million",
+            "into": "e4",
+            "after": "Population of Portugal",
+            "key": "",
+            "path": [],
+            "on": false,
+            "line": "",
+            "from": "",
+            "through": ""
+          },
+          {
+            "tool": "check",
+            "intent": "",
+            "text": "",
+            "into": "e4",
+            "after": "",
+            "key": "",
+            "path": [],
+            "on": true,
+            "line": "Population of Portugal — 11.4 million",
+            "from": "",
+            "through": ""
+          }
+        ]
+      },
+      "result": "1. type: Inserted \" — 11.4 million\" after \"Population of Portugal\" in textbox \"Todo Weather in Lisbon — 18°C, cloudy Population of Portugal\". Checked: the rest of the field is unchanged.\n2. check: ticked \"Population of Portugal — 11.4 million\"; read back ticked."
+    }
+  ]
+}
