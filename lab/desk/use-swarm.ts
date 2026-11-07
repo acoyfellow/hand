@@ -71,7 +71,8 @@ const checkNote = (body: string) => {
 mkdirSync(outDir, { recursive: true });
 console.log(await box.run(stage));
 const rawOut = join(outDir, 'raw.mov');
-const recorder = windowId ? Bun.spawn(['screencapture', '-v', '-x', '-o', `-l${windowId}`, rawOut], { stdout: 'ignore', stderr: 'ignore' }) : undefined;
+const recordStartMs = Date.now() - startedAt;
+const recorder = windowId ? Bun.spawn(['screencapture', '-v', '-x', '-o', `-l${windowId}`, '-V', String(Number(process.env.DEMO_RECORD_SECONDS ?? maxSeconds)), rawOut], { stdout: 'ignore', stderr: 'ignore' }) : undefined;
 await Bun.sleep(1200);
 
 const answers = new Map<string, string>();
@@ -112,10 +113,7 @@ const helperRuns = await Promise.all(helpers);
 const crossRuns = await Promise.all(crossOffs);
 const finishedAtMs = Date.now() - startedAt;
 await Bun.sleep(1200);
-if (recorder) {
-  recorder.kill('SIGINT');
-  await recorder.exited;
-}
+if (recorder) await recorder.exited;
 const body = await noteBody();
 const reasons = checkNote(body);
 await box.run(`osascript -e 'tell application "Notes" to activate'`);
@@ -123,7 +121,7 @@ await Bun.sleep(800);
 const finalShot = await vmShot();
 const ticks = await Promise.all(TODOS.map((todo) => isTicked(todo.item, finalShot)));
 for (const tick of ticks) if (!tick.checked) reasons.push(`"${tick.item}" not ticked on screen (p=${tick.p})`);
-const receipt = { host, model, startedAt: new Date(startedAt).toISOString(), finishedAtMs, todos: TODOS, answers: Object.fromEntries(answers), noteWritten, helperRuns, crossRuns, note: { plaintext: body, reasons, ticks, tickCheck: 'Notes does not expose checklist state to scripts, so ticks are read from a screenshot by Clef' }, events };
+const receipt = { host, model, startedAt: new Date(startedAt).toISOString(), recordStartMs, finishedAtMs, todos: TODOS, answers: Object.fromEntries(answers), noteWritten, helperRuns, crossRuns, note: { plaintext: body, reasons, ticks, tickCheck: "ticks read from the screen by Clef; hand reads them from Notes' accessibility text too" }, events };
 writeFileSync(join(outDir, 'receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
 const usd = [noteWritten, ...helperRuns, ...crossRuns].reduce((sum, run) => sum + ('usd' in run ? run.usd : 0), 0);
 console.log(`\n${reasons.length ? 'FAIL' : 'NOTE-OK'} in ${(finishedAtMs / 1000).toFixed(1)} s, $${usd.toFixed(4)}${reasons.length ? ` (${reasons.join('; ')})` : ''}`);

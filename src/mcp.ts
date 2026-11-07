@@ -149,6 +149,12 @@ export const TOOLS: readonly McpTool[] = [
     },
   },
   {
+    name: 'read',
+    description:
+      'Read a text field line by line, by its [id] or plain words. Checklist items show as [ ] (unticked) or [x] (ticked), read from the app itself, so use this, not look, to see whether lines are a checklist or ticked.',
+    inputSchema: { type: 'object', properties: { app, into: { type: 'string' } }, required: ['app', 'into'] },
+  },
+  {
     name: 'set_value',
     description:
       'Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.',
@@ -246,7 +252,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
   }
   if (name === 'menu') {
     const path = Array.isArray(args.path) ? args.path.map(String) : [];
-    if (path.length < 2) return text('path needs a menu and an item, for example ["File", "New Folder"]', true);
+    if (path.length < 2) return text('path needs the menu and the item, for example ["Format", "Checklist"]; menu opens nothing by itself', true);
     const { stdout } = await run(session.helper, ['menu', str(args, 'app'), ...path]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
     }));
@@ -286,6 +292,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into'), args.mode === 'insert' ? 'insert' : 'replace'));
   if (name === 'check' && typeof args.line === 'string' && args.line !== '') return text(await hand.tickLine(target('into'), args.line, args.on !== false));
   if (name === 'check') return withReceipts(await hand.setChecked(target('into'), args.on !== false));
+  if (name === 'read') return text(await hand.readLines(target('into')));
   if (name === 'set_value') return withReceipts(await hand.select(str(args, 'value'), target('into')));
   if (name === 'pointer') {
     const action = str(args, 'action');
