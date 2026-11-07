@@ -22,6 +22,7 @@ export interface Device extends Screen {
   setChecked?(c: Candidate, wanted: boolean): Promise<{ ok: boolean; detail: string }>;
   state?(c: Candidate): Promise<ElementState>;
   tickLine?(c: Candidate, line: string, wanted: boolean): Promise<{ ok: boolean; detail: string; code?: string }>;
+  lines?(c: Candidate): Promise<readonly TextLine[]>;
   gesture?(action: 'double_click' | 'right_click' | 'drag', c: Candidate, to?: Candidate): Promise<{ ok: boolean; detail: string }>;
 }
 
@@ -31,6 +32,16 @@ export interface TextEditResult {
   readonly code?: string;
   readonly before: string;
   readonly after: string;
+}
+
+export interface TextLine {
+  readonly text: string;
+  readonly checklist: boolean;
+  readonly checked?: boolean | null;
+}
+
+export function renderLines(lines: readonly TextLine[]): string {
+  return lines.map((line) => `${line.checklist ? (line.checked ? '[x] ' : '[ ] ') : ''}${line.text}`).join('\n');
 }
 
 export interface ElementState {
@@ -404,6 +415,23 @@ export class Hand {
       tool: 'select_text',
       args,
       result: picked.ok ? `${picked.detail} in ${describe(found.chosen)}.` : `FAILED: ${picked.detail}`,
+      p: found.p,
+      costUsd: found.costUsd,
+      ms: performance.now() - t0,
+    });
+  }
+
+  async readLines(into: string): Promise<string> {
+    const t0 = performance.now();
+    if (!this.d.lines)
+      return this.log({ tool: 'read', args: { into }, result: 'This device cannot read text line by line.', costUsd: 0, ms: performance.now() - t0 });
+    const found = await this.field(into, TEXT_ROLES, 'read', { into }, t0);
+    if ('refusal' in found) return found.refusal ?? '';
+    const lines = await this.d.lines(found.chosen);
+    return this.log({
+      tool: 'read',
+      args: { into },
+      result: `${describe(found.chosen)}, line by line ([ ] is an unticked checklist item, [x] a ticked one):\n${renderLines(lines)}`,
       p: found.p,
       costUsd: found.costUsd,
       ms: performance.now() - t0,
