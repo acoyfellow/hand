@@ -1,4 +1,6 @@
-interface Env {
+import { handleOAuth, type OAuthEnv } from './oauth.ts';
+
+interface Env extends OAuthEnv {
   readonly ASSETS: { fetch: (request: Request) => Promise<Response> };
 }
 
@@ -27,8 +29,9 @@ const partial = async (whole: Response, header: string): Promise<Response> => {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const range = request.headers.get('range');
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/oauth/')) return handleOAuth(request, env);
+    const range = request.headers.get('range');
     if (!range || !url.pathname.endsWith('.mp4') || request.method !== 'GET') return env.ASSETS.fetch(request);
     const plain = new Request(request.url, { method: 'GET', headers: new Headers([...request.headers].filter(([name]) => name.toLowerCase() !== 'range')) });
     const whole = await env.ASSETS.fetch(plain);
