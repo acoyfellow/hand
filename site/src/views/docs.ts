@@ -26,6 +26,7 @@ const TOC: readonly (readonly [string, string])[] = [
   ['settings', 'Settings'],
   ['helper', 'The macOS helper'],
   ['trouble', 'When something fails'],
+  ['remove', 'Sign out and uninstall'],
 ];
 
 const toc = (h: H): Html =>
@@ -308,6 +309,23 @@ const TROUBLE: readonly (readonly [string, readonly Child[]])[] = [
   ['The helper did not build', ['Run xcode-select --install, or use the prebuilt helper above.']],
 ];
 
+const REMOVE_STEPS: readonly string[] = [
+  'Open hand and press Sign out. That revokes the Cloudflare sign-in and deletes it from your Keychain.',
+  'Remove the hand entry from your agent’s MCP config.',
+  'Quit hand, then drag hand.app from Applications to the Bin.',
+  'Turn hand off in System Settings › Privacy & Security › Accessibility (and Screen Recording, if you turned it on).',
+];
+
+const remove = (h: H): Html =>
+  h.section(
+    [h.AriaLabelledBy('remove'), h.Class(SECTION)],
+    [
+      h.h2([h.Id('remove'), h.Class(H2)], ['Sign out and uninstall']),
+      h.p([h.Class(P)], ['hand keeps one thing: your Cloudflare sign-in, in the macOS Keychain under hand-oauth. What it reads on screen goes to Workers AI on your own Cloudflare account (or the AI Gateway you set). hand.coey.dev only sees the sign-in, to refresh it.']),
+      h.ol([h.Class('my-3 list-decimal pl-6 text-dim')], REMOVE_STEPS.map((step) => h.li([h.Class('mt-1.5')], [step]))),
+    ],
+  );
+
 const trouble = (h: H): Html =>
   h.section(
     [h.AriaLabelledBy('trouble'), h.Class(SECTION)],
@@ -336,6 +354,7 @@ export const docsMain = (h: H): readonly Child[] => [
       settings(h),
       helper(h),
       trouble(h),
+      remove(h),
     ],
   ),
 ];

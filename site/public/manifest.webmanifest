@@ -1,0 +1,22 @@
+{
+  "name": "hand · computer use without pixel guessing",
+  "short_name": "hand",
+  "description": "Let your AI agent use a computer without guessing where to click. A small model picks the button. hand clicks it and checks it worked.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#141416",
+  "theme_color": "#141416",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    { "src": "/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/brand/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Docs", "url": "/docs/" },
+    { "name": "Lab", "url": "/lab/" }
+  ]
+}

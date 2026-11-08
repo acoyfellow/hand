@@ -18,19 +18,62 @@ rmSync(notFoundDirectory, { recursive: true });
 
 const withHead = (file: string, extra: string) => writeFileSync(file, readFileSync(file, 'utf8').replace('</head>', `${extra}</head>`));
 
+const SITE = 'https://hand.coey.dev';
+const OG_IMAGE = `${SITE}/og.png`;
+const escape = (text: string) => text.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
+const SOFTWARE = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'hand',
+  description: PAGE_META.home.description,
+  url: `${SITE}/`,
+  image: OG_IMAGE,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'macOS 13 or later',
+  downloadUrl: 'https://github.com/acoyfellow/hand/releases/latest/download/hand.dmg',
+  softwareHelp: `${SITE}/docs/`,
+  author: { '@type': 'Person', name: 'Jordan Coeyman', url: 'https://x.com/acoyfellow' },
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+
+const socialTags = (page: string, title: string, description: string, canonical: string) =>
+  [
+    `<link rel="canonical" href="${canonical}">`,
+    `<meta property="og:type" content="${page === 'home' ? 'website' : 'article'}">`,
+    '<meta property="og:site_name" content="hand">',
+    `<meta property="og:title" content="${title}">`,
+    `<meta property="og:description" content="${description}">`,
+    `<meta property="og:url" content="${canonical}">`,
+    `<meta property="og:image" content="${OG_IMAGE}">`,
+    '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">',
+    '<meta property="og:image:alt" content="hand: let your AI agent use a computer without guessing where to click.">',
+    '<meta name="twitter:card" content="summary_large_image">',
+    '<meta name="twitter:creator" content="@acoyfellow">',
+    `<meta name="twitter:title" content="${title}">`,
+    `<meta name="twitter:description" content="${description}">`,
+    `<meta name="twitter:image" content="${OG_IMAGE}">`,
+  ].join('');
+
 for (const [page, meta] of Object.entries(PAGE_META)) {
   const path = page === 'notFound' ? '/404.html' : `${PAGE_PATHS[page as keyof typeof PAGE_PATHS]}index.html`;
+  const description = meta.description ? escape(meta.description) : '';
   const tags = [
-    meta.description ? `<meta name="description" content="${meta.description}">` : '',
+    description ? `<meta name="description" content="${description}">` : '',
     meta.noindex ? '<meta name="robots" content="noindex, nofollow">' : '',
-    page === 'home'
-      ? `<meta property="og:title" content="hand"><meta property="og:description" content="Don't let a model guess pixels. List what can be clicked, and let a small model choose."><meta property="og:url" content="https://hand.coey.dev/">`
-      : '',
+    '<link rel="manifest" href="/manifest.webmanifest">',
+    meta.canonical ? socialTags(page, escape(meta.title), description, meta.canonical) : '',
+    page === 'home' ? `<script type="application/ld+json">${JSON.stringify(SOFTWARE)}</script>` : '',
+    `<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script>`,
   ].join('');
   withHead(join(client, path), tags);
 }
 
-const expected = [...PRERENDER_PATHS.filter((path) => path !== PAGE_PATHS.notFound).map((path) => `${path}index.html`), '/404.html', '/llms.txt', '/cursor.js', '/lab/data.json'];
+const indexed = Object.values(PAGE_META).filter((meta) => meta.canonical && !meta.noindex);
+const today = new Date().toISOString().slice(0, 10);
+const urls = indexed.map((meta) => `  <url><loc>${meta.canonical}</loc><lastmod>${today}</lastmod></url>`).join('\n');
+writeFileSync(join(client, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+
+const expected = [...PRERENDER_PATHS.filter((path) => path !== PAGE_PATHS.notFound).map((path) => `${path}index.html`), '/404.html', '/llms.txt', '/cursor.js', '/lab/data.json', '/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/sw.js', '/og.png'];
 const missing = expected.filter((path) => !existsSync(join(client, path)));
 if (missing.length) throw new Error(`site build is missing ${missing.join(', ')}`);
 console.log(`site built: ${expected.join(' ')}`);
