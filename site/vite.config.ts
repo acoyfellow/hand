@@ -4,11 +4,12 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import { PRERENDER_PATHS } from './src/pages.ts';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   root: fileURLToPath(new URL('.', import.meta.url)),
   plugins: [
     foldkit({
       devToolsMcpPort: false,
+      ...(command === 'serve' ? { buildId: 'hand-dev' } : {}),
       ssr: {
         serverEntry: '/src/entry.server.ts',
         build: { prerender: { paths: [...PRERENDER_PATHS], origin: 'https://hand.coey.dev' } },
@@ -16,5 +17,6 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
-  server: { port: Number(process.env.PORT ?? 8799), host: '127.0.0.1' },
-});
+  optimizeDeps: { exclude: ['foldkit'] },
+  server: { port: Number(process.env.PORT ?? 8799), host: '127.0.0.1', headers: { 'cache-control': 'no-store' } },
+}));
