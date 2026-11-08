@@ -1,0 +1,23 @@
+{
+  "run": "webarena-1",
+  "benchmark": "WebArena-Verified hard subset",
+  "site": "reddit",
+  "model": "gpt-6.1-sol",
+  "tasks": 1,
+  "passed": 1,
+  "usd": 0.08926178,
+  "episodes": [
+    {
+      "taskId": 28,
+      "sites": [
+        "reddit"
+      ],
+      "claimed": true,
+      "turns": 23,
+      "usd": 0.08926178,
+      "ms": 75731,
+      "score": 1,
+      "status": "success"
+    }
+  ]
+}

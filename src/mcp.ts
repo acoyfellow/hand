@@ -3,9 +3,10 @@ import { createInterface } from 'node:readline';
 import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
 import { readConfig, readToken } from './credentials.ts';
+import { signedInConfig } from './grant.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
 import { Hand, type HandOptions } from './hand.ts';
-import { helperOrBuild } from './helper.ts';
+import { helperOrBuild, startCursorOverlay } from './helper.ts';
 
 const run = promisify(execFile);
 
@@ -149,6 +150,12 @@ export const TOOLS: readonly McpTool[] = [
     },
   },
   {
+    name: 'read',
+    description:
+      'Read a text field line by line, by its [id] or plain words. Checklist items show as [ ] (unticked) or [x] (ticked), read from the app itself, so use this, not look, to see whether lines are a checklist or ticked.',
+    inputSchema: { type: 'object', properties: { app, into: { type: 'string' } }, required: ['app', 'into'] },
+  },
+  {
     name: 'set_value',
     description:
       'Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.',
@@ -191,6 +198,7 @@ export interface ActionEvent {
 export interface Session {
   hand(app: string, agent?: string): Hand;
   helper: string;
+  notify?: (event: ActionEvent) => void;
   receipts(app: string, agent?: string): readonly Receipt[];
 }
 
@@ -246,11 +254,18 @@ export async function callTool(session: Session, name: string, args: Record<stri
   }
   if (name === 'menu') {
     const path = Array.isArray(args.path) ? args.path.map(String) : [];
-    if (path.length < 2) return text('path needs a menu and an item, for example ["File", "New Folder"]', true);
-    const { stdout } = await run(session.helper, ['menu', str(args, 'app'), ...path]).catch((error: { stdout?: string }) => ({
+    if (path.length < 2) return text('path needs the menu and the item, for example ["Format", "Checklist"]; menu opens nothing by itself', true);
+    const app = str(args, 'app');
+    const { stdout } = await run(session.helper, ['menu', app, ...path]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
     }));
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string; box?: [number, number, number, number] };
+    if (outcome.box) {
+      const [x, y, w, h] = outcome.box;
+      const event = { agent: typeof args.agent === 'string' ? args.agent : 'agent', app, action: 'menu', target: { role: 'menu', name: path.join(' > '), x, y, w, h } };
+      session.notify?.({ ...event, phase: 'before', ok: true });
+      session.notify?.({ ...event, phase: 'after', ok: outcome.ok, delivery: 'delivered_unverified', mechanism: 'semantic_api' });
+    }
     return text(outcome.detail, !outcome.ok);
   }
   if (name === 'clipboard') {
@@ -286,6 +301,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'type') return withReceipts(await hand.type(str(args, 'text'), target('into'), args.mode === 'insert' ? 'insert' : 'replace'));
   if (name === 'check' && typeof args.line === 'string' && args.line !== '') return text(await hand.tickLine(target('into'), args.line, args.on !== false));
   if (name === 'check') return withReceipts(await hand.setChecked(target('into'), args.on !== false));
+  if (name === 'read') return text(await hand.readLines(target('into')));
   if (name === 'set_value') return withReceipts(await hand.select(str(args, 'value'), target('into')));
   if (name === 'pointer') {
     const action = str(args, 'action');
@@ -307,7 +323,9 @@ export async function callTool(session: Session, name: string, args: Record<stri
 }
 
 export function defaultHelper(): string {
-  return helperOrBuild();
+  const helper = helperOrBuild();
+  startCursorOverlay(helper);
+  return helper;
 }
 
 export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND, notify: (event: ActionEvent) => void = () => {}): Session {
@@ -341,6 +359,7 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
   };
   return {
     helper,
+    notify,
     hand: (name, agentId) => entry(name, agentId).hand,
     receipts: (name, agentId) => entry(name, agentId).device.receipts,
   };
@@ -391,10 +410,15 @@ export function serve(session: () => Session): void {
   });
 }
 
+export const credentialsForServer = () => {
+  const signedIn = process.env.HAND_TOKEN ? undefined : signedInConfig();
+  return signedIn ?? { ...readConfig(), token: readToken() };
+};
+
 export function startServer(): void {
   let cached: Session | undefined;
   serve(() => {
-    cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper(), DEFAULT_HAND, (event) =>
+    cached ??= makeSession(gatewayTransport(credentialsForServer()), defaultHelper(), DEFAULT_HAND, (event) =>
       process.stdout.write(
         `${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/message', params: { level: 'info', logger: 'hand.action', data: event } })}\n`,
       ),

@@ -1,0 +1,81 @@
+{
+  "task_id": 625,
+  "intent_template_id": 13,
+  "sites": ["reddit"],
+  "task_revision": 2,
+  "status": "failure",
+  "score": 0.0,
+  "evaluators_results": [
+    {
+      "evaluator_name": "AgentResponseEvaluator",
+      "status": "success",
+      "score": 1.0,
+      "actual": "{\n  \"task_type\": \"MUTATE\",\n  \"status\": \"SUCCESS\",\n  \"retrieved_data\": null,\n  \"error_details\": null\n}\n",
+      "actual_normalized": {"retrieved_data": null, "task_type": "mutate", "status": "success"},
+      "expected": {"task_type": "mutate", "status": "success", "retrieved_data": null},
+      "assertions": null,
+      "error_msg": null,
+      "should_not_exist": null
+    },
+    {
+      "evaluator_name": "NetworkEventEvaluator",
+      "status": "failure",
+      "score": 0.0,
+      "actual": [
+        {
+          "url": "http://localhost:9999/submit",
+          "post_data": {
+            "submission[mediaType]": "url",
+            "submission[title]": "the effectiveness of deep learning",
+            "submission[body]": "your opinion",
+            "submission[forum]": "10018",
+            "submission[userFlag]": "none",
+            "submission[_token]": "cd81466e01ff.Kxftx3-YGOpu_EmJJcAcn3NOz0N3A6WS97j_4UlQyVw.QieXiCrReq8sj37ocJFq-UIsuwQVatO_xPSdtC00oWxlZqiVNeBggwmLHA"
+          },
+          "response_status": 302,
+          "http_method": "POST"
+        }
+      ],
+      "actual_normalized": [
+        {
+          "url": {"base_url": "__REDDIT__/submit", "query_params": {}},
+          "post_data": {
+            "submission[title]": "the effectiveness of deep learning",
+            "submission[body]": "your opinion",
+            "submission[forum]": "10018"
+          },
+          "response_status": 302,
+          "http_method": "POST",
+          "response_content": null,
+          "response_cookies": null
+        }
+      ],
+      "expected": {
+        "url": {"base_url": "__REDDIT__/submit", "query_params": {}},
+        "post_data": {
+          "submission[title]": "the effectiveness of deep learning",
+          "submission[body]": "your opinion",
+          "submission[forum]": "10043"
+        },
+        "response_status": 302,
+        "http_method": "POST",
+        "response_content": null,
+        "response_cookies": null
+      },
+      "assertions": [
+        {
+          "assertion_name": "missing_navigation_event",
+          "status": "failure",
+          "assertion_msgs": [
+            "No matching network event found. Checked 1 event(s) but none matched all expected criteria."
+          ]
+        }
+      ],
+      "error_msg": null,
+      "should_not_exist": false
+    }
+  ],
+  "webarena_verified_version": "1.2.3",
+  "webarena_verified_evaluator_checksum": "35c3385b1db4b3378657589f95f50defd4234bd36e5b93d44733fd561b01db4e",
+  "webarena_verified_data_checksum": "d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30"
+}

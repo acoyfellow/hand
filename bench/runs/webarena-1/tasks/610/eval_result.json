@@ -1,0 +1,92 @@
+{
+  "task_id": 610,
+  "intent_template_id": 9,
+  "sites": ["reddit"],
+  "task_revision": 2,
+  "status": "failure",
+  "score": 0.0,
+  "evaluators_results": [
+    {
+      "evaluator_name": "AgentResponseEvaluator",
+      "status": "failure",
+      "score": 0.0,
+      "actual": "{\n  \"task_type\": \"NAVIGATE\",\n  \"status\": \"UNKNOWN_ERROR\",\n  \"retrieved_data\": null,\n  \"error_details\": \"no answer within the turn limit\"\n}\n",
+      "actual_normalized": {"retrieved_data": null, "task_type": "navigate", "status": "unknown_error"},
+      "expected": {"task_type": "mutate", "status": "success", "retrieved_data": null},
+      "assertions": [
+        {
+          "assertion_name": "agent_response.task_type_mismatch",
+          "status": "failure",
+          "assertion_msgs": ["Expected mutate, got navigate"]
+        },
+        {
+          "assertion_name": "agent_response.status_mismatch",
+          "status": "failure",
+          "assertion_msgs": ["Expected success, got unknown_error"]
+        }
+      ],
+      "error_msg": null,
+      "should_not_exist": null
+    },
+    {
+      "evaluator_name": "NetworkEventEvaluator",
+      "status": "failure",
+      "score": 0.0,
+      "actual": [],
+      "actual_normalized": null,
+      "expected": {
+        "url": {"base_url": "__REDDIT__/submit", "query_params": {}},
+        "post_data": {
+          "submission[title]": "to kill a mockingbird by harper lee",
+          "submission[forum]": "10037"
+        },
+        "response_status": 302,
+        "http_method": "POST",
+        "response_content": null,
+        "response_cookies": null
+      },
+      "assertions": [
+        {
+          "assertion_name": "missing_navigation_event",
+          "status": "failure",
+          "assertion_msgs": ["No matching network event found that satisfies all expected criteria."]
+        }
+      ],
+      "error_msg": null,
+      "should_not_exist": false
+    },
+    {
+      "evaluator_name": "NetworkEventEvaluator",
+      "status": "failure",
+      "score": 0.0,
+      "actual": [],
+      "actual_normalized": null,
+      "expected": {
+        "url": {"base_url": "^__REDDIT__/f/books/\\d+/-/comment$", "query_params": {}},
+        "headers": {
+          "referer": {
+            "base_url": "^__REDDIT__/f/books/\\d+/to-kill-a-mockingbird-by-harper-lee$",
+            "query_params": {}
+          }
+        },
+        "post_data": {"$.^reply_to_submission_\\d+\\[comment\\]$": "good book!"},
+        "response_status": 302,
+        "http_method": "POST",
+        "response_content": null,
+        "response_cookies": null
+      },
+      "assertions": [
+        {
+          "assertion_name": "missing_navigation_event",
+          "status": "failure",
+          "assertion_msgs": ["No matching network event found that satisfies all expected criteria."]
+        }
+      ],
+      "error_msg": null,
+      "should_not_exist": false
+    }
+  ],
+  "webarena_verified_version": "1.2.3",
+  "webarena_verified_evaluator_checksum": "35c3385b1db4b3378657589f95f50defd4234bd36e5b93d44733fd561b01db4e",
+  "webarena_verified_data_checksum": "d65275660814663375028e9017e1f929e3c38321041b125795e2713b52243d30"
+}

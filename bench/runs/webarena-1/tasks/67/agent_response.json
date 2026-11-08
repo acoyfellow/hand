@@ -1,0 +1,6 @@
+{
+  "task_type": "RETRIEVE",
+  "status": "UNKNOWN_ERROR",
+  "retrieved_data": [],
+  "error_details": "The browser page or context closed while navigating to the Books forum, and subsequent attempts to read or reopen the site failed. Unable to inspect the top 10 hottest posts."
+}

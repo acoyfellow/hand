@@ -1,0 +1,356 @@
+2026-11-07 08:56:25,703 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,703 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,703 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,703 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,712 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,712 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,712 - WebArena-Verified - INFO - Evaluating task 28
+2026-11-07 08:56:25,712 - WebArena-Verified - INFO - Loading agent response from file: tasks/28/agent_response.json
+2026-11-07 08:56:25,712 - WebArena-Verified - INFO - Loading network trace from file: tasks/28/network.har
+2026-11-07 08:56:25,729 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,730 - WebArena-Verified - INFO - Starting evaluation for task_id=28, intent_template_id=33
+2026-11-07 08:56:25,731 - WebArena-Verified - INFO - Saved evaluation result to tasks/28/eval_result.json
+2026-11-07 08:56:25,731 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,731 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,731 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,731 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,740 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,741 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,742 - WebArena-Verified - INFO - Evaluating task 29
+2026-11-07 08:56:25,742 - WebArena-Verified - INFO - Loading agent response from file: tasks/29/agent_response.json
+2026-11-07 08:56:25,742 - WebArena-Verified - INFO - Loading network trace from file: tasks/29/network.har
+2026-11-07 08:56:25,751 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,751 - WebArena-Verified - INFO - Starting evaluation for task_id=29, intent_template_id=33
+2026-11-07 08:56:25,752 - WebArena-Verified - INFO - Saved evaluation result to tasks/29/eval_result.json
+2026-11-07 08:56:25,752 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,752 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,752 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,752 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,774 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,775 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,776 - WebArena-Verified - INFO - Evaluating task 31
+2026-11-07 08:56:25,776 - WebArena-Verified - INFO - Loading agent response from file: tasks/31/agent_response.json
+2026-11-07 08:56:25,776 - WebArena-Verified - INFO - Loading network trace from file: tasks/31/network.har
+2026-11-07 08:56:25,787 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,787 - WebArena-Verified - INFO - Starting evaluation for task_id=31, intent_template_id=33
+2026-11-07 08:56:25,788 - WebArena-Verified - INFO - Saved evaluation result to tasks/31/eval_result.json
+2026-11-07 08:56:25,788 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,788 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,788 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,789 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,798 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,798 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,799 - WebArena-Verified - INFO - Evaluating task 399
+2026-11-07 08:56:25,799 - WebArena-Verified - INFO - Loading agent response from file: tasks/399/agent_response.json
+2026-11-07 08:56:25,799 - WebArena-Verified - INFO - Loading network trace from file: tasks/399/network.har
+2026-11-07 08:56:25,809 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,809 - WebArena-Verified - INFO - Starting evaluation for task_id=399, intent_template_id=6
+2026-11-07 08:56:25,811 - WebArena-Verified - INFO - Saved evaluation result to tasks/399/eval_result.json
+2026-11-07 08:56:25,811 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,811 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,811 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,812 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,821 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,822 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,823 - WebArena-Verified - INFO - Evaluating task 400
+2026-11-07 08:56:25,823 - WebArena-Verified - INFO - Loading agent response from file: tasks/400/agent_response.json
+2026-11-07 08:56:25,823 - WebArena-Verified - INFO - Loading network trace from file: tasks/400/network.har
+2026-11-07 08:56:25,833 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,833 - WebArena-Verified - INFO - Starting evaluation for task_id=400, intent_template_id=6
+2026-11-07 08:56:25,835 - WebArena-Verified - INFO - Saved evaluation result to tasks/400/eval_result.json
+2026-11-07 08:56:25,835 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,835 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,835 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,835 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,844 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,845 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,845 - WebArena-Verified - INFO - Evaluating task 401
+2026-11-07 08:56:25,846 - WebArena-Verified - INFO - Loading agent response from file: tasks/401/agent_response.json
+2026-11-07 08:56:25,846 - WebArena-Verified - INFO - Loading network trace from file: tasks/401/network.har
+2026-11-07 08:56:25,856 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,856 - WebArena-Verified - INFO - Starting evaluation for task_id=401, intent_template_id=6
+2026-11-07 08:56:25,858 - WebArena-Verified - INFO - Saved evaluation result to tasks/401/eval_result.json
+2026-11-07 08:56:25,858 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,858 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,858 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,858 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,867 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,868 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,869 - WebArena-Verified - INFO - Evaluating task 407
+2026-11-07 08:56:25,869 - WebArena-Verified - INFO - Loading agent response from file: tasks/407/agent_response.json
+2026-11-07 08:56:25,869 - WebArena-Verified - INFO - Loading network trace from file: tasks/407/network.har
+2026-11-07 08:56:25,882 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,882 - WebArena-Verified - INFO - Starting evaluation for task_id=407, intent_template_id=22
+2026-11-07 08:56:25,884 - WebArena-Verified - INFO - Saved evaluation result to tasks/407/eval_result.json
+2026-11-07 08:56:25,884 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,884 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,884 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,885 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,910 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,911 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,913 - WebArena-Verified - INFO - Evaluating task 408
+2026-11-07 08:56:25,913 - WebArena-Verified - INFO - Loading agent response from file: tasks/408/agent_response.json
+2026-11-07 08:56:25,913 - WebArena-Verified - INFO - Loading network trace from file: tasks/408/network.har
+2026-11-07 08:56:25,921 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,921 - WebArena-Verified - INFO - Starting evaluation for task_id=408, intent_template_id=22
+2026-11-07 08:56:25,922 - WebArena-Verified - INFO - Saved evaluation result to tasks/408/eval_result.json
+2026-11-07 08:56:25,922 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,922 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,923 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,923 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,932 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,932 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,933 - WebArena-Verified - INFO - Evaluating task 409
+2026-11-07 08:56:25,933 - WebArena-Verified - INFO - Loading agent response from file: tasks/409/agent_response.json
+2026-11-07 08:56:25,933 - WebArena-Verified - INFO - Loading network trace from file: tasks/409/network.har
+2026-11-07 08:56:25,941 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,941 - WebArena-Verified - INFO - Starting evaluation for task_id=409, intent_template_id=23
+2026-11-07 08:56:25,943 - WebArena-Verified - INFO - Saved evaluation result to tasks/409/eval_result.json
+2026-11-07 08:56:25,943 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,943 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,943 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,943 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,952 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,953 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,954 - WebArena-Verified - INFO - Evaluating task 410
+2026-11-07 08:56:25,954 - WebArena-Verified - INFO - Loading agent response from file: tasks/410/agent_response.json
+2026-11-07 08:56:25,954 - WebArena-Verified - INFO - Loading network trace from file: tasks/410/network.har
+2026-11-07 08:56:25,974 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,974 - WebArena-Verified - INFO - Starting evaluation for task_id=410, intent_template_id=23
+2026-11-07 08:56:25,975 - WebArena-Verified - INFO - Saved evaluation result to tasks/410/eval_result.json
+2026-11-07 08:56:25,976 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,976 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,976 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,976 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:25,986 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:25,986 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:25,987 - WebArena-Verified - ERROR - Task 580 failed: Trace file not found: tasks/580/network.har
+Traceback (most recent call last):
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 936, in eval_tasks
+    original_agent_response_file, trace_file = _load_task_log_files(task_id, output_dir, task_config)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 633, in _load_task_log_files
+    trace_file = get_trace_file_path(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/utils.py", line 115, in get_trace_file_path
+    raise FileNotFoundError(f"Trace file not found: {path}")
+FileNotFoundError: Trace file not found: tasks/580/network.har
+2026-11-07 08:56:25,987 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:25,987 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:25,987 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:25,987 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,008 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,009 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,010 - WebArena-Verified - INFO - Evaluating task 581
+2026-11-07 08:56:26,010 - WebArena-Verified - INFO - Loading agent response from file: tasks/581/agent_response.json
+2026-11-07 08:56:26,010 - WebArena-Verified - INFO - Loading network trace from file: tasks/581/network.har
+2026-11-07 08:56:26,020 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,020 - WebArena-Verified - INFO - Starting evaluation for task_id=581, intent_template_id=7
+2026-11-07 08:56:26,021 - WebArena-Verified - INFO - Saved evaluation result to tasks/581/eval_result.json
+2026-11-07 08:56:26,021 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,022 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,022 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,022 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,031 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,031 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,032 - WebArena-Verified - INFO - Evaluating task 584
+2026-11-07 08:56:26,032 - WebArena-Verified - INFO - Loading agent response from file: tasks/584/agent_response.json
+2026-11-07 08:56:26,032 - WebArena-Verified - INFO - Loading network trace from file: tasks/584/network.har
+2026-11-07 08:56:26,042 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,042 - WebArena-Verified - INFO - Starting evaluation for task_id=584, intent_template_id=7
+2026-11-07 08:56:26,043 - WebArena-Verified - INFO - Saved evaluation result to tasks/584/eval_result.json
+2026-11-07 08:56:26,043 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,043 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,044 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,044 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,053 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,053 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,054 - WebArena-Verified - ERROR - Task 597 failed: Trace file not found: tasks/597/network.har
+Traceback (most recent call last):
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 936, in eval_tasks
+    original_agent_response_file, trace_file = _load_task_log_files(task_id, output_dir, task_config)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 633, in _load_task_log_files
+    trace_file = get_trace_file_path(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/utils.py", line 115, in get_trace_file_path
+    raise FileNotFoundError(f"Trace file not found: {path}")
+FileNotFoundError: Trace file not found: tasks/597/network.har
+2026-11-07 08:56:26,054 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,054 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,054 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,054 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,063 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,064 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,065 - WebArena-Verified - INFO - Evaluating task 598
+2026-11-07 08:56:26,065 - WebArena-Verified - INFO - Loading agent response from file: tasks/598/agent_response.json
+2026-11-07 08:56:26,065 - WebArena-Verified - INFO - Loading network trace from file: tasks/598/network.har
+2026-11-07 08:56:26,081 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,081 - WebArena-Verified - INFO - Starting evaluation for task_id=598, intent_template_id=4
+2026-11-07 08:56:26,083 - WebArena-Verified - INFO - Saved evaluation result to tasks/598/eval_result.json
+2026-11-07 08:56:26,083 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,083 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,083 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,083 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,092 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,093 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,094 - WebArena-Verified - INFO - Evaluating task 610
+2026-11-07 08:56:26,094 - WebArena-Verified - INFO - Loading agent response from file: tasks/610/agent_response.json
+2026-11-07 08:56:26,094 - WebArena-Verified - INFO - Loading network trace from file: tasks/610/network.har
+2026-11-07 08:56:26,106 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,106 - WebArena-Verified - INFO - Starting evaluation for task_id=610, intent_template_id=9
+2026-11-07 08:56:26,108 - WebArena-Verified - INFO - Saved evaluation result to tasks/610/eval_result.json
+2026-11-07 08:56:26,108 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,108 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,108 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,108 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,138 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,139 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,140 - WebArena-Verified - INFO - Evaluating task 617
+2026-11-07 08:56:26,140 - WebArena-Verified - INFO - Loading agent response from file: tasks/617/agent_response.json
+2026-11-07 08:56:26,140 - WebArena-Verified - INFO - Loading network trace from file: tasks/617/network.har
+2026-11-07 08:56:26,156 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,156 - WebArena-Verified - INFO - Starting evaluation for task_id=617, intent_template_id=11
+2026-11-07 08:56:26,158 - WebArena-Verified - INFO - Saved evaluation result to tasks/617/eval_result.json
+2026-11-07 08:56:26,158 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,158 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,158 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,158 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,167 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,168 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,169 - WebArena-Verified - INFO - Evaluating task 618
+2026-11-07 08:56:26,169 - WebArena-Verified - INFO - Loading agent response from file: tasks/618/agent_response.json
+2026-11-07 08:56:26,169 - WebArena-Verified - INFO - Loading network trace from file: tasks/618/network.har
+2026-11-07 08:56:26,197 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,197 - WebArena-Verified - INFO - Starting evaluation for task_id=618, intent_template_id=11
+2026-11-07 08:56:26,199 - WebArena-Verified - INFO - Saved evaluation result to tasks/618/eval_result.json
+2026-11-07 08:56:26,199 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,199 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,199 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,199 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,208 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,209 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,210 - WebArena-Verified - INFO - Evaluating task 624
+2026-11-07 08:56:26,210 - WebArena-Verified - INFO - Loading agent response from file: tasks/624/agent_response.json
+2026-11-07 08:56:26,210 - WebArena-Verified - INFO - Loading network trace from file: tasks/624/network.har
+2026-11-07 08:56:26,220 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,220 - WebArena-Verified - INFO - Starting evaluation for task_id=624, intent_template_id=12
+2026-11-07 08:56:26,222 - WebArena-Verified - INFO - Saved evaluation result to tasks/624/eval_result.json
+2026-11-07 08:56:26,222 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,222 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,222 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,222 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,231 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,231 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,232 - WebArena-Verified - INFO - Evaluating task 625
+2026-11-07 08:56:26,232 - WebArena-Verified - INFO - Loading agent response from file: tasks/625/agent_response.json
+2026-11-07 08:56:26,232 - WebArena-Verified - INFO - Loading network trace from file: tasks/625/network.har
+2026-11-07 08:56:26,242 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,242 - WebArena-Verified - INFO - Starting evaluation for task_id=625, intent_template_id=13
+2026-11-07 08:56:26,244 - WebArena-Verified - INFO - Saved evaluation result to tasks/625/eval_result.json
+2026-11-07 08:56:26,244 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,244 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,245 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,245 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,254 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,254 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,255 - WebArena-Verified - INFO - Evaluating task 634
+2026-11-07 08:56:26,255 - WebArena-Verified - INFO - Loading agent response from file: tasks/634/agent_response.json
+2026-11-07 08:56:26,255 - WebArena-Verified - INFO - Loading network trace from file: tasks/634/network.har
+2026-11-07 08:56:26,265 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,265 - WebArena-Verified - INFO - Starting evaluation for task_id=634, intent_template_id=15
+2026-11-07 08:56:26,267 - WebArena-Verified - INFO - Saved evaluation result to tasks/634/eval_result.json
+2026-11-07 08:56:26,267 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,268 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,268 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,268 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,297 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,298 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,299 - WebArena-Verified - INFO - Evaluating task 636
+2026-11-07 08:56:26,299 - WebArena-Verified - INFO - Loading agent response from file: tasks/636/agent_response.json
+2026-11-07 08:56:26,299 - WebArena-Verified - INFO - Loading network trace from file: tasks/636/network.har
+2026-11-07 08:56:26,313 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,313 - WebArena-Verified - INFO - Starting evaluation for task_id=636, intent_template_id=6100
+2026-11-07 08:56:26,316 - WebArena-Verified - INFO - Saved evaluation result to tasks/636/eval_result.json
+2026-11-07 08:56:26,316 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,316 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,316 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,316 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,325 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,326 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,326 - WebArena-Verified - ERROR - Task 638 failed: Trace file not found: tasks/638/network.har
+Traceback (most recent call last):
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 936, in eval_tasks
+    original_agent_response_file, trace_file = _load_task_log_files(task_id, output_dir, task_config)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 633, in _load_task_log_files
+    trace_file = get_trace_file_path(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/utils.py", line 115, in get_trace_file_path
+    raise FileNotFoundError(f"Trace file not found: {path}")
+FileNotFoundError: Trace file not found: tasks/638/network.har
+2026-11-07 08:56:26,327 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,327 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,327 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,327 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,339 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,340 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,342 - WebArena-Verified - INFO - Evaluating task 644
+2026-11-07 08:56:26,342 - WebArena-Verified - INFO - Loading agent response from file: tasks/644/agent_response.json
+2026-11-07 08:56:26,342 - WebArena-Verified - INFO - Loading network trace from file: tasks/644/network.har
+2026-11-07 08:56:26,351 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,351 - WebArena-Verified - INFO - Starting evaluation for task_id=644, intent_template_id=16
+2026-11-07 08:56:26,353 - WebArena-Verified - INFO - Saved evaluation result to tasks/644/eval_result.json
+2026-11-07 08:56:26,353 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,353 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,353 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,353 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,362 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,362 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,363 - WebArena-Verified - INFO - Evaluating task 645
+2026-11-07 08:56:26,363 - WebArena-Verified - INFO - Loading agent response from file: tasks/645/agent_response.json
+2026-11-07 08:56:26,363 - WebArena-Verified - INFO - Loading network trace from file: tasks/645/network.har
+2026-11-07 08:56:26,370 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,370 - WebArena-Verified - INFO - Starting evaluation for task_id=645, intent_template_id=19
+2026-11-07 08:56:26,372 - WebArena-Verified - INFO - Saved evaluation result to tasks/645/eval_result.json
+2026-11-07 08:56:26,372 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,372 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,372 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,372 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,382 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,383 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,384 - WebArena-Verified - INFO - Evaluating task 66
+2026-11-07 08:56:26,384 - WebArena-Verified - INFO - Loading agent response from file: tasks/66/agent_response.json
+2026-11-07 08:56:26,384 - WebArena-Verified - INFO - Loading network trace from file: tasks/66/network.har
+2026-11-07 08:56:26,405 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,405 - WebArena-Verified - INFO - Starting evaluation for task_id=66, intent_template_id=17
+2026-11-07 08:56:26,407 - WebArena-Verified - INFO - Saved evaluation result to tasks/66/eval_result.json
+2026-11-07 08:56:26,407 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,407 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,407 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,407 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,435 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,436 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,436 - WebArena-Verified - ERROR - Task 67 failed: Trace file not found: tasks/67/network.har
+Traceback (most recent call last):
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 936, in eval_tasks
+    original_agent_response_file, trace_file = _load_task_log_files(task_id, output_dir, task_config)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/__main__.py", line 633, in _load_task_log_files
+    trace_file = get_trace_file_path(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/utils.py", line 115, in get_trace_file_path
+    raise FileNotFoundError(f"Trace file not found: {path}")
+FileNotFoundError: Trace file not found: tasks/67/network.har
+2026-11-07 08:56:26,437 - WebArena-Verified - INFO - Using config from --config: config.json
+2026-11-07 08:56:26,437 - WebArena-Verified - INFO - Loading config from: '/Users/jcoeyman/cloudflare/do/bench/runs/webarena-1/config.json'
+2026-11-07 08:56:26,437 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,437 - WebArena-Verified - INFO - Loading tasks from: '/Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json'
+2026-11-07 08:56:26,447 - WebArena-Verified - INFO - Loaded 812 tasks successfully.
+2026-11-07 08:56:26,447 - WebArena-Verified - INFO - WebArenaVerified initialized successfully
+2026-11-07 08:56:26,449 - WebArena-Verified - INFO - Evaluating task 68
+2026-11-07 08:56:26,449 - WebArena-Verified - INFO - Loading agent response from file: tasks/68/agent_response.json
+2026-11-07 08:56:26,449 - WebArena-Verified - INFO - Loading network trace from file: tasks/68/network.har
+2026-11-07 08:56:26,469 - WebArena-Verified - INFO - Using test_data_file: /Users/jcoeyman/.cache/uv/archive-v0/t46j0jruTzm15An7jr52g/lib/python3.12/site-packages/webarena_verified/assets/dataset/webarena-verified.json
+2026-11-07 08:56:26,469 - WebArena-Verified - INFO - Starting evaluation for task_id=68, intent_template_id=17
+2026-11-07 08:56:26,471 - WebArena-Verified - INFO - Saved evaluation result to tasks/68/eval_result.json

@@ -53,10 +53,12 @@ export const plannerLoop = async (
   let usd = 0;
   for (let turn = 1; turn <= limits.maxTurns; turn++) {
     if (Date.now() > limits.deadline) return { claimedDone: false, turns: turn - 1, usd: usd + toolUsd(), trace, error: 'time limit' };
+    const askedAt = Date.now();
     const reply = model
       ? await plannerChat(model, msgs, [...tools, DONE]).then((r) => ({ text: r.text, toolCalls: r.toolCalls, costUsd: r.usd }))
       : await Effect.runPromise(chat(t, PLANNER, msgs, { tools: [...tools, DONE], maxTokens: 1500 }));
     usd += reply.costUsd;
+    if (process.env.PLANNER_TIMING === "1") console.log(`planner ${((Date.now() - askedAt) / 1000).toFixed(1)} s`);
     let calls = reply.toolCalls;
     if (!calls.length) {
       const parsed = firstJson(reply.text);

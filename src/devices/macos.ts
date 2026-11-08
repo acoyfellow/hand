@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
-import type { Device, ElementState, TextEditResult } from '../hand.ts';
+import type { Device, ElementState, TextEditResult, TextLine } from '../hand.ts';
 import { type Box, type Candidate, inside } from '../perceive.ts';
 
 const run = promisify(execFile);
@@ -308,6 +308,7 @@ export function macosDevice(opts: MacosDeviceOptions): MacosDevice {
       return outcome;
     },
     state: async (c) => helper<ElementState>('state', appArg, (c as MacosCandidate).path, '--ref', (c as MacosCandidate).ref),
+    lines: async (c) => helper<TextLine[]>('lines', appArg, (c as MacosCandidate).path, '--ref', (c as MacosCandidate).ref),
     tickLine: async (c, line, wanted) => {
       const target = c as MacosCandidate;
       return helper<{ ok: boolean; detail: string; code?: string }>(wanted ? 'tick' : 'untick', appArg, target.path, line, '--ref', target.ref).catch(

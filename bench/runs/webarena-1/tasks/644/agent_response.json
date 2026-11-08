@@ -1,0 +1,6 @@
+{
+  "task_type": "MUTATE",
+  "status": "NOT_FOUND_ERROR",
+  "retrieved_data": null,
+  "error_details": "The games forum does not exist in the available forum list (gaming exists, but is a different name). No post was submitted."
+}
