@@ -1,5 +1,6 @@
 import type { Html } from 'foldkit/html';
 import { Backdrop, Peek } from '../mounts.ts';
+import { isDocKey } from '../docs/routes.ts';
 import type { Page } from '../pages.ts';
 import { cloudflareLogo, githubIcon } from './icons.ts';
 import { type Child, GITHUB, type H } from './kit.ts';
@@ -43,7 +44,7 @@ export const header = (h: H, page: Page): Html =>
       h.nav(
         [h.AriaLabel('Main'), h.Class('ml-auto flex items-center gap-[1.1rem] text-[0.85rem]')],
         [
-          h.a([h.Href('/docs/'), h.Class(NAV_LINK), ...(page === 'docs' || page === 'reference' ? [h.AriaCurrent('page')] : [])], ['Docs']),
+          h.a([h.Href('/docs/'), h.Class(NAV_LINK), ...(isDocKey(page) ? [h.AriaCurrent('page')] : [])], ['Docs']),
           h.a([h.Href('/lab/'), h.Class(NAV_LINK), ...(page === 'lab' ? [h.AriaCurrent('page')] : [])], ['Benchmarks']),
           h.a([h.Href(GITHUB), h.Class(NAV_LINK)], [githubIcon(h), 'GitHub']),
         ],
@@ -166,7 +167,7 @@ export const layout = (h: H, page: Page, main: readonly Child[], mainClass = '')
     [h.Class('relative min-h-dvh')],
     [
       skipLink(h),
-      backdrop(h),
+      ...(isDocKey(page) ? [] : [backdrop(h)]),
       header(h, page),
       h.main([h.Id('main'), h.Tabindex(-1), h.Class(`${SHELL} outline-none ${mainClass}`)], [...main]),
       footer(h),

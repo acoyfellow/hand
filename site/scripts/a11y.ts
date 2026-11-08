@@ -9,7 +9,10 @@ import { serveSite } from './serve.ts';
 const PAGES = [
   { name: 'home', path: '/' },
   { name: 'docs', path: '/docs/' },
+  { name: 'tutorial', path: '/docs/tutorials/first-task/' },
   { name: 'reference', path: '/docs/reference/' },
+  { name: 'mcp-tools', path: '/docs/reference/mcp-tools/' },
+  { name: 'hand-class', path: '/docs/reference/hand-class/' },
   { name: 'lab', path: '/lab/' },
   { name: 'brand', path: '/brand/' },
   { name: 'brand-lab', path: '/brand/lab/' },

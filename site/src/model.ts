@@ -34,6 +34,3 @@ export const Model = Schema.Struct({
 
 export type Model = typeof Model.Type;
 
-export const Flags = Schema.Struct({ page: Page });
-
-export type Flags = typeof Flags.Type;

@@ -3,6 +3,9 @@ import { modifyFields } from 'foldkit/struct';
 import { Mark } from './brand.ts';
 import {
   AnnounceHydration,
+  LoadUrl,
+  PushUrl,
+  ScrollTo,
   ClearCopied,
   CopyInstall,
   CopySettings,
@@ -14,7 +17,9 @@ import {
 } from './commands.ts';
 import { isChoiceKey, isNumericKey, type MarkOptions } from './mark-options.ts';
 import { Message } from './message.ts';
-import type { Flags, MarkLab, Model } from './model.ts';
+import type { Url } from 'foldkit/url';
+import type { MarkLab, Model } from './model.ts';
+import { PAGE_PATHS, pageAt } from './pages.ts';
 
 export const INSTALL_COMMAND = 'bun add github:acoyfellow/hand#release';
 
@@ -39,8 +44,16 @@ export const initialLab = (): MarkLab => ({
   copiedSettings: false,
 });
 
-export const init = ({ page }: Flags): Return => ({
-  model: { page, live: false, copied: false, lab: initialLab() },
+const pageOf = (url: Url) => pageAt(url.pathname) ?? 'notFound';
+
+const hashOf = (url: Url) => (url.hash._tag === 'Some' ? url.hash.value : '');
+
+const hrefOf = (url: Url) => `${url.pathname}${url.search._tag === 'Some' ? `?${url.search.value}` : ''}${url.hash._tag === 'Some' ? `#${url.hash.value}` : ''}`;
+
+const servedByApp = (url: Url) => pageAt(url.pathname) !== undefined && url.pathname !== PAGE_PATHS.notFound;
+
+export const init = (url: Url): Return => ({
+  model: { page: pageOf(url), live: false, copied: false, lab: initialLab() },
   commands: [AnnounceHydration()],
 });
 
@@ -65,6 +78,12 @@ export const galleryStyle = (lab: MarkLab): string | undefined => (lab.preset ==
 export const update = (model: Model, message: Message): Return =>
   Message.match<Return>(message, {
     CompletedHydration: () => ({ model: modifyFields(model, { live: () => true }) }),
+    RequestedUrl: ({ request }) =>
+      request._tag === 'Internal' && servedByApp(request.url)
+        ? { model, commands: [PushUrl({ href: hrefOf(request.url) })] }
+        : { model, commands: [LoadUrl({ href: request._tag === 'Internal' ? hrefOf(request.url) : request.href })] },
+    ChangedUrl: ({ url }) => ({ model: modifyFields(model, { page: () => pageOf(url) }), commands: [ScrollTo({ hash: hashOf(url) })] }),
+    CompletedNavigation: () => ({ model }),
     CompletedMount: () => ({ model }),
     CompletedEffect: () => ({ model }),
     ClickedCopyInstall: () => ({ model, commands: [CopyInstall({ text: INSTALL_COMMAND })] }),

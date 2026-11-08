@@ -1,5 +1,5 @@
 import { Effect } from 'effect';
-import { Command } from 'foldkit';
+import { Command, Navigation } from 'foldkit';
 import { Schema } from 'effect';
 import { Mark } from './brand.ts';
 import { MarkOptions } from './mark-options.ts';
@@ -64,4 +64,28 @@ export const CopySettings = Command.define('CopySettings', {
   args: { options: MarkOptions },
   messages: [Message.CopiedSettings],
   execute: ({ options }) => writeClipboard(JSON.stringify(options)).pipe(Effect.as(Message.CopiedSettings())),
+});
+
+export const PushUrl = Command.define('PushUrl', {
+  args: { href: Schema.String },
+  messages: [Message.CompletedNavigation],
+  execute: ({ href }) => Navigation.pushUrl(href).pipe(Effect.as(Message.CompletedNavigation())),
+});
+
+export const LoadUrl = Command.define('LoadUrl', {
+  args: { href: Schema.String },
+  messages: [Message.CompletedNavigation],
+  execute: ({ href }) => Navigation.load(href).pipe(Effect.as(Message.CompletedNavigation())),
+});
+
+export const ScrollTo = Command.define('ScrollTo', {
+  args: { hash: Schema.String },
+  messages: [Message.CompletedNavigation],
+  execute: ({ hash }) =>
+    Effect.sync(() => {
+      const target = hash ? document.getElementById(decodeURIComponent(hash.replace(/^#/, ''))) : null;
+      if (target) target.scrollIntoView();
+      else window.scrollTo(0, 0);
+      return Message.CompletedNavigation();
+    }),
 });

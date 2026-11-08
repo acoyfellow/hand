@@ -1,10 +1,15 @@
 import { Schema } from 'effect';
 import { defineMessageUnion } from 'foldkit/message';
+import { UrlRequest } from 'foldkit/navigation';
+import { Url } from 'foldkit/url';
 import { MarkOptions } from './mark-options.ts';
 import { Motion } from './model.ts';
 
 export const Message = defineMessageUnion({
   CompletedHydration: {},
+  RequestedUrl: { request: UrlRequest },
+  ChangedUrl: { url: Url },
+  CompletedNavigation: {},
   CompletedMount: {},
   CompletedEffect: {},
   ClickedCopyInstall: {},
