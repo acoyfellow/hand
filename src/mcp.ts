@@ -198,6 +198,7 @@ export interface ActionEvent {
 export interface Session {
   hand(app: string, agent?: string): Hand;
   helper: string;
+  notify?: (event: ActionEvent) => void;
   receipts(app: string, agent?: string): readonly Receipt[];
 }
 
@@ -254,10 +255,17 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'menu') {
     const path = Array.isArray(args.path) ? args.path.map(String) : [];
     if (path.length < 2) return text('path needs the menu and the item, for example ["Format", "Checklist"]; menu opens nothing by itself', true);
-    const { stdout } = await run(session.helper, ['menu', str(args, 'app'), ...path]).catch((error: { stdout?: string }) => ({
+    const app = str(args, 'app');
+    const { stdout } = await run(session.helper, ['menu', app, ...path]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
     }));
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string; box?: [number, number, number, number] };
+    if (outcome.box) {
+      const [x, y, w, h] = outcome.box;
+      const event = { agent: typeof args.agent === 'string' ? args.agent : 'agent', app, action: 'menu', target: { role: 'menu', name: path.join(' > '), x, y, w, h } };
+      session.notify?.({ ...event, phase: 'before', ok: true });
+      session.notify?.({ ...event, phase: 'after', ok: outcome.ok, delivery: 'delivered_unverified', mechanism: 'semantic_api' });
+    }
     return text(outcome.detail, !outcome.ok);
   }
   if (name === 'clipboard') {
@@ -351,6 +359,7 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
   };
   return {
     helper,
+    notify,
     hand: (name, agentId) => entry(name, agentId).hand,
     receipts: (name, agentId) => entry(name, agentId).device.receipts,
   };
