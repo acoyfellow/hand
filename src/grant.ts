@@ -63,7 +63,12 @@ export const refreshGrant = async (grant: Grant, send: typeof fetch = fetch, now
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ refresh_token: grant.refreshToken }),
   });
-  const body = (await response.json().catch(() => null)) as { access_token?: string; refresh_token?: string | null; expires_in?: number; error?: string } | null;
+  const body = (await response.json().catch(() => null)) as {
+    access_token?: string;
+    refresh_token?: string | null;
+    expires_in?: number;
+    error?: string;
+  } | null;
   if (!response.ok || typeof body?.access_token !== 'string') {
     throw new GrantExpired(`Cloudflare would not refresh your sign-in (${body?.error ?? response.status}). Open the hand app and sign in again.`);
   }

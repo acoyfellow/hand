@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "postinstall": "cd .. && bun install --frozen-lockfile",
     "dev": "bun scripts/dev.ts",
     "build": "bun scripts/build.ts",
     "preview": "bun scripts/serve.ts",
