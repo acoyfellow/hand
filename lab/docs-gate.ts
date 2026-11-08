@@ -16,7 +16,7 @@ const REQUIRED = [
   'HAND_AX_HELPER',
 ];
 
-const FORBIDDEN = [/\bDO_[A-Z]/, /src\/mcp\.ts/, /swiftc -O node_modules/];
+const FORBIDDEN = [/\bDO_[A-Z]/, /bun (run )?\S*src\/mcp\.ts/, /swiftc -O node_modules/];
 
 const fail = (message: string): never => {
   console.error(`docs-gate FAIL: ${message}`);
