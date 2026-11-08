@@ -9,7 +9,7 @@ Setup (macOS, Bun, a Cloudflare account):
 2. bunx hand doctor: checks credentials, builds the macOS helper into ~/.config/hand/bin/ax (needs xcode-select --install, or set HAND_AX_HELPER to the prebuilt helper from the releases page), checks Accessibility (required) and Screen Recording (only for look and screenshots), and prints the fix for anything missing. Permissions go to the app that runs hand; restart it after granting.
 3. MCP config: {"command": "bunx", "args": ["hand", "mcp"], "env": {"HAND_HEADED": "1"}}
 
-Import paths: hand/hand, hand/devices/macos, hand/clef, hand/clairic, hand/writer, hand/steer, hand/llm, hand/perceive, hand/credentials, hand/helper, hand/mcp.
+Import paths: hand/hand, hand/devices/macos, hand/devices/browser, hand/clef, hand/clairic, hand/writer, hand/steer, hand/llm, hand/anthropic, hand/perceive, hand/credentials, hand/helper, hand/mcp, hand/cursor.js.
 
 Use from code on a Mac:
 ```ts
@@ -56,3 +56,5 @@ Bench: bench/, bun run gate (fails if results are stale or worse than bench/base
 Ids: act and type take an id from the last outline (for example act('e3')) or plain words. An id whose control changed since that outline returns STALE_REF; call outline() again.
 
 Lab: hand.coey.dev/lab compares hand with agent-browser, Playwright MCP, Stagehand, browser-use and agent-desktop on the same tasks and planner.
+
+Full reference (every tool argument, error code, type and setting): https://hand.coey.dev/llms-full.txt

@@ -1,10 +1,11 @@
-export const PAGES = ['home', 'docs', 'lab', 'brand', 'brandLab', 'notFound'] as const;
+export const PAGES = ['home', 'docs', 'reference', 'lab', 'brand', 'brandLab', 'notFound'] as const;
 
 export type Page = (typeof PAGES)[number];
 
 export const PAGE_PATHS: Record<Page, string> = {
   home: '/',
   docs: '/docs/',
+  reference: '/docs/reference/',
   lab: '/lab/',
   brand: '/brand/',
   brandLab: '/brand/lab/',
@@ -28,6 +29,11 @@ export const PAGE_META: Record<Page, PageMeta> = {
     title: 'hand docs · set up hand on your Mac',
     description: 'Install hand, add Cloudflare credentials, check everything with hand doctor, and give it to your AI agent over MCP.',
     canonical: 'https://hand.coey.dev/docs/',
+  },
+  reference: {
+    title: 'hand reference · every tool, type, error code and setting',
+    description: 'All 16 MCP tools with their argument schemas, the Hand class, the hand.action event, error codes, environment variables and package exports, generated from the source.',
+    canonical: 'https://hand.coey.dev/docs/reference/',
   },
   lab: {
     title: 'hand lab · computer-use tools, measured',

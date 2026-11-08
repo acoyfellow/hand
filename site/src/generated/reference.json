@@ -1,0 +1,1384 @@
+{
+  "version": "0.1.0",
+  "tools": [
+    {
+      "name": "apps",
+      "description": "List the Mac apps that are running and can be controlled. The first line names the app in front. Window titles are shown in brackets: a web app such as \"Workbench\" runs inside \"Google Chrome\", so pass \"Google Chrome\" as the app. To open an app that is not running, call activate with its name; do not use Spotlight.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "activate",
+      "description": "Open any installed app by name (for example \"System Settings\", \"Notes\") and bring it to the front. Use this instead of Spotlight, the Dock or Terminal. Typing only works in the frontmost app.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          }
+        },
+        "required": [
+          "app"
+        ]
+      }
+    },
+    {
+      "name": "outline",
+      "description": "List the controls in the app's front window and menu bar: role, name and box. Use it to see what can be clicked.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          }
+        },
+        "required": [
+          "app"
+        ]
+      }
+    },
+    {
+      "name": "act",
+      "description": "Click one control in the app: pass its [id] from outline (for example \"e3\"), or describe it in plain words (for example \"the New Document button\"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "intent": {
+            "type": "string",
+            "description": "What to click: an id from outline, such as \"e3\", or plain words, such as \"the New Document button\"."
+          },
+          "confirm": {
+            "type": "boolean",
+            "description": "Set true only when the user clearly asked for this destructive action. Default false."
+          }
+        },
+        "required": [
+          "app",
+          "intent"
+        ]
+      }
+    },
+    {
+      "name": "type",
+      "description": "Type text into a text field of the app, by its [id] from outline (fastest) or described in plain words. By default the text replaces everything in the field. To add to one line of a longer text (a note, a document), pass after with text from that line: hand puts the text at the end of that line, checks nothing else changed,. To tick a checklist item afterwards, use check with line. Set mode to \"insert\" to type wherever the cursor already is.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "text": {
+            "type": "string",
+            "description": "The text to type."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          },
+          "after": {
+            "type": "string",
+            "description": "Text from the line to add to. The new text goes at the end of that line and nothing else changes."
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "replace",
+              "insert"
+            ],
+            "description": "replace (default) sets the whole field; insert types where the cursor is."
+          }
+        },
+        "required": [
+          "app",
+          "text",
+          "into"
+        ]
+      }
+    },
+    {
+      "name": "key",
+      "description": "Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "key": {
+            "type": "string",
+            "description": "One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on."
+          }
+        },
+        "required": [
+          "app",
+          "key"
+        ]
+      }
+    },
+    {
+      "name": "steps",
+      "description": "Run several actions in a row in one call, when you already know what comes next: for example type into a field, press return, choose a menu item. Each step is one of act, type, key, menu, check or select_text, with the same fields as that tool. Steps that name an [id] skip the model and run at once. It stops at the first step that fails, is refused or is unsure, and returns what happened at every step.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "steps": {
+            "type": "array",
+            "description": "The steps, in order. Each has tool plus the fields that tool takes.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tool": {
+                  "type": "string",
+                  "enum": [
+                    "act",
+                    "type",
+                    "key",
+                    "menu",
+                    "check",
+                    "select_text"
+                  ],
+                  "description": "Which tool this step runs."
+                },
+                "intent": {
+                  "type": "string",
+                  "description": "What to click: an id from outline, such as \"e3\", or plain words, such as \"the New Document button\"."
+                },
+                "text": {
+                  "type": "string",
+                  "description": "The text to type."
+                },
+                "into": {
+                  "type": "string",
+                  "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+                },
+                "after": {
+                  "type": "string",
+                  "description": "Text from the line to add to. The new text goes at the end of that line and nothing else changes."
+                },
+                "key": {
+                  "type": "string",
+                  "description": "One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on."
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Menu path from the menu bar, such as [\"Format\", \"Font\", \"Show Fonts\"]."
+                },
+                "on": {
+                  "type": "boolean",
+                  "description": "true to tick or turn on (default), false to untick or turn off."
+                },
+                "line": {
+                  "type": "string",
+                  "description": "Text from the checklist line to tick, when into is a text field."
+                },
+                "from": {
+                  "type": "string",
+                  "description": "Selection starts at the first place this text appears."
+                },
+                "through": {
+                  "type": "string",
+                  "description": "Selection ends at the end of this text. Leave out to select just from."
+                }
+              },
+              "required": [
+                "tool"
+              ]
+            }
+          }
+        },
+        "required": [
+          "app",
+          "steps"
+        ]
+      }
+    },
+    {
+      "name": "menu",
+      "description": "Choose a command from the app's menu bar by its exact path, for example [\"Format\", \"Checklist\"] or [\"File\", \"New Folder\"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "path": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Menu path from the menu bar, such as [\"Format\", \"Font\", \"Show Fonts\"]."
+          }
+        },
+        "required": [
+          "app",
+          "path"
+        ]
+      }
+    },
+    {
+      "name": "check",
+      "description": "Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back. For a checklist item inside a text (a Notes checklist), pass the text field as into and line with text from that item: hand ticks that line and reads it back.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          },
+          "on": {
+            "type": "boolean",
+            "description": "true to tick or turn on (default), false to untick or turn off."
+          },
+          "line": {
+            "type": "string",
+            "description": "Text from the checklist line to tick, when into is a text field."
+          }
+        },
+        "required": [
+          "app",
+          "into"
+        ]
+      }
+    },
+    {
+      "name": "select_text",
+      "description": "Select text inside a text field, from the first occurrence of \"from\" through the end of \"through\" (or just \"from\"). Use it before a menu command that works on the selection, for example select two lines then menu [\"Format\", \"Checklist\"].",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          },
+          "from": {
+            "type": "string",
+            "description": "Selection starts at the first place this text appears."
+          },
+          "through": {
+            "type": "string",
+            "description": "Selection ends at the end of this text. Leave out to select just from."
+          }
+        },
+        "required": [
+          "app",
+          "into",
+          "from"
+        ]
+      }
+    },
+    {
+      "name": "expect",
+      "description": "Check a control's real state without changing anything: checked, enabled, an exact value, or a value that contains some text. Answers satisfied, unsatisfied or unknown (unknown never means success). Use it to prove a step worked before you call done.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          },
+          "checked": {
+            "type": "boolean",
+            "description": "Expect the control to be ticked (true) or not (false)."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Expect the control to be usable (true) or greyed out (false)."
+          },
+          "value": {
+            "type": "string",
+            "description": "Expect exactly this value."
+          },
+          "contains": {
+            "type": "string",
+            "description": "Expect the value to contain this text."
+          }
+        },
+        "required": [
+          "app",
+          "into"
+        ]
+      }
+    },
+    {
+      "name": "read",
+      "description": "Read a text field line by line, by its [id] or plain words. Checklist items show as [ ] (unticked) or [x] (ticked), read from the app itself, so use this, not look, to see whether lines are a checklist or ticked.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          }
+        },
+        "required": [
+          "app",
+          "into"
+        ]
+      }
+    },
+    {
+      "name": "set_value",
+      "description": "Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          },
+          "value": {
+            "type": "string",
+            "description": "The option text, number, date or text to set."
+          }
+        },
+        "required": [
+          "app",
+          "into",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "pointer",
+      "description": "Mouse gestures on a control by its [id] (or plain words): double_click (open a file or folder in Finder), right_click (context menu), or drag onto another control given as to (move a file into a folder). Needs headed mode.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "agent": {
+            "type": "string",
+            "description": "Optional id of the agent acting, so parallel agents get their own cursor and take turns."
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "double_click",
+              "right_click",
+              "drag"
+            ],
+            "description": "The gesture."
+          },
+          "into": {
+            "type": "string",
+            "description": "The control: its id from outline, such as \"e3\", or plain words, such as \"the note body\"."
+          },
+          "to": {
+            "type": "string",
+            "description": "For drag: the control to drop onto, by id or plain words."
+          }
+        },
+        "required": [
+          "app",
+          "action",
+          "into"
+        ]
+      }
+    },
+    {
+      "name": "clipboard",
+      "description": "Read the clipboard, or write text to it with text set. Use it to copy between apps without selecting and pressing keys.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to write. Leave out to read the clipboard."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "look",
+      "description": "Ask a yes/no question about what is on screen now. Returns p(yes).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "Exact app name as shown by the apps tool, for example \"TextEdit\" or \"Google Chrome\"."
+          },
+          "question": {
+            "type": "string",
+            "description": "A yes or no question, such as \"Is the document saved?\"."
+          }
+        },
+        "required": [
+          "app",
+          "question"
+        ]
+      }
+    }
+  ],
+  "hand": [
+    {
+      "name": "steps",
+      "type": "Step[]",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "costUsd",
+      "type": "number (getter)",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "outline()",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "act(intent: string, confirm = false)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "typeAfter(text: string, into: string, after: string)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "selectText(into: string, from: string, through: string)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "readLines(into: string)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "tickLine(into: string, line: string, wanted: boolean)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "setChecked(into: string, wanted: boolean)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "pointer(action: 'double_click' | 'right_click' | 'drag', into: string, to?: string)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "expect(into: string, want: Expectation)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "type(text: string, into: string, mode: 'replace' | 'insert' = 'replace')",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "select(value: string, into: string)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "look(question: string)",
+      "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    }
+  ],
+  "shapes": [
+    {
+      "name": "HandOptions",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "model",
+          "type": "ClefModel",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "method",
+          "type": "Method",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "tau",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "riskTau",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "injectionTau",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "verify",
+          "type": "boolean",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "minMargin",
+          "type": "number",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Step",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "tool",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "args",
+          "type": "unknown",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "result",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "clicked",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "p",
+          "type": "number",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "achieved",
+          "type": "number",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "risky",
+          "type": "number",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "blocked",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "costUsd",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "ms",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Device extends Screen",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "candidates()",
+          "type": "Promise<Candidate[]>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "click(p: { x: number; y: number })",
+          "type": "Promise<void>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "press(c: Candidate)",
+          "type": "Promise<void>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "pointerClick(c: Candidate)",
+          "type": "Promise<boolean>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "typeInto(c: Candidate, text: string)",
+          "type": "Promise<void>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "insertAtCursor(c: Candidate, text: string)",
+          "type": "Promise<void>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "setValue(c: Candidate, value: string)",
+          "type": "Promise<boolean>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "settle()",
+          "type": "Promise<void>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "show(target: { x: number; y: number; label: string; p?: number })",
+          "type": "Promise<void>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "text()",
+          "type": "Promise<string>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "insertAfter(c: Candidate, anchor: string, text: string)",
+          "type": "Promise<TextEditResult>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "selectText(c: Candidate, from: string, through: string)",
+          "type": "Promise<TextEditResult>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "setChecked(c: Candidate, wanted: boolean)",
+          "type": "Promise<{ ok: boolean; detail: string }>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "state(c: Candidate)",
+          "type": "Promise<ElementState>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "tickLine(c: Candidate, line: string, wanted: boolean)",
+          "type": "Promise<{ ok: boolean; detail: string; code?: string }>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "lines(c: Candidate)",
+          "type": "Promise<readonly TextLine[]>",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "gesture(action: 'double_click' | 'right_click' | 'drag', c: Candidate, to?: Candidate)",
+          "type": "Promise<{ ok: boolean; detail: string }>",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Expectation",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "checked",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "contains",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "ElementState",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "role",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "checked",
+          "type": "boolean | null",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "enabled",
+          "type": "boolean | null",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | null",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | null",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "TextEditResult",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "ok",
+          "type": "boolean",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "before",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "after",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "TextLine",
+      "file": "src/hand.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "text",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "checklist",
+          "type": "boolean",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "checked",
+          "type": "boolean | null",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "ActionEvent",
+      "file": "src/mcp.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "phase",
+          "type": "'before' | 'after'",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "agent",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "app",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "target",
+          "type": "{ role: string; name: string; x: number; y: number; w: number; h: number }",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "ok",
+          "type": "boolean",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "delivery",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "mechanism",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "AxOutcome",
+      "file": "src/devices/macos.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "ok",
+          "type": "boolean",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "detail",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "delivery",
+          "type": "Delivery",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "mechanism",
+          "type": "Mechanism",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "retrySafe",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "agent",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "leaseWaitMs",
+          "type": "number",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "after",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Receipt",
+      "file": "src/devices/macos.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "action",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "target",
+          "type": "{ role: string; name: string; x: number; y: number; w: number; h: number }",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "outcome",
+          "type": "AxOutcome",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Delivery",
+      "file": "src/devices/macos.ts",
+      "kind": "type",
+      "doc": "",
+      "fields": [],
+      "text": "'delivered_verified' | 'delivered_unverified' | 'not_delivered'"
+    },
+    {
+      "name": "Mechanism",
+      "file": "src/devices/macos.ts",
+      "kind": "type",
+      "doc": "",
+      "fields": [],
+      "text": "'semantic_api' | 'physical_synthetic' | 'none'"
+    },
+    {
+      "name": "MacosDeviceOptions",
+      "file": "src/devices/macos.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "helper",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "app",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "display",
+          "type": "{ width: number; height: number }",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "allowMouse",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "headed",
+          "type": "boolean",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "agent",
+          "type": "string",
+          "optional": true,
+          "doc": ""
+        },
+        {
+          "name": "onAction",
+          "type": "(event: { phase: 'before' | 'after'; receipt: Receipt }) => void",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Candidate extends Box",
+      "file": "src/perceive.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "backendNodeId",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "ClefRequest",
+      "file": "src/clef.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "model",
+          "type": "ClefModel",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "state",
+          "type": "unknown",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "questions",
+          "type": "Record<string, Question>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "images",
+          "type": "readonly string[]",
+          "optional": true,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Question",
+      "file": "src/clef.ts",
+      "kind": "type",
+      "doc": "",
+      "fields": [],
+      "text": "| { readonly type: 'noul'; readonly instructions: string; readonly criteria?: { true?: string; false?: string } } | { readonly type: 'choice'; readonly instructions: string; readonly criteria: Record<string, string> } | { readonly type: 'score'; readonly instructions: string; readonly criteria: readonly string[] }"
+    },
+    {
+      "name": "Answer",
+      "file": "src/clef.ts",
+      "kind": "type",
+      "doc": "",
+      "fields": [],
+      "text": "| { readonly type: 'noul'; readonly p: number } | { readonly type: 'choice'; readonly choice: string; readonly probabilities: Record<string, number>; readonly confidence: number; } | { readonly type: 'score'; readonly score: number; readonly probabilities: Record<string, number>; readonly confidence: number; }"
+    },
+    {
+      "name": "ClefResult",
+      "file": "src/clef.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "model",
+          "type": "ClefModel",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "answers",
+          "type": "Record<string, Answer>",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "inputTokens",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "costUsd",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "ms",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "GatewayConfig",
+      "file": "src/credentials.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "accountId",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "gateway",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    },
+    {
+      "name": "Grant",
+      "file": "src/grant.ts",
+      "kind": "interface",
+      "doc": "",
+      "fields": [
+        {
+          "name": "accessToken",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "refreshToken",
+          "type": "string | null",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "expiresAt",
+          "type": "number",
+          "optional": false,
+          "doc": ""
+        },
+        {
+          "name": "accountId",
+          "type": "string",
+          "optional": false,
+          "doc": ""
+        }
+      ]
+    }
+  ],
+  "envVars": [
+    "HAND_ACCOUNT_ID",
+    "HAND_ANTHROPIC_GATEWAY",
+    "HAND_AUTH_ORIGIN",
+    "HAND_AX_HELPER",
+    "HAND_CURSOR",
+    "HAND_CURSOR_DIR",
+    "HAND_CURSOR_HIDE_AFTER",
+    "HAND_CURSOR_IN_CAPTURE",
+    "HAND_CURSOR_SOCKET",
+    "HAND_CURSOR_WAIT_MS",
+    "HAND_EFFORT",
+    "HAND_GATEWAY",
+    "HAND_HEADED",
+    "HAND_KEYS_TO_PID",
+    "HAND_KEYS_UNICODE_EVENTS",
+    "HAND_SKIP_CACHE",
+    "HAND_TOKEN"
+  ],
+  "codes": [
+    "ACTION_NOT_SUPPORTED",
+    "ANCHOR_AMBIGUOUS",
+    "ANCHOR_NOT_FOUND",
+    "EDIT_MISMATCH",
+    "HELPER_FAILED",
+    "LEASE_TIMEOUT",
+    "MENU_DISABLED",
+    "MENU_NOT_FOUND",
+    "NOT_A_TOGGLE",
+    "NOT_CHANGED",
+    "NOT_CHECKLIST",
+    "NOT_FRONTMOST",
+    "NOT_VERIFIED",
+    "NO_CARET",
+    "POLICY_DENIED",
+    "STALE_REF"
+  ],
+  "exports": [
+    "hand/clef",
+    "hand/clairic",
+    "hand/hand",
+    "hand/steer",
+    "hand/cursor.js",
+    "hand/perceive",
+    "hand/llm",
+    "hand/anthropic",
+    "hand/credentials",
+    "hand/writer",
+    "hand/devices/macos",
+    "hand/devices/browser",
+    "hand/mcp",
+    "hand/helper"
+  ]
+}

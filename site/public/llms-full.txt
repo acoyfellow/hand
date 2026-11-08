@@ -1,0 +1,342 @@
+# hand reference 0.1.0
+
+Generated from the source. Human version: https://hand.coey.dev/docs/reference/
+
+## MCP tools
+
+### apps
+List the Mac apps that are running and can be controlled. The first line names the app in front. Window titles are shown in brackets: a web app such as "Workbench" runs inside "Google Chrome", so pass "Google Chrome" as the app. To open an app that is not running, call activate with its name; do not use Spotlight.
+
+### activate
+Open any installed app by name (for example "System Settings", "Notes") and bring it to the front. Use this instead of Spotlight, the Dock or Terminal. Typing only works in the frontmost app.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+
+### outline
+List the controls in the app's front window and menu bar: role, name and box. Use it to see what can be clicked.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+
+### act
+Click one control in the app: pass its [id] from outline (for example "e3"), or describe it in plain words (for example "the New Document button"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - intent: string — What to click: an id from outline, such as "e3", or plain words, such as "the New Document button".
+  - confirm?: boolean — Set true only when the user clearly asked for this destructive action. Default false.
+
+### type
+Type text into a text field of the app, by its [id] from outline (fastest) or described in plain words. By default the text replaces everything in the field. To add to one line of a longer text (a note, a document), pass after with text from that line: hand puts the text at the end of that line, checks nothing else changed,. To tick a checklist item afterwards, use check with line. Set mode to "insert" to type wherever the cursor already is.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - text: string — The text to type.
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+  - after?: string — Text from the line to add to. The new text goes at the end of that line and nothing else changes.
+  - mode?: replace | insert — replace (default) sets the whole field; insert types where the cursor is.
+
+### key
+Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - key: string — One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on.
+
+### steps
+Run several actions in a row in one call, when you already know what comes next: for example type into a field, press return, choose a menu item. Each step is one of act, type, key, menu, check or select_text, with the same fields as that tool. Steps that name an [id] skip the model and run at once. It stops at the first step that fails, is refused or is unsure, and returns what happened at every step.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - steps: array — The steps, in order. Each has tool plus the fields that tool takes.
+
+### menu
+Choose a command from the app's menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - path: array — Menu path from the menu bar, such as ["Format", "Font", "Show Fonts"].
+
+### check
+Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back. For a checklist item inside a text (a Notes checklist), pass the text field as into and line with text from that item: hand ticks that line and reads it back.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+  - on?: boolean — true to tick or turn on (default), false to untick or turn off.
+  - line?: string — Text from the checklist line to tick, when into is a text field.
+
+### select_text
+Select text inside a text field, from the first occurrence of "from" through the end of "through" (or just "from"). Use it before a menu command that works on the selection, for example select two lines then menu ["Format", "Checklist"].
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+  - from: string — Selection starts at the first place this text appears.
+  - through?: string — Selection ends at the end of this text. Leave out to select just from.
+
+### expect
+Check a control's real state without changing anything: checked, enabled, an exact value, or a value that contains some text. Answers satisfied, unsatisfied or unknown (unknown never means success). Use it to prove a step worked before you call done.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+  - checked?: boolean — Expect the control to be ticked (true) or not (false).
+  - enabled?: boolean — Expect the control to be usable (true) or greyed out (false).
+  - value?: string — Expect exactly this value.
+  - contains?: string — Expect the value to contain this text.
+
+### read
+Read a text field line by line, by its [id] or plain words. Checklist items show as [ ] (unticked) or [x] (ticked), read from the app itself, so use this, not look, to see whether lines are a checklist or ticked.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+
+### set_value
+Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+  - value: string — The option text, number, date or text to set.
+
+### pointer
+Mouse gestures on a control by its [id] (or plain words): double_click (open a file or folder in Finder), right_click (context menu), or drag onto another control given as to (move a file into a folder). Needs headed mode.
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
+  - action: double_click | right_click | drag — The gesture.
+  - into: string — The control: its id from outline, such as "e3", or plain words, such as "the note body".
+  - to?: string — For drag: the control to drop onto, by id or plain words.
+
+### clipboard
+Read the clipboard, or write text to it with text set. Use it to copy between apps without selecting and pressing keys.
+  - text?: string — Text to write. Leave out to read the clipboard.
+
+### look
+Ask a yes/no question about what is on screen now. Returns p(yes).
+  - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
+  - question: string — A yes or no question, such as "Is the document saved?".
+
+## Reply words
+- UNSURE: nothing was done; Clef could not tell which control was meant.
+- BLOCKED: nothing was done; the control looks destructive. Retry with confirm only if the user asked.
+
+## Error codes
+- ACTION_NOT_SUPPORTED: The control has no press action. Try pointer, or a key.
+- ANCHOR_AMBIGUOUS: The text you anchored on appears more than once in the field. Use a longer anchor.
+- ANCHOR_NOT_FOUND: The anchor text is not in the field. Call read first.
+- EDIT_MISMATCH: The field after the edit is not what it should be. hand reports both versions; nothing is retried.
+- HELPER_FAILED: The ax helper crashed or could not start. Run hand doctor.
+- LEASE_TIMEOUT: Another agent held the screen for more than 10 seconds. Retry, or give each agent its own app.
+- MENU_DISABLED: The menu item exists but is greyed out right now.
+- MENU_NOT_FOUND: No menu or item with that name. The reply lists what the menu has.
+- NOT_A_TOGGLE: check was called on something that is not a check box, switch or radio.
+- NOT_CHANGED: The action was delivered but the control did not change.
+- NOT_CHECKLIST: The line is not a checklist item, so it cannot be ticked.
+- NOT_FRONTMOST: The app stopped being the front app, so typing or keys stopped to avoid typing into the wrong window.
+- NOT_VERIFIED: The action was sent but hand could not read back that it worked.
+- NO_CARET: There is no text cursor in the field to insert at.
+- POLICY_DENIED: The step needs keystrokes or the mouse, which are off unless HAND_HEADED=1.
+- STALE_REF: The control changed since the last outline. Call outline again.
+
+## Environment variables
+- HAND_ACCOUNT_ID: Cloudflare account id, instead of signing in or ~/.config/hand/config.json.
+- HAND_ANTHROPIC_GATEWAY: AI Gateway name for the optional Anthropic writer model.
+- HAND_AUTH_ORIGIN: Where sign-in refreshes go. Default https://hand.coey.dev.
+- HAND_AX_HELPER: Path to the ax helper binary. The app sets this for you.
+- HAND_CURSOR: Set to 0 to stop the MCP server starting the cursor overlay, for example when your app draws its own from hand.action events.
+- HAND_CURSOR_DIR: Folder of cursor images for the overlay.
+- HAND_CURSOR_HIDE_AFTER: Seconds before an idle cursor fades. Default 6.
+- HAND_CURSOR_IN_CAPTURE: Set to 1 to let screen recordings capture the cursor overlay.
+- HAND_CURSOR_SOCKET: Socket the overlay listens on. Default /tmp/hand-cursor.sock.
+- HAND_CURSOR_WAIT_MS: Pause after moving the cursor, before acting. For demos and recordings.
+- HAND_EFFORT: Effort for the optional writer model: low, medium or high. Default low.
+- HAND_GATEWAY: AI Gateway name. Default "default". Not used when you sign in, which calls Workers AI directly.
+- HAND_HEADED: Set to 1 to allow keystrokes and the mouse. Without it hand only uses accessibility actions.
+- HAND_KEYS_TO_PID: Advanced: post synthetic keys to the whole session instead of the app.
+- HAND_KEYS_UNICODE_EVENTS: Advanced: type with Unicode key events instead of System Events.
+- HAND_SKIP_CACHE: Set to 1 to skip the AI Gateway cache. Used for benchmarks.
+- HAND_TOKEN: Cloudflare API token. When set it wins over the sign-in.
+
+## Hand class
+- steps: Step[] — Every step so far, with what was clicked, Clef’s probability, cost and time.
+- costUsd: number (getter) — Total spent on model calls by this Hand, in US dollars.
+- outline(): Promise<string> — List the controls with ids like e3, plus the text on screen.
+- act(intent: string, confirm = false): Promise<string> — Click a control described in plain words or by id. Pass confirm only when the user asked for a destructive action.
+- typeAfter(text: string, into: string, after: string): Promise<string> — Insert text right after a line that contains the anchor, then read the field back.
+- selectText(into: string, from: string, through: string): Promise<string> — Select a span of text from one phrase through another.
+- readLines(into: string): Promise<string> — Read a field line by line, including checklist state.
+- tickLine(into: string, line: string, wanted: boolean): Promise<string> — Tick or untick the checklist line that contains the text.
+- setChecked(into: string, wanted: boolean): Promise<string> — Set a check box or switch on or off. Does nothing if it is already right.
+- pointer(action: 'double_click' | 'right_click' | 'drag', into: string, to?: string): Promise<string> — Double click, right click or drag. Needs HAND_HEADED=1.
+- expect(into: string, want: Expectation): Promise<string> — Read a control and check it against what you expect.
+- type(text: string, into: string, mode: 'replace' | 'insert' = 'replace'): Promise<string> — Type into a field. replace sets the whole value; insert types at the cursor.
+- select(value: string, into: string): Promise<string> — Choose an option in a pop-up menu or list.
+- look(question: string): Promise<string> — Ask a yes or no question about a screenshot. Returns p(yes).
+
+## Types
+
+### HandOptions (src/hand.ts)
+The third argument to new Hand(transport, device, options).
+  - model: ClefModel — Which Clef model picks: clef, clef-flash or clef-omni.
+  - method: Method — How the screen is shown to Clef: ax_text, ax_image, marks, hybrid or grid. ax_text is the default.
+  - tau: number — Act only when Clef gives the pick at least this probability. Lower acts more often; higher asks more.
+  - riskTau: number — Block a click Clef rates as destructive above this, unless confirm is passed.
+  - injectionTau: number — Warn when on-screen text looks like instructions aimed at the agent above this.
+  - verify: boolean — After acting, ask Clef whether the screen changed as intended.
+  - minMargin?: number — Also ask when the top two picks are closer than this.
+
+### Step (src/hand.ts)
+One entry in hand.steps.
+  - tool: string — Which call made this step: act, type, look and so on.
+  - args: unknown — What was passed to it.
+  - result: string — The reply text.
+  - clicked?: string — The control that was acted on, if any.
+  - p?: number — Clef’s probability for the pick.
+  - achieved?: number — Clef’s probability that the screen changed as intended, when verify is on.
+  - risky?: number — Clef’s probability that the control is destructive.
+  - blocked?: boolean — true if hand refused because it looked destructive.
+  - costUsd: number — What the model calls for this step cost.
+  - ms: number — How long the step took.
+
+### Device extends Screen (src/hand.ts)
+What a device must do for Hand to drive it. Implement this to add a new platform.
+  - candidates(): Promise<Candidate[]> — Everything on screen that can be acted on.
+  - click(p: { x: number; y: number }): Promise<void> — Click a point. Only used in headed mode.
+  - press(c: Candidate)?: Promise<void> — Press a control through accessibility.
+  - pointerClick(c: Candidate)?: Promise<boolean> — Click a control with the real pointer.
+  - typeInto(c: Candidate, text: string): Promise<void> — Put text in a field.
+  - insertAtCursor(c: Candidate, text: string)?: Promise<void> — Type where the text cursor is.
+  - setValue(c: Candidate, value: string): Promise<boolean> — Set a value directly and read it back.
+  - settle(): Promise<void> — Wait for the screen to stop changing.
+  - show(target: { x: number; y: number; label: string; p?: number })?: Promise<void> — Move the visible cursor to a point with a label.
+  - text()?: Promise<string> — The text on screen.
+  - insertAfter(c: Candidate, anchor: string, text: string)?: Promise<TextEditResult> — Insert text after a line and check nothing else changed.
+  - selectText(c: Candidate, from: string, through: string)?: Promise<TextEditResult> — Select a span of text.
+  - setChecked(c: Candidate, wanted: boolean)?: Promise<{ ok: boolean; detail: string }> — Set a check box on or off.
+  - state(c: Candidate)?: Promise<ElementState> — Read a control’s state.
+  - tickLine(c: Candidate, line: string, wanted: boolean)?: Promise<{ ok: boolean; detail: string; code?: string }> — Tick a checklist line.
+  - lines(c: Candidate)?: Promise<readonly TextLine[]> — Read a field line by line.
+  - gesture(action: 'double_click' | 'right_click' | 'drag', c: Candidate, to?: Candidate)?: Promise<{ ok: boolean; detail: string }> — Double click, right click or drag.
+
+### Expectation (src/hand.ts)
+What expect checks. Omit fields you do not care about.
+  - checked?: boolean — Ticked or not.
+  - value?: string — Exactly this value.
+  - contains?: string — The value contains this text.
+  - enabled?: boolean — Usable or greyed out.
+
+### ElementState (src/hand.ts)
+What hand reads back from a control.
+  - role: string — button, textbox, checkbox and so on.
+  - name: string — The control’s label.
+  - value?: string | null — Its value, or null if it has none.
+  - checked?: boolean | null — Ticked, or null if it cannot be ticked.
+  - enabled?: boolean | null — Usable, or null if unknown.
+  - focused?: boolean | null — Has keyboard focus.
+  - selected?: boolean | null — Selected in a list or tab bar.
+
+### TextEditResult (src/hand.ts)
+The result of an anchored edit or a text selection.
+  - ok: boolean — Whether the edit came out exactly as expected.
+  - detail: string — What happened, in words.
+  - code?: string — An error code when ok is false.
+  - before: string — The field before the edit.
+  - after: string — The field after the edit.
+
+### TextLine (src/hand.ts)
+One line of a field, from readLines.
+  - text: string — The line.
+  - checklist: boolean — Whether the line is a checklist item.
+  - checked?: boolean | null — Whether it is ticked.
+
+### ActionEvent (src/mcp.ts)
+Sent as an MCP notifications/message with logger hand.action, before and after every action. Draw your own cursor from it.
+  - phase: 'before' | 'after' — before is sent as the cursor moves; after once the action finished.
+  - agent: string — Which agent acted.
+  - app: string — Which app.
+  - action: string — press, set, focus, menu, check and so on.
+  - target?: { role: string; name: string; x: number; y: number; w: number; h: number } — The control and its box on screen, in points from the top left of the main display.
+  - ok: boolean — Whether it worked. Always true on before.
+  - code?: string — An error code when ok is false.
+  - delivery?: string — A Delivery value, on after.
+  - mechanism?: string — A Mechanism value, on after.
+
+### AxOutcome (src/devices/macos.ts)
+What the ax helper reports for each action.
+  - ok: boolean — Whether it worked.
+  - detail: string — What happened, in words.
+  - code?: string — An error code when ok is false.
+  - delivery?: Delivery — A Delivery value.
+  - mechanism?: Mechanism — A Mechanism value.
+  - retrySafe?: boolean — true if trying again cannot do the action twice.
+  - agent?: string — Which agent held the screen.
+  - leaseWaitMs?: number — How long it waited for another agent to finish.
+  - after?: string — The control’s value afterwards, when read back.
+
+### Receipt (src/devices/macos.ts)
+One action with its target box and outcome.
+  - action: string — What was done.
+  - target?: { role: string; name: string; x: number; y: number; w: number; h: number } — The control and its box.
+  - outcome: AxOutcome — An AxOutcome.
+
+### Delivery (src/devices/macos.ts)
+Whether hand saw the action land.
+  'delivered_verified' | 'delivered_unverified' | 'not_delivered'
+
+### Mechanism (src/devices/macos.ts)
+semantic_api is an accessibility action; physical_synthetic is a real keystroke or click.
+  'semantic_api' | 'physical_synthetic' | 'none'
+
+### MacosDeviceOptions (src/devices/macos.ts)
+Options for macosDevice().
+  - helper: string — Path to the ax helper. helperOrBuild() finds or builds it.
+  - app?: string — The app to drive.
+  - display?: { width: number; height: number } — Screen size Hand assumes for screenshots. Default 1728 by 1117.
+  - allowMouse?: boolean — Allow real clicks and drags.
+  - headed?: boolean — Allow keystrokes. Same as HAND_HEADED=1 for the server.
+  - agent?: string — Agent id, for taking turns and its own cursor.
+  - onAction?: (event: { phase: 'before' | 'after'; receipt: Receipt }) => void — Called before and after every action, with the receipt.
+
+### Candidate extends Box (src/perceive.ts)
+A control hand can act on, with its box on screen.
+  - id: string — The id outline shows, such as e3.
+  - role: string — button, textbox, checkbox and so on.
+  - name: string — The label.
+  - backendNodeId: number — The browser device’s DOM node id; an index on macOS.
+
+### ClefRequest (src/clef.ts)
+One call to Clef: a state, optional images and typed questions.
+  - model: ClefModel — clef, clef-flash or clef-omni.
+  - state: unknown — What Clef should look at, as JSON.
+  - questions: Record<string, Question> — Named questions to answer.
+  - images?: readonly string[] — Up to 4 screenshots as data URLs, placed before the state.
+
+### Question (src/clef.ts)
+noul is a yes or no, choice picks one option, score rates on a scale.
+  | { readonly type: 'noul'; readonly instructions: string; readonly criteria?: { true?: string; false?: string } } | { readonly type: 'choice'; readonly instructions: string; readonly criteria: Record<string, string> } | { readonly type: 'score'; readonly instructions: string; readonly criteria: readonly string[] }
+
+### Answer (src/clef.ts)
+Each answer carries probabilities, so you can decide how sure is sure enough.
+  | { readonly type: 'noul'; readonly p: number } | { readonly type: 'choice'; readonly choice: string; readonly probabilities: Record<string, number>; readonly confidence: number; } | { readonly type: 'score'; readonly score: number; readonly probabilities: Record<string, number>; readonly confidence: number; }
+
+### ClefResult (src/clef.ts)
+Answers plus tokens, cost and time.
+  - model: ClefModel — The model that answered.
+  - answers: Record<string, Answer> — One Answer per question name.
+  - inputTokens: number — Tokens read.
+  - costUsd: number — What the call cost.
+  - ms: number — How long it took.
+
+### GatewayConfig (src/credentials.ts)
+What ~/.config/hand/config.json holds.
+  - accountId: string — Your Cloudflare account id.
+  - gateway: string — Your AI Gateway name.
+
+### Grant (src/grant.ts)
+The saved Cloudflare sign-in, in the Keychain under hand-oauth.
+  - accessToken: string — Short-lived token for Workers AI.
+  - refreshToken: string | null — Used to get a new access token.
+  - expiresAt: number — When the access token expires, in ms since 1970.
+  - accountId: string — The Cloudflare account it bills.
+
+## Package exports
+- hand/clef: Typed Clef calls with probabilities.
+- hand/clairic: Field extraction with Clairic.
+- hand/hand: The Hand class.
+- hand/steer: Picking a control from candidates.
+- hand/cursor.js: The browser cursor overlay.
+- hand/perceive: Turning a screen into candidates.
+- hand/llm: The optional writer model.
+- hand/anthropic: Anthropic through AI Gateway.
+- hand/credentials: Reading account, gateway and token.
+- hand/writer: Writing new text when a task needs it.
+- hand/devices/macos: macosDevice(), for Mac apps.
+- hand/devices/browser: browserDevice(), for Chrome over CDP.
+- hand/mcp: The MCP server, its tools and makeSession().
+- hand/helper: Finding or building the ax helper.

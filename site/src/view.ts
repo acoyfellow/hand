@@ -4,6 +4,7 @@ import { PAGE_META } from './pages.ts';
 import { brandMain } from './views/brand.ts';
 import { brandLabMain } from './views/brand-lab.ts';
 import { docsMain } from './views/docs.ts';
+import { referenceMain } from './views/reference.ts';
 import { homeMain } from './views/home.ts';
 import type { Child, H } from './views/kit.ts';
 import { labMain } from './views/lab.ts';
@@ -16,6 +17,8 @@ const mainFor = (h: H, model: Model): readonly Child[] => {
       return homeMain(h, model);
     case 'docs':
       return docsMain(h);
+    case 'reference':
+      return referenceMain(h);
     case 'lab':
       return labMain(h);
     case 'brand':

@@ -8,6 +8,8 @@ import { serveSite } from './serve.ts';
 
 const PAGES = [
   { name: 'home', path: '/' },
+  { name: 'docs', path: '/docs/' },
+  { name: 'reference', path: '/docs/reference/' },
   { name: 'lab', path: '/lab/' },
   { name: 'brand', path: '/brand/' },
   { name: 'brand-lab', path: '/brand/lab/' },

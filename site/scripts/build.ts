@@ -9,6 +9,8 @@ const repo = join(site, '..');
 const client = join(site, 'dist', 'client');
 
 await $`bun lab/build.ts --offline`.cwd(repo);
+await $`bun scripts/reference-build.ts`.cwd(site);
+await $`bun scripts/reference-check.ts`.cwd(site);
 await $`./node_modules/.bin/tsc -p tsconfig.json`.cwd(site);
 await $`./node_modules/.bin/vite build --logLevel warn`.cwd(site);
 
@@ -73,7 +75,7 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = indexed.map((meta) => `  <url><loc>${meta.canonical}</loc><lastmod>${today}</lastmod></url>`).join('\n');
 writeFileSync(join(client, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
 
-const expected = [...PRERENDER_PATHS.filter((path) => path !== PAGE_PATHS.notFound).map((path) => `${path}index.html`), '/404.html', '/llms.txt', '/cursor.js', '/lab/data.json', '/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/sw.js', '/og.png'];
+const expected = [...PRERENDER_PATHS.filter((path) => path !== PAGE_PATHS.notFound).map((path) => `${path}index.html`), '/404.html', '/llms.txt', '/llms-full.txt', '/cursor.js', '/lab/data.json', '/sitemap.xml', '/robots.txt', '/manifest.webmanifest', '/sw.js', '/og.png'];
 const missing = expected.filter((path) => !existsSync(join(client, path)));
 if (missing.length) throw new Error(`site build is missing ${missing.join(', ')}`);
 console.log(`site built: ${expected.join(' ')}`);

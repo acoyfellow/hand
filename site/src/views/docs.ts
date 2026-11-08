@@ -1,4 +1,5 @@
 import type { Html } from 'foldkit/html';
+import reference from '../generated/reference.json';
 import { type Child, GITHUB, type H, codeBlock, scrollRegion } from './kit.ts';
 
 const RELEASES = `${GITHUB}/releases/latest`;
@@ -149,16 +150,7 @@ const headed = (h: H): Html =>
     ],
   );
 
-const TOOLS: readonly (readonly [string, string])[] = [
-  ['apps', 'List running Mac apps that can be controlled, with window titles.'],
-  ['activate', 'Bring an app to the front.'],
-  ['outline', 'List the controls in the front window and menu bar, each with an id like [e3], plus the text on screen.'],
-  ['act', 'Click a control by id or plain words. Pass confirm: true only when the user asked for a destructive action.'],
-  ['type', 'Type into a field by id or plain words. mode: "insert" types at the cursor and keeps the rest of the field.'],
-  ['key', 'Press one key or shortcut, such as cmd+n, or shift+cmd+l for a checklist in Notes.'],
-  ['steps', 'Run several act, type and key steps in one call. Stops at the first step that is unsure, blocked or fails.'],
-  ['look', 'Ask a yes/no question about the screen. Returns p(yes).'],
-];
+const TOOLS: readonly (readonly [string, string])[] = reference.tools.map((tool) => [tool.name, tool.description.split('. ')[0]?.replace(/\.$/, '') ?? tool.description]);
 
 const tools = (h: H): Html =>
   h.section(
@@ -194,6 +186,8 @@ const tools = (h: H): Html =>
         code(h, 'notifications/message'),
         ' with logger ',
         code(h, 'hand.action'),
+        '. Every argument, reply word and error code is in the ',
+        h.a([h.Href('/docs/reference/')], ['reference']),
         '.',
       ]),
       h.h3([h.Class(H3)], ['Replies']),
@@ -245,15 +239,15 @@ const library = (h: H): Html =>
           `${K('await')} hand.${F('look')}(${S("'Is coey.dev open?'")});  ${C('// p(yes)')}`,
         ].join('\n'),
       ),
-      h.p([h.Class(P)], ['Every module and export is listed in the ', h.a([h.Href(`${GITHUB}#modules`)], ['README']), '. Agents can read ', h.a([h.Href('/llms.txt')], ['llms.txt']), '.']),
+      h.p([h.Class(P)], ['Every class, type and export is in the ', h.a([h.Href('/docs/reference/')], ['reference']), '. Agents can read ', h.a([h.Href('/llms.txt')], ['llms.txt']), '.']),
     ],
   );
 
 const SETTINGS: readonly (readonly [string, string])[] = [
-  ['HAND_ACCOUNT_ID, HAND_GATEWAY, HAND_TOKEN', 'Cloudflare credentials, instead of ~/.config/hand and the Keychain.'],
+  ['HAND_ACCOUNT_ID, HAND_GATEWAY, HAND_TOKEN', 'Cloudflare credentials, instead of signing in or ~/.config/hand and the Keychain. HAND_TOKEN wins over the sign-in.'],
   ['HAND_HEADED=1', 'Allow keystrokes and mouse clicks (see Headed or headless).'],
-  ['HAND_AX_HELPER', 'Path to a helper binary, instead of building one into ~/.config/hand/bin.'],
-  ['HAND_CURSOR_SOCKET', 'Show each action on the hand cursor overlay.'],
+  ['HAND_AX_HELPER', 'Path to a helper binary, instead of building one into ~/.config/hand/bin. The app sets it.'],
+  ['HAND_CURSOR=0', 'Do not start the cursor overlay, for example when your app draws its own from hand.action.'],
 ];
 
 const settings = (h: H): Html =>
@@ -273,6 +267,7 @@ const settings = (h: H): Html =>
           ],
         ),
       ]),
+      h.p([h.Class(P)], ['These are the common ones. All ', String(reference.envVars.length), ' are in the ', h.a([h.Href('/docs/reference/#ref-env')], ['reference']), '.']),
     ],
   );
 
