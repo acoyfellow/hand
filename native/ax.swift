@@ -41,6 +41,7 @@ struct Outcome: Encodable {
     var delivery: Delivery = .unverified
     var mechanism: Mechanism = .semantic
     var retrySafe: Bool = false
+    var box: [Double]? = nil
 }
 
 func refused(_ code: String, _ detail: String) -> Outcome {
@@ -690,6 +691,24 @@ func tickLine(_ app: NSRunningApplication, _ element: AXUIElement, anchor: Strin
     return TickResult(ok: false, detail: "chose the menu item but the line still reads \(after?.checked == true ? "ticked" : "unticked")", code: "NOT_CHANGED", line: after)
 }
 
+func menuTitle(_ app: NSRunningApplication, _ title: String) -> AXUIElement? {
+    let root = AXUIElementCreateApplication(app.processIdentifier)
+    guard let bar: AXUIElement = attribute(root, kAXMenuBarAttribute) else { return nil }
+    return children(bar).first { ((attribute($0, kAXTitleAttribute) as String?) ?? "").lowercased() == title.lowercased() }
+}
+
+func menuTitleBox(_ app: NSRunningApplication, _ title: String) -> CGRect? {
+    if let box = menuTitle(app, title).flatMap(frame), box.width > 0 { return box }
+    let root = AXUIElementCreateApplication(app.processIdentifier)
+    guard let bar: AXUIElement = attribute(root, kAXMenuBarAttribute) else { return nil }
+    let titles = children(bar).map { (attribute($0, kAXTitleAttribute) as String?) ?? "" }
+    guard let index = titles.firstIndex(where: { $0.lowercased() == title.lowercased() }) else { return nil }
+    let font = NSFont.menuBarFont(ofSize: 0)
+    let widths = titles.map { ($0 as NSString).size(withAttributes: [.font: index == 1 ? NSFont.boldSystemFont(ofSize: font.pointSize) : font]).width + 20 }
+    let x = 44 + widths.dropFirst().prefix(index - 1).reduce(0, +)
+    return CGRect(x: x, y: 0, width: widths[index], height: NSStatusBar.system.thickness)
+}
+
 func menuItem(_ app: NSRunningApplication, path: [String]) -> (AXUIElement?, String) {
     let root = AXUIElementCreateApplication(app.processIdentifier)
     guard let bar: AXUIElement = attribute(root, kAXMenuBarAttribute) else { return (nil, "no menu bar") }
@@ -795,11 +814,12 @@ struct Envelope: Encodable {
     let agent: String
     let leaseWaitMs: Int?
     let after: String?
+    let box: [Double]?
 }
 
 func finish(_ outcome: Outcome, lease: InteractionLease?, after element: AXUIElement? = nil) -> Never {
     let after = element.flatMap { (attribute($0, kAXValueAttribute) as String?) }
-    emit(Envelope(ok: outcome.ok, detail: outcome.detail, code: outcome.code, delivery: outcome.delivery, mechanism: outcome.mechanism, retrySafe: outcome.retrySafe, agent: agent, leaseWaitMs: lease?.waitedMs, after: after))
+    emit(Envelope(ok: outcome.ok, detail: outcome.detail, code: outcome.code, delivery: outcome.delivery, mechanism: outcome.mechanism, retrySafe: outcome.retrySafe, agent: agent, leaseWaitMs: lease?.waitedMs, after: after, box: outcome.box))
     exit(outcome.ok ? 0 : 1)
 }
 
@@ -975,8 +995,12 @@ case "menu":
     guard let item else { finish(refused("MENU_NOT_FOUND", problem), lease: lease) }
     let enabled: Bool = attribute(item, kAXEnabledAttribute) ?? true
     guard enabled else { finish(refused("MENU_DISABLED", "\(args[2...].joined(separator: " > ")) is greyed out right now"), lease: lease) }
+    let titleBox = menuTitleBox(found, args[2])
+    if let titleBox { showCursor(at: CGPoint(x: titleBox.midX, y: titleBox.midY), label: "menu \(args[2...].joined(separator: " > "))", click: true) }
     let result = AXUIElementPerformAction(item, kAXPressAction as CFString)
-    finish(Outcome(ok: result == .success, detail: "chose \(args[2...].joined(separator: " > ")) (AXPress \(result.rawValue))", delivery: result == .success ? .unverified : .notDelivered), lease: lease)
+    var outcome = Outcome(ok: result == .success, detail: "chose \(args[2...].joined(separator: " > ")) (AXPress \(result.rawValue))", delivery: result == .success ? .unverified : .notDelivered)
+    outcome.box = titleBox.map { [$0.minX, $0.minY, $0.width, $0.height].map(Double.init) }
+    finish(outcome, lease: lease)
 case "clipboard":
     let board = NSPasteboard.general
     if args.count >= 3, args[1] == "write" {

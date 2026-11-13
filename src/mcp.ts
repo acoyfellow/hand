@@ -4,8 +4,9 @@ import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
 import { readConfig, readToken } from './credentials.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
+import { signedInConfig } from './grant.ts';
 import { Hand, type HandOptions } from './hand.ts';
-import { helperOrBuild } from './helper.ts';
+import { helperOrBuild, startCursorOverlay } from './helper.ts';
 
 const run = promisify(execFile);
 
@@ -20,6 +21,18 @@ export interface McpTool {
 
 const app = { type: 'string', description: 'Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".' };
 const agent = { type: 'string', description: 'Optional id of the agent acting, so parallel agents get their own cursor and take turns.' };
+const intoArg = { type: 'string', description: 'The control: its id from outline, such as "e3", or plain words, such as "the note body".' };
+const intentArg = { type: 'string', description: 'What to click: an id from outline, such as "e3", or plain words, such as "the New Document button".' };
+const confirmArg = { type: 'boolean', description: 'Set true only when the user clearly asked for this destructive action. Default false.' };
+const textArg = { type: 'string', description: 'The text to type.' };
+const afterArg = { type: 'string', description: 'Text from the line to add to. The new text goes at the end of that line and nothing else changes.' };
+const modeArg = { type: 'string', enum: ['replace', 'insert'], description: 'replace (default) sets the whole field; insert types where the cursor is.' };
+const keyArg = { type: 'string', description: 'One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on.' };
+const pathArg = { type: 'array', items: { type: 'string' }, description: 'Menu path from the menu bar, such as ["Format", "Font", "Show Fonts"].' };
+const onArg = { type: 'boolean', description: 'true to tick or turn on (default), false to untick or turn off.' };
+const lineArg = { type: 'string', description: 'Text from the checklist line to tick, when into is a text field.' };
+const fromArg = { type: 'string', description: 'Selection starts at the first place this text appears.' };
+const throughArg = { type: 'string', description: 'Selection ends at the end of this text. Leave out to select just from.' };
 
 export const TOOLS: readonly McpTool[] = [
   {
@@ -45,7 +58,7 @@ export const TOOLS: readonly McpTool[] = [
       'Click one control in the app: pass its [id] from outline (for example "e3"), or describe it in plain words (for example "the New Document button"). A small model picks the control and checks the result. It refuses when unsure, and blocks controls that look destructive unless confirm is true. Only set confirm when the user clearly asked for that destructive action.',
     inputSchema: {
       type: 'object',
-      properties: { app, agent, intent: { type: 'string' }, confirm: { type: 'boolean' } },
+      properties: { app, agent, intent: intentArg, confirm: confirmArg },
       required: ['app', 'intent'],
     },
   },
@@ -58,10 +71,10 @@ export const TOOLS: readonly McpTool[] = [
       properties: {
         app,
         agent,
-        text: { type: 'string' },
-        into: { type: 'string' },
-        after: { type: 'string' },
-        mode: { type: 'string', enum: ['replace', 'insert'] },
+        text: textArg,
+        into: intoArg,
+        after: afterArg,
+        mode: modeArg,
       },
       required: ['app', 'text', 'into'],
     },
@@ -70,7 +83,7 @@ export const TOOLS: readonly McpTool[] = [
     name: 'key',
     description:
       'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.',
-    inputSchema: { type: 'object', properties: { app, key: { type: 'string' } }, required: ['app', 'key'] },
+    inputSchema: { type: 'object', properties: { app, key: keyArg }, required: ['app', 'key'] },
   },
   {
     name: 'steps',
@@ -83,20 +96,21 @@ export const TOOLS: readonly McpTool[] = [
         agent,
         steps: {
           type: 'array',
+          description: 'The steps, in order. Each has tool plus the fields that tool takes.',
           items: {
             type: 'object',
             properties: {
-              tool: { type: 'string', enum: ['act', 'type', 'key', 'menu', 'check', 'select_text'] },
-              intent: { type: 'string' },
-              text: { type: 'string' },
-              into: { type: 'string' },
-              after: { type: 'string' },
-              key: { type: 'string' },
-              path: { type: 'array', items: { type: 'string' } },
-              on: { type: 'boolean' },
-              line: { type: 'string' },
-              from: { type: 'string' },
-              through: { type: 'string' },
+              tool: { type: 'string', enum: ['act', 'type', 'key', 'menu', 'check', 'select_text'], description: 'Which tool this step runs.' },
+              intent: intentArg,
+              text: textArg,
+              into: intoArg,
+              after: afterArg,
+              key: keyArg,
+              path: pathArg,
+              on: onArg,
+              line: lineArg,
+              from: fromArg,
+              through: throughArg,
             },
             required: ['tool'],
           },
@@ -109,7 +123,7 @@ export const TOOLS: readonly McpTool[] = [
     name: 'menu',
     description:
       'Choose a command from the app\'s menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.',
-    inputSchema: { type: 'object', properties: { app, agent, path: { type: 'array', items: { type: 'string' } } }, required: ['app', 'path'] },
+    inputSchema: { type: 'object', properties: { app, agent, path: pathArg }, required: ['app', 'path'] },
   },
   {
     name: 'check',
@@ -117,7 +131,7 @@ export const TOOLS: readonly McpTool[] = [
       'Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back. For a checklist item inside a text (a Notes checklist), pass the text field as into and line with text from that item: hand ticks that line and reads it back.',
     inputSchema: {
       type: 'object',
-      properties: { app, agent, into: { type: 'string' }, on: { type: 'boolean' }, line: { type: 'string' } },
+      properties: { app, agent, into: intoArg, on: onArg, line: lineArg },
       required: ['app', 'into'],
     },
   },
@@ -127,7 +141,7 @@ export const TOOLS: readonly McpTool[] = [
       'Select text inside a text field, from the first occurrence of "from" through the end of "through" (or just "from"). Use it before a menu command that works on the selection, for example select two lines then menu ["Format", "Checklist"].',
     inputSchema: {
       type: 'object',
-      properties: { app, agent, into: { type: 'string' }, from: { type: 'string' }, through: { type: 'string' } },
+      properties: { app, agent, into: intoArg, from: fromArg, through: throughArg },
       required: ['app', 'into', 'from'],
     },
   },
@@ -139,11 +153,11 @@ export const TOOLS: readonly McpTool[] = [
       type: 'object',
       properties: {
         app,
-        into: { type: 'string' },
-        checked: { type: 'boolean' },
-        enabled: { type: 'boolean' },
-        value: { type: 'string' },
-        contains: { type: 'string' },
+        into: intoArg,
+        checked: { type: 'boolean', description: 'Expect the control to be ticked (true) or not (false).' },
+        enabled: { type: 'boolean', description: 'Expect the control to be usable (true) or greyed out (false).' },
+        value: { type: 'string', description: 'Expect exactly this value.' },
+        contains: { type: 'string', description: 'Expect the value to contain this text.' },
       },
       required: ['app', 'into'],
     },
@@ -152,13 +166,17 @@ export const TOOLS: readonly McpTool[] = [
     name: 'read',
     description:
       'Read a text field line by line, by its [id] or plain words. Checklist items show as [ ] (unticked) or [x] (ticked), read from the app itself, so use this, not look, to see whether lines are a checklist or ticked.',
-    inputSchema: { type: 'object', properties: { app, into: { type: 'string' } }, required: ['app', 'into'] },
+    inputSchema: { type: 'object', properties: { app, into: intoArg }, required: ['app', 'into'] },
   },
   {
     name: 'set_value',
     description:
       'Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.',
-    inputSchema: { type: 'object', properties: { app, agent, into: { type: 'string' }, value: { type: 'string' } }, required: ['app', 'into', 'value'] },
+    inputSchema: {
+      type: 'object',
+      properties: { app, agent, into: intoArg, value: { type: 'string', description: 'The option text, number, date or text to set.' } },
+      required: ['app', 'into', 'value'],
+    },
   },
   {
     name: 'pointer',
@@ -166,19 +184,29 @@ export const TOOLS: readonly McpTool[] = [
       'Mouse gestures on a control by its [id] (or plain words): double_click (open a file or folder in Finder), right_click (context menu), or drag onto another control given as to (move a file into a folder). Needs headed mode.',
     inputSchema: {
       type: 'object',
-      properties: { app, agent, action: { type: 'string', enum: ['double_click', 'right_click', 'drag'] }, into: { type: 'string' }, to: { type: 'string' } },
+      properties: {
+        app,
+        agent,
+        action: { type: 'string', enum: ['double_click', 'right_click', 'drag'], description: 'The gesture.' },
+        into: intoArg,
+        to: { type: 'string', description: 'For drag: the control to drop onto, by id or plain words.' },
+      },
       required: ['app', 'action', 'into'],
     },
   },
   {
     name: 'clipboard',
     description: 'Read the clipboard, or write text to it with text set. Use it to copy between apps without selecting and pressing keys.',
-    inputSchema: { type: 'object', properties: { text: { type: 'string' } }, required: [] },
+    inputSchema: { type: 'object', properties: { text: { type: 'string', description: 'Text to write. Leave out to read the clipboard.' } }, required: [] },
   },
   {
     name: 'look',
     description: 'Ask a yes/no question about what is on screen now. Returns p(yes).',
-    inputSchema: { type: 'object', properties: { app, question: { type: 'string' } }, required: ['app', 'question'] },
+    inputSchema: {
+      type: 'object',
+      properties: { app, question: { type: 'string', description: 'A yes or no question, such as "Is the document saved?".' } },
+      required: ['app', 'question'],
+    },
   },
 ];
 
@@ -197,6 +225,7 @@ export interface ActionEvent {
 export interface Session {
   hand(app: string, agent?: string): Hand;
   helper: string;
+  notify?: (event: ActionEvent) => void;
   receipts(app: string, agent?: string): readonly Receipt[];
 }
 
@@ -253,10 +282,22 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'menu') {
     const path = Array.isArray(args.path) ? args.path.map(String) : [];
     if (path.length < 2) return text('path needs the menu and the item, for example ["Format", "Checklist"]; menu opens nothing by itself', true);
-    const { stdout } = await run(session.helper, ['menu', str(args, 'app'), ...path]).catch((error: { stdout?: string }) => ({
+    const app = str(args, 'app');
+    const { stdout } = await run(session.helper, ['menu', app, ...path]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
     }));
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string; box?: [number, number, number, number] };
+    if (outcome.box) {
+      const [x, y, w, h] = outcome.box;
+      const event = {
+        agent: typeof args.agent === 'string' ? args.agent : 'agent',
+        app,
+        action: 'menu',
+        target: { role: 'menu', name: path.join(' > '), x, y, w, h },
+      };
+      session.notify?.({ ...event, phase: 'before', ok: true });
+      session.notify?.({ ...event, phase: 'after', ok: outcome.ok, delivery: 'delivered_unverified', mechanism: 'semantic_api' });
+    }
     return text(outcome.detail, !outcome.ok);
   }
   if (name === 'clipboard') {
@@ -314,7 +355,9 @@ export async function callTool(session: Session, name: string, args: Record<stri
 }
 
 export function defaultHelper(): string {
-  return helperOrBuild();
+  const helper = helperOrBuild();
+  startCursorOverlay(helper);
+  return helper;
 }
 
 export function makeSession(transport: Transport, helper: string, opts: HandOptions = DEFAULT_HAND, notify: (event: ActionEvent) => void = () => {}): Session {
@@ -348,6 +391,7 @@ export function makeSession(transport: Transport, helper: string, opts: HandOpti
   };
   return {
     helper,
+    notify,
     hand: (name, agentId) => entry(name, agentId).hand,
     receipts: (name, agentId) => entry(name, agentId).device.receipts,
   };
@@ -398,10 +442,15 @@ export function serve(session: () => Session): void {
   });
 }
 
+export const credentialsForServer = () => {
+  const signedIn = process.env.HAND_TOKEN ? undefined : signedInConfig();
+  return signedIn ?? { ...readConfig(), token: readToken() };
+};
+
 export function startServer(): void {
   let cached: Session | undefined;
   serve(() => {
-    cached ??= makeSession(gatewayTransport({ ...readConfig(), token: readToken() }), defaultHelper(), DEFAULT_HAND, (event) =>
+    cached ??= makeSession(gatewayTransport(credentialsForServer()), defaultHelper(), DEFAULT_HAND, (event) =>
       process.stdout.write(
         `${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/message', params: { level: 'info', logger: 'hand.action', data: event } })}\n`,
       ),

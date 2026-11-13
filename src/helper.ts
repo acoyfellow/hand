@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -41,4 +41,19 @@ export function helperOrBuild(env: NodeJS.ProcessEnv = process.env): string {
     );
   }
   return buildHelper();
+}
+
+export const CURSOR_SOCKET = process.env.HAND_CURSOR_SOCKET ?? '/tmp/hand-cursor.sock';
+
+export function cursorOverlayBeside(helper: string): string | undefined {
+  const overlay = join(dirname(helper), 'hand-cursor');
+  return existsSync(overlay) ? overlay : undefined;
+}
+
+export function startCursorOverlay(helper: string | undefined, env: NodeJS.ProcessEnv = process.env): boolean {
+  if (env.HAND_CURSOR === '0' || !helper || existsSync(CURSOR_SOCKET)) return existsSync(CURSOR_SOCKET);
+  const overlay = cursorOverlayBeside(helper);
+  if (!overlay) return false;
+  spawn(overlay, [], { detached: true, stdio: 'ignore' }).unref();
+  return true;
 }

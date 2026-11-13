@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { execFileSync } from 'node:child_process';
 import { CONFIG_FILE, KEYCHAIN_SERVICE, readConfig, readToken } from './credentials.ts';
+import { keychainGrantStore } from './grant.ts';
 import { buildHelper, findHelper, hasSwift, RELEASES_URL } from './helper.ts';
 import { startServer } from './mcp.ts';
 
@@ -15,7 +16,7 @@ const USAGE = `hand: a computer-use library where a small model picks what to cl
 
 Usage:
   hand doctor   check credentials, the macOS helper and permissions, with the fix for anything missing
-  hand mcp      run the MCP server on stdio (tools: apps, activate, outline, act, type, key, steps, look)
+  hand mcp      run the MCP server on stdio (16 tools: apps, activate, outline, act, type, key, steps, menu, check, select_text, expect, read, set_value, pointer, clipboard, look)
   hand help     show this
 
 More at hand.coey.dev`;
@@ -39,6 +40,8 @@ const checkPlatform = (): Check =>
       };
 
 const checkAccount = (): Check => {
+  const grant = keychainGrantStore.load();
+  if (grant) return { name: 'Cloudflare account', ok: true, detail: `signed in with Cloudflare, account ${grant.accountId.slice(0, 6)}…` };
   const { value } = attempt(() => readConfig());
   return value
     ? { name: 'Cloudflare account', ok: true, detail: `account ${value.accountId.slice(0, 6)}…, AI Gateway "${value.gateway}"` }
@@ -51,6 +54,7 @@ const checkAccount = (): Check => {
 };
 
 const checkToken = (): Check => {
+  if (keychainGrantStore.load()) return { name: 'Cloudflare sign-in', ok: true, detail: 'kept in your Keychain, refreshed by hand.coey.dev' };
   const { value } = attempt(() => readToken());
   return value
     ? { name: 'Cloudflare API token', ok: true, detail: `found (${value.length} characters)` }
@@ -142,6 +146,7 @@ const doctor = () => {
 };
 
 const command = process.argv[2] ?? 'help';
+if (process.argv.includes('--headed')) process.env.HAND_HEADED = '1';
 if (command === 'doctor') doctor();
 else if (command === 'mcp') startServer();
 else {

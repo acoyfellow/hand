@@ -58,20 +58,31 @@ export type ClefError = ClefInputError | ClefHttpError | ClefAnswerError;
 /** Anything that can POST a JSON body to a Workers AI model id and return the parsed JSON. */
 export type Transport = (workersAiId: string, body: unknown, signal?: AbortSignal) => Promise<{ status: number; json: unknown; text: string }>;
 
-export function gatewayTransport(cfg: { accountId: string; gateway: string; token: string }): Transport {
+export interface TransportConfig {
+  readonly accountId: string;
+  readonly gateway: string;
+  readonly token: string | (() => Promise<string>);
+}
+
+export const workersAiUrl = (accountId: string, gateway: string, workersAiId: string): string =>
+  gateway === ''
+    ? `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${workersAiId}`
+    : `https://gateway.ai.cloudflare.com/v1/${accountId}/${gateway}/workers-ai/${workersAiId}`;
+
+export function gatewayTransport(cfg: TransportConfig): Transport {
   return async (workersAiId, body, signal) => {
-    const url = `https://gateway.ai.cloudflare.com/v1/${cfg.accountId}/${cfg.gateway}/workers-ai/${workersAiId}`;
-    const res = await fetch(url, {
+    const token = typeof cfg.token === 'string' ? cfg.token : await cfg.token();
+    const res = await fetch(workersAiUrl(cfg.accountId, cfg.gateway, workersAiId), {
       method: 'POST',
       headers: {
-        authorization: `Bearer ${cfg.token}`,
+        authorization: `Bearer ${token}`,
         'content-type': 'application/json',
         ...(process.env.HAND_SKIP_CACHE === '1' ? { 'cf-aig-skip-cache': 'true' } : {}),
       },
       body: JSON.stringify(body),
       signal,
     });
-    const text = redact(await res.text(), cfg.token);
+    const text = redact(await res.text(), token);
     let json: unknown = null;
     try {
       json = JSON.parse(text);
