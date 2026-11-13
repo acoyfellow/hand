@@ -5,12 +5,21 @@ import { type Grant, type GrantStore, grantTokenSource, parseGrant } from '../sr
 const memoryStore = (start: Grant): GrantStore & { saved: Grant[] } => {
   let current = start;
   const saved: Grant[] = [];
-  return { saved, load: () => current, save: (grant) => { current = grant; saved.push(grant); } };
+  return {
+    saved,
+    load: () => current,
+    save: (grant) => {
+      current = grant;
+      saved.push(grant);
+    },
+  };
 };
 
 test('a fresh grant is used without asking hand.coey.dev', async () => {
   const store = memoryStore({ accessToken: 'a1', refreshToken: 'r1', expiresAt: Date.now() + 3_600_000, accountId: 'acct' });
-  const send = (() => { throw new Error('no network expected'); }) as unknown as typeof fetch;
+  const send = (() => {
+    throw new Error('no network expected');
+  }) as unknown as typeof fetch;
   expect(await grantTokenSource(store, send)()).toBe('a1');
 });
 

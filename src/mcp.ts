@@ -3,8 +3,8 @@ import { createInterface } from 'node:readline';
 import { promisify } from 'node:util';
 import { gatewayTransport, type Transport } from './clef.ts';
 import { readConfig, readToken } from './credentials.ts';
-import { signedInConfig } from './grant.ts';
 import { type MacosDevice, macosDevice, type Receipt } from './devices/macos.ts';
+import { signedInConfig } from './grant.ts';
 import { Hand, type HandOptions } from './hand.ts';
 import { helperOrBuild, startCursorOverlay } from './helper.ts';
 
@@ -172,7 +172,11 @@ export const TOOLS: readonly McpTool[] = [
     name: 'set_value',
     description:
       'Set a control to a value directly: choose an option in a popup or dropdown by its text, or set a slider, stepper, date or plain text field. Reads the value back.',
-    inputSchema: { type: 'object', properties: { app, agent, into: intoArg, value: { type: 'string', description: 'The option text, number, date or text to set.' } }, required: ['app', 'into', 'value'] },
+    inputSchema: {
+      type: 'object',
+      properties: { app, agent, into: intoArg, value: { type: 'string', description: 'The option text, number, date or text to set.' } },
+      required: ['app', 'into', 'value'],
+    },
   },
   {
     name: 'pointer',
@@ -198,7 +202,11 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'look',
     description: 'Ask a yes/no question about what is on screen now. Returns p(yes).',
-    inputSchema: { type: 'object', properties: { app, question: { type: 'string', description: 'A yes or no question, such as "Is the document saved?".' } }, required: ['app', 'question'] },
+    inputSchema: {
+      type: 'object',
+      properties: { app, question: { type: 'string', description: 'A yes or no question, such as "Is the document saved?".' } },
+      required: ['app', 'question'],
+    },
   },
 ];
 
@@ -281,7 +289,12 @@ export async function callTool(session: Session, name: string, args: Record<stri
     const outcome = JSON.parse(stdout) as { ok: boolean; detail: string; box?: [number, number, number, number] };
     if (outcome.box) {
       const [x, y, w, h] = outcome.box;
-      const event = { agent: typeof args.agent === 'string' ? args.agent : 'agent', app, action: 'menu', target: { role: 'menu', name: path.join(' > '), x, y, w, h } };
+      const event = {
+        agent: typeof args.agent === 'string' ? args.agent : 'agent',
+        app,
+        action: 'menu',
+        target: { role: 'menu', name: path.join(' > '), x, y, w, h },
+      };
       session.notify?.({ ...event, phase: 'before', ok: true });
       session.notify?.({ ...event, phase: 'after', ok: outcome.ok, delivery: 'delivered_unverified', mechanism: 'semantic_api' });
     }

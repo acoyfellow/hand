@@ -16,7 +16,7 @@ const USAGE = `hand: a computer-use library where a small model picks what to cl
 
 Usage:
   hand doctor   check credentials, the macOS helper and permissions, with the fix for anything missing
-  hand mcp      run the MCP server on stdio (tools: apps, activate, outline, act, type, key, steps, look)
+  hand mcp      run the MCP server on stdio (16 tools: apps, activate, outline, act, type, key, steps, menu, check, select_text, expect, read, set_value, pointer, clipboard, look)
   hand help     show this
 
 More at hand.coey.dev`;
@@ -146,6 +146,7 @@ const doctor = () => {
 };
 
 const command = process.argv[2] ?? 'help';
+if (process.argv.includes('--headed')) process.env.HAND_HEADED = '1';
 if (command === 'doctor') doctor();
 else if (command === 'mcp') startServer();
 else {
