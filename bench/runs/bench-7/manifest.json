@@ -1,0 +1,23 @@
+{
+  "run": "bench-7",
+  "commit": "5ad8d674955ed0a5de5207f9894bd21094e0ae15",
+  "dirty": false,
+  "srcCommit": "5ad8d674955ed0a5de5207f9894bd21094e0ae15",
+  "mock": false,
+  "settings": {},
+  "clefModels": {
+    "clef": "@cf/cloudflare/clef",
+    "clef-flash": "@cf/cloudflare/clef-flash",
+    "clef-omni": "@cf/cloudflare/clef-omni"
+  },
+  "llmModels": {
+    "kimi-k2.6": "@cf/moonshotai/kimi-k2.6",
+    "qwen3.8-27b": "@cf/qwen/qwen3.8-27b",
+    "glm-5.3-flash": "@cf/zai-org/glm-5.3-flash",
+    "gemma-4-26b": "@cf/google/gemma-4-26b-a4b-it",
+    "llama-3.2-3b": "@cf/meta/llama-3.2-3b-instruct",
+    "granite-4.0-micro": "@cf/ibm-granite/granite-4.0-h-micro",
+    "claude-opus-5-5": "claude-opus-5-5"
+  },
+  "fixture": "bench/fixtures/app.html"
+}

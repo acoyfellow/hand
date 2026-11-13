@@ -315,12 +315,12 @@ export const desk3Section = (h: H, data: Desk3Data, index: number): Html =>
   h.section(
     [h.AriaLabelledBy('desk-3')],
     [
-      h.h2([h.Id('desk-3'), h.Class('mt-11 mb-1.5 text-[19px] font-semibold')], [h.span([h.Class('mr-2 font-medium text-dim')], [String(index)]), "On a real Mac, each maker's model"]),
+      h.h2([h.Id('desk-3'), h.Class('mt-11 mb-1.5 text-[19px] font-semibold')], [h.span([h.Class('mr-2 font-medium text-dim')], [String(index)]), "On macOS, each maker's model"]),
       h.p(
         [h.Class('m-0 mb-3.5 max-w-[48rem] text-sm text-dim text-pretty')],
         ['50 tasks in the same macOS virtual machine, 30 in web apps and 20 in native Mac apps. Each tool used the model its maker recommends, so this mixes the tool and the model. cua ships a driver without a model, so it used gpt-6.1-sol. Tools that could not be installed are listed with the reason, not left out.'],
       ),
-      scrollRegion(h, "On a real Mac, each maker's model", [
+      scrollRegion(h, "On macOS, each maker's model", [
         h.table(
           [h.Class('w-full border-collapse text-[13.5px]')],
           [

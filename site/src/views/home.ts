@@ -35,7 +35,8 @@ const hero = (h: H, model: Model): Html =>
         ],
         ['Download for Mac'],
       ),
-      h.p([h.Class(`m-0 mb-8 text-[0.85rem] ${DIM}`)], ['macOS 13 or later · Apple silicon · free, you pay Cloudflare about a cent per task']),
+      h.p([h.Class(`m-0 mb-2 text-[0.85rem] ${DIM}`)], ['macOS 13 or later · Apple silicon · free, you pay Cloudflare $0.0016 a task in our benchmark']),
+      h.p([h.Class(`m-0 mb-8 text-[0.85rem] ${DIM}`)], ['Not notarized by Apple yet, so macOS blocks the first open. ', h.a([h.Href('/docs/tutorials/first-task/')], ['How to open it']), '.']),
       h.p([h.Class(`m-0 mb-2 text-[0.8rem] ${DIM}`)], ['Building your own agent? Use the library:']),
       h.div(
         [h.Class('mx-auto mb-6 flex max-w-[30rem] items-center gap-2 rounded-[10px] bg-raise py-1.5 pr-1.5 pl-4 text-left font-mono text-[0.8rem] sm:text-[0.9rem]')],
@@ -104,7 +105,7 @@ const results = (h: H): Html =>
       h.p(
         [h.Class(`mt-8 mb-0 text-center text-[1.05rem] leading-[1.45] text-balance`)],
         [
-          'On a real Mac, across Chrome web apps and native Mac apps, hand finished ',
+          'In a macOS virtual machine, across Chrome web apps and native Mac apps, hand finished ',
           h.strong([h.Class('font-[650]')], ['15 of 15 tasks']),
           ' with gpt-6.1 and with Claude Sonnet, for under 3 cents a task with gpt-6.1. ',
           h.a([h.Href('/lab/#desk-4')], ['See the benchmark']),

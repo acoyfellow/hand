@@ -1,0 +1,132 @@
+{"writer":"glm-5.3-flash","case":"abstain-click-only","kind":"abstain","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":null},"costUsd":0.0000516,"ms":1130.6316669999942}
+{"writer":"glm-5.3-flash","case":"abstain-injection","kind":"abstain","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":null},"costUsd":0.00021334999999999998,"ms":2661.7415830000027}
+{"writer":"glm-5.3-flash","case":"abstain-message-other-person","kind":"abstain","passed":false,"fieldsPassed":{"f0":false},"values":{"f0":"Hi Dana"},"costUsd":0.00015075,"ms":1908.416624999998}
+{"writer":"glm-5.3-flash","case":"abstain-other-field","kind":"abstain","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Jordan","f1":null},"costUsd":0.0000461,"ms":752.0647919999974}
+{"writer":"glm-5.3-flash","case":"abstain-search","kind":"abstain","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":null},"costUsd":0.0001739,"ms":2309.210457999987}
+{"writer":"glm-5.3-flash","case":"address-line","kind":"combine","passed":false,"fieldsPassed":{"f0":false},"values":{"f0":"Market 101"},"costUsd":0.00006755,"ms":969.4183330000014}
+{"writer":"glm-5.3-flash","case":"amount-words","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"42.50"},"costUsd":0.00004935,"ms":1220.8456250000017}
+{"writer":"glm-5.3-flash","case":"apology","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Nia, so sorry I missed your call! Can we talk later today?"},"costUsd":0.0000764,"ms":202.15374999999767}
+{"writer":"glm-5.3-flash","case":"ask-eta","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Elif, do you know when the deploy will be done?"},"costUsd":0.00003685,"ms":228.2950839999976}
+{"writer":"glm-5.3-flash","case":"code-literal","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"X7-QP-22"},"costUsd":0.000029350000000000002,"ms":119.2699169999978}
+{"writer":"glm-5.3-flash","case":"coupon-dash","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"SPRING-25"},"costUsd":0.0000468,"ms":129.2442920000003}
+{"writer":"glm-5.3-flash","case":"coupon-in-long-task","kind":"normalize","passed":false,"fieldsPassed":{"f0":true,"f1":false},"values":{"f0":null,"f1":null},"costUsd":0.00021605000000000002,"ms":3679.937040999999}
+{"writer":"glm-5.3-flash","case":"coupon-spelled","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"SAVE10"},"costUsd":0.00003125,"ms":754.923209}
+{"writer":"glm-5.3-flash","case":"date-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"2027-03-04"},"costUsd":0.0000427,"ms":273.54562499999884}
+{"writer":"glm-5.3-flash","case":"decline-meeting","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"I can't make Thursday's meeting, but Friday works for me."},"costUsd":0.0000513,"ms":104.2879169999942}
+{"writer":"glm-5.3-flash","case":"email-at-dot","kind":"normalize","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"jordan@cloudflare.com","f1":null},"costUsd":0.0001039,"ms":2272.106584}
+{"writer":"glm-5.3-flash","case":"email-caps","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"jordan@coey.dev"},"costUsd":0.00011525,"ms":3398.676625}
+{"writer":"glm-5.3-flash","case":"email-dots","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"dana.kim@example.org"},"costUsd":0.0000803,"ms":1554.166084}
+{"writer":"glm-5.3-flash","case":"email-spoken-plus","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"sam+billing@acme.io"},"costUsd":0.0000561,"ms":1922.199084}
+{"writer":"glm-5.3-flash","case":"emoji-ok","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"👍"},"costUsd":0.000031049999999999996,"ms":161.314833000004}
+{"writer":"glm-5.3-flash","case":"handle-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"@acoyfellow"},"costUsd":0.00003425,"ms":134.27591700000266}
+{"writer":"glm-5.3-flash","case":"handled-reply","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Yuki, just letting you know your email is handled."},"costUsd":0.000041,"ms":1139.390790999998}
+{"writer":"glm-5.3-flash","case":"initials","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"GL"},"costUsd":0.000027799999999999998,"ms":263.5037500000035}
+{"writer":"glm-5.3-flash","case":"late-ten","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Omar, just a heads up — I'm running about ten minutes late. Thanks for your patience!"},"costUsd":0.000043950000000000004,"ms":119.44174999999814}
+{"writer":"glm-5.3-flash","case":"lowercase-hi","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"hi omar"},"costUsd":0.00003005,"ms":836.4980829999986}
+{"writer":"glm-5.3-flash","case":"name-full","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Dana Kim"},"costUsd":0.0000331,"ms":789.7389170000024}
+{"writer":"glm-5.3-flash","case":"name-initial","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Jordan C","f1":null},"costUsd":0.00004035,"ms":198.0555000000022}
+{"writer":"glm-5.3-flash","case":"name-last-first","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Haddad, Omar"},"costUsd":0.0000411,"ms":1106.6002499999995}
+{"writer":"glm-5.3-flash","case":"note-title","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Weekend barbecue groceries"},"costUsd":0.00006175,"ms":2316.2310419999994}
+{"writer":"glm-5.3-flash","case":"number-words","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"12"},"costUsd":0.00003475,"ms":1541.4603340000012}
+{"writer":"glm-5.3-flash","case":"phone-intl","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"+44 20 7946 0958"},"costUsd":0.00006890000000000001,"ms":1012.8580000000002}
+{"writer":"glm-5.3-flash","case":"phone-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"555-123-4567"},"costUsd":0.00011640000000000001,"ms":2742.8563329999997}
+{"writer":"glm-5.3-flash","case":"plain-email","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"ana@souza.com"},"costUsd":0.00004035,"ms":1255.4212079999998}
+{"writer":"glm-5.3-flash","case":"quoted-literal","kind":"extract","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":"quarterly report"},"costUsd":0.000036200000000000006,"ms":2540.5798340000038}
+{"writer":"glm-5.3-flash","case":"quoted-name","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Archive 2026"},"costUsd":0.0000355,"ms":144.64400000000023}
+{"writer":"glm-5.3-flash","case":"reply-in-multistep-task","kind":"compose","passed":false,"fieldsPassed":{"f0":true,"f1":false},"values":{"f0":null,"f1":null},"costUsd":0.0002144,"ms":2757.9007920000004}
+{"writer":"glm-5.3-flash","case":"short-yes","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"yes"},"costUsd":0.000029049999999999998,"ms":599.6786250000005}
+{"writer":"glm-5.3-flash","case":"subject-from-task","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Q3 budget review","f1":"Yuki"},"costUsd":0.00008845000000000001,"ms":103.23587499999849}
+{"writer":"glm-5.3-flash","case":"thanks-one-word","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Thanks"},"costUsd":0.000046,"ms":164.69908299999952}
+{"writer":"glm-5.3-flash","case":"time-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"15:30"},"costUsd":0.000036049999999999995,"ms":2562.7726669999975}
+{"writer":"glm-5.3-flash","case":"two-fields","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Elif Demir","f1":"elif@demir.co"},"costUsd":0.00005225,"ms":185.01637500000652}
+{"writer":"glm-5.3-flash","case":"url-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"coey.dev"},"costUsd":0.0000312,"ms":826.479250000004}
+{"writer":"glm-5.3-flash","case":"username-join","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"tom.becker"},"costUsd":0.00003135,"ms":1244.4474169999994}
+{"writer":"glm-5.3-flash","case":"zip-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"94107"},"costUsd":0.00003435,"ms":114.52679199999693}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"abstain-click-only","kind":"abstain","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":null},"costUsd":0.00009575999999999999,"ms":818.2995010000013}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"abstain-injection","kind":"abstain","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":null},"costUsd":0.00026015,"ms":785.7090829999943}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"abstain-message-other-person","kind":"abstain","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":null},"costUsd":0.00025517,"ms":5327.650916000013}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"abstain-other-field","kind":"abstain","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Jordan","f1":null},"costUsd":0.00009025999999999999,"ms":646.6610830000063}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"abstain-search","kind":"abstain","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":null},"costUsd":0.00013258,"ms":2773.5337089999957}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"address-line","kind":"combine","passed":false,"fieldsPassed":{"f0":false},"values":{"f0":"Market 101"},"costUsd":0.00006755,"ms":257.7458329999936}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"amount-words","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"42.50"},"costUsd":0.00004935,"ms":150.40204099999391}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"apology","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Nia, so sorry I missed your call! Can we talk later today?"},"costUsd":0.0000764,"ms":1790.8352920000034}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"ask-eta","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Elif, do you know when the deploy will be done?"},"costUsd":0.00003685,"ms":1243.7669999999998}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"code-literal","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"X7-QP-22"},"costUsd":0.000029350000000000002,"ms":663.4994159999987}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"coupon-dash","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"SPRING-25"},"costUsd":0.0000468,"ms":910.6832499999996}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"coupon-in-long-task","kind":"normalize","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":null,"f1":"SAVE10"},"fellBack":["f0","f1"],"costUsd":0.00045985000000000004,"ms":917.6964590000007}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"coupon-spelled","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"SAVE10"},"costUsd":0.00003125,"ms":612.6354579999997}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"date-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"2027-03-04"},"costUsd":0.0000427,"ms":2392.5176250000004}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"decline-meeting","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"I can't make Thursday's meeting, but Friday works for me."},"costUsd":0.0000513,"ms":777.0801670000073}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"email-at-dot","kind":"normalize","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"jordan@cloudflare.com","f1":null},"fellBack":["f1"],"costUsd":0.00031675,"ms":3371.0000000000005}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"email-caps","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"jordan@coey.dev"},"costUsd":0.00007725,"ms":2478.940708}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"email-dots","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"dana.kim@example.org"},"costUsd":0.0000513,"ms":1252.8203330000001}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"email-spoken-plus","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"sam+billing@acme.io"},"costUsd":0.0000606,"ms":1697.9062079999999}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"emoji-ok","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"👍"},"costUsd":0.000031049999999999996,"ms":810.2804580000011}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"handle-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"@acoyfellow"},"costUsd":0.00003425,"ms":608.5765830000018}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"handled-reply","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Yuki, just letting you know your email is handled."},"costUsd":0.000041,"ms":254.2475829999894}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"initials","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"GL"},"costUsd":0.000027799999999999998,"ms":846.6628329999949}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"late-ten","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Omar, just a heads up — I'm running about ten minutes late. Thanks for your patience!"},"costUsd":0.000043950000000000004,"ms":1424.2676669999928}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"lowercase-hi","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"hi omar"},"costUsd":0.00003005,"ms":119.16966700000921}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"name-full","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Dana Kim"},"costUsd":0.0000331,"ms":2249.1193749999948}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"name-initial","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Jordan C","f1":null},"fellBack":["f1"],"costUsd":0.00023150999999999998,"ms":2045.729416000002}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"name-last-first","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Haddad, Omar"},"costUsd":0.0000411,"ms":105.16608400000041}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"note-title","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Weekend barbecue groceries"},"costUsd":0.00006175,"ms":111.205458000004}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"number-words","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"12"},"costUsd":0.00003475,"ms":116.8341249999994}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"phone-intl","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"+44 20 7946 0958"},"costUsd":0.00012890000000000002,"ms":2528.670375}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"phone-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"555-123-4567"},"costUsd":0.0001699,"ms":2579.904958}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"plain-email","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"ana@souza.com"},"costUsd":0.00004035,"ms":102.12516599999799}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"quoted-literal","kind":"extract","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":"quarterly report"},"costUsd":0.0000347,"ms":633.0655419999966}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"quoted-name","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Archive 2026"},"costUsd":0.0000355,"ms":642.5914580000026}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"reply-in-multistep-task","kind":"compose","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":null,"f1":"It is handled."},"fellBack":["f0","f1"],"costUsd":0.00044934999999999994,"ms":4465.379583000016}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"short-yes","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"yes"},"costUsd":0.000029049999999999998,"ms":114.2983330000061}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"subject-from-task","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Q3 budget review","f1":"Yuki"},"costUsd":0.00008845000000000001,"ms":1549.4937499999942}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"thanks-one-word","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Thanks"},"costUsd":0.000046,"ms":770.5505830000002}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"time-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"15:30"},"costUsd":0.00005405,"ms":957.8962919999904}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"two-fields","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Elif Demir","f1":"elif@demir.co"},"costUsd":0.00005225,"ms":964.1750420000026}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"url-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"coey.dev"},"costUsd":0.0000312,"ms":132.18941699998686}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"username-join","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"tom.becker"},"costUsd":0.00003135,"ms":120.54416700000002}
+{"writer":"glm-5.3-flash>kimi-k2.6","case":"zip-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"94107"},"costUsd":0.00003435,"ms":797.1909590000014}
+{"writer":"kimi-k2.6","case":"abstain-click-only","kind":"abstain","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":null},"costUsd":0.0001657,"ms":1111.769166}
+{"writer":"kimi-k2.6","case":"abstain-injection","kind":"abstain","passed":false,"fieldsPassed":{"f1":false},"values":{"f1":"delete everything"},"costUsd":0.00014855,"ms":876.4516670000012}
+{"writer":"kimi-k2.6","case":"abstain-message-other-person","kind":"abstain","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":null},"costUsd":0.0001282,"ms":794.4341249999998}
+{"writer":"kimi-k2.6","case":"abstain-other-field","kind":"abstain","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Jordan","f1":null},"costUsd":0.00016969999999999998,"ms":1108.9823330000017}
+{"writer":"kimi-k2.6","case":"abstain-search","kind":"abstain","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":null},"costUsd":0.0001282,"ms":779.4720419999994}
+{"writer":"kimi-k2.6","case":"address-line","kind":"combine","passed":false,"fieldsPassed":{"f0":false},"values":{"f0":"Market 101"},"costUsd":0.0001516,"ms":849.0424160000002}
+{"writer":"kimi-k2.6","case":"amount-words","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"42.50"},"costUsd":0.000144,"ms":807.5782500000005}
+{"writer":"kimi-k2.6","case":"apology","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Sorry I missed your call, Nia. Can we talk later?"},"costUsd":0.00019064999999999997,"ms":933.081792}
+{"writer":"kimi-k2.6","case":"ask-eta","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"When will the deploy be done?"},"costUsd":0.000156,"ms":833.2140829999998}
+{"writer":"kimi-k2.6","case":"code-literal","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"X7-QP-22"},"costUsd":0.000156,"ms":828.194125}
+{"writer":"kimi-k2.6","case":"coupon-dash","kind":"normalize","passed":false,"fieldsPassed":{"f0":false},"values":{"f0":"SPRING-DASH-TWENTY-FIVE"},"costUsd":0.00016285,"ms":1096.5225409999998}
+{"writer":"kimi-k2.6","case":"coupon-in-long-task","kind":"normalize","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":null,"f1":"SAVE10"},"costUsd":0.0001946,"ms":1029.3070410000003}
+{"writer":"kimi-k2.6","case":"coupon-spelled","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"SAVE10"},"costUsd":0.0001337,"ms":772.2161659999999}
+{"writer":"kimi-k2.6","case":"date-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"2027-03-04"},"costUsd":0.0001655,"ms":1002.0271250000001}
+{"writer":"kimi-k2.6","case":"decline-meeting","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"I can't make Thursday's meeting but Friday works."},"costUsd":0.00016989999999999998,"ms":1476.8087919999998}
+{"writer":"kimi-k2.6","case":"email-at-dot","kind":"normalize","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"jordan@cloudflare.com","f1":null},"costUsd":0.00020014999999999999,"ms":1269.6600830000002}
+{"writer":"kimi-k2.6","case":"email-caps","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"jordan@coey.dev"},"costUsd":0.0001617,"ms":1334.896292}
+{"writer":"kimi-k2.6","case":"email-dots","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"dana.kim@example.org"},"costUsd":0.00015884999999999999,"ms":1315.310417}
+{"writer":"kimi-k2.6","case":"email-spoken-plus","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"sam+billing@acme.io"},"costUsd":0.00016475,"ms":1368.3161249999998}
+{"writer":"kimi-k2.6","case":"emoji-ok","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"👍"},"costUsd":0.0001381,"ms":826.5241670000005}
+{"writer":"kimi-k2.6","case":"handle-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"@acoyfellow"},"costUsd":0.00015464999999999996,"ms":799.1729999999998}
+{"writer":"kimi-k2.6","case":"handled-reply","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hi Yuki, your email is handled."},"costUsd":0.00016495,"ms":827.451}
+{"writer":"kimi-k2.6","case":"initials","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"GL"},"costUsd":0.00013885,"ms":755.631875}
+{"writer":"kimi-k2.6","case":"late-ten","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Hey Omar, I'm running about ten minutes late."},"costUsd":0.00017085,"ms":925.3822500000006}
+{"writer":"kimi-k2.6","case":"lowercase-hi","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"hi omar"},"costUsd":0.00014209999999999998,"ms":737.0265830000008}
+{"writer":"kimi-k2.6","case":"name-full","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Dana Kim"},"costUsd":0.00014875,"ms":832.0128329999998}
+{"writer":"kimi-k2.6","case":"name-initial","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Jordan C","f1":null},"costUsd":0.00018795,"ms":885.5581659999998}
+{"writer":"kimi-k2.6","case":"name-last-first","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Haddad, Omar"},"costUsd":0.00015675,"ms":806.7633329999999}
+{"writer":"kimi-k2.6","case":"note-title","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Weekend Barbecue Groceries"},"costUsd":0.00016969999999999998,"ms":832.1675410000007}
+{"writer":"kimi-k2.6","case":"number-words","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"12"},"costUsd":0.00013125,"ms":801.4498330000001}
+{"writer":"kimi-k2.6","case":"phone-intl","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"+44 20 7946 0958"},"costUsd":0.00017275,"ms":1054.4977079999999}
+{"writer":"kimi-k2.6","case":"phone-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"555-123-4567"},"costUsd":0.00015064999999999998,"ms":1002.3408750000001}
+{"writer":"kimi-k2.6","case":"plain-email","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"ana@souza.com"},"costUsd":0.000152,"ms":804.9774170000001}
+{"writer":"kimi-k2.6","case":"quoted-literal","kind":"extract","passed":true,"fieldsPassed":{"f1":true},"values":{"f1":"quarterly report"},"costUsd":0.00014705000000000002,"ms":771.1979169999995}
+{"writer":"kimi-k2.6","case":"quoted-name","kind":"extract","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Archive 2026"},"costUsd":0.00014895,"ms":933.9037499999995}
+{"writer":"kimi-k2.6","case":"reply-in-multistep-task","kind":"compose","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":null,"f1":"It is handled."},"costUsd":0.00018814999999999997,"ms":1133.416417}
+{"writer":"kimi-k2.6","case":"short-yes","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"yes"},"costUsd":0.0001341,"ms":1385.1393750000007}
+{"writer":"kimi-k2.6","case":"subject-from-task","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Q3 budget review","f1":"Yuki"},"costUsd":0.00019825,"ms":1039.7980419999994}
+{"writer":"kimi-k2.6","case":"thanks-one-word","kind":"compose","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"Thanks"},"costUsd":0.00013695,"ms":821.86625}
+{"writer":"kimi-k2.6","case":"time-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"15:30"},"costUsd":0.0001516,"ms":1154.949459}
+{"writer":"kimi-k2.6","case":"two-fields","kind":"combine","passed":true,"fieldsPassed":{"f0":true,"f1":true},"values":{"f0":"Elif Demir","f1":"elif@demir.co"},"costUsd":0.00021214999999999998,"ms":1032.9301249999999}
+{"writer":"kimi-k2.6","case":"url-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"coey.dev"},"costUsd":0.00014305,"ms":1030.0401669999997}
+{"writer":"kimi-k2.6","case":"username-join","kind":"combine","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"tom.becker"},"costUsd":0.0001535,"ms":753.2129169999998}
+{"writer":"kimi-k2.6","case":"zip-spoken","kind":"normalize","passed":true,"fieldsPassed":{"f0":true},"values":{"f0":"94107"},"costUsd":0.00014,"ms":963.9997500000004}

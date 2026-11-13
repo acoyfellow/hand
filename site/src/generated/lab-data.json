@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06",
+  "generatedAt": "2026-11-13",
   "competitors": [
     {
       "id": "hand",
@@ -17,8 +17,8 @@
       "strength": "A small model picks the control, says how sure it is, asks when unsure, blocks risky clicks and checks the result.",
       "gap": "No Windows or Linux yet. Lost to Claude computer use on desk-3 (its own model, 40 vs 33 of 50).",
       "adapter": "measured",
-      "stars": 4,
-      "pushed": "2026-11-03"
+      "stars": 5,
+      "pushed": "2026-11-06"
     },
     {
       "id": "browser-use",
@@ -35,8 +35,8 @@
       "strength": "The most used open browser agent, with stealth cloud browsers.",
       "gap": "Big model every step, so cost and latency scale with every click.",
       "adapter": "measured",
-      "stars": 120045,
-      "pushed": "2026-11-02"
+      "stars": 120189,
+      "pushed": "2026-11-06"
     },
     {
       "id": "agent-browser",
@@ -53,8 +53,8 @@
       "strength": "Snapshot refs, tiny JSON output, fast native CLI. The default browser tool for many coding agents.",
       "gap": "No model inside: the calling agent pays a big model to read every snapshot and pick.",
       "adapter": "measured",
-      "stars": 45539,
-      "pushed": "2026-11-05"
+      "stars": 46253,
+      "pushed": "2026-11-06"
     },
     {
       "id": "ui-tars",
@@ -73,7 +73,7 @@
       "strength": "Its own model trained for screen grounding.",
       "gap": "Screenshots only; needs a large model to run.",
       "adapter": "none",
-      "stars": 39545,
+      "stars": 39559,
       "pushed": "2026-10-09"
     },
     {
@@ -91,8 +91,8 @@
       "strength": "Accessibility snapshots with refs, built into many MCP clients.",
       "gap": "Large snapshots sent to the caller each step; no picking, no confidence.",
       "adapter": "measured",
-      "stars": 39187,
-      "pushed": "2026-11-04"
+      "stars": 39259,
+      "pushed": "2026-11-05"
     },
     {
       "id": "cua",
@@ -111,8 +111,8 @@
       "strength": "Disposable computers for agents across three systems, plus benchmark harnesses.",
       "gap": "Infrastructure for any model; the picking is left to the model.",
       "adapter": "planned",
-      "stars": 31743,
-      "pushed": "2026-11-05"
+      "stars": 31863,
+      "pushed": "2026-11-06"
     },
     {
       "id": "stagehand",
@@ -129,8 +129,8 @@
       "strength": "Plain-words act and extract from code, closest API to hand on the web.",
       "gap": "Each act sends the page to a big model.",
       "adapter": "measured",
-      "stars": 25950,
-      "pushed": "2026-11-05"
+      "stars": 25964,
+      "pushed": "2026-11-06"
     },
     {
       "id": "skyvern",
@@ -147,28 +147,8 @@
       "strength": "Workflow builder for business forms.",
       "gap": "AGPL, heavy service, big model every step.",
       "adapter": "none",
-      "stars": 23340,
-      "pushed": "2026-11-05"
-    },
-    {
-      "id": "midscene",
-      "name": "Midscene",
-      "repo": "web-infra-dev/midscene",
-      "url": "https://midscenejs.com",
-      "layer": "both",
-      "sees": "screenshots",
-      "brain": "big model every step",
-      "platforms": [
-        "browser",
-        "Android",
-        "iOS"
-      ],
-      "ships": "TypeScript SDK",
-      "strength": "Plain-words UI testing across web and mobile.",
-      "gap": "Vision model every step.",
-      "adapter": "none",
-      "stars": 15502,
-      "pushed": "2026-11-04"
+      "stars": 23349,
+      "pushed": "2026-11-06"
     },
     {
       "id": "agent-desktop",
@@ -187,8 +167,28 @@
       "strength": "Three operating systems, snapshot refs, skeleton then drill-down, wait predicates, traces.",
       "gap": "No model inside, no probabilities, no risk check. The caller reads the tree and decides.",
       "adapter": "planned",
-      "stars": 15160,
-      "pushed": "2026-11-05"
+      "stars": 17801,
+      "pushed": "2026-11-06"
+    },
+    {
+      "id": "midscene",
+      "name": "Midscene",
+      "repo": "web-infra-dev/midscene",
+      "url": "https://midscenejs.com",
+      "layer": "both",
+      "sees": "screenshots",
+      "brain": "big model every step",
+      "platforms": [
+        "browser",
+        "Android",
+        "iOS"
+      ],
+      "ships": "TypeScript SDK",
+      "strength": "Plain-words UI testing across web and mobile.",
+      "gap": "Vision model every step.",
+      "adapter": "none",
+      "stars": 15534,
+      "pushed": "2026-11-06"
     },
     {
       "id": "nanobrowser",
@@ -205,7 +205,7 @@
       "strength": "Runs in your logged-in browser.",
       "gap": "An end-user agent, not a tool other agents call.",
       "adapter": "none",
-      "stars": 14238,
+      "stars": 14251,
       "pushed": "2026-10-24"
     },
     {
@@ -225,7 +225,7 @@
       "strength": "Strong published OSWorld scores.",
       "gap": "Research code, big models, expensive per task.",
       "adapter": "none",
-      "stars": 12876,
+      "stars": 12893,
       "pushed": "2026-10-30"
     },
     {
@@ -243,7 +243,7 @@
       "strength": "Deep Windows UI Automation support.",
       "gap": "Windows only, big model every step.",
       "adapter": "none",
-      "stars": 10169,
+      "stars": 10173,
       "pushed": "2026-10-30"
     },
     {
@@ -263,7 +263,7 @@
       "gap": "Small community; replay rather than a general tool.",
       "adapter": "none",
       "stars": 1864,
-      "pushed": "2026-11-05"
+      "pushed": "2026-11-06"
     },
     {
       "id": "frontier-cu",
@@ -582,6 +582,17 @@
         "usd": 11.32
       },
       {
+        "tool": "cua",
+        "model": "gpt-6.1-sol",
+        "installed": true,
+        "reason": "",
+        "tasks": 50,
+        "finished": 36,
+        "mac": 11,
+        "macTasks": 20,
+        "usd": 4.15
+      },
+      {
         "tool": "hand",
         "model": "kimi-k2.6",
         "installed": true,
@@ -608,17 +619,6 @@
         "model": "",
         "installed": false,
         "reason": "Codex Computer Use was not granted macOS Accessibility and Screen Recording in the VM (its tool returns procNotFound). macOS accepts that grant only from a human click in System Settings.",
-        "tasks": 0,
-        "finished": 0,
-        "mac": 0,
-        "macTasks": 0,
-        "usd": 0
-      },
-      {
-        "tool": "cua",
-        "model": "",
-        "installed": false,
-        "reason": "CuaDriver was not granted macOS Accessibility and Screen Recording in the VM: with its daemon started, check_permissions returns permissions_pending. macOS accepts that grant only from a human click in System Settings; synthetic clicks and TCC writes are blocked by SIP.",
         "tasks": 0,
         "finished": 0,
         "mac": 0,

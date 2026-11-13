@@ -13,7 +13,7 @@ export const overviewSections = (h: H): readonly Section[] => [
     title: 'What hand is',
     body: [
       p(h, 'hand lets an AI agent use the apps on your Mac. It lists what can be clicked, a small model called Clef picks one and says how sure it is, and hand presses it and checks that it worked.'),
-      p(h, 'It runs as an MCP server, so any agent that speaks MCP can use it. Clef runs on Workers AI in your own Cloudflare account, about a cent per task.'),
+      p(h, 'It runs as an MCP server, so any agent that speaks MCP can use it. Clef runs on Workers AI in your own Cloudflare account. In our 30-task benchmark that cost $0.0016 a task.'),
     ],
   },
   {
@@ -55,7 +55,7 @@ export const firstTaskSections = (h: H): readonly Section[] => [
           'Download and open hand',
           [
             p(h, link(h, DMG, 'Download hand.dmg'), ', open it and drag hand into Applications.'),
-            note(h, strong(h, 'First open: '), 'hand is not signed by Apple yet. Right-click hand in Applications and choose Open, then Open again.'),
+            note(h, strong(h, 'First open: '), 'hand is not notarized by Apple yet, so macOS blocks the first open and says "hand" Not Opened. Click Done, then open System Settings, go to Privacy & Security, and click Open Anyway. A managed work Mac may not allow this.'),
           ],
         ],
         ['Connect Cloudflare', [p(h, 'Click ', strong(h, 'Sign in with Cloudflare'), ' and approve it in your browser. hand picks your account and keeps the sign-in in your Keychain. If you prefer, choose ', strong(h, 'Use an API token instead'), '.')]],
@@ -322,7 +322,7 @@ export const dataSections = (h: H): readonly Section[] => [
   {
     id: 'billing',
     title: 'Who pays',
-    body: [p(h, 'Clef calls are billed to your Cloudflare account at Workers AI prices, about a cent per task. hand itself is free and MIT licensed. ', code(h, 'hand.costUsd'), ' tells you what a run cost.')],
+    body: [p(h, 'Clef calls are billed to your Cloudflare account at Workers AI prices. In our 30-task benchmark that came to $0.0016 a task. The model your own agent uses is billed by its provider. hand itself is free and MIT licensed. ', code(h, 'hand.costUsd'), ' tells you what a run cost.')],
   },
   {
     id: 'permissions',
@@ -358,6 +358,6 @@ export const helperSections = (h: H): readonly Section[] => [
   {
     id: 'signing',
     title: 'Why it is not signed',
-    body: [p(h, 'hand does not have an Apple Developer ID yet, so macOS blocks the helper until you remove the quarantine flag as above, and the app until you right-click and choose Open the first time.')],
+    body: [p(h, 'hand does not have an Apple Developer ID yet, so macOS blocks the helper until you remove the quarantine flag as above, and the app until you click Open Anyway under Privacy & Security in System Settings. A managed work Mac may not allow either.')],
   },
 ];
