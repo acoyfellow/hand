@@ -5,6 +5,7 @@ out="$root/dist"
 app="$out/hand.app"
 version=$(cd "$root" && bun -e 'console.log(require("./package.json").version)')
 identity="${HAND_SIGN_IDENTITY:--}"
+timestamp=$([ "$identity" = "-" ] && echo "--timestamp=none" || echo "--timestamp")
 rm -rf "$app" "$out/hand.dmg" "$out/dmg"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources/bin" "$out/dmg"
 
@@ -47,9 +48,9 @@ cat > "$app/Contents/Info.plist" <<PLIST
 PLIST
 
 for binary in "$app/Contents/Resources/bin/ax" "$app/Contents/Resources/bin/hand-cursor" "$app/Contents/Resources/bin/hand"; do
-  codesign --force --options runtime --timestamp=none -s "$identity" -i dev.coey.hand "$binary"
+  codesign --force --options runtime $timestamp -s "$identity" -i dev.coey.hand "$binary"
 done
-codesign --force --options runtime --timestamp=none -s "$identity" "$app"
+codesign --force --options runtime $timestamp -s "$identity" "$app"
 codesign --verify --deep --strict "$app"
 
 cp -R "$app" "$out/dmg/"
