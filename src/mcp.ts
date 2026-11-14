@@ -238,6 +238,25 @@ const str = (args: Record<string, unknown>, key: string): string => {
   return value;
 };
 
+type HelperOutcome = { ok: boolean; detail: string; box?: [number, number, number, number] };
+
+const notJson = (stdout: string, what: string) => `${what}: the helper did not answer with JSON: ${stdout.slice(0, 200)}`;
+
+const parseHelper = (stdout: string): { value: unknown } | undefined => {
+  try {
+    return { value: JSON.parse(stdout) };
+  } catch {
+    return undefined;
+  }
+};
+
+const helperReply = (stdout: string, what: string): HelperOutcome => {
+  const parsed = parseHelper(stdout);
+  const value = parsed?.value as Partial<HelperOutcome> | null | undefined;
+  if (!parsed || typeof value?.ok !== 'boolean') return { ok: false, detail: notJson(stdout, what) };
+  return { ok: value.ok, detail: String(value.detail ?? ''), ...(value.box ? { box: value.box } : {}) };
+};
+
 const STOP = /^(UNSURE|BLOCKED|STALE_REF|EDIT FAILED|FAILED|No text fields|No matching)|did nothing|failed|not found|greyed out/i;
 const STEP_TOOLS = ['act', 'type', 'key', 'menu', 'check', 'select_text'];
 
@@ -269,14 +288,18 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'steps') return runSteps(session, args);
   if (name === 'apps') {
     const [apps, front] = await Promise.all([run(session.helper, ['apps']), run(session.helper, ['front'])]);
-    return text([`In front: ${JSON.parse(front.stdout) as string}`, ...(JSON.parse(apps.stdout) as string[])].join('\n'));
+    const frontName = parseHelper(front.stdout)?.value;
+    if (typeof frontName !== 'string') return text(notJson(front.stdout, 'front'), true);
+    const appNames = parseHelper(apps.stdout)?.value;
+    if (!Array.isArray(appNames)) return text(notJson(apps.stdout, 'apps'), true);
+    return text([`In front: ${frontName}`, ...appNames.map(String)].join('\n'));
   }
   if (name === 'key') {
     const policy = process.env.HAND_HEADED === '1' ? ['--headed'] : [];
     const { stdout } = await run(session.helper, ['key', str(args, 'app'), str(args, 'key').toLowerCase(), ...policy]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"key failed"}',
     }));
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    const outcome = helperReply(stdout, 'key');
     return text(outcome.detail, !outcome.ok);
   }
   if (name === 'menu') {
@@ -286,7 +309,7 @@ export async function callTool(session: Session, name: string, args: Record<stri
     const { stdout } = await run(session.helper, ['menu', app, ...path]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
     }));
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string; box?: [number, number, number, number] };
+    const outcome = helperReply(stdout, 'menu');
     if (outcome.box) {
       const [x, y, w, h] = outcome.box;
       const event = {
@@ -303,12 +326,12 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'clipboard') {
     const write = typeof args.text === 'string';
     const { stdout } = await run(session.helper, write ? ['clipboard', 'write', String(args.text)] : ['clipboard']);
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    const outcome = helperReply(stdout, 'clipboard');
     return text(write ? outcome.detail : `Clipboard: ${JSON.stringify(outcome.detail)}`, !outcome.ok);
   }
   if (name === 'activate') {
     const { stdout } = await run(session.helper, ['activate', str(args, 'app')]);
-    const outcome = JSON.parse(stdout) as { ok: boolean; detail: string };
+    const outcome = helperReply(stdout, 'activate');
     await new Promise((resolve) => setTimeout(resolve, 400));
     return text(outcome.detail, !outcome.ok);
   }

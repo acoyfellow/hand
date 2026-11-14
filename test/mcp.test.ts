@@ -1,4 +1,7 @@
 import { describe, expect, test } from 'bun:test';
+import { mkdtempSync, writeFileSync, chmodSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import type { Hand } from '../src/hand.ts';
 import { handle, type Session, TOOLS } from '../src/mcp.ts';
 
@@ -9,15 +12,15 @@ const fakeHand = {
   look: async () => 'p(yes)=0.90',
 } as unknown as Hand;
 
-const session = (): Session => ({ helper: '/bin/false', hand: () => fakeHand, receipts: () => [] });
+const makeSession = (): Session => ({ helper: '/bin/false', hand: () => fakeHand, receipts: () => [] });
 const call = (name: string, args: Record<string, unknown>) =>
-  handle(session, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
+  handle(() => makeSession(), { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
 
 describe('hand mcp', () => {
   test('initialize and list tools', async () => {
-    const init = (await handle(session, { jsonrpc: '2.0', id: 0, method: 'initialize' })) as { result: { serverInfo: { name: string } } };
+    const init = (await handle(() => makeSession(), { jsonrpc: '2.0', id: 0, method: 'initialize' })) as { result: { serverInfo: { name: string } } };
     expect(init.result.serverInfo.name).toBe('hand');
-    const listed = (await handle(session, { jsonrpc: '2.0', id: 1, method: 'tools/list' })) as { result: { tools: { name: string }[] } };
+    const listed = (await handle(() => makeSession(), { jsonrpc: '2.0', id: 1, method: 'tools/list' })) as { result: { tools: { name: string }[] } };
     expect(listed.result.tools.map((tool) => tool.name)).toEqual(TOOLS.map((tool) => tool.name));
   });
 
@@ -61,6 +64,22 @@ describe('hand mcp', () => {
   });
 
   test('notifications get no reply', async () => {
-    expect(await handle(session, { jsonrpc: '2.0', method: 'notifications/initialized' })).toBeUndefined();
+    expect(await handle(() => makeSession(), { jsonrpc: '2.0', method: 'notifications/initialized' })).toBeUndefined();
+  });
+
+  test('helper non-JSON stdout produces isError with JSON parse failure message', async () => {
+    const tempDir = mkdtempSync(join(tmpdir(), 'hand-mcp-test-'));
+    const helperScript = join(tempDir, 'boom.sh');
+    writeFileSync(helperScript, '#!/bin/sh\necho "boom"\n');
+    chmodSync(helperScript, 0o755);
+
+    const badSessionFactory = () => ({ helper: helperScript, hand: () => fakeHand, receipts: () => [] } as Session);
+    const result = (await handle(badSessionFactory, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'activate', arguments: { app: 'TextEdit' } } })) as {
+      result: { isError: boolean; content: { text: string }[] };
+    };
+
+    expect(result.result.isError).toBe(true);
+    expect(result.result.content[0]?.text).toContain('did not answer with JSON');
+    expect(result.result.content[0]?.text).toContain('boom');
   });
 });
