@@ -82,8 +82,8 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'key',
     description:
-      'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.',
-    inputSchema: { type: 'object', properties: { app, key: keyArg }, required: ['app', 'key'] },
+      'Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar. Some shortcuts are blocked as destructive (e.g. cmd+backspace) unless confirm is true.',
+    inputSchema: { type: 'object', properties: { app, key: keyArg, confirm: confirmArg }, required: ['app', 'key'] },
   },
   {
     name: 'steps',
@@ -106,6 +106,7 @@ export const TOOLS: readonly McpTool[] = [
               into: intoArg,
               after: afterArg,
               key: keyArg,
+              confirm: confirmArg,
               path: pathArg,
               on: onArg,
               line: lineArg,
@@ -122,8 +123,8 @@ export const TOOLS: readonly McpTool[] = [
   {
     name: 'menu',
     description:
-      'Choose a command from the app\'s menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.',
-    inputSchema: { type: 'object', properties: { app, agent, path: pathArg }, required: ['app', 'path'] },
+      'Choose a command from the app\'s menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out. Some menu items are blocked as destructive (e.g. Empty Trash) unless confirm is true.',
+    inputSchema: { type: 'object', properties: { app, agent, path: pathArg, confirm: confirmArg }, required: ['app', 'path'] },
   },
   {
     name: 'check',
@@ -260,6 +261,28 @@ const helperReply = (stdout: string, what: string): HelperOutcome => {
 const STOP = /^(UNSURE|BLOCKED|STALE_REF|EDIT FAILED|FAILED|No text fields|No matching)/i;
 const STEP_TOOLS = ['act', 'type', 'key', 'menu', 'check', 'select_text'];
 
+const DESTRUCTIVE_SHORTCUTS: Record<string, string> = {
+  'cmd+backspace': 'Move to Trash',
+  'cmd+delete': 'Move to Trash',
+  'cmd+shift+backspace': 'Empty Trash',
+  'cmd+shift+delete': 'Empty Trash',
+  'cmd+option+shift+backspace': 'Empty Trash without asking',
+  'cmd+option+shift+delete': 'Empty Trash without asking',
+  'cmd+option+backspace': 'Delete Immediately',
+  'cmd+option+delete': 'Delete Immediately',
+  'cmd+q': 'Quit',
+};
+
+const MODIFIER_ORDER = ['cmd', 'ctrl', 'option', 'shift'];
+const MODIFIER_ALIASES: Record<string, string> = { command: 'cmd', control: 'ctrl', alt: 'option' };
+
+export const normalizeChord = (chord: string): string => {
+  const parts = chord.toLowerCase().split('+').map((part) => MODIFIER_ALIASES[part.trim()] ?? part.trim());
+  const key = parts.pop() ?? '';
+  const modifiers = MODIFIER_ORDER.filter((modifier) => parts.includes(modifier));
+  return [...modifiers, key].join('+');
+};
+
 async function runSteps(session: Session, args: Record<string, unknown>): Promise<ToolReply> {
   const steps = Array.isArray(args.steps) ? (args.steps as Record<string, unknown>[]) : [];
   const lines: string[] = [];
@@ -295,8 +318,23 @@ export async function callTool(session: Session, name: string, args: Record<stri
     return text([`In front: ${frontName}`, ...appNames.map(String)].join('\n'));
   }
   if (name === 'key') {
+    const appName = str(args, 'app');
+    const key = str(args, 'key');
+    const confirm = args.confirm === true;
+    const known = DESTRUCTIVE_SHORTCUTS[normalizeChord(key)];
+    if (!confirm && known) {
+      return text(`BLOCKED: ${key} is ${known} in most Mac apps. Did not do it. If the user asked for it, call again with confirm=true.`, false);
+    }
+    if (!confirm) {
+      const hand = session.hand(appName);
+      const actionDesc = `in ${appName}, press the keyboard shortcut ${key}`;
+      const assessment = await hand.assess(actionDesc);
+      if (assessment.p >= hand.opts.riskTau) {
+        return text(`BLOCKED: ${actionDesc} looks destructive (p=${assessment.p.toFixed(2)}). Did not do it. If the user asked for it, call again with confirm=true.`, false);
+      }
+    }
     const policy = process.env.HAND_HEADED === '1' ? ['--headed'] : [];
-    const { stdout } = await run(session.helper, ['key', str(args, 'app'), str(args, 'key').toLowerCase(), ...policy]).catch((error: { stdout?: string }) => ({
+    const { stdout } = await run(session.helper, ['key', appName, key.toLowerCase(), ...policy]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"key failed"}',
     }));
     const outcome = helperReply(stdout, 'key');
@@ -305,16 +343,26 @@ export async function callTool(session: Session, name: string, args: Record<stri
   if (name === 'menu') {
     const path = Array.isArray(args.path) ? args.path.map(String) : [];
     if (path.length < 2) return text('path needs the menu and the item, for example ["Format", "Checklist"]; menu opens nothing by itself', true);
-    const app = str(args, 'app');
-    const { stdout } = await run(session.helper, ['menu', app, ...path]).catch((error: { stdout?: string }) => ({
+    const appName = str(args, 'app');
+    const confirm = args.confirm === true;
+    if (!confirm) {
+      const hand = session.hand(appName);
+      const actionDesc = `in ${appName}, choose the menu item ${path.join(' > ')}`;
+      const assessment = await hand.assess(actionDesc);
+      if (assessment.p >= hand.opts.riskTau) {
+        return text(`BLOCKED: ${actionDesc} looks destructive (p=${assessment.p.toFixed(2)}). Did not do it. If the user asked for it, call again with confirm=true.`, false);
+      }
+    }
+    const { stdout } = await run(session.helper, ['menu', appName, ...path]).catch((error: { stdout?: string }) => ({
       stdout: error.stdout ?? '{"ok":false,"detail":"menu failed"}',
     }));
     const outcome = helperReply(stdout, 'menu');
     if (outcome.box) {
       const [x, y, w, h] = outcome.box;
+      const agentId = typeof args.agent === 'string' && args.agent !== '' ? args.agent : 'agent';
       const event = {
-        agent: typeof args.agent === 'string' ? args.agent : 'agent',
-        app,
+        agent: agentId,
+        app: appName,
         action: 'menu',
         target: { role: 'menu', name: path.join(' > '), x, y, w, h },
       };

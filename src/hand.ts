@@ -203,6 +203,12 @@ export class Hand {
     return this.log({ tool: 'outline', args: {}, result: `${cands.length} controls on screen:\n${lines}${reading}`, costUsd: 0, ms: performance.now() - t0 });
   }
 
+  async assess(action: string): Promise<{ p: number; costUsd: number }> {
+    const shot = await this.d.screenshot();
+    const result = await risky(this.t, this.opts.model, shot, action);
+    return { p: result.p, costUsd: result.costUsd };
+  }
+
   private async injectionNote(shot: string, screenText = ''): Promise<{ note: string; cost: number }> {
     const seen = screenText ? this.injectionByText.get(screenText) : undefined;
     const r = seen ? { ...seen, costUsd: 0 } : await injection(this.t, this.opts.model, shot);
