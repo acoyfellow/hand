@@ -93,15 +93,23 @@ It is not signed with an Apple Developer ID yet, so macOS blocks it until you re
 | Tool | What it does |
 |---|---|
 | `apps` | List running Mac apps that can be controlled, with window titles |
-| `activate` | Bring an app to the front |
-| `outline` | List the controls in the app's front window and menu bar, each with an id like `[e3]`, plus the text on screen |
-| `act` | Click a control by id or plain words. `confirm: true` only when the user asked for a destructive action |
-| `type` | Type into a field by id or plain words. `mode: "insert"` types at the cursor and keeps the rest of the field |
-| `key` | Press one key or shortcut, such as `cmd+n`, or Notes' `shift+cmd+l` for a checklist |
-| `steps` | Run several `act`, `type` and `key` steps in one call. Stops at the first step that is unsure, blocked or fails |
-| `look` | Ask a yes/no question about the screen; returns p(yes) |
+| `activate` | Open any installed app by name and bring it to the front |
+| `outline` | List the controls in the app's front window and menu bar, each with an id |
+| `act` | Click a control by id or plain words; pass `confirm: true` only for destructive actions the user asked for |
+| `type` | Type text into a field by id or plain words; `mode: "insert"` types at the cursor |
+| `key` | Press one key or shortcut, such as `cmd+n` or `cmd+shift+l` |
+| `steps` | Run `act`, `type`, `key`, `menu`, `check` and `select_text` steps in one call; stops at the first that fails |
+| `menu` | Choose a command from the app's menu bar by its exact path |
+| `check` | Turn a check box or switch on or off; does nothing if already set correctly |
+| `select_text` | Select text inside a text field from one point to another |
+| `expect` | Check a control's state without changing it: checked, enabled, exact value, or contains text |
+| `read` | Read a text field line by line, showing checklist items as [ ] or [x] |
+| `set_value` | Set a control to a value: choose an option, set a slider, stepper, date or text field |
+| `pointer` | Mouse gestures on a control: double_click, right_click, or drag to another control |
+| `clipboard` | Read the clipboard, or write text to it |
+| `look` | Ask a yes/no question about what is on screen now; returns p(yes) |
 
-`act`, `type`, `key` and `steps` take an optional `agent` id, so parallel agents keep separate state and take turns. Results end with the action receipts, and each action is also sent as a `notifications/message` with logger `hand.action`.
+`act`, `type`, `steps`, `menu`, `check`, `select_text`, `set_value` and `pointer` take an optional `agent` id, so parallel agents keep separate state and take turns. Results end with the action receipts, and each action is also sent as a `notifications/message` with logger `hand.action`.
 
 ## Settings
 
@@ -162,7 +170,7 @@ How the device acts:
 - **Press:** it presses the control Clef picked through accessibility.
 - **Type:** it sets the field's value through accessibility, then reads the field back and fails if the text is missing. If another writer changes the field before the read-back, it says so instead of retrying. Only a headed device falls back to keystrokes, sent to that app's process only and stopped if the app loses focus.
 - **Snapshot refs:** every control in a snapshot carries a ref. If the control at that ref has gone or changed role, name or box, the action is refused with `STALE_REF`; take a new `outline()`.
-- **One agent at a time:** actions take a lock shared across processes, keyed by `agent`. A second agent waits its turn, and gives up with `LEASE_TIMEOUT` after 10 s.
+- **One agent at a time:** all agents on the Mac share one lock file at `~/.hand/interaction.lock`. A second agent waits its turn, and gives up with `LEASE_TIMEOUT` after 10 s.
 - **Receipts:** `device.receipts` records every action: `delivery` (`delivered_verified`, `delivered_unverified`, `not_delivered`), `mechanism` (`semantic_api`, `physical_synthetic`, `none`), `retrySafe`, any error `code`, and the control's state after. Pass `onAction` to get a `before` and `after` event for each one.
 - **Snapshot:** only the front window and the menu bar, so one window's controls are not mixed with another's.
 
