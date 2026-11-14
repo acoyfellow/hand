@@ -2,7 +2,7 @@
 // It perceives, asks Clef, gates on probability and risk, acts, verifies, and returns a short text receipt.
 // The planner never receives an image.
 import type { ClefModel, Transport } from './clef.ts';
-import { type Box, type Candidate, center, describe } from './perceive.ts';
+import { type Candidate, center, describe } from './perceive.ts';
 import { injection, type Method, pickTarget, risky, type Screen, shouldAsk, verify } from './steer.ts';
 
 /** A screen baton can also act on. */
@@ -646,4 +646,4 @@ export class Hand {
   }
 }
 
-export const clickPoint = (c: Box) => center(c);
+
