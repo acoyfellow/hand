@@ -63,4 +63,77 @@ describe('hand mcp', () => {
   test('notifications get no reply', async () => {
     expect(await handle(session, { jsonrpc: '2.0', method: 'notifications/initialized' })).toBeUndefined();
   });
+
+  test('steps with type that includes "failed" text succeeds both steps', async () => {
+    const successHand: Hand = {
+      outline: async () => 'controls',
+      act: async () => 'Clicked e2',
+      type: async (value: string, into: string) => `Typed "${value}" into ${into}`,
+      look: async () => 'looks good',
+    } as unknown as Hand;
+
+    const successSession = (): Session => ({
+      helper: '/bin/false',
+      hand: () => successHand,
+      receipts: () => [],
+    });
+
+    const ran = (await handle(successSession, {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'steps',
+        arguments: {
+          app: 'TextEdit',
+          steps: [
+            { tool: 'type', text: 'deploy failed on staging', into: 'e1' },
+            { tool: 'act', intent: 'e2' },
+          ],
+        },
+      },
+    })) as { result: { isError: boolean; content: { text: string }[] } };
+
+    const body = ran.result.content[0]?.text ?? '';
+    expect(body).toContain('1. type: Typed "deploy failed on staging" into e1');
+    expect(body).toContain('2. act: Clicked e2');
+    expect(body).not.toContain('Stopped');
+    expect(ran.result.isError).toBe(false);
+  });
+
+  test('steps stops when reply text starts with BLOCKED:', async () => {
+    const blockedReplyHand: Hand = {
+      outline: async () => 'controls',
+      act: async () => 'BLOCKED: cannot click this',
+      type: async () => 'unreachable',
+      look: async () => 'ok',
+    } as unknown as Hand;
+
+    const blockedReplySession = (): Session => ({
+      helper: '/bin/false',
+      hand: () => blockedReplyHand,
+      receipts: () => [],
+    });
+
+    const ran = (await handle(blockedReplySession, {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'steps',
+        arguments: {
+          app: 'TextEdit',
+          steps: [
+            { tool: 'act', intent: 'button' },
+            { tool: 'type', text: 'never', into: 'field' },
+          ],
+        },
+      },
+    })) as { result: { isError: boolean; content: { text: string }[] } };
+
+    const body = ran.result.content[0]?.text ?? '';
+    expect(body).toContain('1. act: BLOCKED:');
+    expect(body).toContain('Stopped after step 1 of 2.');
+    expect(body).not.toContain('never');
+  });
 });
