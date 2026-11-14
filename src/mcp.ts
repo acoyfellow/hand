@@ -238,7 +238,7 @@ const str = (args: Record<string, unknown>, key: string): string => {
   return value;
 };
 
-const STOP = /^(UNSURE|BLOCKED|STALE_REF|EDIT FAILED|FAILED|No text fields|No matching)|did nothing|failed|not found|greyed out/i;
+const STOP = /^(UNSURE|BLOCKED|STALE_REF|EDIT FAILED|FAILED|No text fields|No matching)/i;
 const STEP_TOOLS = ['act', 'type', 'key', 'menu', 'check', 'select_text'];
 
 async function runSteps(session: Session, args: Record<string, unknown>): Promise<ToolReply> {
@@ -257,7 +257,7 @@ async function runSteps(session: Session, args: Record<string, unknown>): Promis
         .join('\n')
         .split('\nReceipts:')[0] ?? '';
     lines.push(`${index + 1}. ${tool}: ${body}`);
-    if (result.isError || STOP.test(body)) {
+    if (result.isError === true || STOP.test(body)) {
       lines.push(`Stopped after step ${index + 1} of ${steps.length}.`);
       return text(lines.join('\n'), result.isError === true);
     }
