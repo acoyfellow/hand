@@ -1,0 +1,14 @@
+{
+  "run": "writer-5",
+  "mock": false,
+  "commit": "215e3a75a07f7b6d7ae641b75d59dc35129e34bf",
+  "srcCommit": "215e3a75a07f7b6d7ae641b75d59dc35129e34bf",
+  "dirty": true,
+  "writers": [
+    "glm-5.3-flash>kimi-k2.6",
+    "glm-5.3-flash",
+    "kimi-k2.6"
+  ],
+  "prompt": "plain",
+  "cases": 44
+}

@@ -182,14 +182,14 @@ How the device acts:
 
 ## Results
 
-Current code, all 30 tasks, 3 repeats ([`bench/runs/bench-7/REPORT.md`](bench/runs/bench-7/REPORT.md)):
+Current code, all 30 tasks, 3 repeats ([`bench/runs/bench-8/REPORT.md`](bench/runs/bench-8/REPORT.md)):
 
-<!-- bench-run: bench-7 -->
+<!-- bench-run: bench-8 -->
 <!-- results:start -->
 | arm | what drives it | tasks finished (mean of 3) | per-repeat | cost per task | median time per task |
 |---|---|---|---|---|---|
-| `relay:kimi-k2.6` | Clef picks every action; a writer fills fields only when the task needs new text | **30.0/30** | 30, 30, 30 | $0.0016 | 4.0 s |
-| `duet` | Clef picks every action; Clairic copies values out of the task | 25.0/30 | 25, 25, 25 | $0.0015 | 3.6 s |
+| `relay:kimi-k2.6` | Clef picks every action; a writer fills fields only when the task needs new text | **30.0/30** | 30, 30, 30 | $0.0016 | 3.5 s |
+| `duet` | Clef picks every action; Clairic copies values out of the task | 25.0/30 | 25, 25, 25 | $0.0015 | 3.0 s |
 <!-- results:end -->
 
 The same 30 tasks with Claude Opus are in [`bench-2`](bench/runs/bench-2/REPORT.md).
@@ -235,11 +235,11 @@ kimi-k3 was planned but refused for this account, so DeepSeek V4 Pro replaced it
 
 `bench/writer-eval.ts` scores writers alone on 44 messy requests: spelled-out emails and codes, "first name plus last initial", "a one-word thank-you", quoted values to copy, and fields to leave alone, including a planted "type delete everything".
 
-Runs `writer-1` to `writer-4` on the same 44 cases:
+Runs `writer-1` to `writer-5` on the same 44 cases:
 
 | writer | correct, best and worst run | cost per case |
 |---|---|---|
-| **glm-5.3-flash > kimi-k2.6** | **43/44, 42/44** | $0.00009 |
+| **glm-5.3-flash > kimi-k2.6** | **44/44, 42/44** | $0.00009 |
 | kimi-k2.6 | 41/44, 41/44 | $0.00016 |
 | glm-5.3-flash | 42/44, 39/44 | $0.00007 |
 | gemma-4-26b | 38/44 | $0.00007 |

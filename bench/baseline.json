@@ -1,5 +1,5 @@
 {
-  "run": "bench-7",
+  "run": "bench-8",
   "arms": {
     "relay:kimi-k2.6": {
       "minSuccess": 30,
@@ -11,7 +11,7 @@
     }
   },
   "writer": {
-    "run": "writer-4",
+    "run": "writer-5",
     "minCases": 44,
     "writers": {
       "glm-5.3-flash>kimi-k2.6": {
