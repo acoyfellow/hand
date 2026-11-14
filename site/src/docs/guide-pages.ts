@@ -113,7 +113,7 @@ export const codeSections = (h: H): readonly Section[] => [
     id: 'doctor',
     title: 'Check everything',
     body: [
-      codeBlock(h, 'Doctor', `${F('bunx')} hand doctor`),
+      codeBlock(h, 'Doctor', `${F('bunx')} github:acoyfellow/hand#release doctor`),
       p(h, 'It checks the credentials, builds the macOS helper, and checks Accessibility (required) and Screen Recording (only for ', code(h, 'look'), '). Anything missing comes with the exact fix. The permissions go to the app that runs your code, such as your terminal. Restart it after granting.'),
     ],
   },
@@ -222,7 +222,7 @@ export const fixSections = (h: H): readonly Section[] => [
   {
     id: 'doctor',
     title: 'Start with hand doctor',
-    body: [p(h, 'Run ', code(h, 'bunx hand doctor'), '. It names what is missing and how to fix it.')],
+    body: [p(h, 'Run ', code(h, 'bunx github:acoyfellow/hand#release doctor'), '. It names what is missing and how to fix it.')],
   },
   {
     id: 'permissions',

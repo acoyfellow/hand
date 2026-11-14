@@ -34,7 +34,7 @@ Or set `HAND_ACCOUNT_ID`, `HAND_GATEWAY` and `HAND_TOKEN` instead.
 **3. Check everything**
 
 ```bash
-bunx hand doctor
+bunx github:acoyfellow/hand#release doctor
 ```
 
 It checks the credentials, builds hand's small macOS helper (it needs `xcode-select --install`, or the [prebuilt helper](#prebuilt-helper)), and checks two macOS permissions. For each thing that is missing it prints the exact fix. The permissions go to the app that runs hand, such as your terminal or agent app:
@@ -49,7 +49,7 @@ Restart the app after granting either one.
 ```json
 {
   "mcpServers": {
-    "hand": { "command": "bunx", "args": ["hand", "mcp"], "env": { "HAND_HEADED": "1" } }
+    "hand": { "command": "bunx", "args": ["github:acoyfellow/hand#release", "mcp"], "env": { "HAND_HEADED": "1" } }
   }
 }
 ```

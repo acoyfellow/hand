@@ -139,7 +139,7 @@ const doctor = () => {
   const failing = checks.filter((check) => !check.ok).length;
   console.log(
     failing === 0
-      ? '\nhand is ready. Add it to your agent with: {"command": "bunx", "args": ["hand", "mcp"]}'
+      ? '\nhand is ready. Add it to your agent with: {"command": "bunx", "args": ["github:acoyfellow/hand#release", "mcp", "--headed"]}'
       : `\n${failing} thing${failing === 1 ? '' : 's'} to fix.`,
   );
   process.exit(failing === 0 ? 0 : 1);
