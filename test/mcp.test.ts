@@ -1,15 +1,17 @@
 import { describe, expect, test } from 'bun:test';
 import type { Hand } from '../src/hand.ts';
-import { handle, type Session, TOOLS } from '../src/mcp.ts';
+import { handle, normalizeChord, type Session, TOOLS } from '../src/mcp.ts';
 
 const fakeHand = {
   outline: async () => '2 controls on screen',
   act: async (intent: string, confirm: boolean) => (intent.includes('Delete') && !confirm ? 'BLOCKED: looks destructive' : `Clicked ${intent}`),
   type: async (value: string, into: string) => `Typed "${value}" into ${into}`,
   look: async () => 'p(yes)=0.90',
+  assess: async (action: string) => ({ p: action.includes('Empty Trash') || action.includes('cmd+backspace') ? 0.9 : 0.1, costUsd: 0.001 }),
+  opts: { riskTau: 0.5 },
 } as unknown as Hand;
 
-const session = (): Session => ({ helper: '/bin/false', hand: () => fakeHand, receipts: () => [] });
+const session = (): Session => ({ helper: '/bin/false', hand: () => fakeHand, receipts: () => [], notify: () => {} });
 const call = (name: string, args: Record<string, unknown>) =>
   handle(session, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } });
 
@@ -62,5 +64,42 @@ describe('hand mcp', () => {
 
   test('notifications get no reply', async () => {
     expect(await handle(session, { jsonrpc: '2.0', method: 'notifications/initialized' })).toBeUndefined();
+  });
+
+  test('menu blocks destructive items unless confirm is true', async () => {
+    const blocked = (await call('menu', { app: 'Finder', path: ['Finder', 'Empty Trash'] })) as { result: { content: { text: string }[] } };
+    expect(blocked.result.content[0]?.text).toContain('BLOCKED');
+    expect(blocked.result.content[0]?.text).toContain('Empty Trash');
+    expect(blocked.result.content[0]?.text).toContain('p=0.90');
+  });
+
+  test('menu allows destructive items with confirm=true', async () => {
+    const confirmed = (await call('menu', { app: 'Finder', path: ['Finder', 'Empty Trash'], confirm: true })) as { result: { content: { text: string }[] } };
+    expect(confirmed.result.content[0]?.text).not.toContain('BLOCKED');
+  });
+
+  test('key blocks known destructive shortcuts without asking the model', async () => {
+    for (const key of ['cmd+backspace', 'Command+Shift+Delete', 'shift+cmd+backspace', 'cmd+q']) {
+      const blocked = (await call('key', { app: 'Finder', key })) as { result: { content: { text: string }[] } };
+      expect(blocked.result.content[0]?.text).toStartWith('BLOCKED');
+      expect(blocked.result.content[0]?.text).toContain(key);
+    }
+  });
+
+  test('key asks the model for a shortcut not on the list', async () => {
+    const blocked = (await call('key', { app: 'Notes', key: 'ctrl+cmd+backspace' })) as { result: { content: { text: string }[] } };
+    expect(blocked.result.content[0]?.text).toContain('BLOCKED');
+    expect(blocked.result.content[0]?.text).toContain('p=0.90');
+  });
+
+  test('normalizeChord orders modifiers and maps aliases', () => {
+    expect(normalizeChord('Shift+Command+Delete')).toBe('cmd+shift+delete');
+    expect(normalizeChord('alt+cmd+backspace')).toBe('cmd+option+backspace');
+    expect(normalizeChord('return')).toBe('return');
+  });
+
+  test('key allows destructive shortcuts with confirm=true', async () => {
+    const confirmed = (await call('key', { app: 'TextEdit', key: 'cmd+backspace', confirm: true })) as { result: { content: { text: string }[] } };
+    expect(confirmed.result.content[0]?.text).not.toContain('BLOCKED');
   });
 });
