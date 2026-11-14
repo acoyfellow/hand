@@ -29,7 +29,7 @@ echo '{"accountId": "<your account id>", "gateway": "default"}' > ~/.config/hand
 security add-generic-password -a "$USER" -s hand-gateway -w    # paste the token when asked
 ```
 
-Or set `HAND_ACCOUNT_ID`, `HAND_GATEWAY` and `HAND_TOKEN` instead.
+Or set `HAND_ACCOUNT_ID`, `HAND_GATEWAY` and `HAND_TOKEN` instead. hand also falls back to `~/.config/odds/config.json`, `~/.config/odds/token`, and the odds-gateway Keychain service if `~/.config/hand` is not set up.
 
 **3. Check everything**
 

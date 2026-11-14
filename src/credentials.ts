@@ -19,19 +19,20 @@ const SHARED_KEYCHAIN_SERVICE = 'odds-gateway';
 const readJson = (path: string): Partial<GatewayConfig> => {
   try {
     return JSON.parse(readFileSync(path, 'utf8')) as Partial<GatewayConfig>;
-  } catch {
-    return {};
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') return {};
+    throw new Error(`${path} is not valid JSON`);
   }
 };
 
-export function readConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig {
-  const own = readJson(CONFIG_FILE);
+export function readConfig(env: NodeJS.ProcessEnv = process.env, configPath: string = CONFIG_FILE): GatewayConfig {
+  const own = readJson(configPath);
   const shared = readJson(join(SHARED_DIR, 'config.json'));
   const accountId = env.HAND_ACCOUNT_ID ?? own.accountId ?? shared.accountId;
   const gateway = env.HAND_GATEWAY ?? own.gateway ?? shared.gateway ?? 'default';
   if (!accountId)
     throw new Error(
-      `No Cloudflare account id. Set HAND_ACCOUNT_ID, or put {"accountId": "...", "gateway": "default"} in ${CONFIG_FILE}. Run \`hand doctor\` for every step.`,
+      `No Cloudflare account id. Set HAND_ACCOUNT_ID, or put {"accountId": "...", "gateway": "default"} in ${configPath}. Also check ~/.config/odds/config.json. Run \`hand doctor\` for every step.`,
     );
   return { accountId, gateway };
 }
