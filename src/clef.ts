@@ -182,4 +182,4 @@ export function ask(transport: Transport, req: ClefRequest): Effect.Effect<ClefR
   );
 }
 
-export const askPromise = (transport: Transport, req: ClefRequest) => Effect.runPromise(ask(transport, req));
+
