@@ -46,6 +46,7 @@ export const MEMBER_NOTES: Record<string, string> = {
   steps: 'Every step so far, with what was clicked, Clef’s probability, cost and time.',
   costUsd: 'Total spent on model calls by this Hand, in US dollars.',
   outline: 'List the controls with ids like e3, plus the text on screen.',
+  assess: 'Score how destructive a described action looks on the current screen. Returns p and the cost. menu and key use it before they run.',
   act: 'Click a control described in plain words or by id. Pass confirm only when the user asked for a destructive action.',
   typeAfter: 'Insert text right after a line that contains the anchor, then read the field back.',
   selectText: 'Select a span of text from one phrase through another.',

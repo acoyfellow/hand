@@ -115,7 +115,7 @@
     },
     {
       "name": "key",
-      "description": "Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.",
+      "description": "Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar. Some shortcuts are blocked as destructive (e.g. cmd+backspace) unless confirm is true.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -126,6 +126,10 @@
           "key": {
             "type": "string",
             "description": "One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on."
+          },
+          "confirm": {
+            "type": "boolean",
+            "description": "Set true only when the user clearly asked for this destructive action. Default false."
           }
         },
         "required": [
@@ -186,6 +190,10 @@
                   "type": "string",
                   "description": "One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on."
                 },
+                "confirm": {
+                  "type": "boolean",
+                  "description": "Set true only when the user clearly asked for this destructive action. Default false."
+                },
                 "path": {
                   "type": "array",
                   "items": {
@@ -224,7 +232,7 @@
     },
     {
       "name": "menu",
-      "description": "Choose a command from the app's menu bar by its exact path, for example [\"Format\", \"Checklist\"] or [\"File\", \"New Folder\"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.",
+      "description": "Choose a command from the app's menu bar by its exact path, for example [\"Format\", \"Checklist\"] or [\"File\", \"New Folder\"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out. Some menu items are blocked as destructive (e.g. Empty Trash) unless confirm is true.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -242,6 +250,10 @@
               "type": "string"
             },
             "description": "Menu path from the menu bar, such as [\"Format\", \"Font\", \"Show Fonts\"]."
+          },
+          "confirm": {
+            "type": "boolean",
+            "description": "Set true only when the user clearly asked for this destructive action. Default false."
           }
         },
         "required": [
@@ -496,6 +508,12 @@
     {
       "name": "outline()",
       "type": "Promise<string>",
+      "optional": false,
+      "doc": ""
+    },
+    {
+      "name": "assess(action: string)",
+      "type": "Promise<{ p: number; costUsd: number }>",
       "optional": false,
       "doc": ""
     },
