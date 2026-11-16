@@ -181,5 +181,3 @@ export function ask(transport: Transport, req: ClefRequest): Effect.Effect<ClefR
     Effect.retry({ schedule: Schedule.exponential('500 millis'), times: 4, while: retryable }),
   );
 }
-
-

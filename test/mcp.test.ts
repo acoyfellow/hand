@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { mkdtempSync, writeFileSync, chmodSync } from 'node:fs';
+import { chmodSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { Hand } from '../src/hand.ts';
@@ -75,8 +75,13 @@ describe('hand mcp', () => {
     writeFileSync(helperScript, '#!/bin/sh\necho "boom"\n');
     chmodSync(helperScript, 0o755);
 
-    const badSessionFactory = () => ({ helper: helperScript, hand: () => fakeHand, receipts: () => [] } as Session);
-    const result = (await handle(badSessionFactory, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'activate', arguments: { app: 'TextEdit' } } })) as {
+    const badSessionFactory = () => ({ helper: helperScript, hand: () => fakeHand, receipts: () => [] }) as Session;
+    const result = (await handle(badSessionFactory, {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: { name: 'activate', arguments: { app: 'TextEdit' } },
+    })) as {
       result: { isError: boolean; content: { text: string }[] };
     };
 

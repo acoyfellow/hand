@@ -277,7 +277,10 @@ const MODIFIER_ORDER = ['cmd', 'ctrl', 'option', 'shift'];
 const MODIFIER_ALIASES: Record<string, string> = { command: 'cmd', control: 'ctrl', alt: 'option' };
 
 export const normalizeChord = (chord: string): string => {
-  const parts = chord.toLowerCase().split('+').map((part) => MODIFIER_ALIASES[part.trim()] ?? part.trim());
+  const parts = chord
+    .toLowerCase()
+    .split('+')
+    .map((part) => MODIFIER_ALIASES[part.trim()] ?? part.trim());
   const key = parts.pop() ?? '';
   const modifiers = MODIFIER_ORDER.filter((modifier) => parts.includes(modifier));
   return [...modifiers, key].join('+');
@@ -330,7 +333,10 @@ export async function callTool(session: Session, name: string, args: Record<stri
       const actionDesc = `in ${appName}, press the keyboard shortcut ${key}`;
       const assessment = await hand.assess(actionDesc);
       if (assessment.p >= hand.opts.riskTau) {
-        return text(`BLOCKED: ${actionDesc} looks destructive (p=${assessment.p.toFixed(2)}). Did not do it. If the user asked for it, call again with confirm=true.`, false);
+        return text(
+          `BLOCKED: ${actionDesc} looks destructive (p=${assessment.p.toFixed(2)}). Did not do it. If the user asked for it, call again with confirm=true.`,
+          false,
+        );
       }
     }
     const policy = process.env.HAND_HEADED === '1' ? ['--headed'] : [];
@@ -350,7 +356,10 @@ export async function callTool(session: Session, name: string, args: Record<stri
       const actionDesc = `in ${appName}, choose the menu item ${path.join(' > ')}`;
       const assessment = await hand.assess(actionDesc);
       if (assessment.p >= hand.opts.riskTau) {
-        return text(`BLOCKED: ${actionDesc} looks destructive (p=${assessment.p.toFixed(2)}). Did not do it. If the user asked for it, call again with confirm=true.`, false);
+        return text(
+          `BLOCKED: ${actionDesc} looks destructive (p=${assessment.p.toFixed(2)}). Did not do it. If the user asked for it, call again with confirm=true.`,
+          false,
+        );
       }
     }
     const { stdout } = await run(session.helper, ['menu', appName, ...path]).catch((error: { stdout?: string }) => ({
