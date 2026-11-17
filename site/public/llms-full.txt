@@ -32,9 +32,10 @@ Type text into a text field of the app, by its [id] from outline (fastest) or de
   - mode?: replace | insert — replace (default) sets the whole field; insert types where the cursor is.
 
 ### key
-Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar.
+Press one key in the frontmost app: return, tab, escape, space, up, down, left, right, delete, or a shortcut like cmd+n or cmd+shift+g. Use it to confirm a name you typed, close a dialog or open a menu command. A shortcut is usually much faster than opening a menu: in Notes, cmd+shift+l starts a checklist and cmd+shift+u checks or unchecks the checklist item the cursor is on; in a browser, cmd+l focuses the address bar. Some shortcuts are blocked as destructive (e.g. cmd+backspace) unless confirm is true.
   - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
   - key: string — One key or shortcut: return, tab, escape, space, arrows, delete, or cmd+n, cmd+shift+l and so on.
+  - confirm?: boolean — Set true only when the user clearly asked for this destructive action. Default false.
 
 ### steps
 Run several actions in a row in one call, when you already know what comes next: for example type into a field, press return, choose a menu item. Each step is one of act, type, key, menu, check or select_text, with the same fields as that tool. Steps that name an [id] skip the model and run at once. It stops at the first step that fails, is refused or is unsure, and returns what happened at every step.
@@ -43,10 +44,11 @@ Run several actions in a row in one call, when you already know what comes next:
   - steps: array — The steps, in order. Each has tool plus the fields that tool takes.
 
 ### menu
-Choose a command from the app's menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out.
+Choose a command from the app's menu bar by its exact path, for example ["Format", "Checklist"] or ["File", "New Folder"]. Faster and safer than clicking through menus. Says so if the item is missing (and lists what is there) or greyed out. Some menu items are blocked as destructive (e.g. Empty Trash) unless confirm is true.
   - app: string — Exact app name as shown by the apps tool, for example "TextEdit" or "Google Chrome".
   - agent?: string — Optional id of the agent acting, so parallel agents get their own cursor and take turns.
   - path: array — Menu path from the menu bar, such as ["Format", "Font", "Show Fonts"].
+  - confirm?: boolean — Set true only when the user clearly asked for this destructive action. Default false.
 
 ### check
 Turn a check box or switch on (or off with on=false). Reads it first and does nothing if it is already right, then reads it back. Use this instead of act for check boxes so a second call never flips it back. For a checklist item inside a text (a Notes checklist), pass the text field as into and line with text from that item: hand ticks that line and reads it back.
@@ -147,6 +149,7 @@ Ask a yes/no question about what is on screen now. Returns p(yes).
 - steps: Step[] — Every step so far, with what was clicked, Clef’s probability, cost and time.
 - costUsd: number (getter) — Total spent on model calls by this Hand, in US dollars.
 - outline(): Promise<string> — List the controls with ids like e3, plus the text on screen.
+- assess(action: string): Promise<{ p: number; costUsd: number }> — Score how destructive a described action looks on the current screen. Returns p and the cost. menu and key use it before they run.
 - act(intent: string, confirm = false): Promise<string> — Click a control described in plain words or by id. Pass confirm only when the user asked for a destructive action.
 - typeAfter(text: string, into: string, after: string): Promise<string> — Insert text right after a line that contains the anchor, then read the field back.
 - selectText(into: string, from: string, through: string): Promise<string> — Select a span of text from one phrase through another.

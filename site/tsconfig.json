@@ -24,7 +24,6 @@
   "include": [
     "src",
     "scripts",
-    "vite.config.ts",
-    "alchemy.run.ts"
+    "vite.config.ts"
   ]
 }
