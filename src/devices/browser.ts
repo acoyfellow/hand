@@ -314,7 +314,6 @@ export async function browserSetValue(cdp: Cdp, c: Candidate, value: string): Pr
   return (await callOn(cdp, c.backendNodeId, SET_VALUE, [value])) === true;
 }
 
-
 export async function browserDevice(cdp: Cdp, opts: BrowserDeviceOptions = {}): Promise<Device> {
   await enableBrowser(cdp);
   let viewport = await viewportOf(cdp);

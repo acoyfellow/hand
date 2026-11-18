@@ -651,5 +651,3 @@ export class Hand {
     return this.log({ tool: 'look', args: { question }, result: `p(yes)=${fmt(p)}`, p, costUsd: r.costUsd, ms: performance.now() - t0 });
   }
 }
-
-
